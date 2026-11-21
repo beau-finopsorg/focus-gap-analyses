@@ -1,0 +1,38 @@
+name: New data generator analysis
+description: Ask for a new vendor to be added.
+title: "[New analysis] "
+labels: ["new-data-generator"]
+body:
+  - type: input
+    id: vendor
+    attributes:
+      label: Vendor name
+    validations:
+      required: true
+  - type: textarea
+    id: docs
+    attributes:
+      label: Public documentation URLs
+      description: One per line.
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: What billing or usage data they publish
+      description: For example, an export, an API, or an invoice file.
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: Public claim about supporting the specification
+      description: Link the claim and name the version, if any. Write "none found" if there is none.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why an analysis should be added
+    validations:
+      required: true

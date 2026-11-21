@@ -1,0 +1,32 @@
+name: Methodology question or change
+description: Ask about or suggest changes to the rating method, sources policy, or disclaimer.
+title: "[Method] "
+labels: ["methodology"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Not for a single vendor fact fix. Use the vendor correction form for that.
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic
+      options:
+        - Rating scale
+        - Sources policy
+        - Disclaimer
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: Your question or suggestion
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it would help
+    validations:
+      required: false

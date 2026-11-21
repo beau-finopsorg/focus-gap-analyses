@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question or share an idea (Discussions)
+    url: https://github.com/beau-finopsorg/focus-gap-analyses/discussions
+    about: Questions and ideas. A concrete fact fix should still be an issue or pull request.
+  - name: Feedback on the specification itself
+    url: https://focus.finops.org/feedback/
+    about: This repo holds unofficial community reports. For feedback on the FOCUS specification, use the official project feedback page.

@@ -1,0 +1,60 @@
+name: Vendor correction
+description: Correct a fact or rating in a report, with public evidence.
+title: "[Correction] "
+labels: ["vendor-correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ratings are based on public documentation, are dated, and are not a certification result or an official project verdict. Please cite public sources only.
+  - type: input
+    id: vendor
+    attributes:
+      label: Vendor and product name
+    validations:
+      required: true
+  - type: input
+    id: report
+    attributes:
+      label: Report filename or link
+    validations:
+      required: true
+  - type: input
+    id: run-date
+    attributes:
+      label: Analysis run date shown on the report
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+      description: Quote the line in the report if you can.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Public evidence
+      description: Links to documentation, a changelog, or a sample export.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Proposed correction
+      description: The text or rating you think is right.
+    validations:
+      required: true
+  - type: dropdown
+    id: affiliation
+    attributes:
+      label: Do you work for this vendor?
+      description: Optional. It helps reviewers. It does not change how evidence is judged.
+      options:
+        - I prefer not to say
+        - "Yes"
+        - "No"
+    validations:
+      required: false
