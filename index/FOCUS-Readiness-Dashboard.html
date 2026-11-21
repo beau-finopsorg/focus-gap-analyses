@@ -77,6 +77,8 @@
   .ov-g{background:var(--rag-green);color:#fff;font-weight:500;}
   .ov-a{background:var(--rag-amber-fill);color:#3a2a00;font-weight:500;}
   .ov-r{background:var(--rag-red);color:#fff;font-weight:500;}
+  .scorecard .name a{color:inherit;text-decoration:none;}
+  .scorecard .name a:hover{text-decoration:underline;}
   .ov-cert{background:var(--focus-dark);color:#fff;font-weight:500;}
   .ov-sup{background:#fff;color:var(--focus-dark);border:1px solid var(--focus-dark);font-weight:600;}
   footer{background:var(--focus-dark);color:rgba(255,255,255,.72);padding:2.2rem 0;font-size:.8125rem;}
@@ -94,7 +96,7 @@
     <div class="wrap">
       <span class="eyebrow">FOCUS readiness benchmark</span>
       <h1>FOCUS data generator <span class="accent">readiness</span></h1>
-      <p>A red-amber-green scorecard across the 73 providers we have analyzed. AWS and Nebius are certified under the FinOps Foundation's FinOps Certified FOCUS Conformant program; another 11 are Supported (they have given the Foundation a FOCUS export), listed on focus.finops.org/get-started and tagged with the FOCUS version each ships. Every other provider is rated on five readiness dimensions, showing how close it is to producing a FOCUS export. Linode and Microsoft appear at multiple billing surfaces.</p>
+      <p>A red-amber-green scorecard across the 98 providers we have analyzed. AWS and Nebius are certified under the FinOps Foundation's FinOps Certified FOCUS Conformant program; another 11 are Supported (they have given the Foundation a FOCUS export), listed on focus.finops.org/get-started and tagged with the FOCUS version each ships. Every other provider is rated on five readiness dimensions, showing how close it is to producing a FOCUS export. Linode and Kong each appear at two billing surfaces. Microsoft appears as Azure, 365, and Copilot, each with its own analysis.</p>
     </div>
   </header>
 
@@ -106,11 +108,8 @@
       <div class="dist">
         <div class="d"><div class="n" style="color:#fff;background:var(--focus-dark);border-radius:6px;">2</div><div class="l">Certified Conformant</div></div>
         <div class="d"><div class="n" style="color:var(--focus-dark)">11</div><div class="l">Supported</div></div>
-        <div class="d"><div class="n" style="color:var(--rag-green-text)">4</div><div class="l">Near-ready</div></div>
-        <div class="d"><div class="n" style="color:var(--rag-amber)">1</div><div class="l">Advanced</div></div>
-        <div class="d"><div class="n" style="color:var(--rag-amber)">20</div><div class="l">Structured</div></div>
-        <div class="d"><div class="n" style="color:var(--rag-amber)">26</div><div class="l">Emerging</div></div>
-        <div class="d"><div class="n" style="color:var(--rag-red)">12</div><div class="l">Nascent</div></div>
+        <div class="d"><div class="n" style="color:var(--rag-green-text)">28</div><div class="l">Partially aligned</div></div>
+        <div class="d"><div class="n" style="color:var(--rag-red)">59</div><div class="l">Not yet aligned</div></div>
       </div>
     </div>
   </section>
@@ -145,179 +144,226 @@
         <div class="head">Cost</div><div class="head">Granularity</div><div class="head">Allocation</div><div class="head">Coverage</div><div class="head">FOCUS shape</div><div class="head ov">Overall</div>
 
         <div class="band-head">FinOps Certified FOCUS Conformant, certified by the FinOps Foundation (2)</div>
-        <div class="name">AWS<small>hyperscaler</small></div>
+        <div class="name"><a href="../analyses/AWS-FOCUS-Gap-Analysis.md">AWS</a><small>hyperscaler</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell ov-cert">Certified Conformant v1.2</div>
-        <div class="name">Nebius<small>neocloud giant</small></div>
+        <div class="name"><a href="../analyses/Nebius-FOCUS-Gap-Analysis.md">Nebius</a><small>neocloud giant</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell ov-cert">Certified Conformant v1.2</div>
 
         <div class="band-head">Supported: gave a FOCUS export, get-started list (11)</div>
-        <div class="name">Databricks<small>data platform</small></div>
+        <div class="name"><a href="../analyses/Databricks-FOCUS-Gap-Analysis.md">Databricks</a><small>data platform</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell ov-sup">Supported v1.3</div>
-        <div class="name">Oracle Cloud<small>hyperscaler</small></div>
+        <div class="name"><a href="../analyses/OracleCloud-FOCUS-Gap-Analysis.md">Oracle Cloud</a><small>hyperscaler</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-sup">Supported v1.3</div>
-        <div class="name">Vercel<small>developer platform</small></div>
+        <div class="name"><a href="../analyses/Vercel-FOCUS-Gap-Analysis.md">Vercel</a><small>developer platform</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell ov-sup">Supported v1.3</div>
-        <div class="name">Google Cloud<small>hyperscaler</small></div>
+        <div class="name"><a href="../analyses/GoogleCloud-FOCUS-Gap-Analysis.md">Google Cloud</a><small>hyperscaler</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-sup">Supported v1.2</div>
-        <div class="name">Grafana Cloud<small>observability</small></div>
+        <div class="name"><a href="../analyses/Grafana-FOCUS-Gap-Analysis.md">Grafana Cloud</a><small>observability</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-sup">Supported v1.2</div>
-        <div class="name">Microsoft Azure<small>hyperscaler</small></div>
+        <div class="name"><a href="../analyses/MicrosoftAzure-FOCUS-Gap-Analysis.md">Microsoft Azure</a><small>hyperscaler</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell ov-sup">Supported v1.2</div>
-        <div class="name">Redis<small>data platform</small></div>
+        <div class="name"><a href="../analyses/Redis-FOCUS-Gap-Analysis.md">Redis</a><small>data platform</small></div>
         <div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell ov-sup">Supported v1.2</div>
-        <div class="name">Alibaba Cloud<small>hyperscaler</small></div>
+        <div class="name"><a href="../analyses/AlibabaCloud-FOCUS-Gap-Analysis.md">Alibaba Cloud</a><small>hyperscaler</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell ov-sup">Supported v1.0</div>
-        <div class="name">Huawei Cloud<small>hyperscaler</small></div>
+        <div class="name"><a href="../analyses/HuaweiCloud-FOCUS-Gap-Analysis.md">Huawei Cloud</a><small>hyperscaler</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-sup">Supported v1.0</div>
-        <div class="name">OVHcloud<small>cloud</small></div>
+        <div class="name"><a href="../analyses/OVHcloud-FOCUS-Gap-Analysis.md">OVHcloud</a><small>cloud</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-sup">Supported v1.0</div>
-        <div class="name">Tencent Cloud<small>hyperscaler</small></div>
+        <div class="name"><a href="../analyses/TencentCloud-FOCUS-Gap-Analysis.md">Tencent Cloud</a><small>hyperscaler</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell ov-sup">Supported v1.0</div>
 
-        <div class="band-head">Partially aligned, was Near-ready (4)</div>
-        <div class="name">Microsoft Copilot<small>metered credits, via Azure FOCUS export</small></div>
+        <div class="band-head">Partially aligned (28)</div>
+        <div class="name"><a href="../analyses/MicrosoftCopilot-FOCUS-Gap-Analysis.md">Microsoft Copilot</a><small>metered credits, via Azure FOCUS export</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell ov-g">Partially aligned</div>
-        <div class="name">GitHub<small>developer platform</small></div>
+        <div class="name"><a href="../analyses/GitHub-FOCUS-Gap-Analysis.md">GitHub</a><small>developer platform</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-g">Partially aligned</div>
-        <div class="name">IBM Cloud<small>cloud, native FOCUS API</small></div>
+        <div class="name"><a href="../analyses/IBMCloud-FOCUS-Gap-Analysis.md">IBM Cloud</a><small>cloud, native FOCUS API</small></div>
         <div class="cell g">Strong</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell ov-g">Partially aligned</div>
-        <div class="name">StackIt<small>sovereign cloud, Germany</small></div>
+        <div class="name"><a href="../analyses/StackIt-FOCUS-Gap-Analysis.md">StackIt</a><small>sovereign cloud, Germany</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell ov-g">Partially aligned</div>
 
-        <div class="band-head">Partially aligned, was Advanced (1)</div>
-        <div class="name">Linode<small>Akamai daily usage API</small></div>
+        <div class="name"><a href="../analyses/Linode-FOCUS-Gap-Analysis.md">Linode</a><small>Akamai daily usage API</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell ov-a">Partially aligned</div>
 
-        <div class="band-head">Partially aligned, was Structured (20)</div>
-        <div class="name">Anthropic<small>AI API</small></div>
+        <div class="name"><a href="../analyses/Anthropic-FOCUS-Gap-Analysis.md">Anthropic</a><small>AI API</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Confluent<small>data streaming</small></div>
+        <div class="name"><a href="../analyses/Confluent-FOCUS-Gap-Analysis.md">Confluent</a><small>data streaming</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">CoreWeave<small>GPU cloud</small></div>
+        <div class="name"><a href="../analyses/CoreWeave-FOCUS-Gap-Analysis.md">CoreWeave</a><small>GPU cloud</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Crusoe<small>GPU cloud</small></div>
+        <div class="name"><a href="../analyses/Crusoe-FOCUS-Gap-Analysis.md">Crusoe</a><small>GPU cloud</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Datadog<small>observability</small></div>
+        <div class="name"><a href="../analyses/Datadog-FOCUS-Gap-Analysis.md">Datadog</a><small>observability</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Dynatrace<small>observability</small></div>
+        <div class="name"><a href="../analyses/Dynatrace-FOCUS-Gap-Analysis.md">Dynatrace</a><small>observability</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Exaion<small>cloud, GPU</small></div>
+        <div class="name"><a href="../analyses/Exaion-FOCUS-Gap-Analysis.md">Exaion</a><small>cloud, GPU</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">HPE<small>hybrid cloud</small></div>
+        <div class="name"><a href="../analyses/HPE-FOCUS-Gap-Analysis.md">HPE</a><small>hybrid cloud</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Lambda<small>GPU cloud</small></div>
+        <div class="name"><a href="../analyses/Lambda-FOCUS-Gap-Analysis.md">Lambda</a><small>GPU cloud</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">OpenAI<small>AI API</small></div>
+        <div class="name"><a href="../analyses/OpenAI-FOCUS-Gap-Analysis.md">OpenAI</a><small>AI API</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">RunPod<small>GPU cloud</small></div>
+        <div class="name"><a href="../analyses/RunPod-FOCUS-Gap-Analysis.md">RunPod</a><small>GPU cloud</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Scaleway<small>cloud</small></div>
+        <div class="name"><a href="../analyses/Scaleway-FOCUS-Gap-Analysis.md">Scaleway</a><small>cloud</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Temporal<small>dev platform</small></div>
+        <div class="name"><a href="../analyses/Temporal-FOCUS-Gap-Analysis.md">Temporal</a><small>dev platform</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Together AI<small>AI API</small></div>
+        <div class="name"><a href="../analyses/TogetherAI-FOCUS-Gap-Analysis.md">Together AI</a><small>AI API</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Vultr<small>cloud</small></div>
+        <div class="name"><a href="../analyses/Vultr-FOCUS-Gap-Analysis.md">Vultr</a><small>cloud</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
-        <div class="name">Magalu<small>cloud</small></div>
+        <div class="name"><a href="../analyses/magalu-FOCUS-Gap-Analysis.md">Magalu</a><small>cloud</small></div>
         <div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
 
-        <div class="name">Naver Cloud<small>sovereign cloud, Korea</small></div>
+        <div class="name"><a href="../analyses/NaverCloud-FOCUS-Gap-Analysis.md">Naver Cloud</a><small>sovereign cloud, Korea</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
 
-        <div class="name">MongoDB<small>data platform</small></div>
+        <div class="name"><a href="../analyses/MongoDB-FOCUS-Gap-Analysis.md">MongoDB</a><small>data platform</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
 
-        <div class="name">Cloudflare<small>edge / developer platform</small></div>
+        <div class="name"><a href="../analyses/Cloudflare-FOCUS-Gap-Analysis.md">Cloudflare</a><small>edge / developer platform</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell ov-a">Partially aligned</div>
 
-        <div class="name">Neo4j<small>graph database (Aura)</small></div>
+        <div class="name"><a href="../analyses/Neo4j-FOCUS-Gap-Analysis.md">Neo4j</a><small>graph database (Aura)</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
 
-        <div class="band-head">Not yet aligned (per public docs), was Emerging (26)</div>
-        <div class="name">Adobe<small>SaaS</small></div>
+        <div class="name"><a href="../analyses/CockroachLabs-FOCUS-Gap-Analysis.md">Cockroach Labs</a><small>database</small></div>
+        <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
+        <div class="name"><a href="../analyses/Elastic-FOCUS-Gap-Analysis.md">Elastic</a><small>observability</small></div>
+        <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Partially aligned</div>
+        <div class="name"><a href="../analyses/Kong-FOCUS-Gap-Analysis.md">Kong</a><small>AI Cost Management FOCUS export</small></div>
+        <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell ov-a">Partially aligned</div>
+
+        <div class="band-head">Not yet aligned (per public docs) (59)</div>
+        <div class="name"><a href="../analyses/Adobe-FOCUS-Gap-Analysis.md">Adobe</a><small>SaaS</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Atlassian<small>SaaS, pipelines</small></div>
+        <div class="name"><a href="../analyses/Atlassian-FOCUS-Gap-Analysis.md">Atlassian</a><small>SaaS, pipelines</small></div>
         <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">GitLab<small>DevOps SaaS</small></div>
+        <div class="name"><a href="../analyses/GitLab-FOCUS-Gap-Analysis.md">GitLab</a><small>DevOps SaaS</small></div>
         <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">JFrog<small>DevOps SaaS</small></div>
+        <div class="name"><a href="../analyses/JFrog-FOCUS-Gap-Analysis.md">JFrog</a><small>DevOps SaaS</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Microsoft 365<small>commerce billing, seats + Copilot license</small></div>
+        <div class="name"><a href="../analyses/Microsoft365-FOCUS-Gap-Analysis.md">Microsoft 365</a><small>commerce billing, seats + Copilot license</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">New Relic<small>observability</small></div>
+        <div class="name"><a href="../analyses/NewRelic-FOCUS-Gap-Analysis.md">New Relic</a><small>observability</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Nutanix<small>software subscription</small></div>
+        <div class="name"><a href="../analyses/Nutanix-FOCUS-Gap-Analysis.md">Nutanix</a><small>software subscription</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">SAP<small>enterprise SaaS, BTP</small></div>
+        <div class="name"><a href="../analyses/SAP-FOCUS-Gap-Analysis.md">SAP</a><small>enterprise SaaS, BTP</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Salesforce<small>SaaS</small></div>
+        <div class="name"><a href="../analyses/Salesforce-FOCUS-Gap-Analysis.md">Salesforce</a><small>SaaS</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">ServiceNow<small>SaaS</small></div>
+        <div class="name"><a href="../analyses/ServiceNow-FOCUS-Gap-Analysis.md">ServiceNow</a><small>SaaS</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Vantage<small>FinOps tool</small></div>
+        <div class="name"><a href="../analyses/Vantage-FOCUS-Gap-Analysis.md">Vantage</a><small>FinOps tool</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Vast<small>GPU marketplace</small></div>
+        <div class="name"><a href="../analyses/Vast-FOCUS-Gap-Analysis.md">Vast</a><small>GPU marketplace</small></div>
         <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">VMware<small>software, licenses</small></div>
+        <div class="name"><a href="../analyses/VMware-FOCUS-Gap-Analysis.md">VMware</a><small>software, licenses</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Workday<small>enterprise SaaS</small></div>
+        <div class="name"><a href="../analyses/Workday-FOCUS-Gap-Analysis.md">Workday</a><small>enterprise SaaS</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
 
-        <div class="name">DigitalOcean<small>cloud</small></div>
+        <div class="name"><a href="../analyses/DigitalOcean-FOCUS-Gap-Analysis.md">DigitalOcean</a><small>cloud</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Gcore<small>edge / GPU cloud</small></div>
+        <div class="name"><a href="../analyses/Gcore-FOCUS-Gap-Analysis.md">Gcore</a><small>edge / GPU cloud</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Hyperstack<small>NexGen Cloud, GPU</small></div>
+        <div class="name"><a href="../analyses/Hyperstack-FOCUS-Gap-Analysis.md">Hyperstack</a><small>NexGen Cloud, GPU</small></div>
         <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Shadeform<small>GPU marketplace</small></div>
+        <div class="name"><a href="../analyses/Shadeform-FOCUS-Gap-Analysis.md">Shadeform</a><small>GPU marketplace</small></div>
         <div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
 
-        <div class="name">Prime Intellect<small>GPU marketplace</small></div>
+        <div class="name"><a href="../analyses/PrimeIntellect-FOCUS-Gap-Analysis.md">Prime Intellect</a><small>GPU marketplace</small></div>
         <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Cudo Compute<small>GPU marketplace (closed Mar 2026)</small></div>
+        <div class="name"><a href="../analyses/CudoCompute-FOCUS-Gap-Analysis.md">Cudo Compute</a><small>GPU marketplace (closed Mar 2026)</small></div>
         <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Akash Network<small>decentralized GPU</small></div>
+        <div class="name"><a href="../analyses/AkashNetwork-FOCUS-Gap-Analysis.md">Akash Network</a><small>decentralized GPU</small></div>
         <div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Aethir<small>decentralized GPU</small></div>
+        <div class="name"><a href="../analyses/Aethir-FOCUS-Gap-Analysis.md">Aethir</a><small>decentralized GPU</small></div>
         <div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Core42<small>sovereign AI cloud, UAE (G42)</small></div>
+        <div class="name"><a href="../analyses/Core42-FOCUS-Gap-Analysis.md">Core42</a><small>sovereign AI cloud, UAE (G42)</small></div>
         <div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
 
-        <div class="name">Snowflake<small>data platform</small></div>
+        <div class="name"><a href="../analyses/Snowflake-FOCUS-Gap-Analysis.md">Snowflake</a><small>data platform</small></div>
         <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
-        <div class="name">Dell APEX<small>hybrid infrastructure</small></div>
+        <div class="name"><a href="../analyses/DellAPEX-FOCUS-Gap-Analysis.md">Dell APEX</a><small>hybrid infrastructure</small></div>
         <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
 
-        <div class="name">ExtendAI<small>document AI</small></div>
+        <div class="name"><a href="../analyses/ExtendAI-FOCUS-Gap-Analysis.md">ExtendAI</a><small>document AI</small></div>
         <div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
 
-        <div class="band-head">Not yet aligned (per public docs), was Nascent (12)</div>
-        <div class="name">CloudHealth<small>FinOps tool</small></div>
+        <div class="name"><a href="../analyses/CloudHealth-FOCUS-Gap-Analysis.md">CloudHealth</a><small>FinOps tool</small></div>
         <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">Linode<small>self-service v4 invoices</small></div>
+        <div class="name"><a href="../analyses/Linode-FOCUS-Gap-Analysis.md">Linode</a><small>self-service v4 invoices</small></div>
         <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">Nscale<small>GPU neocloud</small></div>
+        <div class="name"><a href="../analyses/Nscale-FOCUS-Gap-Analysis.md">Nscale</a><small>GPU neocloud</small></div>
         <div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">Fluidstack<small>GPU cloud</small></div>
+        <div class="name"><a href="../analyses/Fluidstack-FOCUS-Gap-Analysis.md">Fluidstack</a><small>GPU cloud</small></div>
         <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">Genesis Cloud<small>GPU cloud</small></div>
+        <div class="name"><a href="../analyses/GenesisCloud-FOCUS-Gap-Analysis.md">Genesis Cloud</a><small>GPU cloud</small></div>
         <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">Hyperbolic<small>GPU / inference marketplace</small></div>
+        <div class="name"><a href="../analyses/Hyperbolic-FOCUS-Gap-Analysis.md">Hyperbolic</a><small>GPU / inference marketplace</small></div>
         <div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">Salad<small>distributed GPU</small></div>
+        <div class="name"><a href="../analyses/Salad-FOCUS-Gap-Analysis.md">Salad</a><small>distributed GPU</small></div>
         <div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">Ola Krutrim<small>sovereign AI cloud, India</small></div>
+        <div class="name"><a href="../analyses/OlaKrutrim-FOCUS-Gap-Analysis.md">Ola Krutrim</a><small>sovereign AI cloud, India</small></div>
         <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">Yotta<small>sovereign cloud, India</small></div>
+        <div class="name"><a href="../analyses/Yotta-FOCUS-Gap-Analysis.md">Yotta</a><small>sovereign cloud, India</small></div>
         <div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">Sakura Internet<small>sovereign cloud, Japan</small></div>
+        <div class="name"><a href="../analyses/SakuraInternet-FOCUS-Gap-Analysis.md">Sakura Internet</a><small>sovereign cloud, Japan</small></div>
         <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">evroc<small>sovereign cloud, Europe</small></div>
+        <div class="name"><a href="../analyses/Evroc-FOCUS-Gap-Analysis.md">evroc</a><small>sovereign cloud, Europe</small></div>
         <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-        <div class="name">HappyRobot<small>AI voice agents, logistics</small></div>
+        <div class="name"><a href="../analyses/HappyRobot-FOCUS-Gap-Analysis.md">HappyRobot</a><small>AI voice agents, logistics</small></div>
         <div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
-      </div>
+        <div class="name"><a href="../analyses/Docker-FOCUS-Gap-Analysis.md">Docker</a><small>dev platform</small></div>
+        <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Fastly-FOCUS-Gap-Analysis.md">Fastly</a><small>edge platform</small></div>
+        <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Harness-FOCUS-Gap-Analysis.md">Harness</a><small>dev platform</small></div>
+        <div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Heroku-FOCUS-Gap-Analysis.md">Heroku</a><small>PaaS</small></div>
+        <div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/NVIDIA-FOCUS-Gap-Analysis.md">NVIDIA</a><small>AI infrastructure</small></div>
+        <div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/PlanetScale-FOCUS-Gap-Analysis.md">PlanetScale</a><small>database</small></div>
+        <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Pulumi-FOCUS-Gap-Analysis.md">Pulumi</a><small>dev platform</small></div>
+        <div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Redpanda-FOCUS-Gap-Analysis.md">Redpanda</a><small>data streaming</small></div>
+        <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Snyk-FOCUS-Gap-Analysis.md">Snyk</a><small>security</small></div>
+        <div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Splunk-FOCUS-Gap-Analysis.md">Splunk</a><small>observability</small></div>
+        <div class="cell r">Gap</div><div class="cell g">Strong</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Supabase-FOCUS-Gap-Analysis.md">Supabase</a><small>database</small></div>
+        <div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Twilio-FOCUS-Gap-Analysis.md">Twilio</a><small>communications</small></div>
+        <div class="cell a">Partial</div><div class="cell g">Strong</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Zoom-FOCUS-Gap-Analysis.md">Zoom</a><small>SaaS</small></div>
+        <div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell a">Partial</div><div class="cell ov-a">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/EchoAI-FOCUS-Gap-Analysis.md">Echo</a><small>security</small></div>
+        <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/InfrOS-FOCUS-Gap-Analysis.md">InfrOS</a><small>AI platform</small></div>
+        <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Kong-FOCUS-Gap-Analysis.md">Kong</a><small>Konnect own charges</small></div>
+        <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell a">Partial</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/PerfectScale-FOCUS-Gap-Analysis.md">PerfectScale</a><small>Kubernetes optimization</small></div>
+        <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Postman-FOCUS-Gap-Analysis.md">Postman</a><small>dev platform</small></div>
+        <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Sedai-FOCUS-Gap-Analysis.md">Sedai</a><small>cloud optimization</small></div>
+        <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Tigris-FOCUS-Gap-Analysis.md">Tigris</a><small>object storage</small></div>
+        <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
+        <div class="name"><a href="../analyses/Traversal-FOCUS-Gap-Analysis.md">Traversal</a><small>AI SRE</small></div>
+        <div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell r">Gap</div><div class="cell ov-r">Not yet aligned (per public docs)</div>
+
+        </div>
     </div>
   </section>
 
@@ -326,8 +372,8 @@
       <div class="kicker">How to read it</div>
       <h2>Patterns worth noting</h2>
       <p><strong>The common shape is "data exists, not yet FOCUS-shaped."</strong> Most Structured providers are green on cost, granularity, and coverage but amber on FOCUS shape: they emit usage data with the right substance under native field names, and need a transform layer, not new instrumentation.</p>
-      <p><strong>SaaS and license vendors cluster in Emerging.</strong> Enterprise and subscription billers (Adobe, Salesforce, SAP, ServiceNow, VMware, Workday, Nutanix) tend to be monthly or annual, with list and contracted pricing off-system and little resource or tag attribution, so they share a Partial-and-Gap profile.</p>
-      <p><strong>The few Near-ready providers already emit FOCUS-aligned output.</strong> Vercel and IBM Cloud expose native FOCUS-shaped data; GitHub has the full cost trio and rich allocation and needs only the shaping step.</p>
+      <p><strong>SaaS and license vendors cluster in Not yet aligned.</strong> Enterprise and subscription billers (Adobe, Salesforce, SAP, ServiceNow, VMware, Workday, Nutanix) tend to be monthly or annual, with list and contracted pricing off-system and little resource or tag attribution, so they share a Partial-and-Gap profile.</p>
+      <p><strong>A smaller set of providers already emit FOCUS-shaped output or are close.</strong> Vercel and IBM Cloud expose native FOCUS-shaped data; GitHub has the full cost trio and rich allocation and needs only the shaping step.</p>
       <p><strong>Allocation is the most common weak spot.</strong> Tags rarely propagate into billing data, so even strong providers sit at Partial on allocation.</p>
     </div>
   </section>

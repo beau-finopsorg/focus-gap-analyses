@@ -2,7 +2,7 @@
 
 This folder holds the full red-amber-green (RAG) readiness view that goes with the written analyses.
 
-- [FOCUS-Readiness-Dashboard.html](FOCUS-Readiness-Dashboard.html) — five-dimension scorecard for each provider, plus official Foundation status where it exists.
+- [FOCUS-Readiness-Dashboard.html](FOCUS-Readiness-Dashboard.html) — five-dimension scorecard for all 98 reports, plus official Foundation status where it exists. Linode and Kong each appear at two billing surfaces (100 rows).
 - [gap-analyses-by-company.html](gap-analyses-by-company.html) — an index of every written analysis.
 
 These pages are unofficial community work. They are not an official FOCUS, FinOps Foundation, or Linux Foundation publication. See [../DISCLAIMER.md](../DISCLAIMER.md).

@@ -7,7 +7,7 @@ There are 98 reports. Each one has an "Analysis run" date and is based on public
 ## What's in the repo
 
 - Written analyses, one markdown file per vendor, in [analyses/](analyses/).
-- The full red-amber-green readiness dashboard and a by-company index in [index/](index/). The dashboard currently covers 76 providers; the written set has 98 reports, so some newer analyses are not yet on the scorecard.
+- The full red-amber-green readiness dashboard and a by-company index in [index/](index/), covering all 98 reports. Linode and Kong each appear twice on the scorecard, once per billing surface, so the scorecard has 100 rows.
 
 ## What this repo is
 
