@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aethir &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Aethir-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="aethir-focus-data-generator-gap-analysis">Aethir &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Aethir<br>
+<strong>Prepared:</strong> July 1, 2026<br>
+<strong>Source:</strong> Aethir enterprise GPU pricing page; Atlas Cloud on-demand pricing; Aethir docs (Cloud Host, Checker, tokenomics); public tokenomics and revenue disclosures<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 0 Present, 17 Deviation, 4 Missing Mandatory, 25 Missing Conditional, 3 Missing Recommended, 8 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Aethir is a decentralized GPU-as-a-service network (a DePIN): enterprise and developer customers rent NVIDIA H100, H200, B200, and GB200 capacity that is physically supplied by independent Cloud Hosts across Tier 3 and Tier 4 data centers, coordinated by an on-chain protocol and a Checker verification layer. Two demand paths exist: an Enterprise AI track (reserved bare-metal clusters, monthly payment in advance against committed capacity) and Atlas, an on-demand marketplace with per-second and hourly containerized GPU billing. Fees are denominated in fiat (USD), and compute settlements are conducted on-chain in the ATH token.</p>
+<p>The material finding is that Aethir has strong underlying billing mechanics (metered GPU hours, a clear unit price per GPU type, reserved-versus-on-demand pricing, a customer/tenant identity, and an SLA-backed service) but no documented customer-facing cost-and-usage export shaped anywhere near FOCUS. The public surfaces are a protocol dashboard (network utilization, uptime, node earnings) and enterprise invoicing, not a per-charge tabular dataset with FOCUS column IDs. Almost every mapping below is therefore &ldquo;the data exists in the billing system, transform required,&rdquo; not &ldquo;emitted and aligned.&rdquo;</p>
+<p>The decentralized model creates one structural wrinkle worth naming up front: fees are quoted in USD but settled in a crypto token (ATH). FOCUS handles this cleanly through the pricing-currency family: <code>BillingCurrency</code> carries the invoiced/settled currency and the <code>PricingCurrency</code> columns carry the quoting currency, so the dual-currency reality is representable without bending the spec. It does mean an ATH-settled row should record ATH in <code>BillingCurrency</code> with an <code>x_</code> custom column for the USD-equivalent and the ATH/USD rate, since ATH is not an ISO 4217 code.</p>
+<p><strong>Recommendation:</strong> Model one FOCUS row per GPU instance (or reserved cluster) per charge period. <code>ServiceCategory</code> = &ldquo;Compute&rdquo;, <code>ChargeCategory</code> = &ldquo;Usage&rdquo; for on-demand and &ldquo;Purchase&rdquo; for reserved-capacity commitments, <code>PricingUnit</code> = &ldquo;GPU-Hour&rdquo;. Treat the four cost columns as a substantive build: reserved commitments, on-demand metering, and ATH settlement each price differently and must be reconciled to a single row. Begin with the Enterprise AI invoice path, where tenant identity and USD amounts are cleanest.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>Aethir does not publish a customer billing API or a documented cost-and-usage export schema. This analysis is built from the pricing surfaces, product documentation, and tokenomics that describe how compute is metered, priced, and settled. Field-level detail is therefore inferred from the billing model rather than read off an export.</p>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Two demand models:</strong> Enterprise AI sells reserved bare-metal GPU clusters (single node to 4,000+ GPU clusters) under enterprise agreements billed monthly in advance against a capacity commitment. Atlas Cloud sells on-demand containerized GPU instances with per-second and hourly billing and no minimum commitment.</li>
+<li><strong>Metered unit:</strong> the billable unit is the GPU-hour (per-second granularity on Atlas). Pricing is per GPU per hour by GPU type, for example H100 around $2.95/hr on-demand and roughly $1.25/hr under enterprise reserved terms.</li>
+<li><strong>Dual currency:</strong> fees are denominated in fiat (USD) and accepted in fiat, stablecoin, or ATH, while protocol-level compute settlement is conducted in ATH. The USD amount and the ATH-settled amount both exist for a given charge.</li>
+<li><strong>Marketplace supply side:</strong> capacity is contributed by independent Cloud Hosts who earn 80% of client service fees (20% to the Aethir treasury) plus Proof of Capacity and Proof of Delivery token rewards. This host-side ledger is a separate economic flow from the customer invoice and is not the FOCUS dataset in scope; FOCUS models the customer&rsquo;s cost of consuming compute, not host payouts.</li>
+<li><strong>Tenant identity:</strong> enterprise customers have accounts and SLAs; Atlas users deploy under an account and pay per usage. A billing-account identity exists on both paths.</li>
+<li><strong>Verification layer:</strong> the Checker network validates GPU specs and uptime, so per-container performance and uptime data exist, but this is telemetry, not a billing column set.</li>
+<li><strong>Reporting surface:</strong> the public dashboard reports network-level utilization, capacity, uptime, latency, throughput, and node earnings. It is protocol analytics, not a per-tenant, per-charge cost dataset.</li>
+</ul>
+<p>The gap is not a data-availability gap so much as a data-shaping gap: the billing system knows the customer, the GPU type, the hours, the unit price, and the amount, but there is no evidence it externalizes those as FOCUS-shaped rows today.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is judged column by column against feature levels (Mandatory, Conditional, Recommended, Optional) defined in the specification&rsquo;s Content Constraints. Feature levels in this report were verified against the FOCUS v1.2 specification and the FOCUS column library. Because Aethir sells commitment-based reserved capacity, the CommitmentDiscount family is in scope rather than automatically N/A: reserved-capacity terms are a candidate FOCUS commitment construct and should be evaluated, not nulled by default. The ATH settlement layer is handled through <code>BillingCurrency</code> plus custom <code>x_</code> columns, not by a bespoke schema.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Aethir source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoiced/settled amount per instance per period; exists on the invoice but not exported as a FOCUS field, and reserved-vs-on-demand-vs-ATH settlement must reconcile to one row</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Amortized cost after reserved commitment; derivable from enterprise terms but not emitted</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>On-demand published rate × GPU-hours; computable from public pricing</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Reserved-rate × committed GPU-hours; in enterprise agreement, not exported</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Enterprise account / Atlas account identifier</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Customer organization name</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>USD for fiat invoicing; ATH for on-chain settlement (record settlement currency; ATH is non-ISO, flag via x_ column)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Monthly billing cycle start (enterprise); usage window start (Atlas)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Monthly billing cycle end</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Instance start timestamp (per-second on Atlas)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Instance stop / reserved-period end</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Derive: GPU type + instance + period (e.g., &ldquo;NVIDIA H100 SXM on-demand, 72 GPU-hours&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; on-demand, &ldquo;Purchase&rdquo; for reserved commitment</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for corrections</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Aethir&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Aethir&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Aethir&rdquo; (compute delivered by third-party Cloud Hosts; Publisher still Aethir as marketplace)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>&ldquo;Aethir Enterprise AI&rdquo; or &ldquo;Aethir Atlas Cloud&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Compute&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>GPU-hours (flat-rate per GPU type; equals consumed hours)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>&ldquo;GPU-Hour&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>GPU-hours consumed (per-second precision on Atlas)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>&ldquo;GPU-Hour&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Published per-GPU-hour rate by GPU type</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Reserved per-GPU-hour rate from enterprise agreement</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>&ldquo;On-Demand&rdquo; (Atlas) or &ldquo;Committed&rdquo; (reserved enterprise)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>&ldquo;Usage-Based&rdquo; on-demand; &ldquo;Recurring&rdquo; for monthly reserved</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Enterprise&rdquo; or &ldquo;Individual/Developer&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>N/A: no documented sub-account or project hierarchy below the billing account</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>GPU container ID / instance ID (exists at the container layer)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Instance or cluster name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>GPU model (e.g., &ldquo;NVIDIA H100 SXM&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>GPU-type + term code (e.g., &ldquo;h100-sxm-ondemand&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: no documented user-defined resource tagging</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>USD (the quoting currency, distinct from ATH settlement)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Published USD rate per GPU-hour</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Reserved USD rate per GPU-hour</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>USD-denominated effective cost</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>&ldquo;GPU-Hour, H100 SXM&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not documented</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>GPU spec / SLA tier details</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Data-center location exists internally; not exposed as a billing region</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A: no per-region billing rows documented</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Reserved-capacity agreement ID (enterprise)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Reserved-capacity plan name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>&ldquo;Committed capacity&rdquo; (reserved GPU cluster)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Spend&rdquo; or &ldquo;Usage&rdquo; commitment per enterprise terms</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo; / &ldquo;Unused&rdquo; against reserved capacity</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Committed GPU-hours</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;GPU-Hour&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>Reserved cluster reservation ID (enterprise)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo; / &ldquo;Unused&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Enterprise invoice number</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>&ldquo;GPU Compute&rdquo; / &ldquo;AI Infrastructure&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: no zone-level billing</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 0 Present, 17 Deviation, 4 Missing Mandatory, 25 Missing Conditional, 3 Missing Recommended, 8 N/A</p>
+<p>Note on &ldquo;zero Present&rdquo;: because Aethir emits no FOCUS-shaped export today, nothing is aligned as-is, so no column is marked Present. The 17 Deviation columns are the ones whose underlying data clearly exists in the billing system and needs only shaping plus correct enum/currency values; these are the low-effort wins. The 4 Missing Mandatory columns block conformance, 3 of them substantively (the cost columns).</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>The genuinely substantive gaps (4 Mandatory missing, 3 of them substantive):</strong></p>
+<ul>
+<li><strong>BilledCost:</strong> the invoiced/settled amount exists, but producing a per-row FOCUS value means reconciling three pricing regimes (on-demand metered, reserved commitment drawdown, ATH on-chain settlement at a point-in-time rate) onto a single charge line. Substantive.</li>
+<li><strong>EffectiveCost:</strong> for reserved enterprise capacity, effective cost is the amortized commitment allocated to usage. This requires the commitment terms and an allocation rule; it does not fall out of a usage feed. Substantive.</li>
+<li><strong>ContractedCost:</strong> reserved-rate × committed quantity lives in the enterprise agreement, not in any public or dashboard surface. Substantive.</li>
+<li><strong>ChargeClass:</strong> Mandatory but nullable, populated only for corrections. Trivial plumbing once rows exist.</li>
+</ul>
+<p><code>ListCost</code> is the one Mandatory cost column that is computable today, since on-demand per-GPU-hour rates are public. That is why it is marked Deviation rather than Missing.</p>
+<p><strong>Trivial once a transform exists:</strong> <code>ChargeClass</code> (null default), and the metadata Mandatories (<code>ServiceCategory</code> = &ldquo;Compute&rdquo;, <code>PricingUnit</code> = &ldquo;GPU-Hour&rdquo;, <code>ServiceName</code>, <code>InvoiceIssuerName</code>, <code>ProviderName</code>, <code>PublisherName</code>) are constant or single-valued. <code>PricingQuantity</code> equals consumed GPU-hours because pricing is flat-rate per GPU type, so it is a clean copy of the metered hours, not a tiered computation.</p>
+<p><strong>Structurally solid, needs shaping:</strong> GPU-hour metering, per-GPU-type unit pricing, reserved-vs-on-demand distinction, a customer/tenant identity, timestamps, and container/instance IDs all exist in the platform. Turning them into FOCUS rows is an ETL and schema exercise, not a data-collection one.</p>
+<p><strong>The commitment family is in scope, not N/A.</strong> Unlike a pure on-demand provider, Aethir&rsquo;s Enterprise AI track sells reserved capacity billed monthly in advance. That is a real commitment construct, so the seven CommitmentDiscount columns and the two CapacityReservation columns are marked Missing: Conditional (the condition applies) rather than N/A. Deciding whether reserved capacity is modeled as a CommitmentDiscount, a CapacityReservation, or simply <code>PricingCategory</code> = &ldquo;Committed&rdquo; is a design decision to confirm against the Requirements Model.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<ul>
+<li><strong>BillingCurrency and the ATH settlement:</strong> record the settlement currency per row. For fiat/stablecoin invoices use &ldquo;USD&rdquo;. For on-chain ATH settlement, ATH is not an ISO 4217 code, so carry the USD-equivalent and the settlement rate in custom columns (for example <code>x_SettlementToken</code> = &ldquo;ATH&rdquo;, <code>x_SettlementTokenAmount</code>, <code>x_AthUsdRate</code>) and keep <code>PricingCurrency</code> = &ldquo;USD&rdquo; for the quoted price. Confirm the intended representation against the FOCUS Requirements Model.</li>
+<li><strong>ChargeCategory:</strong> &ldquo;Usage&rdquo; for on-demand Atlas consumption, &ldquo;Purchase&rdquo; for reserved-capacity purchases. Do not use &ldquo;Compute&rdquo; (that is a <code>ServiceCategory</code> value).</li>
+<li><strong>ServiceCategory:</strong> &ldquo;Compute&rdquo; for all GPU rental.</li>
+<li><strong>PricingUnit / PricingQuantity:</strong> &ldquo;GPU-Hour&rdquo; and metered GPU-hours.</li>
+<li><strong>PricingCategory:</strong> &ldquo;On-Demand&rdquo; for Atlas, &ldquo;Committed&rdquo; for reserved enterprise capacity.</li>
+<li><strong>Custom columns:</strong> prefix any Aethir-specific fields (settlement token, ATH/USD rate, Cloud Host region, Checker uptime) with <code>x_</code>.</li>
+</ul>
+<p>Already right in substance: a clear metered unit (GPU-hour), a public unit price, a genuine tenant identity, and SLA-backed service definitions. These are the hard parts many providers lack.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026, the latest ratified version); certify at FOCUS v1.2 (the current certification baseline). Building to v1.4 means not investing in <code>ProviderName</code> and <code>PublisherName</code>, which are deprecated in v1.3 and removed in v1.4. The v1.4 Invoice Detail and billing-period datasets are a natural fit for Aethir&rsquo;s monthly-in-advance enterprise invoicing and its dual fiat/ATH settlement reconciliation.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. Contact <code>member-cert@finops.org</code> for the RFI. Membership is required for certification, though contributing to the spec is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Use the open-source tooling: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST/SHOULD/MAY rules). The dual-currency and reserved-capacity design choices should be validated against the Requirements Model before certification.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Establish the export.</strong> Aethir has no FOCUS-shaped dataset today, so the first task is producing one at all. Decide the grain (one row per instance per charge period), confirm which internal system holds the metered GPU-hours and the tenant identity, and pull a sample month for both the Enterprise AI and Atlas paths.</p>
+<p><strong>Phase 1: Close the substantive cost gaps.</strong> Build <code>BilledCost</code>, <code>EffectiveCost</code>, and <code>ContractedCost</code>, including the ATH-to-USD reconciliation and the reserved-commitment amortization. Add the trivial Mandatories (<code>ChargeClass</code> null default, constant metadata columns). This unlocks actuals-based reporting.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Apply FOCUS column IDs, correct <code>ChargeCategory</code> and <code>ServiceCategory</code> enums, ISO currency handling, and the <code>x_</code> settlement-token columns.</p>
+<p><strong>Phase 3: Round out Conditional and Recommended columns.</strong> Add resource identity (<code>ResourceId</code>, <code>ResourceName</code>, <code>ResourceType</code> from the GPU container), the SKU family, the pricing-currency columns, <code>ConsumedQuantity</code>/<code>ConsumedUnit</code>, and the commitment/capacity-reservation family for reserved capacity. Add <code>InvoiceId</code> and <code>ServiceSubcategory</code>.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Target v1.4, drop <code>ProviderName</code>/<code>PublisherName</code>, adopt the Invoice Detail dataset for the fiat/ATH reconciliation, validate, and open certification.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Unlocked after Phase 1 (cost columns exist):</strong> cost reporting and showback by GPU type, on-demand-versus-reserved spend analysis, invoice reconciliation across fiat and ATH settlement, actuals-based budgeting.</li>
+<li><strong>Unlocked after Phase 3 (resource and commitment columns exist):</strong> allocation and chargeback by instance or cluster, commitment-utilization and reserved-capacity coverage analysis, anomaly detection on GPU-hour spend.</li>
+<li><strong>Out of scope for now:</strong> tag-based allocation (no documented user tagging) and sub-account rollups (no documented project hierarchy) until Aethir adds those constructs. Availability-zone and per-region use cases do not apply without zone/region billing.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Identify the internal system of record for metered GPU-hours, tenant identity, and settlement amounts, and confirm whether an export can be generated.</li>
+<li>Decide the FOCUS row grain and pull a sample month for both the Enterprise AI and Atlas paths.</li>
+<li>Design the dual-currency representation (USD <code>BillingCurrency</code>/<code>PricingCurrency</code> plus <code>x_</code> ATH settlement columns) and validate it against the FOCUS Requirements Model.</li>
+<li>Decide how reserved capacity maps to the CommitmentDiscount versus CapacityReservation versus <code>PricingCategory</code> = &ldquo;Committed&rdquo; constructs.</li>
+<li>Run the sample through the FOCUS Validator and open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Aethir meters compute in GPU-hours, prices per GPU per hour by GPU type, and distinguishes on-demand (Atlas) from reserved enterprise capacity. This is well documented across the pricing pages and product docs.</li>
+<li><strong>High:</strong> fees are USD-denominated and settlement occurs on-chain in ATH; the dual-currency reality is real and maps to FOCUS via <code>BillingCurrency</code>/<code>PricingCurrency</code> plus custom columns.</li>
+<li><strong>Moderate:</strong> the absence of a customer-facing FOCUS-style cost-and-usage export. Aethir publishes a protocol dashboard and enterprise invoicing but no documented per-charge tabular export was found; if a customer billing API exists behind the enterprise portal, several Deviation/Missing rows would move toward Present.</li>
+<li><strong>Moderate:</strong> the exact tenant-identity fields and whether any sub-account or project hierarchy exists. No documentation confirmed a hierarchy, hence the SubAccount N/A calls.</li>
+<li><strong>Provisional:</strong> field-level mappings are inferred from the billing model, not read from a published schema. This report is marked provisional on data quality for that reason. Resource-ID, SKU, and commitment mappings should be confirmed against Aethir&rsquo;s internal billing system.</li>
+<li><strong>Cache note:</strong> FOCUS v1.2 feature levels were validated against the live FOCUS column library on July 1, 2026; the bundled reference (stamped 2026-06-23) matched, including the 57-column count and the v1.3 deprecation of Provider/Publisher.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Aethir Enterprise GPU Pricing: <a href="https://enterprise.aethir.com/Pricing">enterprise.aethir.com/Pricing</a></li>
+<li>Atlas Cloud GPU Pricing: <a href="https://www.atlascloud.ai/pricing/gpu">atlascloud.ai/pricing/gpu</a></li>
+<li>Aethir documentation (Cloud Host, Checker, operational requirements): <a href="https://docs.aethir.com/">docs.aethir.com</a></li>
+<li>Aethir ATH token use cases and settlement: <a href="https://ecosystem.aethir.com/blog-posts/exploring-innovative-ath-token-use-cases-the-backbone-of-aethirs-gpu-cloud">ecosystem.aethir.com</a></li>
+<li>Aethir GPU dashboard: <a href="https://dashboard.aethir.com/protocol/overview">dashboard.aethir.com/protocol/overview</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

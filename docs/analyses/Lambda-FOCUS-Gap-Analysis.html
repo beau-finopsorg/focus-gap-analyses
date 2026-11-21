@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lambda &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Lambda-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="lambda-focus-data-generator-gap-analysis">Lambda &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: June 25, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Lambda (Lambda Labs)<br>
+<strong>Prepared:</strong> June 25, 2026<br>
+<strong>Source:</strong> Lambda Cloud API v1; Lambda billing portal<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 35 Present, 11 Deviation, 0 Missing Mandatory, 5 Missing Conditional, 1 Missing Recommended, 5 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Lambda&rsquo;s GPU cloud billing model maps cleanly to FOCUS. Per-hour on-demand pricing with public rate cards and per-instance resource metadata gives Lambda a strong structural baseline. All 21 Mandatory columns have source data; the 11 Deviations cover cost enrichment for reserved instances and enum derivation. The five Missing Conditional columns are all in the SKU price detail family, which requires a pricing catalog integration Lambda does not currently surface via its billing API. Five columns are legitimately N/A: SubAccount (Lambda has no sub-account hierarchy) and CapacityReservation (reserved instances map to CommitmentDiscount, not CapacityReservation).</p>
+<p><strong>Recommendation:</strong> Start with the on-demand compute transform. Lambda&rsquo;s hourly billing, public pricing, and per-instance IDs make a conformant dataset achievable in one phase. Add reserved instance amortization (CommitmentDiscount) and CommitmentDiscountStatus logic in a second pass.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>Lambda Cloud API v1</strong> (<code>https://cloud.lambdalabs.com/api/v1</code>): The primary billing and resource management API. Endpoints include <code>/instance-types</code> (catalog with per-hour pricing per GPU type), <code>/instances</code> (running instances with type, region, start time), and <code>/billing</code> (usage records). Key fields: <code>instance_type</code>, <code>name</code>, <code>region_name</code>, <code>start_time</code>, <code>end_time</code>, <code>price_cents_per_hour</code>.</p>
+<p><strong>Lambda Billing Portal / Invoices</strong>: Provides monthly invoice data with line items per instance or reservation. InvoiceId, total amount, and billing period are available.</p>
+<p><strong>Reserved Instances</strong>: Lambda offers 1-year GPU reservations. These map to CommitmentDiscount in FOCUS. The reservation ID, GPU type, and term are available via the reservations API endpoint.</p>
+<p>Characteristics relevant to FOCUS:
+- Per-hour billing for on-demand: clean PricingQuantity (hours) and PricingUnit (&ldquo;Hours&rdquo;) for every on-demand charge row.
+- Public pricing: Lambda publishes per-GPU-type hourly rates at lambdalabs.com/service/gpu-cloud/pricing. ListUnitPrice is derivable from the public rate card.
+- Flat account structure: Lambda has no sub-account or resource group hierarchy. BillingAccountId is the Lambda organization or user account.
+- Regions: Lambda data centers are named (US-East-1, US-West-1, etc.) with human-readable display names.
+- Tags: Lambda supports instance-level tags via the API; tag data is available on instance records.
+- Storage: Lambda Filesystems are billed per GB per month, with PricingQuantity in GB and PricingUnit in &ldquo;GB-Month&rdquo;.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. Each column carries a feature level: Mandatory (must exist and be populated where applicable), Conditional (must exist; populated when the provider&rsquo;s model triggers the condition, otherwise null), or Recommended. A conformant dataset presents the full column set under FOCUS column IDs, populates every Mandatory column, satisfies Conditional columns where applicable, and uses the correct types and allowed values.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Lambda source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice line item amount (on-demand: hours × rate; reserved: monthly payment)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>On-demand: = BilledCost; reserved instances: amortize reservation upfront/monthly commitment across usage hours</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Public rate × PricingQuantity from lambdalabs.com pricing page; = BilledCost for on-demand PAYG</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>= ListCost for standard accounts; enterprise custom pricing not exposed via API</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Lambda organization or user account ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization or user name from Lambda account</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>USD</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>First day of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Last day of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Instance <code>start_time</code> for on-demand; reservation period start for reserved</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Instance <code>end_time</code> (or billing period end if still running) for on-demand; reservation period end for reserved</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Instance type + GPU label (e.g., &ldquo;1x NVIDIA H100 SXM5 80GB&rdquo;) or filesystem name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for on-demand compute and storage; &ldquo;Purchase&rdquo; for reserved instance commitments</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for correction charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Lambda Labs, Inc.&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Lambda&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Lambda&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>&ldquo;Lambda GPU Cloud&rdquo; for compute; &ldquo;Lambda Filesystems&rdquo; for storage</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>&ldquo;Compute&rdquo; for GPU instances; &ldquo;Storage&rdquo; for filesystems</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Hours for compute (on-demand duration); GB for storage (monthly GB usage)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>&ldquo;Hours&rdquo; for compute; &ldquo;GB-Month&rdquo; for storage</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>= PricingQuantity (Lambda charges for actual time used; no rateability adjustment)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>= PricingUnit</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Public rate from Lambda pricing page per GPU type per hour (e.g., H100 SXM5: $2.49/hr)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice for standard accounts; enterprise custom rates not exposed</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; for on-demand; &ldquo;Committed&rdquo; for reserved instances</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; for on-demand compute (charged per actual hour); &ldquo;Recurring&rdquo; for reserved instance monthly payments</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from account plan (PAYG or Enterprise)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>N/A: Lambda has no sub-account or project hierarchy</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Lambda instance ID (UUID)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Instance name from API or display label</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>GPU instance type (e.g., &ldquo;gpu_1x_h100_sxm5&rdquo;, &ldquo;gpu_8x_a100&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Instance type identifier from <code>instance_type</code> field</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Instance tags available from the Lambda instances API; parse to FOCUS key-value format</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>USD</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice (Lambda invoices in USD; no currency conversion)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ContractedUnitPrice; Deviation because ContractedUnitPrice requires enterprise rate data for custom accounts</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>= EffectiveCost; Deviation because reserved instance amortization logic is required</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Not exposed in billing API; instance type identifies the compute unit but no separate SkuMeter display label is published</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Pricing plan rate identifier not exposed in billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Tier pricing details not applicable (Lambda uses flat per-hour rates); field not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Lambda region code (e.g., &ldquo;us-east-1&rdquo;, &ldquo;us-west-2&rdquo;, &ldquo;europe-central-1&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Lambda region display name (e.g., &ldquo;US East&rdquo;, &ldquo;US West&rdquo;, &ldquo;Europe Central&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Lambda reservation ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Reservation display name or GPU type + term label</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>&ldquo;Reserved&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Usage&rdquo; (Lambda reservations are capacity commitments, not spend commitments)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Used&rdquo; when reserved capacity is running; &ldquo;Unused&rdquo; when reserved capacity has no running instance during a billing period</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Per-charge commitment quantity not exposed in billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>Same</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: Lambda reserved instances are modeled as CommitmentDiscount, not as a separate CapacityReservation construct</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Lambda invoice number from billing portal</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>No native field; would require mapping &ldquo;GPU Compute&rdquo; and &ldquo;Filesystem Storage&rdquo; as subcategories</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Lambda zone-level data present for some regions (e.g., &ldquo;us-east-1a&rdquo;); not all regions expose zone granularity</td>
+<td>Present</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 35 Present, 11 Deviation, 0 Missing Mandatory, 5 Missing Conditional, 1 Missing Recommended, 5 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved</strong></p>
+<p>Lambda&rsquo;s billing model is the most straightforward possible for FOCUS: per-hour compute with public pricing and per-instance resource IDs. All 21 Mandatory columns have source data. ListCost is derivable from the public rate card without API integration (the pricing page is publicly accessible and stable). ResourceId, ResourceName, and ResourceType are present for every compute charge row. RegionId and RegionName are available and well-structured. The CommitmentDiscount family is populated for reserved instances.</p>
+<p><strong>Remaining</strong></p>
+<p>CommitmentDiscountStatus requires logic to determine whether a reserved instance was actively running (Used) or idle (Unused) during each billing period. The Lambda billing API provides reservation records but not per-period utilization status; this requires cross-referencing instance run records with the reservation term.</p>
+<p>The five Missing Conditional columns (SkuMeter, SkuPriceId, SkuPriceDetails, CommitmentDiscountQuantity, CommitmentDiscountUnit) are absent from the Lambda billing API. Lambda&rsquo;s pricing model is simple enough that SkuPriceDetails (tiered pricing) is not applicable; the main gap is SkuMeter and SkuPriceId for the SKU catalog link.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>EffectiveCost for reserved instances</strong><br>
+For on-demand compute, EffectiveCost = BilledCost. For reserved instances, FOCUS requires EffectiveCost to reflect the amortized daily cost of the commitment allocated to each usage period. Compute: monthly reservation payment ÷ days in the month × days the instance ran. For unused reservation days, EffectiveCost for those rows = the amortized daily reservation cost (even though no instance ran).</p>
+<p><strong>ChargeCategory</strong><br>
+Derive: on-demand compute and storage → &ldquo;Usage&rdquo;; reserved instance payments → &ldquo;Purchase&rdquo;; credit adjustments → &ldquo;Credit&rdquo;. Build from charge type in the Lambda invoice API.</p>
+<p><strong>ServiceCategory</strong><br>
+Lambda does not emit a FOCUS-aligned service category. Map: GPU compute instances → &ldquo;Compute&rdquo;; Lambda Filesystems → &ldquo;Storage&rdquo;. This is a simple two-value mapping.</p>
+<p><strong>CommitmentDiscountStatus</strong><br>
+Cross-reference Lambda reservation records with instance run records per billing period. If the reserved instance had an active running instance during the period → &ldquo;Used&rdquo;. If the reservation was active but no instance was running → &ldquo;Unused&rdquo;. Lambda may need to expose a utilization endpoint for this to be computed without joining separate API calls.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (released June 4, 2026); certify at FOCUS v1.2. ProviderName and PublisherName are deprecated in v1.3 and removed in v1.4.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. Deliverables: conformant dataset under FOCUS column IDs, sample data passing the FOCUS Validator, documented native-to-FOCUS mapping, and a Conformance Gap Report. Lambda&rsquo;s 0 Missing Mandatory makes certification achievable after Phase 1.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate and scope</strong><br>
+Confirm billing API access. Pull a sample monthly dataset for on-demand and reserved instances. Verify that <code>start_time</code>, <code>end_time</code>, and <code>price_cents_per_hour</code> are available per instance record. Open the RFI with <code>member-cert@finops.org</code>.</p>
+<p><strong>Phase 1: Core transform (on-demand)</strong><br>
+Build the on-demand compute transform. Map BilledCost, ListCost (from public rate card), ChargePeriod, ResourceId/Name/Type, RegionId/Name, SkuId, PricingQuantity/Unit, ServiceName, ChargeCategory/Description, InvoiceId, AvailabilityZone. Derive ServiceCategory = &ldquo;Compute&rdquo;. Add Filesystem storage rows with PricingUnit = &ldquo;GB-Month&rdquo;. This delivers a conformant dataset with 0 Missing Mandatory.</p>
+<p><strong>Phase 2: Reserved instance enrichment</strong><br>
+Add CommitmentDiscount columns from reservation records (Id, Name, Type, Category). Implement CommitmentDiscountStatus via cross-reference of reservation and instance run records. Implement EffectiveCost amortization for reserved charges. Add PricingCategory = &ldquo;Committed&rdquo; and ChargeFrequency = &ldquo;Recurring&rdquo; for reserved rows.</p>
+<p><strong>Phase 3: Finalize and certify</strong><br>
+Add Tags from instance tag API. Add ServiceSubcategory mapping. Drop ProviderName and PublisherName (v1.4). Validate with FOCUS Validator. Submit for certification.</p>
+<h3 id="24-focus-use-cases-lambda-customers-unlock">2.4 FOCUS Use Cases Lambda Customers Unlock</h3>
+<p><strong>After Phase 1 (on-demand core transform):</strong>
+- Per-instance cost tracking and attribution by GPU type.
+- Regional cost comparison across Lambda data centers.
+- Public list rate vs. actual billed cost comparison (verifying standard vs. custom pricing).
+- Storage cost by filesystem.</p>
+<p><strong>After Phase 2 (reserved instance enrichment):</strong>
+- Reserved vs. on-demand cost comparison.
+- CommitmentDiscount utilization analysis: identify idle reservation periods (CommitmentDiscountStatus = &ldquo;Unused&rdquo;).
+- EffectiveCost-based cost allocation that amortizes commitment purchases.</p>
+<p><strong>Out of scope for Lambda&rsquo;s model:</strong><br>
+Sub-account cost allocation (Lambda has no sub-account hierarchy). Capacity reservation analysis (reserved instances are CommitmentDiscount). Availability-zone analysis for regions that do not expose zone granularity.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Access the Lambda Cloud API and pull a full sample billing dataset for one month including on-demand instances, reserved instances, and filesystem charges. Confirm field availability for <code>instance_type</code>, <code>region_name</code>, <code>start_time</code>, <code>end_time</code>, and reservation identifiers.</li>
+<li>Download the current Lambda pricing page and build a programmatic rate card mapping GPU instance type → ListUnitPrice per hour.</li>
+<li>Implement the on-demand compute transform (Phase 1), run it through the FOCUS Validator, and iterate to a clean pass.</li>
+<li>Design the CommitmentDiscountStatus logic: determine whether the Lambda API exposes per-period reservation utilization directly, or whether it must be derived from cross-referencing instance run records with reservation terms.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code> once Phase 1 sample data is validator-clean.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Lambda&rsquo;s on-demand billing records expose per-instance GPU type, start/end time, and hourly rate. The 35 Present columns are grounded in the Lambda Cloud API v1 and the public pricing page.</li>
+<li><strong>High:</strong> Lambda&rsquo;s public pricing page provides a stable, per-GPU-type rate card. ListCost derivation is a simple multiplication: hours × published hourly rate per instance type.</li>
+<li><strong>High:</strong> Lambda instance tags are available via the instances API. Tag parsing to FOCUS key-value format is a straightforward string operation.</li>
+<li><strong>Moderate:</strong> CommitmentDiscountStatus derivation. The logic requires cross-referencing reservation records with instance run records per billing period. This is feasible but requires Lambda to expose the necessary data per period, which may require API calls to multiple endpoints.</li>
+<li><strong>Low:</strong> SkuMeter, SkuPriceId, SkuPriceDetails. Lambda does not expose a pricing catalog ID structure in its billing API. These columns are likely to remain Missing unless Lambda adds a pricing catalog API endpoint.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Lambda Cloud API Documentation: <a href="https://docs.lambdalabs.com/on-demand-cloud/cloud-api">docs.lambdalabs.com</a></li>
+<li>Lambda GPU Pricing: <a href="https://lambdalabs.com/service/gpu-cloud/pricing">lambdalabs.com/service/gpu-cloud/pricing</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microsoft Copilot &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/MicrosoftCopilot-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="microsoft-copilot-focus-data-generator-gap-analysis">Microsoft Copilot &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 18, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Microsoft (Microsoft 365 Copilot, Copilot Business, Copilot Chat agents, Copilot Studio, Copilot Cowork)<br>
+<strong>Prepared:</strong> November 18, 2026<br>
+<strong>Source:</strong> Microsoft 365 admin center Copilot Cost management; Azure Cost Management (pay-as-you-go Copilot meters and FOCUS export); Microsoft 365 commerce invoices, MCA transaction detail, and CSP reconciliation files<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 29 Present, 13 Deviation, 0 Missing Mandatory, 9 Missing Conditional, 1 Missing Recommended, 5 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Copilot spend reaches the customer through three billing paths, and no single dataset shows all of it:</p>
+<ol>
+<li><strong>Per-user licenses</strong> (Microsoft 365 Copilot, Copilot Business) bill on the Microsoft 365 commerce surface: monthly or annual subscription lines with no usage, resource, or tag detail.</li>
+<li><strong>Prepaid Copilot Credit packs</strong> (25,000 credits per pack per month) also bill on the commerce surface as a purchase. Drawdown against the pack is visible only in the admin center, not as cost lines.</li>
+<li><strong>Pay-as-you-go Copilot Credits</strong> ($0.01 per credit) bill through an Azure subscription linked by a billing policy. These meters appear in Azure Cost Management, which already produces a FOCUS export.</li>
+</ol>
+<p>The metered path is close to conformant today because it rides Azure&rsquo;s FOCUS pipeline. The license and pack paths have the cost and account substance but no FOCUS shaping. All 21 Mandatory columns have a source; 7 need fixes, and 1 of those 7 (EffectiveCost) is substantive: usage covered by prepaid packs, and annual licenses paid up front, are never amortized to the period or consumer that used them.</p>
+<p>The more consequential gap is allocation, not conformance. Azure cost data shows Copilot spend at the billing-policy level; the per-user, per-agent, and per-environment breakdown lives only in the Microsoft 365 and Power Platform admin centers. A dataset can pass the FOCUS Validator and still be unable to answer &ldquo;which team&rsquo;s agents drove this bill.&rdquo;</p>
+<p><strong>Recommendation:</strong> Treat Copilot as one FOCUS dataset assembled from two feeds: the Azure FOCUS export (filtered to Copilot meters) plus a FOCUS-shaped transform of the commerce surface. Model prepaid credit packs as a usage-based commitment discount so pack-covered consumption carries EffectiveCost, and push the admin-center attribution (user, agent, environment) into Tags or ResourceId.</p>
+<p>This analysis is scoped to Copilot. The broader Microsoft 365 seat estate is covered in the companion <a href="Microsoft365-FOCUS-Gap-Analysis.html">Microsoft 365 gap analysis</a>; Azure itself is covered in the <a href="MicrosoftAzure-FOCUS-Gap-Analysis.html">Microsoft Azure gap analysis</a>.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-sources">1.1 The Data Sources</h3>
+<p><strong>Surface A, commerce billing (licenses and packs).</strong> Microsoft 365 Copilot and Copilot Business per-user licenses, and prepaid Copilot Credit packs, appear on the Microsoft 365 admin center invoice, the Microsoft Customer Agreement (MCA) transaction list, or the CSP reconciliation file for partner-sold tenants. Granularity is the billing month and subscription term, at product and SKU level.</p>
+<p><strong>Surface B, metered Copilot Credits (pay-as-you-go).</strong> An admin creates a billing policy in the Microsoft 365 admin center that links a set of users to an Azure subscription and resource group. Consumption by Copilot Chat agents, Copilot Studio agents, SharePoint agents, Copilot Cowork, and the Work IQ API bills as Copilot Credits on Azure meters. Billed amounts update daily in Azure Cost Management, with up to 24 hours of latency.</p>
+<p>Key characteristics:
+- <strong>Two currencies of consumption, one unit.</strong> Copilot Studio &ldquo;messages&rdquo; were renamed Copilot Credits; packs and pay-as-you-go draw from the same unit.
+- <strong>Pack first, then overage.</strong> Pack credits are consumed before pay-as-you-go. Azure cost data shows only the overage, so the Azure export alone understates total Copilot consumption.
+- <strong>Default shift to metering.</strong> From November 2, 2026, new Copilot Business licenses purchased through CSP include usage-based billing by default, so metered lines will appear for more tenants without a deliberate opt-in.
+- <strong>Shared meters.</strong> SharePoint agents and Copilot Chat agents use the Copilot Studio pay-as-you-go meter, so the meter name alone does not identify which Copilot product drove the cost. SharePoint Premium (Syntex) pay-as-you-go is a separate meter and policy.
+- <strong>Attribution lives outside billing.</strong> Per-user, per-agent, and per-environment consumption is reported in the Microsoft 365 admin center (Copilot Cost management) and the Power Platform admin center, not in the Azure cost record.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. Each column carries a feature level (Mandatory, Conditional, or Recommended). The table below assesses the combined Copilot dataset a customer would assemble from Surfaces A and B. Where one surface is conformant and the other needs work, the column is marked Deviation.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Copilot source (A = commerce, B = Azure PAYG)</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>A: invoice line net amount; B: Azure export BilledCost</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>B: = BilledCost. A: pack-covered consumption and up-front annual licenses not amortized</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>B: $0.01 per credit list rate. A: price sheet or CSP recon unit price × quantity</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>B: Azure export. A: negotiated EA/MCA/CSP rate × quantity from price sheet</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>MCA billing account / CSP customer; Azure billing account for B</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Billing account name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Invoice currency</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>B: daily. A: subscription term or billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>B: daily. A: subscription term or billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Product and SKU description; Azure meter name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>B: &ldquo;Usage&rdquo;. A: derive &ldquo;Purchase&rdquo; for licenses and packs, &ldquo;Tax&rdquo; for tax lines</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except corrections</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Microsoft&rdquo;, or the CSP partner for partner-sold tenants</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Microsoft&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Microsoft&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>B: shared Copilot Studio meter does not distinguish Copilot Chat agents, SharePoint agents, Cowork. A: product name</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Map all Copilot products to &ldquo;AI and Machine Learning&rdquo; on both surfaces</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>A: seats or packs. B: credits</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize &ldquo;messages&rdquo; / &ldquo;credits&rdquo; / &ldquo;licenses&rdquo; to one unit per charge type</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>B: credits consumed. A: seats</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>&ldquo;Copilot Credits&rdquo;; &ldquo;Licenses&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>B: $0.01. A: price sheet</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>B: Azure export. A: price sheet</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Standard&rdquo; for PAYG; &ldquo;Committed&rdquo; for annual licenses and pack-covered usage</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from agreement type (MCA, CSP)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>B: Azure subscription. A: MCA invoice section or CSP customer</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Subscription or invoice section name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Derive</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>B: billing policy (Azure resource). No user, agent, or environment ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>B: billing policy name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>B: billing policy resource type</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>A: product SKU / part number. B: Azure product ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>B: Azure resource and resource-group tags on the policy. A: none (MCA cost center only)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>= BillingCurrency</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Follows ListUnitPrice</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Follows ContractedUnitPrice</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Follows EffectiveCost</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>B: Azure meter name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>B: Azure export. A: not exposed on commerce surface</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed on either surface</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Global service, no billed region</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Global service, no billed region</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Prepaid credit pack (monthly allotment, consumed before PAYG)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Pack name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Pack type</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Usage&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo; / &ldquo;Unused&rdquo; for unconsumed monthly credits</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Credits drawn from pack</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;Copilot Credits&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>Packs prepay credits; they do not reserve capacity</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>&ldquo;Recurring&rdquo; for licenses and packs; &ldquo;Usage-Based&rdquo; for PAYG</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Map to the AI and Machine Learning generative AI subcategory</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Global service, no zone</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 29 Present, 13 Deviation, 0 Missing Mandatory, 9 Missing Conditional, 1 Missing Recommended, 5 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Pay-as-you-go Copilot Credits already flow through Azure&rsquo;s FOCUS export at daily grain with cost, account, subscription, SKU, and meter detail. On the commerce surface, all Mandatory columns have source data.</p>
+<p><strong>Remaining (substantive):</strong>
+- <strong>EffectiveCost for pack-covered and prepaid consumption.</strong> Pack credits consumed before pay-as-you-go produce no cost line. Annual licenses paid up front land as one purchase. Neither is spread to the day or consumer that used it. This is the cost gap that will widen as metered agents and Cowork grow.
+- <strong>Commitment modeling of packs.</strong> A monthly pack of 25,000 credits that is consumed first and expires unused fits the FOCUS usage-based commitment shape. Without it, unused pack credits are invisible waste.</p>
+<p><strong>Remaining (structural, not a conformance blocker):</strong> Azure cost data stops at the billing policy. Per-user, per-agent, and per-environment attribution exists only in admin-center reports, so chargeback by team or agent requires a join that FOCUS does not carry today.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>EffectiveCost:</strong> Emit daily amortized rows for pack-covered credits (pack price ÷ credits × credits consumed) and for up-front annual licenses (term cost ÷ days). Set BilledCost to 0 on these rows and carry the commitment ID.</p>
+<p><strong>ServiceName:</strong> The shared Copilot Studio meter collapses Copilot Chat agents, SharePoint agents, and Copilot Studio into one service. Split by originating product, or carry the product in a tag.</p>
+<p><strong>ChargeCategory and ServiceCategory:</strong> Licenses and packs are &ldquo;Purchase&rdquo;; metered credits are &ldquo;Usage.&rdquo; All Copilot products are &ldquo;AI and Machine Learning.&rdquo;</p>
+<p><strong>PricingUnit:</strong> Settle on &ldquo;Copilot Credits&rdquo; for all metered and pack lines, and a single license unit for seats. Retire &ldquo;messages.&rdquo;</p>
+<p><strong>ListCost and ContractedCost:</strong> On the commerce surface, list and negotiated prices live on the price sheet or CSP reconciliation, not the invoice. Pick one authoritative source per agreement type.</p>
+<p><strong>Tags:</strong> Surface admin-center attribution (user principal, agent ID, Power Platform environment) as key-value Tags on Copilot meter rows.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026), which removes ProviderName and PublisherName; certify at FOCUS v1.2. The metered path tracks whatever FOCUS version Azure Cost Management exports.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. Microsoft already holds FOCUS data-generator standing on the Azure side, which covers Surface B. The commerce surface would need its own conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this document is its seed).</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull a month of the Azure FOCUS export filtered to Copilot meters and confirm ServiceName, ServiceCategory, ResourceId, and SkuMeter values. Run it through the FOCUS Validator.</p>
+<p><strong>Phase 1: Shape the commerce surface.</strong> Transform MCA transaction detail or CSP reconciliation into FOCUS rows per billing period, subscription, and SKU. Derive ChargeCategory, ChargeFrequency, PricingUnit, ServiceCategory.</p>
+<p><strong>Phase 2: Close the EffectiveCost gap.</strong> Model credit packs as usage-based commitments; emit amortized pack-drawdown and up-front license rows with the CommitmentDiscount family populated.</p>
+<p><strong>Phase 3: Attribution.</strong> Push user, agent, and environment identifiers from admin-center reports into Tags or ResourceId on metered rows. Split the shared meter by originating product.</p>
+<p><strong>Phase 4: Certify.</strong> Add ServiceSubcategory and SkuPriceDetails, drop ProviderName and PublisherName (v1.4), validate, and certify.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<p>Available now from the Azure path: daily Copilot Credit consumption tracking, anomaly detection on metered spend, budget alerts on the linked subscription. After Phase 1: invoice reconciliation across licenses, packs, and overage. After Phase 2: commitment utilization (unused pack credits) and unit economics per credit. After Phase 3: chargeback and showback by team, agent, or environment. Out of scope: region and capacity-reservation analysis.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Export one month of Azure FOCUS data filtered to Copilot meters and document the values Microsoft emits for ServiceName, ResourceId, and SkuMeter.</li>
+<li>Pull the matching month of commerce invoice or CSP reconciliation and the admin-center Copilot Cost management report.</li>
+<li>Reconcile the three: license spend, pack spend and drawdown, and pay-as-you-go overage.</li>
+<li>Decide whether packs are modeled as commitment discounts or plain prepaid purchases, and document the choice.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code> if Microsoft pursues conformance for the commerce surface.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Copilot spend splits across commerce billing (licenses, packs) and Azure-metered pay-as-you-go Copilot Credits; the metered path appears in Azure Cost Management, which produces a FOCUS export.</li>
+<li><strong>High:</strong> Pricing: $0.01 per pay-as-you-go credit; packs of 25,000 credits per month; pack credits consumed before pay-as-you-go.</li>
+<li><strong>High:</strong> Feature levels taken from the bundled FOCUS v1.2 reference (stamped 2026-06-23, v1.4 latest). A live spec spot-check was not possible in this run; re-confirm before external use.</li>
+<li><strong>Moderate:</strong> The billing policy appears as the Azure ResourceId on Copilot meter rows, and resource-group tags flow through to Tags. Confirm against a real export.</li>
+<li><strong>Moderate:</strong> Classifying prepaid packs as a usage-based commitment discount is a modeling judgment. If they are treated as plain prepaid purchases, the seven CommitmentDiscount columns become N/A and the EffectiveCost gap remains.</li>
+<li><strong>Moderate:</strong> The shared Copilot Studio meter for SharePoint and Copilot Chat agents may be split into product-specific meters as Microsoft&rsquo;s billing evolves.</li>
+<li><strong>Low:</strong> How Copilot Cowork and Work IQ API consumption is labeled in Azure meter names; public documentation does not show sample export rows.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Microsoft Learn, Microsoft 365 Copilot pay-as-you-go overview: <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/pay-as-you-go/overview">learn.microsoft.com</a></li>
+<li>Microsoft Learn, Set up pay-as-you-go billing (billing policies): <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/pay-as-you-go/setup">learn.microsoft.com</a></li>
+<li>Microsoft Learn, Usage-based billing and cost management for Copilot Credits: <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/usage-based-billing-overview-copilot-credits">learn.microsoft.com</a></li>
+<li>Microsoft Learn, Manage Copilot Studio capacity: <a href="https://learn.microsoft.com/power-platform/admin/manage-copilot-studio-messages-capacity">learn.microsoft.com</a></li>
+<li>Microsoft Learn, Copilot Studio billed sessions analytics: <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-billed-sessions">learn.microsoft.com</a></li>
+<li>Microsoft Licensing Guidance, Microsoft Copilot Studio: <a href="https://www.microsoft.com/licensing/guidance/Microsoft-Copilot-Studio">microsoft.com</a></li>
+<li>Topedia, How to get cost and usage reports for Microsoft 365 pay-as-you-go billing in Azure: <a href="https://blog-en.topedia.com/2025/01/how-to-get-cost-and-usage-reports-for-microsoft-365-pay-as-you-go-billing-in-azure">blog-en.topedia.com</a></li>
+<li>Stoneridge Software, What Microsoft Copilot and Cowork actually cost in 2026: <a href="https://stoneridgesoftware.com/what-microsoft-copilot-and-cowork-actually-cost-in-2026-and-how-to-avoid-a-surprise-bill/">stoneridgesoftware.com</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

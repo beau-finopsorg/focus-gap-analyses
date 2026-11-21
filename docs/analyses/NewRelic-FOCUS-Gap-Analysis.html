@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Relic &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/NewRelic-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="new-relic-focus-data-generator-gap-analysis">New Relic &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: June 25, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> New Relic<br>
+<strong>Prepared:</strong> June 25, 2026<br>
+<strong>Source:</strong> New Relic NerdGraph API; New Relic billing dashboard<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 25 Present, 10 Deviation, 0 Missing Mandatory, 4 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>New Relic has converged its pricing onto two dimensions: data ingest (GB/month) and users (Full Platform, Core, or Basic). Data ingest is metered at $0.30/GB/month (on-demand) after a free 100 GB/month. Users are subscription seats. Most organizations generate two FOCUS row types: one for ingest and one per user tier. Accounts may have sub-accounts (child accounts) that map to SubAccountId. All 21 Mandatory columns have source data. Seventeen columns are N/A: no resource IDs at the billing layer, no regional billing, and no CommitmentDiscount constructs (New Relic annual plans are pricing tiers).</p>
+<p><strong>Recommendation:</strong> Implement two FOCUS row types: (1) data ingest rows with PricingUnit = &ldquo;GB&rdquo;, ChargeCategory = &ldquo;Usage&rdquo;; (2) user subscription rows with PricingUnit = &ldquo;Users&rdquo;, ChargeCategory = &ldquo;Purchase&rdquo;. Parent/child account hierarchy maps to BillingAccountId/SubAccountId.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>New Relic NerdGraph API</strong>: GraphQL API providing account usage data. Key fields: ingest GB by data type (APM, infrastructure, logs, browser, etc.), user counts by tier, account ID, sub-account ID, billing period.</p>
+<p><strong>New Relic Billing Dashboard</strong>: Monthly invoices with line items for ingest and user tiers. Invoice numbers available.</p>
+<p>Key characteristics:
+- <strong>Data ingest billing:</strong> New Relic ingests all telemetry data (metrics, events, logs, traces) into the New Relic Database (NRDB). Billed per GB ingested beyond the 100 GB free tier.
+- <strong>User billing:</strong> Full Platform Users ($99/month on-demand or $349/month with full access), Core Users ($49/month), Basic Users (free).
+- <strong>Sub-account hierarchy:</strong> New Relic supports parent and child accounts. Child accounts roll up to the parent. Child account ID → SubAccountId.
+- <strong>Public pricing:</strong> New Relic publishes on-demand ingest pricing ($0.30/GB) and user pricing. ListUnitPrice derivable.
+- <strong>Data Plus:</strong> New Relic Data Plus is an optional add-on that extends data retention and query limits. Adds a third FOCUS row type.
+- <strong>Annual plans:</strong> Annual commitments reduce ingest rates. PricingCategory = &ldquo;Committed&rdquo;.
+- <strong>No resource IDs:</strong> Billing aggregates by account; no per-host or per-service IDs at the billing layer.
+- <strong>No regional billing:</strong> Global multi-tenant SaaS.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. Annual ingest commitments = PricingCategory &ldquo;Committed&rdquo;. CommitmentDiscount columns are N/A.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>New Relic source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice amount per billing dimension per account</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>= BilledCost</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>On-demand rate × quantity from New Relic pricing page</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Annual commitment rate × quantity; Deviation for enterprise</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>New Relic parent account ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Account name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>USD</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>First day of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Last day of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Start of usage period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>End of usage period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;New Relic Data Ingest · GB&rdquo; or &ldquo;New Relic Full Platform Users · [count]&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for ingest rows; &ldquo;Purchase&rdquo; for user subscription rows</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for corrections</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;New Relic, Inc.&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;New Relic&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;New Relic&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>&ldquo;New Relic Data Ingest&rdquo; or &ldquo;New Relic Full Platform Users&rdquo; or &ldquo;New Relic Core Users&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Management and Governance&rdquo; for observability and monitoring platform</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>GB ingested or user count per tier</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>&ldquo;GB&rdquo; for ingest rows; &ldquo;Users&rdquo; for user subscription rows</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>= PricingQuantity for ingest rows; N/A for user seat rows</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>&ldquo;GB&rdquo; for ingest rows; N/A for user seat rows</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>$0.30/GB (ingest on-demand); published user tier rates</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Annual commitment rate; Deviation for enterprise</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Standard&rdquo; for on-demand; &ldquo;Committed&rdquo; for annual ingest commitments</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Conditional</td>
+<td>&ldquo;Usage-Based&rdquo; for ingest; &ldquo;Recurring&rdquo; for user subscriptions</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Enterprise&rdquo; or &ldquo;Direct&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Child account ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Child account name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Account&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>N/A: New Relic billing aggregates by account; no per-host IDs</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Billing dimension code (e.g., &ldquo;data-ingest&rdquo;, &ldquo;full-platform-user&rdquo;, &ldquo;core-user&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: New Relic billing does not expose entity tags at the billing layer</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>USD</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ContractedUnitPrice; Deviation for enterprise</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>= EffectiveCost</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>&ldquo;Data Ingest GB&rdquo;, &ldquo;Full Platform Users&rdquo;, &ldquo;Core Users&rdquo;, &ldquo;Data Plus GB&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>No pricing catalog ID in NerdGraph API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not applicable</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: New Relic billing is not region-specific</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: annual plans are pricing tiers, not FOCUS CommitmentDiscount</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number from New Relic billing dashboard</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>&ldquo;Observability Data Ingest&rdquo; or &ldquo;Observability Users&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: global SaaS</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 25 Present, 10 Deviation, 0 Missing Mandatory, 4 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Per-account ingest GB and user counts, sub-account hierarchy, public pricing, invoice numbers. All 21 Mandatory columns have source data.</p>
+<p><strong>Remaining:</strong> Enterprise commitment ContractedCost and ContractedUnitPrice require supplementary data. SkuPriceId absent.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>ChargeCategory:</strong> Two row types — &ldquo;Usage&rdquo; for ingest rows, &ldquo;Purchase&rdquo; for user subscription rows. Build a dimension-type → ChargeCategory lookup.</p>
+<p><strong>PricingUnit:</strong> &ldquo;GB&rdquo; for ingest rows; &ldquo;Users&rdquo; for user tier rows.</p>
+<p><strong>ChargeFrequency:</strong> &ldquo;Usage-Based&rdquo; for ingest; &ldquo;Recurring&rdquo; for user subscriptions.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. Document annual ingest plans as PricingCategory = &ldquo;Committed&rdquo;, not CommitmentDiscount.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0:</strong> Enable NerdGraph API access. Pull one month of per-account ingest GB and user counts.</p>
+<p><strong>Phase 1: Core transform.</strong> Map ingest rows (ChargeCategory = &ldquo;Usage&rdquo;, PricingUnit = &ldquo;GB&rdquo;) and user rows (ChargeCategory = &ldquo;Purchase&rdquo;, PricingUnit = &ldquo;Users&rdquo;). Add sub-account hierarchy.</p>
+<p><strong>Phase 2: Data Plus and extensions.</strong> Add Data Plus add-on rows. Integrate annual commitment rates for ContractedCost.</p>
+<p><strong>Phase 3: Certify.</strong> Add ServiceSubcategory. Drop ProviderName, PublisherName (v1.4). Validate and certify.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Enable NerdGraph API access and pull one month of per-account ingest and user data.</li>
+<li>Implement Phase 1 dual-row transform and run through FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> New Relic NerdGraph API provides account-level ingest GB and user counts. All 25 Present columns are grounded in documented API fields.</li>
+<li><strong>High:</strong> Sub-account hierarchy maps cleanly to SubAccountId. Dual row types (ingest vs. users) are the correct approach.</li>
+<li><strong>Moderate:</strong> ChargeCategory split between &ldquo;Usage&rdquo; and &ldquo;Purchase&rdquo; for different row types. Validate with FOCUS Validator.</li>
+<li><strong>Low:</strong> Enterprise commitment ContractedCost. Custom negotiated ingest rates require supplementary data.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>New Relic NerdGraph API: <a href="https://docs.newrelic.com/docs/apis/nerdgraph/get-started/introduction-new-relic-nerdgraph/">docs.newrelic.com/docs/apis/nerdgraph/get-started/introduction-new-relic-nerdgraph/</a></li>
+<li>New Relic Pricing: <a href="https://newrelic.com/pricing">newrelic.com/pricing</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

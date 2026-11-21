@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Databricks and FOCUS: Conformance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Databricks-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="databricks-and-focus-conformance-gap-and-adoption-roadmap">Databricks and FOCUS: Conformance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p>Prepared: 2026-07-01
+Source analyzed: Databricks billable usage system table (<code>system.billing.usage</code>), pricing system table (<code>system.billing.list_prices</code>), and the Databricks FOCUS cost export listed on the FOCUS get-started page.
+FOCUS baseline: v1.2 (the version Databricks ships and the current certification baseline). Build target for maturation: v1.4 (latest ratified, 2026-06-04).</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Databricks is an official FOCUS data generator. The FOCUS get-started page lists Databricks at <strong>Version Supported: v1.2</strong>, and Databricks announced FOCUS-format cost exports at FinOps X 2025. This is not a from-scratch build: the underlying data is mature, granular, and already correction-aware, and the vendor ships a FOCUS-shaped output on top of it.</p>
+<p>The native foundation is strong. <code>system.billing.usage</code> emits per-record usage at hourly and daily granularity, keyed to a billing account, a workspace (the natural sub-account), a SKU, and rich resource and identity metadata. Corrections are modeled explicitly through <code>record_type</code> (ORIGINAL, RETRACTION, RESTATEMENT), which maps cleanly to the FOCUS ChargeClass and correction pattern. Custom tags are stored as a native key-value map, which is the shape FOCUS wants. <code>system.billing.list_prices</code> supplies list and effective-list rates per SKU and currency.</p>
+<p>The one structural nuance worth naming is the billing unit. Databricks meters consumption in DBUs (Databricks Units), a virtual currency, and converts DBUs to a settlement currency such as USD at a per-SKU rate. FOCUS v1.2 was designed for precisely this: the PricingCurrency family lets a generator report the DBU-denominated quantities and rates alongside the USD-denominated BillingCurrency costs. Databricks sitting at v1.2 rather than an earlier version is what makes clean DBU representation possible.</p>
+<p>Because Databricks publishes an official FOCUS v1.2 export, the verdict is <strong>Conformant</strong> against the data source reviewed. The remaining work is maturation toward v1.4, not closing a conformance gap. This assessment reflects the data source and the vendor&rsquo;s stated v1.2 support, not an independent certification result.</p>
+<p><strong>Stat strip:</strong> 57 FOCUS columns (v1.2); the large majority present through the FOCUS export; 0 of the Mandatory set is a substantive data gap; deviations are limited to shaping choices on tags and enums that the export already addresses.</p>
+<p><strong>RAG readiness:</strong> Cost Strong. Granularity Strong. Allocation Strong. Coverage Strong. FOCUS shape Strong. Overall band: <strong>Aligned</strong>.</p>
+<p>Recommendation: treat Databricks as a shipping FOCUS v1.2 generator. Validate a live export sample through the FOCUS Validator, confirm the DBU pricing-currency mapping is populated, and plan a maturation pass to v1.3/v1.4 to retire <code>ProviderName</code> and <code>PublisherName</code> and adopt the newer reconciliation datasets.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Databricks exposes billing and usage through Unity Catalog system tables, and layers a FOCUS-format export on top for FinOps consumers.</p>
+<ul>
+<li><strong><code>system.billing.usage</code></strong>: one record per usage event, at hourly or daily resolution. Key fields: <code>record_id</code>, <code>account_id</code>, <code>workspace_id</code>, <code>sku_name</code>, <code>cloud</code>, <code>usage_start_time</code> and <code>usage_end_time</code> (ISO 8601 with UTC offset), <code>usage_date</code>, <code>usage_unit</code> (for example DBU), <code>usage_quantity</code>, <code>custom_tags</code> (a native map), <code>usage_metadata</code> (a struct with cluster, job, warehouse, endpoint, notebook, and other resource identifiers), <code>identity_metadata</code>, <code>record_type</code> (ORIGINAL, RETRACTION, RESTATEMENT), <code>billing_origin_product</code> (for example JOBS, SQL, MODEL_SERVING), <code>product_features</code>, and <code>usage_type</code>.</li>
+<li><strong><code>system.billing.list_prices</code></strong>: a historical log of SKU list prices, keyed by <code>sku_name</code>, <code>cloud</code>, <code>currency_code</code>, and <code>usage_unit</code>, with a <code>pricing</code> struct exposing <code>default</code>, <code>promotional</code>, and <code>effective_list</code> rates.</li>
+<li><strong>DBU model</strong>: consumption is metered in DBUs (a virtual currency) and settled in a currency such as USD at a per-SKU rate. This is a pricing-currency situation, and FOCUS v1.2 carries the columns to represent it faithfully.</li>
+<li><strong>The FOCUS export</strong>: Databricks announced FOCUS v1.2 cost exports at FinOps X 2025 and is listed as a v1.2 generator on the FOCUS site. The export composes the usage and pricing tables into FOCUS columns.</li>
+</ul>
+<p>Granularity, resource identity, tags as key-value pairs, and native correction handling are all present in the source. These are the hardest things to add after the fact, and Databricks already has them.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory, Conditional, Recommended, or Optional. A conformant dataset must populate every Mandatory column, must populate a Conditional column whenever the provider&rsquo;s business model triggers its condition, and may leave a Conditional column null when the condition does not apply (the column should still exist). Recommended columns are encouraged and do not block conformance. Conformance is judged column by column against the Requirements Model, so feature levels drive the verdict. All levels below were verified against the FOCUS v1.2 specification, not recalled from memory.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Feature levels verified against FOCUS Specification v1.2. Status reflects the Databricks FOCUS export composed from <code>system.billing.usage</code> and <code>system.billing.list_prices</code>.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Not modeled at the Databricks layer</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Usage quantity times effective rate, settlement currency</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td><code>account_id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Account name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Databricks account</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Settlement currency (for example USD)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Derived from billing period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Derived from billing period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>No capacity-reservation product</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>No capacity-reservation product</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Usage (and Purchase for virtual-currency buys)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory</td>
+<td>From <code>record_type</code> (Correction for RETRACTION/RESTATEMENT)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Composed from SKU and product</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Usage-Based for metered usage</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td><code>usage_end_time</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td><code>usage_start_time</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>Databricks commit/DBCU contracts where applicable</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Commit contract identifier where applicable</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Commit contract name where applicable</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Committed DBU quantity where applicable</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>Used or Unused where applicable</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Commit type where applicable</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>DBU where applicable</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td><code>usage_quantity</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td><code>usage_unit</code> (for example DBU)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Usage times contracted rate</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Contracted per-DBU rate</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Amortized effective cost, settlement currency</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice linkage</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Databricks (or reseller)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Usage times list rate from <code>list_prices</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td><code>pricing.default</code> per DBU</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Standard, Committed, or Dynamic</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>DBU (virtual currency)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Contracted rate in DBU terms</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Effective cost in DBU terms</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>List rate in DBU terms</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Priced DBU quantity</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>DBU</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (deprecated v1.3, removed v1.4)</td>
+<td>Databricks</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (deprecated v1.3, removed v1.4)</td>
+<td>Databricks</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Cloud region where recorded</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Cloud region name where recorded</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>From <code>usage_metadata</code> (cluster, warehouse, job, endpoint)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>From <code>usage_metadata</code> (job_name, endpoint_name, app_name)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Derived from the resource kind</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Mapped from <code>billing_origin_product</code> (Analytics, AI and Machine Learning, Compute)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Databricks (or product name)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Mapped from product where set</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td><code>sku_name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Metered dimension</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>From <code>list_prices</code> pricing struct and product features</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Price identifier</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td><code>workspace_id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Workspace name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Workspace</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td><code>custom_tags</code> (native key-value map)</td>
+<td>Present</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tally: of the 21 Mandatory columns in v1.2, all are populated by the FOCUS export, including <code>ProviderName</code> and <code>PublisherName</code> (Mandatory in v1.2, deprecated later). The Conditional set is populated where the Databricks model triggers the condition; AvailabilityZone and the capacity-reservation pair are the legitimate N/A cases. No Mandatory column is a substantive data gap.</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What is solved, and what remains</h3>
+<p>Solved, and structurally hard to solve, so worth calling out:</p>
+<ul>
+<li><strong>All four cost columns</strong>: BilledCost, EffectiveCost, ListCost, and ContractedCost are derivable from usage quantities and the list/effective/contracted rates in <code>list_prices</code>. Databricks discounts (commit programs, promotional rates) live in the pricing layer the export already reads, so the cost columns are not a deferred-invoice reconciliation problem the way a list-only daily feed would be.</li>
+<li><strong>Daily and hourly granularity</strong>: charge periods come straight from <code>usage_start_time</code> and <code>usage_end_time</code>.</li>
+<li><strong>Allocation</strong>: <code>workspace_id</code> gives a sub-account, <code>usage_metadata</code> gives resource identity, and <code>custom_tags</code> gives a native key-value tag map. Chargeback and showback work out of the box.</li>
+<li><strong>Corrections</strong>: <code>record_type</code> maps to ChargeClass, so refunds and restatements are representable without invention.</li>
+<li><strong>DBU as pricing currency</strong>: the v1.2 PricingCurrency family carries DBU quantities and rates cleanly alongside the settlement-currency costs.</li>
+</ul>
+<p>What remains is maturation, not conformance repair:</p>
+<ul>
+<li><strong>Version currency</strong>: the export ships v1.2, which still carries <code>ProviderName</code> and <code>PublisherName</code>. Moving to v1.3 deprecates them and to v1.4 removes them, and adds the invoice-detail and billing-period reconciliation datasets.</li>
+<li><strong>Commitment-discount fidelity</strong>: for customers on Databricks commit contracts, the CommitmentDiscount family should be populated and validated end to end. This is the most likely area where a specific tenant&rsquo;s export needs confirmation.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<p>The export already does the two things providers most often get wrong: tags are a real key-value map, not an array of bare strings, and timestamps are ISO 8601. The items below are confirmations rather than defects.</p>
+<ul>
+<li><strong>Enum discipline on ServiceCategory</strong>: <code>billing_origin_product</code> has many values (JOBS, SQL, MODEL_SERVING, VECTOR_SEARCH, and more). Each must map to a valid FOCUS ServiceCategory member (Analytics, AI and Machine Learning, Compute, and so on), not pass through the native product string.</li>
+<li><strong>ChargeCategory for virtual-currency purchases</strong>: DBU purchase or commitment-drawdown events should carry Purchase, while metered consumption carries Usage. Confirm the export sets this correctly for commit-based tenants.</li>
+<li><strong>CommitmentDiscount family completeness</strong>: verify these columns are populated for tenants with Databricks commit contracts, with CommitmentDiscountStatus using the Used/Unused enum and CommitmentDiscountUnit set to DBU.</li>
+<li><strong>Custom columns</strong>: any Databricks-specific fields carried through (for example <code>billing_origin_product</code>, <code>usage_type</code>) must be prefixed <code>x_</code>.</li>
+</ul>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Databricks already ships v1.2, the current certification baseline. The near-term target is to keep the v1.2 export clean and validated. The maturation target is v1.4 (ratified 2026-06-04), which removes the deprecated <code>ProviderName</code> and <code>PublisherName</code> columns and adds invoice-detail and billing-period datasets that improve month-end reconciliation. A sensible path is to certify or validate at v1.2 now and schedule a v1.3/v1.4 uplift as Validator support for the newer versions lands.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The badge has historically been &ldquo;FinOps Certified FOCUS v1.2 Conformant.&rdquo; The get-started listing confirms Databricks supports v1.2 but does not by itself assert a formal certification designation. The deliverables for the program are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is a seed for that). Membership is required for certification, though contributing to the spec is open and free. Contact <code>member-cert@finops.org</code> for the RFI. Open-source tooling supports the work: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the machine-readable FOCUS Requirements Model.</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate what ships.</strong> Run a live Databricks FOCUS export sample through the FOCUS Validator at v1.2. Confirm the DBU pricing-currency columns populate, tags round-trip as key-value pairs, and <code>record_type</code> maps to ChargeClass. Confirm scope and version.</p>
+<p><strong>Phase 1: Confirm the Conditional families that the model triggers.</strong> Verify RegionId/RegionName, the Resource family, the SubAccount family (from <code>workspace_id</code>), and the Sku family are populated across product types. Verify the CommitmentDiscount family for commit-contract tenants.</p>
+<p><strong>Phase 2: Enforce enum and shaping discipline.</strong> Lock ServiceCategory to valid FOCUS members mapped from <code>billing_origin_product</code>, set ChargeCategory correctly for virtual-currency purchases versus usage, and ensure any native pass-through columns are <code>x_</code> prefixed.</p>
+<p><strong>Phase 3: Round out Recommended columns.</strong> Confirm ChargeFrequency, ServiceSubcategory, and InvoiceId are populated where meaningful.</p>
+<p><strong>Phase 4: Mature to v1.4.</strong> Retire <code>ProviderName</code> and <code>PublisherName</code>, adopt the invoice-detail and billing-period datasets for reconciliation, and re-validate at the newer version once Validator support is generally available. Pursue or renew the conformance designation.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<p>Databricks data supports the FOCUS v1.2 use-case library broadly, and the DBU model unlocks the virtual-currency use cases specifically.</p>
+<ul>
+<li><strong>Available now (day- and resource-level data):</strong> Analyze cost per compute service for a subaccount; Analyze service costs by subaccount; Report application cost month over month; Analyze tag coverage; Identify anomalous daily spending by subaccount; Calculate unit economics.</li>
+<li><strong>Available now (virtual-currency family, DBU-specific):</strong> Analyze purchase of virtual currency; Calculate consumption of virtual currency within a billing period; Determine target of virtual-currency usage; Determine contracted savings by virtual currency; Analyze effective cost by pricing currency.</li>
+<li><strong>Available now (cost and rate columns):</strong> Determine Effective Savings Rate; Analyze resource costs by SKU; Report corrections for a previously invoiced billing period.</li>
+<li><strong>Conditional on commit contracts:</strong> Identify unused commitments; Report commitment discount purchases (work once the CommitmentDiscount family is confirmed populated).</li>
+<li><strong>Out of scope for the Databricks model:</strong> capacity-reservation use cases (Analyze capacity reservations on compute costs; Identify unused capacity reservations) and availability-zone analysis, since Databricks does not model those mechanics at the billing layer.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Pull a live Databricks FOCUS v1.2 export sample and run it through the FOCUS Validator.</li>
+<li>Confirm the DBU pricing-currency mapping: PricingCurrency = DBU, BillingCurrency = settlement currency, with the paired quantity and rate columns populated.</li>
+<li>Verify tags round-trip as key-value pairs and that <code>record_type</code> yields ChargeClass = Correction for retraction and restatement rows.</li>
+<li>Spot-check ServiceCategory values against the FOCUS allowed set for each <code>billing_origin_product</code>.</li>
+<li>For a commit-contract tenant, verify the CommitmentDiscount family and ChargeCategory = Purchase on drawdown events.</li>
+<li>Scope a v1.3/v1.4 maturation pass to retire the deprecated Provider and Publisher columns.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li><strong>Databricks is an official v1.2 FOCUS generator:</strong> high confidence. The FOCUS get-started page states &ldquo;Version Supported: v1.2,&rdquo; and the FOCUS 1.2 launch materials name Databricks among the providers announcing support at FinOps X 2025.</li>
+<li><strong>Native data model (system tables):</strong> high confidence. The <code>system.billing.usage</code> and <code>system.billing.list_prices</code> schemas are drawn directly from current Databricks documentation.</li>
+<li><strong>DBU as a v1.2 pricing-currency case:</strong> high confidence on the concept; the exact per-tenant population of the PricingCurrency columns should be confirmed on a live export.</li>
+<li><strong>Column-by-column status of the FOCUS export:</strong> medium confidence. Databricks had not published a full public field-by-field FOCUS mapping at the time of writing, so the per-column status reflects what the export is designed to carry given the source data, not a line-validated sample. A Validator run resolves this.</li>
+<li><strong>CommitmentDiscount family:</strong> medium confidence, flagged as the most likely area needing per-tenant confirmation.</li>
+<li><strong>Feature levels:</strong> high confidence. Verified against the FOCUS v1.2 specification via the FOCUS MCP column library on 2026-07-01; the bundled reference (stamped 2026-06-23) matched the live spec, and v1.2 remains the certification baseline with v1.4 the latest ratified version.</li>
+<li><strong>Overall data quality for this analysis:</strong> solid on the FOCUS listing and the native schema, provisional on the exact per-column export shape pending a live Validator run.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>FOCUS get-started listing for Databricks: https://focus.finops.org/get-started/databricks/</li>
+<li>Databricks billable usage system table reference: https://docs.databricks.com/aws/en/admin/system-tables/billing</li>
+<li>Databricks pricing system table reference: https://docs.databricks.com/aws/en/admin/system-tables/pricing</li>
+<li>Databricks monitor costs using system tables: https://docs.databricks.com/aws/en/admin/usage/system-tables</li>
+<li>FOCUS 1.2 general availability (FinOps Foundation): https://www.finops.org/insights/focus-1-2-available/</li>
+<li>FOCUS Specification v1.2: https://focus.finops.org/focus-specification/v1-2/</li>
+<li>FOCUS column library and feature levels (FOCUS MCP), verified 2026-07-01.</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

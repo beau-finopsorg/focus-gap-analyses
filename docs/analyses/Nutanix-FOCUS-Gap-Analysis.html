@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nutanix &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Nutanix-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="nutanix-focus-data-generator-gap-analysis">Nutanix &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: June 25, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Nutanix<br>
+<strong>Prepared:</strong> June 25, 2026<br>
+<strong>Source:</strong> Nutanix invoice system; Nutanix Customer Portal<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 20 Present, 8 Deviation, 0 Missing Mandatory, 7 Missing Conditional, 1 Missing Recommended, 21 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Nutanix is primarily a software subscription vendor. Its billing model is term-based license subscriptions billed annually or multi-year, based on node count, capacity (TiB), or Nutanix Consumption Units (NCUs). This model limits FOCUS applicability: 21 columns are legitimately N/A because software licenses have no resource-level IDs, no sub-account hierarchy, no regional breakout, and no consumption metering. All 21 Mandatory columns have source data. The 8 Deviations cover cost enrichment (list and contracted pricing, multi-year amortization) and enum derivation. Seven Missing Conditional columns are in the SKU price catalog and unit price families.</p>
+<p><strong>Recommendation:</strong> The short path to conformance is mapping the 20 Present columns into FOCUS shape and addressing the 8 Deviations. The resulting dataset will have 21 null Conditional/Recommended columns (all legitimately N/A for a pure software subscription). Document those nulls in the conformance gap report as N/A, not as gaps.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>Nutanix Customer Portal / Invoice API</strong>: Nutanix does not publish a public billing API with full programmatic access. Billing data is available through the Nutanix Customer Portal (my.nutanix.com), which provides invoice history, license entitlements, and subscription details. Key fields: invoice number, billing period, line items (product name, quantity, unit, list price, contracted price, total), customer information.</p>
+<p><strong>Nutanix License Manager</strong>: License entitlements are tracked in the Nutanix License Manager, which provides SKU, term, node/TiB/NCU quantities, and expiration dates.</p>
+<p>Key characteristics for FOCUS:
+- <strong>Term-based subscriptions:</strong> Nutanix licenses are sold as 1, 3, or 5-year subscriptions. Annual invoicing is the norm; multi-year contracts may be invoiced upfront or annually.
+- <strong>License units:</strong> The billing unit varies by product: nodes (for cluster-based licensing), TiB (for storage-based licensing), or NCUs (Nutanix Consumption Units, a normalized unit for some products). These map to PricingQuantity and PricingUnit.
+- <strong>No consumption metering:</strong> Nutanix software does not generate per-transaction or per-resource billing data. There is no equivalent to cloud API call counts or storage byte-hours.
+- <strong>Enterprise pricing:</strong> Nutanix pricing is entirely enterprise-negotiated. MSRP (list prices) exists in Nutanix&rsquo;s price book but is not accessible via a programmatic API.
+- <strong>No sub-account hierarchy:</strong> Nutanix customer accounts are flat; there is no sub-account or project hierarchy in the billing system.
+- <strong>No resource-level IDs:</strong> Nutanix licenses are associated with a cluster or site, not with individual virtual machines, volumes, or other cloud-native resource types.
+- <strong>Regions:</strong> Nutanix on-premises software licenses are not region-specific in the billing context. Nutanix Cloud Clusters (NC2) runs on AWS/Azure; the underlying cloud charges flow through the cloud provider, not through Nutanix&rsquo;s billing.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. Each column carries a feature level: Mandatory (must exist and be populated where applicable), Conditional (must exist; populated when the provider&rsquo;s model triggers the condition, otherwise null), or Recommended. Columns are N/A when the provider&rsquo;s billing model genuinely does not produce the data (e.g., a software subscription vendor has no resource-level IDs). N/A is a valid FOCUS state, not a gap.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Nutanix source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice line item total (subscription period amount)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Multi-year pre-paid contracts require amortization of upfront payment across billing periods; annual subscriptions: = BilledCost</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Nutanix MSRP × PricingQuantity; MSRP exists in price book but not accessible via API; requires supplementary price book data</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Enterprise-negotiated rate × PricingQuantity; not accessible via billing API</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Nutanix customer account ID from Customer Portal</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Customer company name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Invoice currency (USD, EUR, or regional per contract)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice period start date</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice period end date</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Subscription period start date</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Subscription period end date</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Product name + SKU description (e.g., &ldquo;Nutanix Cloud Infrastructure Ultimate - 3 Nodes&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for new subscription activations; &ldquo;Recurring&rdquo; maps to &ldquo;Usage&rdquo; in FOCUS? No - use &ldquo;Purchase&rdquo; for subscription renewals. Subscriptions are &ldquo;Purchase&rdquo; in FOCUS.</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for correction charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Nutanix, Inc.&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Nutanix&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Nutanix&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Nutanix product name (e.g., &ldquo;Nutanix Cloud Infrastructure&rdquo;, &ldquo;Nutanix Unified Storage&rdquo;, &ldquo;Nutanix Data Services&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Map Nutanix products: NCI, NCP → &ldquo;Compute&rdquo;; Nutanix Unified Storage → &ldquo;Storage&rdquo;; Nutanix Flow → &ldquo;Networking&rdquo;; Nutanix Era/Data Services → &ldquo;Databases&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>License quantity: number of nodes, TiB of capacity, or NCU count from invoice</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>License unit: &ldquo;Nodes&rdquo;, &ldquo;TiB&rdquo;, or &ldquo;NCU&rdquo; per product</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>N/A: Nutanix software subscriptions have no variable consumption metering; quantity is fixed at subscription time</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Nutanix MSRP per license unit; not exposed via billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Enterprise-negotiated rate per license unit; not accessible via billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Committed&rdquo; for all Nutanix subscriptions (term-based commitments)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Conditional</td>
+<td>&ldquo;Recurring&rdquo; for annual subscription renewals; &ldquo;One-Time&rdquo; for multi-year upfront payments</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from Nutanix customer tier (e.g., &ldquo;Enterprise&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>N/A: Nutanix billing has no sub-account or project hierarchy</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>N/A: Nutanix licenses are associated with a cluster or site, not with individual resource instances</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Nutanix part number (e.g., &ldquo;SW-NCI-ULT-3N-1Y&rdquo;) from invoice or License Manager</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: Nutanix software license billing data does not include resource-level tags</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>= BillingCurrency</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice; Missing because ListUnitPrice requires supplementary data</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ContractedUnitPrice; Missing because ContractedUnitPrice requires enterprise pricing data</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>= EffectiveCost; Deviation because multi-year amortization logic is required</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Not exposed; Nutanix licenses do not have a metered dimension separate from the license SKU</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Price book rate identifier not exposed in billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not applicable (flat per-unit pricing; no tiering in the standard Nutanix model)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: Nutanix on-premises licenses are not region-specific in billing; NC2 infrastructure charges flow through the cloud provider</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: Nutanix subscriptions are term-based licenses, not FOCUS CommitmentDiscount constructs</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Nutanix invoice number from Customer Portal</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>No native field; requires mapping from product name to subcategory</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: on-premises software licenses have no availability zone</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 20 Present, 8 Deviation, 0 Missing Mandatory, 7 Missing Conditional, 1 Missing Recommended, 21 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved</strong></p>
+<p>The invoicing framework is complete. Nutanix invoices expose account identification, billing dates, subscription period, product names, license quantities, units, and invoice numbers. These give 20 directly Present columns. The 21 N/A columns reflect Nutanix&rsquo;s billing model correctly: a software subscription vendor genuinely does not have resource IDs, sub-accounts, or consumption metering at the billing level.</p>
+<p><strong>Remaining</strong></p>
+<p>The main work is cost enrichment. Neither the MSRP nor the contracted rate is in the billing API. Both require supplementary price book data or a Nutanix pricing API that does not currently exist. Multi-year contract EffectiveCost amortization requires logic to spread upfront payments across the subscription term. ChargeCategory and ServiceCategory require mapping tables built from Nutanix product type codes.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>EffectiveCost</strong><br>
+Annual subscriptions: EffectiveCost = BilledCost. Multi-year upfront payments: amortize the total contract value across the term. Per-period EffectiveCost = total contract value ÷ number of periods. Document the amortization method in the native-to-FOCUS mapping.</p>
+<p><strong>ListCost and ContractedCost</strong><br>
+Integrate Nutanix&rsquo;s MSRP price book for ListCost. ContractedCost requires the customer&rsquo;s negotiated rate. Both require supplementary data files until Nutanix publishes a programmatic pricing API.</p>
+<p><strong>ChargeCategory</strong><br>
+All Nutanix charges are subscription-based. Use &ldquo;Purchase&rdquo; for subscription activations and renewals. Use &ldquo;Credit&rdquo; for any promotional credits or adjustments. Avoid &ldquo;Usage&rdquo; (Nutanix subscriptions are not usage-based).</p>
+<p><strong>ServiceCategory</strong><br>
+Map Nutanix product lines to FOCUS ServiceCategory: NCI (hyperconverged compute) → &ldquo;Compute&rdquo;; Nutanix Unified Storage, Objects → &ldquo;Storage&rdquo;; Nutanix Flow → &ldquo;Networking&rdquo;; Nutanix Era, Data Services → &ldquo;Databases&rdquo;; Nutanix Prism (management) → &ldquo;Management and Governance&rdquo;.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2. ProviderName and PublisherName are deprecated in v1.3 and removed in v1.4.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. The 21 N/A columns must be documented as legitimately not applicable for a software subscription billing model. This is a supported FOCUS state. Certification requires documenting the null justification for each N/A column.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0:</strong> Confirm Customer Portal or invoice API access. Pull a sample invoice and license entitlement dataset. Identify available fields per line item.</p>
+<p><strong>Phase 1: Core subscription transform.</strong> Map BilledCost, ChargePeriod, BillingAccount, ServiceName, SkuId, PricingQuantity/Unit, ChargeDescription, InvoiceId, ChargeClass, InvoiceIssuerName. Derive ChargeCategory = &ldquo;Purchase&rdquo; and ServiceCategory from product name. EffectiveCost = BilledCost for annual subscriptions. Delivers conformant output for 20 Present columns.</p>
+<p><strong>Phase 2: Cost enrichment.</strong> Integrate Nutanix price book for ListCost and ListUnitPrice. Add contracted rate file for ContractedCost. Implement multi-year EffectiveCost amortization. Add PricingCategory = &ldquo;Committed&rdquo; for all subscription rows.</p>
+<p><strong>Phase 3: Certify.</strong> Add ServiceSubcategory mapping. Drop ProviderName, PublisherName (v1.4). Validate with FOCUS Validator. Submit for certification.</p>
+<h3 id="24-focus-use-cases-nutanix-customers-unlock">2.4 FOCUS Use Cases Nutanix Customers Unlock</h3>
+<p><strong>After Phase 1:</strong> Cost by Nutanix product and subscription. Invoice reconciliation via InvoiceId. Subscription term tracking via ChargePeriodStart/End.</p>
+<p><strong>After Phase 2:</strong> List vs. contracted vs. billed cost comparison to verify enterprise discount application. Multi-year contract cost allocation using amortized EffectiveCost.</p>
+<p><strong>Out of scope:</strong> Resource-level cost allocation (N/A for software subscriptions). Regional cost analysis. CommitmentDiscount and CapacityReservation use cases.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Identify the programmatic access method for Nutanix invoice and license data: Customer Portal export, invoice API (if available), or automated PDF/CSV invoice processing.</li>
+<li>Obtain the current Nutanix MSRP price book and map each SKU to a list unit price per license unit.</li>
+<li>Build the ServiceCategory and ChargeCategory mapping tables from Nutanix product names and part numbers.</li>
+<li>Implement the Phase 1 core subscription transform for annual contracts. Run through the FOCUS Validator.</li>
+<li>Design the multi-year EffectiveCost amortization logic. Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Nutanix invoices expose product name, license quantity, unit, and billing period for all subscription line items. The 20 Present columns are grounded in standard invoice fields.</li>
+<li><strong>High:</strong> The 21 N/A columns correctly reflect Nutanix&rsquo;s software subscription model. A software license billing system genuinely does not have resource IDs, sub-accounts, or regional breakouts.</li>
+<li><strong>Moderate:</strong> ServiceCategory and ChargeCategory mapping. Nutanix&rsquo;s product portfolio has expanded significantly with Data Services, Era, and NC2. A comprehensive mapping requires reviewing all current Nutanix SKUs.</li>
+<li><strong>Low:</strong> ListCost and ContractedCost from the Nutanix price book. The price book is typically a static document. Automated integration requires either Nutanix publishing a pricing API or a manual ETL process per customer.</li>
+<li><strong>Unknown:</strong> Programmatic invoice API access. Nutanix does not advertise a public invoice API. If invoice data is only available as PDF downloads from the Customer Portal, automated ingestion requires PDF parsing or a manual export step.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Nutanix Customer Portal: <a href="https://my.nutanix.com">my.nutanix.com</a></li>
+<li>Nutanix License Manager: <a href="https://portal.nutanix.com/page/documents/details?targetId=Nutanix-License-Manager-Guide:lic-license-manager-guide-intro-c.html">Nutanix Licensing Documentation</a></li>
+<li>Nutanix NC2 Documentation: <a href="https://www.nutanix.com/products/cloud-clusters">Nutanix Cloud Clusters</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

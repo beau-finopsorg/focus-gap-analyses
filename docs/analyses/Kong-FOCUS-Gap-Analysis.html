@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kong &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Kong-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="kong-focus-data-generator-gap-analysis">Kong &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Kong Inc.<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Public Kong documentation only: Konnect pricing page; Konnect account docs (Billing and Usage page); Konnect Advanced Analytics API; Konnect geos and labels docs; Kong Gateway Enterprise <code>GET /license/report</code>; Kong AI Cost Management exports, price catalog, and analytics docs; Kong AI Gateway audit log reference<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 16 Present, 8 Deviation, 3 Missing Mandatory, 18 Missing Conditional, 1 Missing Recommended, 11 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Kong sells Kong Konnect, a SaaS API platform (API Gateway, AI Gateway, Dedicated Cloud Gateways, Developer Portals, Analytics, Metering &amp; Billing, Kong Identity, Event Gateway), and self-managed Kong Gateway Enterprise licenses. Konnect Plus is self-serve: a $25 monthly base plus metered usage, billed monthly in arrears in USD, with resource meters (control planes, portals, models) prorated hourly on a 730-hour month. Enterprise is custom pricing billed annually, with contracted request volumes and volume discounts.</p>
+<p>This analysis covers the two directions in which Kong touches FOCUS:</p>
+<ol>
+<li><strong>Kong as a data generator for its own charges.</strong> This is weak. The only documented billing surface is the Konnect <strong>Billing and Usage</strong> page, which shows service, Dev Portal, and API call usage. Kong publishes no billing API, no invoice field definitions, and no usage export. Of the 21 Mandatory columns, 18 have a source and 3 are missing. One gap is substantive: <strong>EffectiveCost</strong>, because Enterprise contracts are billed annually up front and trial and promotional credits exist, so no current surface shows amortized, credit-adjusted cost. <strong>ListCost</strong> and <strong>ContractedCost</strong> are price-book joins.</li>
+<li><strong>Kong as a FOCUS producer for third-party AI spend.</strong> This is already shipping. Kong AI Cost Management exports a <code>focus</code> dataset (FOCUS 1.3 or 1.4, CSV or Parquet, daily or hourly) covering estimated LLM spend routed through Kong AI Gateway, with a monthly true-up to provider invoices. This is unusual: Kong emits FOCUS for other vendors&rsquo; bills before it emits FOCUS for its own.</li>
+</ol>
+<p>The irony is the headline. Kong has the FOCUS tooling, the export scheduler, and a key-value label model on control planes. It has not pointed any of it at the Konnect invoice.</p>
+<p><strong>Recommendation:</strong> Reuse the AI Cost Management export pipeline to publish a monthly Konnect FOCUS export per organization: one Usage row per meter × control plane (or portal, model, or Dedicated Cloud Gateway network) × day, one Purchase row for the Plus base fee or Enterprise subscription, and separate Tax and Credit rows so the dataset reconciles to the invoice. Carry control plane labels into Tags and the Konnect geo into RegionId.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>Kong&rsquo;s own billing data (the subject of the column table):</p>
+<ul>
+<li><strong>Billing and Usage page</strong> (<code>cloud.konghq.com/global/plan-and-usage/</code>): Shows &ldquo;service, Dev Portal, and API call usage&rdquo; and manages payment. Kong documents no CSV export, no per-control-plane or per-geo breakdown, and no invoice field list.</li>
+<li><strong>Monthly invoices:</strong> &ldquo;Calculated at the end of every calendar month&rdquo; and billed in arrears for Plus. Enterprise pays by invoice or PO. No public sample or field definition.</li>
+<li><strong>Konnect pricing page:</strong> Full published price list for Plus. API requests: 1M included, then $200 per additional million per month (10M cap on Plus). AI model proxy: $100 per model per month. Dedicated Cloud Gateways: $500 per control plane per month plus $0.15 per GB bandwidth. Serverless control planes $25 and hybrid control planes $200 per month. Extra Developer Portal $200 per month. Analytics $20 per 1M requests above 1M. Metering &amp; Billing $20 per million events plus 0.4% of billing volume. Kong Identity $30 per 1M access tokens.</li>
+<li><strong>Konnect Advanced Analytics API:</strong> Request metrics groupable by <code>control_plane</code>, <code>control_plane_group</code>, <code>gateway_service</code>, <code>route</code>, <code>consumer</code>, <code>application</code>, <code>api_product</code>, <code>data_plane_node</code>, and time, down to 10-second granularity. It carries no price or cost.</li>
+<li><strong>Kong Gateway Enterprise <code>GET /license/report</code>:</strong> On-demand report of <code>services_count</code>, <code>routes_count</code>, <code>consumers_count</code>, <code>workspaces_count</code>, <code>rbac_users</code>, <code>plugins_count</code>, request <code>counters</code>, and the license payload (<code>customer</code>, <code>product_subscription</code>, <code>dataplanes</code>, <code>admin_seats</code>, expiration). Nothing is sent to Kong and there is no cost data.</li>
+</ul>
+<p>Kong&rsquo;s FOCUS output for third-party spend (assessed separately in 1.4):</p>
+<ul>
+<li><strong>AI Cost Management exports:</strong> <code>usage_events</code> and <code>focus</code> datasets, created in the Konnect UI or through <code>POST /v1/ai-cost-management/exports</code> and <code>/export-schedules</code> (public API in beta, v0.3.0). FOCUS version <code>1.3</code> or <code>1.4</code>; CSV, CSV gzip, or Parquet Zstandard; <code>day</code> or <code>hour</code> charge period; up to 64 tag keys; one file per calendar month with a SHA-256 <code>manifest.json</code>. Files are pulled through five-minute URLs, not pushed to storage.</li>
+<li><strong>Cost basis:</strong> Token counts × a USD price catalog (list price, provider-wide discounts, or per-model custom rates). AI Gateway logs <code>ai.proxy.usage.cost</code> per request; Explorer shows LLM cost, embeddings cost, and cost savings.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Hierarchy:</strong> One organization spans all geos; &ldquo;only authentication, billing, and usage&rdquo; are shared across geos. Below it sit control plane groups, control planes, gateway services, routes, consumers, and Developer Portals.</li>
+<li><strong>Geos:</strong> US, EU, AU, ME, IN, and SG, each backed by AWS regions. Plus Dedicated Cloud Gateways are limited to one region.</li>
+<li><strong>Labels:</strong> Case-sensitive key:value pairs, up to 5 user-defined per resource, supported on control planes.</li>
+<li><strong>Marketplaces:</strong> Konnect is sold through AWS Marketplace and Google Cloud Marketplace. Those purchases are invoiced by the hyperscaler.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Kong deploys resources in geos and regions and supports user-defined labels, so RegionId, RegionName, and Tags apply. Enterprise contracts sell committed request volumes at volume-discounted rates, so this analysis treats the CommitmentDiscount family as applicable. Kong has one billing account type (the Konnect organization), no billing sub-accounts, no capacity reservations, and USD-only pricing; those columns are N/A and should exist as null. Feature levels follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Kong source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Monthly invoice amount; no line-level export per meter or resource</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs amortization of annual Enterprise fees and allocation of trial and promotional credits</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not exposed; join the public price list × PricingQuantity</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not exposed; equals ListCost on Plus, Enterprise contract rate card × PricingQuantity</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Konnect organization ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Konnect organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>First day of the calendar month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>First day of the following month (exclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Calendar month start (Billing and Usage is month-level)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Calendar month end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Invoice line description</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for the Plus base fee and Enterprise subscription; &ldquo;Usage&rdquo; for requests, bandwidth, and hourly-prorated resources; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; rows from the invoice</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Kong Inc.&rdquo; for direct; &ldquo;Amazon Web Services&rdquo; or &ldquo;Google&rdquo; for marketplace purchases</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Kong&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Kong&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Konnect product (e.g., &ldquo;API Gateway&rdquo;, &ldquo;AI Gateway&rdquo;, &ldquo;Dedicated Cloud Gateways&rdquo;, &ldquo;Developer Portal&rdquo;, &ldquo;Advanced Analytics&rdquo;, &ldquo;Metering &amp; Billing&rdquo;, &ldquo;Kong Identity&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Integration&rdquo; for API, AI, and event gateways, portals, and Metering &amp; Billing; &ldquo;Networking&rdquo; for gateway bandwidth; &ldquo;Analytics&rdquo; for analytics; &ldquo;Identity&rdquo; for Kong Identity</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Requests, control plane hours, GB, models, events, tokens; tiered (1M requests included), so compute against the rate basis</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize: &ldquo;1M Requests&rdquo;, &ldquo;Hours&rdquo;, &ldquo;GB&rdquo;, &ldquo;Models&rdquo;, &ldquo;1M Events&rdquo;, &ldquo;1M Tokens&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Billing and Usage counts (API calls, services, portals)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Implicit in the usage page; normalize to FOCUS unit format</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed; public price list</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed; Enterprise contract rates</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; for Plus usage; &ldquo;Committed&rdquo; for usage within Enterprise contracted volumes</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>N/A: one account type (Konnect organization)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>N/A: billing is organization-wide; geos and control planes are not billing entities</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not in billing; candidates are control plane, Dedicated Cloud Gateway network, portal, and model IDs (Analytics API already keys requests by <code>control_plane</code>)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not in billing; control plane and portal names</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not in billing; &ldquo;Serverless Control Plane&rdquo;, &ldquo;Hybrid Control Plane&rdquo;, &ldquo;Dedicated Cloud Gateway&rdquo;, &ldquo;Developer Portal&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; internal plan and meter codes</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Konnect labels (key:value, up to 5 per resource) exist on control planes but are not in billing</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced and billed in USD only</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Usage page meters (API calls, services, Dev Portal)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for the included-allowance tier and Plus vs. Enterprise price points</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Not in billing; Konnect geo (&ldquo;us&rdquo;, &ldquo;eu&rdquo;, &ldquo;au&rdquo;, &ldquo;me&rdquo;, &ldquo;in&rdquo;, &ldquo;sg&rdquo;) or Dedicated Cloud Gateway cloud region</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Not in billing</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Enterprise contract or contracted request volume ID; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Contracted Requests&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Usage&rdquo;; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo;/&rdquo;Unused&rdquo; against the contracted volume</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Requests drawn against the contract</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;Requests&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Recurring&rdquo; for base fee, control planes, portals, and models; &ldquo;Usage-Based&rdquo; for requests, bandwidth, events, and tokens</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map each product to an allowed v1.2 value (e.g., &ldquo;API Management&rdquo;)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: Kong operates the gateway infrastructure; zones are not customer-billed</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 16 Present, 8 Deviation, 3 Missing Mandatory, 18 Missing Conditional, 1 Missing Recommended, 11 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Organization identity, USD billing, calendar-month periods, invoice numbers, a complete public price list for Plus, and usage counts by meter. The Analytics API already attributes requests to control planes, services, and consumers, and labels already use FOCUS&rsquo;s key-value shape.</p>
+<p><strong>Substantive (1 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Enterprise is billed annually up front, and trials and promotions grant credits. Producing EffectiveCost means amortizing the annual fee across the term and allocating credits back to the charges they offset. On a pure Plus account with no credits, EffectiveCost equals BilledCost; on the accounts FinOps teams care about, it does not.</li>
+</ul>
+<p><strong>Trivial (2 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Kong publishes the price list. Join list unit price by meter and multiply by PricingQuantity, applying the included allowance through SkuPriceDetails.</li>
+<li><strong>ContractedCost.</strong> Equal to ListCost on Plus. For Enterprise, Kong&rsquo;s billing system already holds the contract rate card; expose it.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No billing data feed.</strong> The Billing and Usage page is UI-only with no documented export or API. Nothing about Kong&rsquo;s own charges reaches a FinOps tool without screen-scraping or invoice PDFs.</li>
+<li><strong>Allocation.</strong> Billing is organization-wide. A platform team running dozens of control planes across geos cannot attribute Konnect spend to the business units behind them, even though the Analytics API, the labels model, and the geo model all hold the needed keys.</li>
+<li><strong>Marketplace split.</strong> Customers who buy through AWS or Google Cloud Marketplace see Kong as one subscription line in the hyperscaler&rsquo;s FOCUS data, with no meter or resource detail. A Kong export with InvoiceIssuerName set to the marketplace is the only way to break that line down.</li>
+</ul>
+<p><strong>Kong as a FOCUS producer for third-party AI spend:</strong></p>
+<p>Kong AI Cost Management already emits FOCUS for LLM spend routed through AI Gateway. Two design choices stand out:</p>
+<ul>
+<li><strong>FOCUS 1.3 output double-counts.</strong> BilledCost, EffectiveCost, ListCost, and ContractedCost all carry Kong&rsquo;s estimate. Kong&rsquo;s own docs warn that loading this beside the model provider&rsquo;s FOCUS data &ldquo;counts the same spend twice.&rdquo;</li>
+<li><strong>FOCUS 1.4 output zeroes the cost columns</strong> and moves the estimate to <code>x_ReportedCost</code>. This avoids double-counting because Kong does not invoice model usage. The cost is that FOCUS-native tools see $0 rows, and ListCost of 0 misstates the list price of tokens Kong has in its own price catalog.</li>
+</ul>
+<p>The underlying problem is that Kong is an allocation layer, not the invoice issuer, and FOCUS v1.2 through v1.4 have no first-class way to express &ldquo;attribution metadata for someone else&rsquo;s charge.&rdquo; The monthly true-up (invoice amount ÷ Kong estimate, matched by month, provider, model, and region) is the valuable part. Kong should bring this pattern to the FOCUS working group rather than settle it unilaterally with zero-cost rows.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost:</strong> Emit one row per meter and resource rather than an invoice total, plus Tax and Credit rows, so that BilledCost summed per InvoiceId equals the invoice total.</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Purchase&rdquo; for the Plus base fee and the Enterprise subscription; &ldquo;Usage&rdquo; for requests, bandwidth, events, tokens, and hourly-prorated resources; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; as above.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Integration&rdquo; for API, AI, and event gateways, Developer Portals, and Metering &amp; Billing; &ldquo;Networking&rdquo; for Dedicated Cloud Gateway bandwidth; &ldquo;Analytics&rdquo; for Advanced Analytics overages; &ldquo;Identity&rdquo; for Kong Identity.</p>
+<p><strong>PricingQuantity and PricingUnit:</strong> Requests and analytics are priced per million above a 1M included allowance, so they are tiered, not flat-rate. Compute PricingQuantity against the rate basis (&ldquo;1M Requests&rdquo;) and express the free allowance in SkuPriceDetails. Control planes, portals, and models are monthly prices prorated hourly; use &ldquo;Hours&rdquo; with a list unit price of the monthly price ÷ 730.</p>
+<p><strong>ConsumedUnit, PricingCategory, ChargeFrequency:</strong> Derive from meter type as shown in the table.</p>
+<p><strong>Already right:</strong> USD-only billing, calendar-month periods, a public price list, and key-value labels map cleanly.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. Kong&rsquo;s AI Cost Management export already supports v1.4, so the Konnect export should share that code path. FOCUS v1.5 is a candidate release; its scope is on the FOCUS site. The v1.3 Contract Commitment dataset fits Enterprise contracted request volumes better than per-row CommitmentDiscount columns alone.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification, and Kong is not currently a member). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (single account type, no sub-accounts, reservations, or alternate currencies) and the decision on modeling Enterprise contracted volumes as commitment discounts. Certification would cover the Konnect billing export, not the AI Cost Management overlay.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of Billing and Usage data and the matching invoice for a Plus organization and an Enterprise one. Hand-build a v1.2 file and run it through the Validator. Decide the Enterprise commitment model.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Join the price list for ListCost and ListUnitPrice and the contract rate card for ContractedCost. Amortize annual Enterprise fees and allocate credits for EffectiveCost. Emit line-level BilledCost with Tax and Credit rows so it reconciles to the invoice.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Derive ChargeCategory, ServiceCategory, ChargeFrequency, and PricingCategory; normalize PricingUnit and ConsumedUnit; compute PricingQuantity against the tiered rate basis.</p>
+<p><strong>Phase 3: Allocation and Conditional columns.</strong> Add ResourceId, ResourceName, and ResourceType per control plane, Dedicated Cloud Gateway, portal, and model; RegionId and RegionName from the Konnect geo; Tags from control plane labels; SkuId, SkuPriceId, and SkuPriceDetails; the CommitmentDiscount family; and ServiceSubcategory. Deliver through the existing export-schedule API, and add push delivery to object storage.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Invoice Detail dataset; certify at v1.2 and re-certify as the program advances. In parallel, raise the AI Cost Management zero-cost-row pattern with the FOCUS working group.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, actuals-based budgeting and forecasting, and amortized spend reporting for Konnect.</li>
+<li><strong>After Phase 2:</strong> Spend by service category across providers, and subscription-versus-usage mix analysis.</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback by control plane, geo, or label; unit economics per million API requests; Enterprise contracted volume utilization; and anomaly detection on request and bandwidth meters.</li>
+<li><strong>Already available (AI Cost Management):</strong> Allocation of LLM spend by team, application, consumer, and tag, with invoice true-up.</li>
+<li><strong>Out of scope:</strong> Capacity reservation management and multi-currency analysis.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Kong contact from KubeCon NA 2026 to reach the owner of Konnect billing and the AI Cost Management export team.</li>
+<li>Confirm what the Billing and Usage page and invoices contain today (line items, per-control-plane detail, any export).</li>
+<li>Confirm whether the <code>kbilling</code> usage API referenced in some search summaries exists and is customer-facing.</li>
+<li>Build a v1.2 sample from one billing month and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code> and discuss FinOps Foundation membership.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Konnect Plus pricing, meters, hourly proration on 730 hours, calendar-month arrears billing, and USD-only payment are taken from Kong&rsquo;s pricing page.</li>
+<li><strong>High:</strong> AI Cost Management exports a <code>focus</code> dataset in versions 1.3 and 1.4, with estimates in all four cost columns for 1.3 and zero cost columns plus <code>x_ReportedCost</code> for 1.4; Kong documents the double-counting risk.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> Present status for invoice-sourced columns (ChargeDescription, InvoiceId, BillingAccountName). Kong publishes no invoice sample or field list, so presence is inferred from standard invoicing.</li>
+<li><strong>Moderate:</strong> Treating Enterprise contracted request volumes as commitment discounts. If Kong models them as flat Purchase entitlements with no per-unit rate benefit, the seven CommitmentDiscount columns become N/A.</li>
+<li><strong>Moderate:</strong> ServiceCategory and ServiceSubcategory mappings for an API platform; &ldquo;Integration&rdquo; and &ldquo;API Management&rdquo; are the closest v1.2 values but should be confirmed against the spec&rsquo;s allowed-value tables.</li>
+<li><strong>Low:</strong> A Konnect billing usage API. One search summary cited a <code>/kbilling/v1/usage</code> endpoint, but no published API reference confirms it.</li>
+<li><strong>Low:</strong> InvoiceIssuerName as &ldquo;Kong Inc.&rdquo; No public invoice names the issuing entity; non-US entities may invoice some contracts.</li>
+<li><strong>Low:</strong> Event Gateway and Mesh pricing. These were not verified on the public pricing page.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Kong Pricing: <a href="https://konghq.com/pricing">konghq.com/pricing</a></li>
+<li>Konnect Account and Billing and Usage: <a href="https://developer.konghq.com/konnect-platform/account/">developer.konghq.com/konnect-platform/account/</a></li>
+<li>Konnect Geos: <a href="https://developer.konghq.com/konnect-platform/geos/">developer.konghq.com/konnect-platform/geos/</a></li>
+<li>Konnect Labels: <a href="https://developer.konghq.com/konnect-platform/konnect-labels/">developer.konghq.com/konnect-platform/konnect-labels/</a></li>
+<li>Konnect Advanced Analytics API: <a href="https://docs.konghq.com/konnect/api/metrics/latest">docs.konghq.com/konnect/api/metrics/latest</a></li>
+<li>Konnect Explorer: <a href="https://developer.konghq.com/observability/explorer/">developer.konghq.com/observability/explorer/</a></li>
+<li>Kong Gateway License Entity and Report: <a href="https://developer.konghq.com/gateway/entities/license/">developer.konghq.com/gateway/entities/license/</a></li>
+<li>AI Cost Management Exports: <a href="https://developer.konghq.com/ai-cost-management/exports/">developer.konghq.com/ai-cost-management/exports/</a></li>
+<li>AI Cost Management Price Catalog: <a href="https://developer.konghq.com/ai-cost-management/price-catalog/">developer.konghq.com/ai-cost-management/price-catalog/</a></li>
+<li>AI Gateway Audit Log Reference: <a href="https://developer.konghq.com/ai-gateway/ai-audit-log-reference/">developer.konghq.com/ai-gateway/ai-audit-log-reference/</a></li>
+<li>Kong Blog, AI Gateway FinOps Integration (November 5, 2026): <a href="https://konghq.com/blog/product-releases/kong-ai-gateway-finops-integration">konghq.com/blog/product-releases/kong-ai-gateway-finops-integration</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

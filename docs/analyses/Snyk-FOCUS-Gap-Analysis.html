@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snyk &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Snyk-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="snyk-focus-data-generator-gap-analysis">Snyk &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Snyk Limited<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Source:</strong> Public Snyk documentation only: Credit-Based Billing policy (dated August 4, 2026); Snyk pricing page; Snyk Platform Subscription docs (Viewing your plan, Subscription mechanics, Enterprise contract types, Track credit consumption); SKU-based licensing usage settings; Snyk Learn lesson on reviewing credit consumption<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 16 Present, 11 Deviation, 3 Missing Mandatory, 20 Missing Conditional, 1 Missing Recommended, 6 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Snyk sells developer security testing: Snyk Code (SAST), Open Source (SCA), Container, IaC, Secrets, AI-SPM, API and Web (DAST), Coding Agent Security, and AI Pentesting. Its default Enterprise plan, the Snyk Platform Subscription, is consumption-based: customers prepay credits for the contract term and Snyk draws them down daily against a versioned rate card (for example, 1.0 credit per Active Contributor per day for Code, 0.33 per Monitored Image per day for Container, 4,000 per AI Pentesting assessment). The published list price is 1 credit = $1; each customer&rsquo;s per-credit price is set in its Order. Unused credits expire at term end, and consumption past the prepaid balance is invoiced in arrears. Free and Team plans, and older Enterprise contracts on SKU-based licensing, are priced per contributing developer instead.</p>
+<p><strong>Public billing documentation is thin.</strong> Snyk documents its rate card and units of measure in unusual detail, and the Tenant-level Billable Events Log records each consumption event by day, mapped to its Organization and Group, with a &ldquo;Download CSV&rdquo; button. But the CSV&rsquo;s columns are not documented, no REST API for usage, credits, or cost is documented, the log carries credits and counts but no dollar amounts, and nothing public describes invoice contents, tax, or the issuing entity. Every cost column below rests on the rate card and the Order&rsquo;s per-credit price, not on a documented data contract.</p>
+<p>Of the 21 Mandatory FOCUS columns, 18 have a source and 3 are missing. One gap is substantive: <strong>EffectiveCost</strong>, because prepaid credits bought at a negotiated per-credit price are drawn down daily and expire unredeemed at term end. <strong>ListCost</strong> and <strong>ContractedCost</strong> are rate-card joins. Because Snyk prices in credits and charges a contract-specific dollar price per credit, the four PricingCurrency columns apply, which is uncommon for a SaaS vendor and a good fit for what FOCUS v1.2 added them for.</p>
+<p><strong>Recommendation:</strong> Turn the Billable Events Log into a documented FOCUS export at the Tenant level: one Usage row per capability × Organization × day, quantity in the rate card&rsquo;s unit, priced in credits (PricingCurrency) and converted to USD at the Order&rsquo;s per-credit price, with a Purchase row for each credit pre-purchase or top-up, a CommitmentDiscount draw-down against the credit balance, and on-demand rows for overage. Expose it by API, not only as a UI download.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<ul>
+<li><strong>Billable Events Log</strong> (Tenant settings &gt; Plan and billing &gt; Credit breakdown; Tenant Admin role): Each consumption event &ldquo;by day as its own row, mapped to its Organization and Group.&rdquo; Defaults to the current billing period; date range adjustable. &ldquo;Download CSV&rdquo; exports the log. Data has a 24-hour lag. Column names are not documented; the implied fields are day, Organization, Group, capability, and billable event.</li>
+<li><strong>Credit breakdown charts:</strong> Monthly credit consumption by Group and by capability, filterable by Group, capability, and date range. Credits only, no dollars.</li>
+<li><strong>Your Plan page:</strong> Current billing period, available credits, enabled capabilities, and a badge showing whether the customer transacts through AWS Marketplace or Google Cloud Marketplace.</li>
+<li><strong>SKU-based licensing usage settings</strong> (legacy and self-serve plans): Group or Organization Settings &gt; Usage shows test usage for the current billing period and contributing developers, with a breakdown by integration (contributors, Organizations, repos). No export or cost data documented.</li>
+<li><strong>REST API:</strong> No usage, credit, billing, or invoice endpoint is documented. The <code>snyk scm contributors count</code> CLI tool counts contributing developers from source control for planning; it is not a billing record.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Rate card (credits per unit):</strong> Code 1.0 and Open Source 1.0 per Active Contributor per day; IaC 0.33, Secrets 0.66, and AI-SPM 0.66 per Active Contributor per day; Container 0.33 per Monitored Image per day; API and Web 3.0 per Provisioned Target per day; Coding Agent Security 1.0 per Active Machine per day; AI Pentesting 4,000 per completed Assessment.</li>
+<li><strong>Units of measure:</strong> An Active Contributor committed to a private, Snyk-monitored repo in a rolling 90-day window (human and non-human, deduplicated by email username; a partial day counts as a full day). Monitored Images deduplicate by SHA-256 digest across the account per day. A Provisioned Target is each unique base URL. An Active Machine is a device or virtual environment with qualifying telemetry that day.</li>
+<li><strong>Credits:</strong> Pre-purchased at the start of the subscription and valid for the full contract term; drawn down daily. Unused credits expire and are not refunded, credited, carried over, or transferred. Top-ups through the account team. After the balance is exhausted, consumption is on-demand and invoiced in arrears at the contract&rsquo;s per-credit price.</li>
+<li><strong>Versioned rate cards:</strong> Each Enterprise order form links a specific rate card version, which can differ from the published page. New capabilities join the rate card automatically but default to off.</li>
+<li><strong>Hierarchy:</strong> Tenant &gt; Group &gt; Organization &gt; Project. Billing lives at the Tenant. Contributor and image deduplication is account-wide, so per-Organization counts do not sum cleanly to the billed total.</li>
+<li><strong>Plans:</strong> Free ($0, 5 Projects, test limits); Team (from $25 per month, billed monthly, up to 10 developers, card payments through Stripe); Enterprise (Snyk Platform Subscription, contact sales). Legacy plans include SKU-based licensing priced on annual high-watermark license volume.</li>
+<li><strong>Currency:</strong> USD is the only currency mentioned.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. This analysis scopes the Snyk Platform Subscription, the default Enterprise plan and the only one with a documented consumption record. Consumption is mapped to Organizations within Groups, so the SubAccount family applies. Each billable unit (contributor, image, target, machine, assessment) is an identifiable entity, and Snyk Projects carry tags, so the Resource family and Tags apply. Prepaid term credits drawn down by usage, with overage billed separately, make the CommitmentDiscount family applicable. Snyk prices in credits at a contract-specific dollar rate, so the PricingCurrency family applies. Snyk has one billing account type, no regionally priced deployments or zones, and no capacity reservations; those columns are N/A and should exist as null. Feature levels follow the FOCUS v1.2 Content Constraints.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Snyk source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoices for credit pre-purchases, top-ups, and in-arrears overage; the Billable Events Log carries credits only, no dollar amounts</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs the Order&rsquo;s per-credit price amortized across credits drawn, plus expiry of unused credits at term end</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not exposed; rate card credits × quantity × $1 list price per credit</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not exposed; rate card credits × quantity × the Order&rsquo;s per-credit price</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Snyk Tenant ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Snyk Tenant name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>&ldquo;Current Billing Period&rdquo; start on the Your Plan page</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Billing period end (exclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Billable Events Log day</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Day plus one</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Not emitted; derive from capability and unit (e.g., &ldquo;Snyk Code: Active Contributor-Day&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for credit pre-purchases and top-ups; &ldquo;Usage&rdquo; for daily draw-down and on-demand overage; &ldquo;Tax&rdquo; if invoiced</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Snyk Limited&rdquo; for direct contracts; &ldquo;Amazon Web Services&rdquo; or &ldquo;Google Cloud&rdquo; for marketplace transactions (badge on Your Plan)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Snyk&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Snyk&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Capability: &ldquo;Snyk Code&rdquo;, &ldquo;Snyk Open Source&rdquo;, &ldquo;Snyk Container&rdquo;, &ldquo;Snyk IaC&rdquo;, &ldquo;Snyk Secrets&rdquo;, &ldquo;Snyk AI-SPM&rdquo;, &ldquo;Snyk API and Web&rdquo;, &ldquo;Snyk Coding Agent Security&rdquo;, &ldquo;Snyk AI Pentesting&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Security&rdquo; for all capabilities</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Daily count of billable units per capability; not documented as a log field, and deduplication is account-wide</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Not emitted; normalize to &ldquo;Contributor-Days&rdquo;, &ldquo;Image-Days&rdquo;, &ldquo;Target-Days&rdquo;, &ldquo;Machine-Days&rdquo;, &ldquo;Assessments&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Billable event count per day</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Implicit in the capability; normalize as for PricingUnit</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not in data; public rate card credits × $1</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed; rate card credits × the Order&rsquo;s per-credit price</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Committed&rdquo; for draw-down against prepaid credits; &ldquo;Standard&rdquo; for on-demand overage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>N/A: one account type (Tenant)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Organization ID on each Billable Events Log row</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not emitted; constant &ldquo;Organization&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not documented in the log; billed entity (contributor, image digest, target base URL, machine, or assessment)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not documented; entity display name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not documented; &ldquo;Contributor&rdquo;, &ldquo;Container Image&rdquo;, &ldquo;Target&rdquo;, &ldquo;Machine&rdquo;, &ldquo;Assessment&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; capability × unit codes</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Group is in the log and Project tags exist, but consumption is not attributed to Projects</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>Not emitted; &ldquo;Credits&rdquo; (Snyk&rsquo;s documented pricing unit for all capabilities)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Rate card credits per unit; public but not in data</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Credits per unit from the versioned rate card linked in the Order</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Credits drawn per row; shown in the UI but not documented in the CSV</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Implied by capability; no meter name emitted</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed; the versioned rate card linked in each Order belongs here</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; unit definition (90-day contributor window, digest deduplication) belongs here</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: no region appears in any pricing or billing surface</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Prepaid credit balance per Order or top-up; not exported</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Snyk Credits&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Spend&rdquo;; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo;/&rdquo;Unused&rdquo;; unused credits expire at term end but are not reported as rows</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Credits drawn from the balance</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;Credits&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number (invoice documents only; not in the Billable Events Log)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;One-Time&rdquo; or &ldquo;Recurring&rdquo; for credit purchases per the Order&rsquo;s payment schedule; &ldquo;Usage-Based&rdquo; for draw-down and overage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map each capability to an allowed v1.2 Security subcategory</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: Snyk operates the SaaS; zones are not customer-billed</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 16 Present, 11 Deviation, 3 Missing Mandatory, 20 Missing Conditional, 1 Missing Recommended, 6 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Tenant identity, USD billing, a public and precisely defined rate card, daily metering per capability, and a consumption log already mapped to Organization and Group. Snyk documents its units of measure (deduplication keys, rolling windows, partial-day rules) more rigorously than most SaaS vendors, which is the hard part of PricingQuantity.</p>
+<p><strong>Substantive (1 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Enterprise customers prepay credits at a negotiated per-credit price for the whole term; those credits are drawn down daily and expire unredeemed. EffectiveCost means amortizing each pre-purchase and top-up across the credits actually drawn, recording unused credits at expiry, and pricing overage at the contract rate. No documented surface carries a dollar figure at row level, let alone an amortized one.</li>
+</ul>
+<p><strong>Trivial (2 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Daily quantity × rate card credits × $1. Rates are flat per unit, so the join is direct, provided the published rate card is used rather than the Order&rsquo;s version.</li>
+<li><strong>ContractedCost.</strong> Daily quantity × the Order&rsquo;s rate card credits × the Order&rsquo;s per-credit price. Snyk&rsquo;s billing system already holds both; expose them per row.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No documented data contract or API.</strong> The Billable Events Log is a UI download with undocumented columns and no API. A FinOps platform cannot ingest it on a schedule without screen-level automation. This is the largest practical barrier, ahead of any single column.</li>
+<li><strong>Non-additive deduplication.</strong> Contributors are counted once per account per day across every Organization they commit to, and images once per digest. Splitting a single billed contributor-day across three Organizations needs an allocation rule Snyk must define and document, or per-Organization rows will overstate the bill.</li>
+<li><strong>No Project-level attribution.</strong> Chargeback in Snyk customers usually runs by application team, which maps to Projects and Project tags, not Organizations. Consumption stops at Organization.</li>
+<li><strong>Two billing models.</strong> Free, Team, and legacy SKU-based Enterprise customers have no credit ledger at all, only test counts and contributing developers. A FOCUS export for them would be a monthly or annual Purchase row per SKU with license quantity, which is simpler but different.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost:</strong> Emit Purchase rows for each credit pre-purchase and top-up, Usage rows for on-demand overage, and Tax rows where invoiced, so BilledCost summed per InvoiceId equals the invoice. Draw-down against prepaid credits carries BilledCost of zero.</p>
+<p><strong>ChargeCategory and ChargeFrequency:</strong> As in the table.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Security&rdquo; for every capability.</p>
+<p><strong>PricingQuantity and PricingUnit:</strong> One row per capability per day in the rate card&rsquo;s unit, using Snyk&rsquo;s own deduplication rules. Document the allocation rule when a contributor or image spans Organizations.</p>
+<p><strong>ChargeDescription, SubAccountType, SkuMeter, ConsumedUnit, PricingCategory:</strong> Derive from capability and purchase type.</p>
+<p><strong>Already right:</strong> USD billing, a flat published rate per unit, daily granularity, and a Tenant &gt; Group &gt; Organization hierarchy that maps directly to BillingAccount and SubAccount.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is a candidate release; its scope is on the FOCUS site. The v1.3 Contract Commitment dataset fits Snyk&rsquo;s term credit pre-purchases better than per-row CommitmentDiscount columns alone, and the v1.4 Invoice Detail dataset covers in-arrears overage invoices.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (single account type, no billed regions, zones, or reservations), the cross-Organization allocation rule, and the decision to model prepaid credits as a commitment discount.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Download one month of the Billable Events Log for a Platform Subscription tenant with an Order and an overage invoice. Document the CSV columns. Hand-build a v1.2 file and run it through the Validator. Settle the credit-as-commitment model and the cross-Organization allocation rule.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Join the published rate card for ListCost and the Order&rsquo;s rate card and per-credit price for ContractedCost. Amortize pre-purchases and top-ups for EffectiveCost. Emit Purchase, overage Usage, and Tax rows so BilledCost reconciles to invoices.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Derive ChargeCategory, ChargeFrequency, ServiceCategory, PricingCategory, SubAccountType, SkuMeter, and ChargeDescription; label units per capability.</p>
+<p><strong>Phase 3: Conditional columns and delivery.</strong> Populate the PricingCurrency family in credits; the CommitmentDiscount family for credit draw-down and expiry; the Resource family from the billed entity; SkuId, SkuPriceId (rate card version), and SkuPriceDetails; ListUnitPrice and ContractedUnitPrice; ServiceSubcategory; and Tags (Group, then Project tags once consumption reaches Projects). Deliver by REST API and scheduled push to object storage.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Contract Commitment and Invoice Detail datasets; extend the export to SKU-based and Team plans; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, actuals-based budgeting, and amortized spend reporting for Snyk.</li>
+<li><strong>After Phase 2:</strong> Security tooling spend by category alongside other providers, and mix analysis across Snyk capabilities.</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback by Group and Organization (and Project, if attribution extends); credit balance utilization and expiry-risk tracking; unit economics per contributor or per monitored image; anomaly detection on contributor and image growth; and comparison of credit-denominated and dollar-denominated cost.</li>
+<li><strong>Out of scope:</strong> Capacity reservation management, regional cost analysis, and multi-currency billing analysis.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Reach the owners of Snyk&rsquo;s Platform Subscription billing and the Billable Events Log.</li>
+<li>Obtain and document the Billable Events Log CSV columns, and ask whether a REST endpoint for it is planned.</li>
+<li>Confirm how pre-purchases, top-ups, overage, marketplace transactions, and tax appear on invoices, and which entity issues them.</li>
+<li>Ask how contributors and images that span Organizations are attributed, and whether Project-level attribution is feasible.</li>
+<li>Build a v1.2 sample from one billing month and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code> and confirm FinOps Foundation membership status.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Rate card, units of measure, daily draw-down, prepaid term credits, expiry without rollover, in-arrears overage, and 1 credit = $1 list come from Snyk&rsquo;s Credit-Based Billing policy (August 4, 2026) and pricing page.</li>
+<li><strong>High:</strong> The Billable Events Log exists at the Tenant level, records events by day mapped to Organization and Group, exports to CSV, and shows credits rather than dollars, per Snyk&rsquo;s Platform Subscription docs.</li>
+<li><strong>High:</strong> Feature levels match the bundled FOCUS v1.2 Content Constraints table (verified June 23, 2026); v1.4 remains the latest ratified version and v1.5 is a candidate release. A live spot-check through the FOCUS MCP was not run for this analysis.</li>
+<li><strong>Moderate:</strong> No usage or billing REST API exists. None appears in the docs reviewed, but Snyk&rsquo;s full API reference was not searched endpoint by endpoint.</li>
+<li><strong>Moderate:</strong> Present status for SubAccountId, SubAccountName, and ConsumedQuantity. The docs say rows map to Organization, but the CSV columns are unpublished.</li>
+<li><strong>Moderate:</strong> Present status for invoice-sourced columns (InvoiceId, billing periods). Snyk publishes no invoice sample.</li>
+<li><strong>Moderate:</strong> Treating prepaid credits as a spend commitment discount. If Snyk models them as simple prepayment, the seven CommitmentDiscount columns become N/A and the amortization moves entirely into EffectiveCost.</li>
+<li><strong>Moderate:</strong> PricingCurrency as applicable. It rests on Snyk naming credits &ldquo;the pricing unit for all capabilities&rdquo; with a contract-specific dollar price per credit.</li>
+<li><strong>Low:</strong> InvoiceIssuerName as &ldquo;Snyk Limited.&rdquo; It is the entity named in site footers (registered in England and Wales); no public invoice confirms it, and US customers may be invoiced by a different Snyk entity.</li>
+<li><strong>Low:</strong> RegionId as N/A. No billing surface shows region; if Snyk&rsquo;s regional hosting options carry different pricing, RegionId becomes applicable.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Snyk Credit-Based Billing policy: <a href="https://snyk.io/policies/credit-based-billing/">snyk.io/policies/credit-based-billing/</a></li>
+<li>Snyk Pricing: <a href="https://snyk.io/pricing/">snyk.io/pricing/</a></li>
+<li>Snyk Platform Subscription docs: <a href="https://docs.snyk.io/platform-administration/snyk-platform-subscription">docs.snyk.io/platform-administration/snyk-platform-subscription</a></li>
+<li>SKU-based licensing usage settings: <a href="https://docs.snyk.io/platform-administration/snyk-hierarchy/usage-settings">docs.snyk.io/platform-administration/snyk-hierarchy/usage-settings</a></li>
+<li>Snyk Learn, Review credit consumption for billing: <a href="https://learn.snyk.io/lesson/review-credit-consumption-for-billing/">learn.snyk.io/lesson/review-credit-consumption-for-billing/</a></li>
+<li><code>snyk scm contributors count</code>: <a href="https://docs.snyk.io/developer-tools/snyk-cli/scan-and-maintain-projects-using-the-cli/cli-tools/snyk-scm-contributors-count">docs.snyk.io</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

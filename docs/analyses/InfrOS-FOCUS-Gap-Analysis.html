@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>InfrOS &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/InfrOS-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="infros-focus-data-generator-gap-analysis">InfrOS &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Infros, Inc. (website operator and contracting entity: Cloudculate Ltd., Israel)<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> InfrOS website (home, product, pricing, terms, privacy, about); InfrOS blog (MCP setup instructions, FinOps cost optimization agent on Amazon Bedrock AgentCore); AWS Marketplace listings &ldquo;InfrOS&rdquo; and &ldquo;InfrOS on Nimbus&rdquo;; Toolradar pricing summary<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 7 Present, 21 Deviation, 3 Missing Mandatory, 8 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>InfrOS is an AI platform that turns business and technical requirements into cloud architectures for AWS, Google Cloud, Azure, and Oracle Cloud. It generates candidate designs, scores them on cost, performance, security, reliability, and other criteria, simulates them, and exports production-ready Terraform with embedded FinOps and compliance guardrails, then watches for drift. It is SaaS, not infrastructure: InfrOS charges for design and code-generation work, and the cloud spend it designs lands on the customer&rsquo;s own cloud bills.</p>
+<p>Pricing is a prepaid credit model. A design run costs 200 to 1,200 credits, an IaC export 100 to 400, and fixes and updates 50 to 400, scaled by complexity (number of clouds, business processes, compliance requirements, and availability zones). Credits belong to the organization, expire 12 months after purchase, and are non-refundable. The website lists only a 700-credit free trial and custom-priced Enterprise; self-serve plans and dollar prices appear only on two AWS Marketplace listings.</p>
+<p><strong>Public billing documentation is thin.</strong> InfrOS has no public documentation site (<code>docs.infros.io</code> does not resolve; <code>infros.io/docs</code> and <code>infros.io/faq</code> return 404). No billing API, usage export, CSV download, credit ledger, invoice format, or billing currency is documented for direct customers. The only billing surfaces described are a dashboard low-credit notification, an instant top-up, and a per-action credit quote from the InfrOS assistant before it spends credits. The website terms cover only the website and defer product terms to &ldquo;other specific agreements,&rdquo; which are not public. This analysis therefore assesses what InfrOS&rsquo;s billing model could supply, not a dataset that exists today.</p>
+<p>On that basis, of the 21 Mandatory columns, 7 map directly, 11 need derivation, and 3 are missing. <strong>2 of the 3 missing Mandatory columns are substantive.</strong> InfrOS prices in credits, not currency, and there is no single public price per credit: implied Marketplace rates run from $1.09 to $2.73 per credit, and Enterprise volumes carry custom discounts. ListCost needs InfrOS to define a list price per credit, and EffectiveCost needs every credit-consuming action traced back to the purchase that funded it. ContractedCost falls out of the same drawdown ledger.</p>
+<p>The encouraging part: FOCUS v1.2 was built for this model. The PricingCurrency column family supports virtual currencies such as credits, so InfrOS can publish credit prices natively and convert to USD for the cost columns. And InfrOS already computes and quotes the credit cost of every action before running it, so the per-action ledger almost certainly exists internally.</p>
+<p><strong>Recommendation:</strong> Publish a FOCUS export per organization with Purchase rows for credit packs and subscriptions (BilledCost in USD) and Usage rows per credit-consuming action per system per day (BilledCost 0, PricingCurrency &ldquo;InfrOS Credits&rdquo;, PricingCurrencyEffectiveCost in credits, EffectiveCost in USD from a first-in, first-out drawdown of the funding purchase), plus rows for expired credits. Deliver it as a dashboard CSV and through the existing MCP server&rsquo;s Read scope.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<ul>
+<li><strong>Dashboard:</strong> Shows a notification when credits run low and supports instant top-up. No usage history, credit ledger, invoice download, or export is documented.</li>
+<li><strong>InfrOS assistant and MCP server</strong> (<code>https://api.app.infros.io/assistant/mcp</code>): Scopes Read, Write, Spend, and Admin. &ldquo;Spend&rdquo; lets the assistant start design runs and Terraform generation &ldquo;which use your organization&rsquo;s credits&rdquo;; only organization admins can grant it, and the assistant &ldquo;always tells you the price first.&rdquo; No tool names are published and no balance, usage, or billing tool is described.</li>
+<li><strong>Direct purchases:</strong> Free trial (700 credits, no card) and Enterprise (&ldquo;custom pricing,&rdquo; &ldquo;custom credit volumes &amp; bulk discounts,&rdquo; user management). Credit packs can be bought anytime. Pack sizes, prices, currency, payment processor, and invoice structure are not published.</li>
+<li><strong>AWS Marketplace, &ldquo;InfrOS&rdquo;:</strong> SaaS contract, 1-month and 12-month terms. Dimensions <code>Spin-up</code> (1,100 credits, $3,000/month) and <code>Turbo Boost</code> (3,300 credits, $7,500/month). USD, billed on the AWS invoice.</li>
+<li><strong>AWS Marketplace, &ldquo;InfrOS on Nimbus&rdquo;:</strong> SaaS contract, 1-, 12-, 24-, and 36-month terms (12 to 36 months &ldquo;save up to&rdquo; 16% to 21%). Dimensions <code>Starter Plan</code> ($199/month), <code>Builder Plan</code> ($699/month), credit allocations not stated, and <code>Top-up 100 Credits</code> ($109, one-time). USD, billed on the AWS invoice.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Credit costs per action:</strong> Architecture design 200 to 1,200 credits (about 400 for a nominal architecture); IaC export 100 to 400; fixes and updates 50 to 400. Complexity drivers: number of cloud providers, business processes, compliance requirements, and availability zones. Published monthly usage examples: about 950, 2,850, and 5,500+ credits.</li>
+<li><strong>Implied price per credit:</strong> $1.09 (Nimbus top-up), $2.27 (<code>Turbo Boost</code>), $2.73 (<code>Spin-up</code>). Starter and Builder allocations are unpublished, so their rate cannot be computed. Whether Marketplace plans bundle anything beyond credits is not stated.</li>
+<li><strong>Expiry and refunds:</strong> Credits expire 12 months after purchase. All sales are final.</li>
+<li><strong>Hierarchy:</strong> Organization owns credits; work is organized as systems and versions. No sub-account, project, or team layer is documented. User management is Enterprise-only.</li>
+<li><strong>Region:</strong> None customer-facing. InfrOS runs as SaaS; the regions in its designs belong to the customer&rsquo;s clouds.</li>
+<li><strong>Entities:</strong> Site footer &ldquo;© Infros, Inc.&rdquo;; terms and privacy policy name &ldquo;Cloudculate Ltd.&rdquo; under Israeli law, Tel Aviv jurisdiction. The two Marketplace listings use different AWS seller IDs.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Because InfrOS has no customer billing dataset, this analysis marks a column Present when the value exists on a customer-visible InfrOS or AWS Marketplace surface and maps one-to-one, and Deviation when it exists but must be derived or re-cut. Missing means no documented surface carries it.</p>
+<p>InfrOS prices in credits and bills in USD (on Marketplace), which triggers the v1.2 PricingCurrency family; FOCUS v1.2&rsquo;s Currency Format attribute explicitly allows virtual currencies such as credits. InfrOS publishes no commitment discount or reservation program; prepaid credits are not a commitment discount in the FOCUS sense, so the CommitmentDiscount and CapacityReservation families are N/A. There is no sub-account layer, no customer-selectable region or zone, no documented tagging of InfrOS systems, and a single pricing category, so the SubAccount family, RegionId, RegionName, AvailabilityZone, Tags, and PricingCategory are N/A. Feature levels below follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>InfrOS source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Purchase amounts on the AWS invoice (Marketplace) or the direct invoice (format unpublished); no export. Usage rows carry 0 because credits are prepaid</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: credits consumed per action must be converted to USD at the paid price per credit of the funding purchase (first-in, first-out), plus expired-credit rows</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not available: no public list price per credit; implied rates range from $1.09 to $2.73</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not available: credits × paid price per credit of the funding pack (Marketplace term discount or Enterprise bulk discount)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>InfrOS organization ID; AWS account ID for Marketplace buyers</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo; on AWS Marketplace; direct-sale currency not published</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Calendar month on AWS; direct credit packs are bought on demand with no billing period. Define as calendar month</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>As above</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Not emitted; actions are discrete events on a system version. Aggregate to day</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>As above</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Not emitted; derive (e.g., &ldquo;Architecture design run · <system name>&ldquo;, &ldquo;Top-up 100 Credits&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Not emitted; &ldquo;Purchase&rdquo; for packs and plans, &ldquo;Usage&rdquo; for credit-consuming actions, &ldquo;Adjustment&rdquo; for expired credits, &ldquo;Tax&rdquo; where applied</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for reissued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Ambiguous for direct sales (&ldquo;Infros, Inc.&rdquo; vs. &ldquo;Cloudculate Ltd.&rdquo;); AWS for Marketplace purchases</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;InfrOS&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;InfrOS&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>&ldquo;InfrOS&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Not emitted; &ldquo;Developer Tools&rdquo; (architecture design and IaC generation)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Not emitted; 1 per action, or pack count for purchases</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Not emitted; &ldquo;Design Runs&rdquo;, &ldquo;IaC Exports&rdquo;, &ldquo;Fixes&rdquo;; &ldquo;Credit Packs&rdquo; for purchases</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Not emitted; 1 per action</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Not emitted; as PricingUnit</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not available: credits per action are public, USD per credit is not</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not available: depends on the funding pack&rsquo;s paid price per credit</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>N/A: one pricing category (&ldquo;Standard&rdquo;) across all SKUs</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Not emitted; &ldquo;Organization&rdquo; (direct) or &ldquo;AWS Marketplace Subscription&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>N/A: no sub-account, project, or team layer under an organization</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not on any billing surface; the system ID is the natural resource</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not on any billing surface; system name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not emitted; &ldquo;System&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Marketplace dimensions (<code>Spin-up</code>, <code>Turbo Boost</code>, <code>Starter Plan</code>, <code>Builder Plan</code>, <code>Top-up 100 Credits</code>) for purchases; no SKU for actions</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: no tagging of InfrOS systems documented (tags InfrOS writes into generated Terraform belong to the customer&rsquo;s cloud bills)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>Not emitted; &ldquo;InfrOS Credits&rdquo; (virtual currency)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Published credit ranges per action; the exact figure is quoted per action but not retained in any documented history</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= PricingCurrencyListUnitPrice (Enterprise discounts apply to credit purchase price, not credits per action); not emitted</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Credits deducted per action, quoted by the assistant; not emitted. 0 on Purchase rows</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Not exposed; &ldquo;Architecture Design&rdquo;, &ldquo;IaC Export&rdquo;, &ldquo;Fixes and Updates&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed; complexity tier</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for complexity drivers (clouds, business processes, compliance, zones)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: no customer-facing InfrOS region</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: no commitment discount program; prepaid credits are not a commitment discount</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>AWS invoice ID for Marketplace purchases; direct invoice numbering not documented</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Not emitted; &ldquo;One-Time&rdquo; for top-ups, &ldquo;Recurring&rdquo; for monthly plans, &ldquo;Usage-Based&rdquo; for actions</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not emitted; a Developer Tools subcategory</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: no customer-facing zones</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 7 Present, 21 Deviation, 3 Missing Mandatory, 8 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Organization as billing account, a single service, published credit costs per action, USD billing on Marketplace, and no commitment, reservation, region, or sub-account mechanics to model. The credit model maps directly onto FOCUS v1.2&rsquo;s virtual-currency columns.</p>
+<p><strong>Substantive (2 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Credits per action are public; USD per credit is not, and the channels disagree by a factor of 2.5 ($1.09 to $2.73). FOCUS needs a list price per credit to compute ListCost on usage rows. This is a pricing decision InfrOS must make and publish, not plumbing.</li>
+<li><strong>EffectiveCost.</strong> Each action&rsquo;s credits must be converted to USD at the price actually paid for the credits it consumed. With packs bought at different prices across channels, Marketplace terms with 16% to 21% discounts, and Enterprise bulk discounts, that requires a first-in, first-out drawdown ledger linking every action to its funding purchase. Credits forfeited at 12-month expiry need their own rows so the sum reconciles to what was paid.</li>
+</ul>
+<p><strong>Trivial (1 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ContractedCost.</strong> Once the drawdown ledger exists, ContractedCost is credits × the funding pack&rsquo;s paid price per credit, and equals EffectiveCost on usage rows.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No customer dataset.</strong> Every column above is a design target, not a delivered field. The first deliverable is a credit ledger export of any shape.</li>
+<li><strong>Two channels, two invoice issuers.</strong> Marketplace buyers are invoiced by AWS in USD and see contract-dimension charges on their AWS bill; direct buyers are invoiced by an InfrOS entity whose name, currency, and format are unpublished. Neither channel shows credit consumption. A FOCUS export must cover credit usage regardless of where the credits were bought.</li>
+<li><strong>Entity naming.</strong> &ldquo;Infros, Inc.&rdquo; and &ldquo;Cloudculate Ltd.&rdquo; both appear as the company. InvoiceIssuerName must match the entity on the invoice.</li>
+<li><strong>Allocation grain.</strong> Without a sub-account or team layer, the system is the only allocation key. Enterprise user management suggests user attribution exists; an <code>x_</code> user column would support showback by team.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>PricingCurrency family:</strong> Emit PricingCurrency &ldquo;InfrOS Credits&rdquo;, PricingCurrencyListUnitPrice and PricingCurrencyContractedUnitPrice as the credits quoted per action, and PricingCurrencyEffectiveCost as the credits deducted (0 on Purchase rows). This is where InfrOS&rsquo;s native pricing belongs in FOCUS.</p>
+<p><strong>PricingQuantity, PricingUnit, ConsumedQuantity, ConsumedUnit:</strong> Count actions, not credits: 1 &ldquo;Design Run&rdquo;, &ldquo;IaC Export&rdquo;, or &ldquo;Fix&rdquo; per usage row (aggregated per system per day); pack count for purchases.</p>
+<p><strong>ChargeCategory and ChargeFrequency:</strong> &ldquo;Purchase&rdquo; and &ldquo;One-Time&rdquo; or &ldquo;Recurring&rdquo; for packs and plans; &ldquo;Usage&rdquo; and &ldquo;Usage-Based&rdquo; for actions; &ldquo;Adjustment&rdquo; for expired credits.</p>
+<p><strong>Billing and charge periods:</strong> Adopt calendar-month billing periods for direct purchases and daily charge periods for actions.</p>
+<p><strong>InvoiceIssuerName, ServiceCategory, ChargeDescription, BillingAccountType, SkuId, InvoiceId:</strong> Derive as shown in the table.</p>
+<p><strong>Already right:</strong> Organization identity, USD on Marketplace, and the service name map cleanly.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is a release candidate with ratification scheduled for December 3, 2026; it tightens currency formatting so virtual currencies must not use ISO 4217 codes, which an &ldquo;InfrOS Credits&rdquo; value already satisfies. Multi-year Marketplace terms fit the v1.3 Contract Commitment dataset if InfrOS chooses to model them.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no sub-accounts, commitments, reservations, regions, zones, tags, or second pricing category), the list price per credit, and the drawdown and expiry rules.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of the internal credit ledger for a test organization with its matching purchases. Hand-build a FOCUS file, run it through the Validator, and settle the list price per credit, the drawdown rule, and the expiry treatment.</p>
+<p><strong>Phase 1: Ledger export.</strong> Ship a per-organization CSV and an MCP Read tool at system × action × day grain with BillingAccount, ChargePeriod, Service, Resource, Sku, Pricing, Consumed, and PricingCurrency columns, plus Purchase rows. This is the prerequisite for everything else.</p>
+<p><strong>Phase 2: Close Mandatory gaps.</strong> Publish the list price per credit for ListCost and ListUnitPrice; apply the drawdown ledger for EffectiveCost, ContractedCost, and ContractedUnitPrice; emit expired-credit and Tax rows that reconcile to purchases.</p>
+<p><strong>Phase 3: Fill Conditional and Recommended.</strong> Add SkuMeter, SkuPriceId, SkuPriceDetails (complexity tier and drivers), ServiceSubcategory, and InvoiceId for direct invoices. Add an <code>x_</code> user column for Enterprise organizations.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add recency and completeness metadata (v1.3) and the Invoice Detail dataset (v1.4); certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Today:</strong> Organization-level credit balance; Marketplace buyers see contract charges on their AWS bill.</li>
+<li><strong>After Phase 1:</strong> Credit burn by system and action type, credit-burn anomaly detection, and design-versus-export mix analysis.</li>
+<li><strong>After Phase 2:</strong> USD showback per system, effective cost per architecture delivered, reconciliation of consumption to purchases, and forecasting of credits at risk of expiry.</li>
+<li><strong>After Phase 3:</strong> User- or team-level showback for Enterprise organizations and unit cost comparison across complexity tiers.</li>
+<li><strong>Out of scope:</strong> Commitment discount utilization, capacity reservation management, region and zone analysis, and sub-account rollups.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the InfrOS contact from KubeCon NA 2026 to identify the owner of billing and the credit ledger.</li>
+<li>Ask InfrOS to confirm whether any credit history or invoice export exists beyond what the website describes, and which entity issues direct invoices, in what currency.</li>
+<li>Ask InfrOS to reconcile the two AWS Marketplace listings (credit allocations for Starter and Builder, and why implied price per credit ranges from $1.09 to $2.73) and to define a list price per credit.</li>
+<li>Build a v1.2 sample from one month of the credit ledger and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Credit costs per action, complexity drivers, 700-credit trial, Enterprise terms, and 12-month expiry, from the InfrOS pricing page.</li>
+<li><strong>High:</strong> Marketplace dimensions, prices, terms, and &ldquo;all sales are final,&rdquo; from the two AWS Marketplace listings.</li>
+<li><strong>High:</strong> No public documentation site, billing API, usage export, credit ledger, or invoice format; <code>docs.infros.io</code> did not resolve and <code>infros.io/docs</code> and <code>infros.io/faq</code> returned 404 on November 17, 2026.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; ChargeFrequency, ServiceSubcategory, PricingQuantity, Tags, PricingCurrency, PricingCurrencyEffectiveCost, PricingCategory, and the Currency Format attribute were spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> InfrOS retains a per-action credit ledger internally; inferred from per-action quotes and organization-level balances, not documented.</li>
+<li><strong>Moderate:</strong> No commitment discount program. None is published, but multi-year Marketplace terms and Enterprise bulk discounts could be modeled as commitments if InfrOS structures them that way.</li>
+<li><strong>Moderate:</strong> Marketplace purchases appear in buyers&rsquo; AWS billing data, and therefore AWS&rsquo;s FOCUS export, at contract-dimension grain only.</li>
+<li><strong>Low:</strong> Invoicing entity and currency for direct sales (&ldquo;Infros, Inc.&rdquo; vs. &ldquo;Cloudculate Ltd.&rdquo;), credit allocations for Starter and Builder, and whether Marketplace plans bundle anything beyond credits.</li>
+<li><strong>Low:</strong> Self-serve Starter ($199) and Builder ($699) plans appear on the Nimbus Marketplace listing and Toolradar but no longer on the InfrOS pricing page.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>InfrOS: <a href="https://infros.io">infros.io</a> · <a href="https://infros.io/product">Product</a> · <a href="https://infros.io/pricing">Pricing</a> · <a href="https://infros.io/about">About</a></li>
+<li>InfrOS Terms: <a href="https://infros.io/terms">infros.io/terms</a> · <a href="https://infros.io/privacy-policy">Privacy Policy</a></li>
+<li>InfrOS blog, MCP setup instructions: <a href="https://infros.io/blog-posts/mcp-setup-instructions">infros.io/blog-posts/mcp-setup-instructions</a></li>
+<li>InfrOS blog, FinOps cost optimization agent on Amazon Bedrock AgentCore: <a href="https://www.infros.io/blog-posts/finops-cost-optimization-agent-on-amazon-bedrock-agentcore">infros.io/blog-posts/finops-cost-optimization-agent-on-amazon-bedrock-agentcore</a></li>
+<li>AWS Marketplace, InfrOS: <a href="https://aws.amazon.com/marketplace/pp/prodview-6s4xb75sb5yru">prodview-6s4xb75sb5yru</a></li>
+<li>AWS Marketplace, InfrOS on Nimbus: <a href="https://aws.amazon.com/marketplace/pp/prodview-dur6kzbngjq5i">prodview-dur6kzbngjq5i</a></li>
+<li>Toolradar, InfrOS pricing: <a href="https://toolradar.com/tools/infros/pricing">toolradar.com/tools/infros/pricing</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a> · <a href="https://focus.finops.org/docs/specification/v1-2/attributes/currency-format/">Currency Format</a> · <a href="https://focus.finops.org/docs/specification/v1-2/columns/cost-and-usage/pricing-currency/">Pricing Currency</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

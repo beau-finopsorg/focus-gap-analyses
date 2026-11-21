@@ -4,6 +4,18 @@ Plain-language reports on how vendor billing and usage data lines up with the Fi
 
 There are 98 reports. Each one has an "Analysis run" date and is based on public documentation only.
 
+## Website
+
+The reports are published at https://beau-finopsorg.github.io/focus-gap-analyses/. The landing page is the readiness scorecard. The by-company index and an HTML page for each of the 98 reports are on the same site. The unofficial disclaimer is on every page.
+
+The site is GitHub Pages from the `main` branch, `/docs` folder. Everything in `docs/` is generated; do not edit it by hand. The markdown in `analyses/` stays the source of truth. After changing a report, the dashboard, the by-company index, `assets/site.css`, or `DISCLAIMER.md`, regenerate and commit `docs/`:
+
+```sh
+python3 scripts/build_pages.py
+```
+
+The script needs Python 3.9+ and the `markdown` package. It rebuilds `docs/` from scratch and exits non-zero if a report is missing a page or an internal link is broken.
+
 ## What's in the repo
 
 - Written analyses, one markdown file per vendor, in [analyses/](analyses/).

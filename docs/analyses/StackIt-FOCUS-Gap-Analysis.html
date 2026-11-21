@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STACKIT and FOCUS: Conformance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/StackIt-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="stackit-and-focus-conformance-gap-and-adoption-roadmap">STACKIT and FOCUS: Conformance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: July 6, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p>Provider: STACKIT (Schwarz Digits, Schwarz Group), the European sovereign cloud.
+Product in scope: STACKIT native FOCUS report (Beta) exported to Object Storage, complemented by the Cost API (v3) and Invoice Exporter API (v1).
+Prepared: 2026-07-06.
+Source analyzed: STACKIT public documentation (Costs and billing, FOCUS report Beta, Resource labelling, Cost Dashboard) and the downloadable STACKIT example FOCUS report (CSV, 1,000 sample rows).
+FOCUS baseline for scoring: v1.2 (current certification baseline). Build target: v1.4 (latest).</p>
+<p>STACKIT is not listed on focus.finops.org/get-started, so it is not a Supported (certified) provider. This report assesses readiness only.</p>
+<h2 id="executive-summary">Executive summary</h2>
+<p>STACKIT already generates a native FOCUS report. The Beta export emits all 57 FOCUS v1.2 columns by column ID, plus four provider-specific <code>x_</code> extension columns for the STACKIT project and customer hierarchy. In the example dataset the four cost columns reconcile exactly (BilledCost = EffectiveCost = ListCost = ContractedCost), currency is EUR, enum values are valid, resource identity is present, and tags are emitted as a key-value object. This is a near-conformant dataset, not a from-scratch build.</p>
+<p>The remaining work is narrow: STACKIT states GA is planned for H1/2026 and lists FOCUS conformant report certification as a planned feature. The substantive gaps are two Conditional families that STACKIT does not yet populate but that the platform hierarchy could support (SubAccount attribution) and resource naming (ResourceName is documented as planned). None of the Mandatory columns is a substantive data gap: every Mandatory column is populated in the sample.</p>
+<p>Four-stat summary:
+- 57 FOCUS columns (v1.2)
+- 57 present (all emitted; some Conditional columns null pending data)
+- 0 of 21 Mandatory gaps are substantive (all 21 Mandatory columns populated)
+- 1 deviation to review (Tags representation, see 1.5)</p>
+<p>Readiness (data source reviewed, not a certification result):
+- Cost: Strong
+- Granularity: Strong
+- Allocation: Partial
+- Coverage: Strong
+- FOCUS shape: Strong
+- Overall band: Partially aligned</p>
+<p>Recommendation: Run the example export and a live export through the FOCUS Validator, confirm the Tags representation against the Requirements Model, populate ResourceName and the SubAccount family (or document them as null-valid for the single-billing-account model), then pursue FinOps Certified FOCUS conformance.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<p>STACKIT is unusual among the providers assessed in this series: it ships a native FOCUS report rather than a proprietary schema that must be mapped. The gap analysis therefore reads less like a mapping exercise and more like a conformance review of an existing FOCUS dataset.</p>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>STACKIT exposes cost and usage data through three mechanisms:</p>
+<ul>
+<li>FOCUS report (Beta): a scheduled export in FOCUS format. STACKIT states it supports FOCUS versions 1.1 and 1.2, generates the report at billing-account level, supports all Mandatory (MUST) columns, and adds STACKIT-specific columns using the <code>x_</code> prefix. Reports are delivered daily at 12:00 UTC to the customer&rsquo;s own S3-compatible Object Storage bucket as compressed (gzip) CSV. The customer picks daily or monthly frequency and month-to-date or day-to-date reporting.</li>
+<li>Cost Dashboard and Cost API (v3): a per-project, per-customer-account, and per-partner cost view with daily granularity (previous day available after 07:30 UTC), SKU-level breakdown, and quantity consumed. Data is UTC and may change during the month, so historical requests are recommended from the first of the month to the prior day.</li>
+<li>Invoice Exporter API (v1): list-invoices and get-invoice-details endpoints returning dates, customer details, totals, and taxes.</li>
+</ul>
+<p>Granularity: daily charge records with SKU-level and resource-level detail. This satisfies the FOCUS expectation of sub-monthly charge periods.</p>
+<p>Format: the FOCUS export is a gzip CSV keyed by billing period and creation timestamp. Currency is EUR throughout. Timestamps and periods follow the FOCUS conventions.</p>
+<p>Key limitations observed:
+- Scope is a single billing account per customer account today, so multi-account roll-up is not yet exercised.
+- SubAccount columns are present but null in the sample; the project or folder hierarchy is carried in <code>x_</code> columns rather than the FOCUS SubAccount family.
+- ResourceName is present but empty in the sample; STACKIT documents it as a planned addition.
+- The Beta status means the schema may still change before GA.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory (must be present and populated where applicable), Conditional (required when the provider&rsquo;s model triggers the condition), Recommended (encouraged), or Optional. Conformance is judged column by column against the Content Constraints in the specification and, objectively, by the FOCUS Validator against the machine-readable Requirements Model.</p>
+<p>Feature levels in this report were verified against the FOCUS v1.2 specification. Custom, provider-specific columns are permitted when prefixed <code>x_</code>, which STACKIT uses correctly.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Status legend:
+- Present: emitted and aligned.
+- Present, deviation to fix: emitted, wrong format or invalid value.
+- Missing: Mandatory: required and absent (blocks conformance).
+- Missing: Recommended: encouraged, absent (does not block conformance).
+- Missing: Conditional: required when the model triggers the condition, absent and the condition applies.
+- N/A: null valid: Conditional or Recommended column that does not apply to STACKIT&rsquo;s model; present and null.</p>
+<p>Feature levels verified against the FOCUS Specification v1.2.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Present, null in sample (AZ-level billing exists)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Yes (0.021783, EUR)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Yes (&ldquo;Billing Account&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Yes (EUR)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>Present, null (no capacity reservations)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>Present, null</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Yes (&ldquo;Usage&rdquo;, valid enum)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory</td>
+<td>Present, null (correction-only)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Yes (&ldquo;Usage-Based&rdquo;, valid enum)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>Present, null (no commitments)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Present, null</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Present, null</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Present, null</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>Present, null</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Present, null</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>Present, null</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Yes (240, &ldquo;Gigabyte Hours&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Yes (&ldquo;Gigabyte Hours&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Yes (0.021783)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Yes (0.021783)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Yes (&ldquo;1004002901&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Yes (&ldquo;STACKIT GmbH &amp; Co KG&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Yes (0.021783)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>Yes (EUR)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Yes (240, &ldquo;Gigabyte Hours&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Yes (&ldquo;Gigabyte Hours&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (deprecated v1.3, removed v1.4)</td>
+<td>Yes (&ldquo;STACKIT GmbH &amp; Co KG&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (deprecated v1.3, removed v1.4)</td>
+<td>Yes (&ldquo;STACKIT GmbH &amp; Co KG&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Yes (&ldquo;eu01&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Yes (&ldquo;eu01&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Yes (resource UUID + component)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Present, empty in sample (documented as planned)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Yes (&ldquo;Storage&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Yes (&ldquo;Storage&rdquo;, valid enum)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Yes (&ldquo;Block Storage&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Yes (&ldquo;ST-0065901&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Present, empty in sample</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Present</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Present</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Present, null in sample</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Present, null in sample</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Present, null in sample</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Yes (key-value object)</td>
+<td>Present, deviation to review</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reading the tally: all 21 Mandatory columns are present and populated, and none is a substantive data gap. All four Recommended columns (AvailabilityZone, ChargeFrequency, InvoiceId, ServiceSubcategory) are present, with AvailabilityZone null-valid for the sampled resource. Of the 32 Conditional columns, most are present and populated; the commitment-discount and capacity-reservation families are correctly null (STACKIT sells no commitment-based discounts or capacity reservations in this dataset); and a small set (ResourceName, SubAccount family, SkuMeter) is present but empty where the platform could supply data. One column, Tags, carries a representation worth confirming against the Requirements Model.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p>Solved:
+- The cost columns. This is the finding that matters most. In the sample, BilledCost = EffectiveCost = ListCost = ContractedCost = 0.021783 EUR. STACKIT is pay-as-you-go with hourly metering and no commitment discounts, credits, or amortization in this dataset, so list, billed, effective, and contracted cost legitimately coincide. This is the benign case of equal cost columns, not the list-cost trap: there is no downstream invoice-time adjustment layer that the daily feed is failing to reconcile.
+- Granularity. Daily charge records at SKU and resource level.
+- FOCUS shape. Column IDs are correct, currency is ISO 4217 EUR, enum values sampled are valid (ChargeCategory &ldquo;Usage&rdquo;, ChargeFrequency &ldquo;Usage-Based&rdquo;, ServiceCategory &ldquo;Storage&rdquo;), and extension columns use the <code>x_</code> prefix.
+- Coverage. Every Mandatory column populated and most applicable Conditional columns populated.</p>
+<p>Remaining (all narrow, none blocking on cost):
+- ResourceName: present but empty; STACKIT documents it as planned. This is the clearest substantive-but-small gap: the data exists in the platform and simply is not yet mapped into the export.
+- SubAccount family (SubAccountId, SubAccountName, SubAccountType): present but null. STACKIT&rsquo;s allocation hierarchy (organization, folder, project) is currently carried in <code>x_ProjectId</code>, <code>x_ProjectName</code>, <code>x_CustomerAccountId</code>, and <code>x_CustomerAccountName</code> rather than in the FOCUS SubAccount columns. Deciding whether the STACKIT project maps to SubAccount is a modeling choice, not a missing-data problem.
+- SkuMeter: present but empty in the sample; populate where a meter distinguishes SKU price points.</p>
+<h3 id="15-deviations-to-review">1.5 Deviations to review</h3>
+<ul>
+<li>Tags: the export emits tags as a JSON object, correctly CSV-quoted, for example <code>{"team":"compliant-coders","department":"IT","product-id":"hello-world-app"}</code>. FOCUS represents tags as key-value pairs, and a JSON object of user labels is an accepted representation. Confirm against the Requirements Model that the serialization (a single JSON object string in the Tags column) matches the expected key-value structure, and that STACKIT-applied versus user-applied tag handling follows the current guidance. This is a representation check, not a known error.</li>
+</ul>
+<p>What is already done right: correct column IDs, EUR currency, valid enums, resource identity, daily periods, and disciplined use of the <code>x_</code> prefix for the four extension columns. This is the shape a conformant dataset should have.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>STACKIT supports v1.1 and v1.2 today and lists FOCUS 1.3 adoption as planned. Baseline conformance work against v1.2, which is the current certification baseline. Design toward v1.4: in v1.3 the ProviderName and Publisher columns are deprecated (removed in v1.4), and v1.4 adds Invoice Detail and billing-period datasets for reconciliation. Because STACKIT already ships InvoiceId in the export, the move to v1.4 reconciliation datasets is a natural next step rather than a rebuild.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The badge has historically been &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;; confirm the current badge version against the program page before finalizing. Contact member-cert@finops.org for the RFI. Membership is required for certification, though contributing to the spec is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Tooling: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter, and the FOCUS Requirements Model. STACKIT already publishes a downloadable example FOCUS report, which covers part of the public-sample-data deliverable.</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p>Phase 0: validate what exists. Run the published example export and a live export through the FOCUS Validator against v1.2. Confirm scope, version, and the Tags representation against the Requirements Model. This is low effort because the dataset is already FOCUS-shaped.</p>
+<p>Phase 1: close the small Conditional gaps. Populate ResourceName (documented as planned), decide and implement the SubAccount mapping for the STACKIT project or folder hierarchy (or document those columns as null-valid for the single-billing-account model), and populate SkuMeter where applicable.</p>
+<p>Phase 2: confirm and lock representations. Resolve the Tags serialization question, confirm enum coverage across all ServiceCategory and ChargeCategory values the catalog can emit, and validate that periods are inclusive-start, exclusive-end.</p>
+<p>Phase 3: exit Beta and certify. Reach GA (planned H1/2026), then pursue FinOps Certified FOCUS conformance with a conformant dataset, public sample, native-to-FOCUS mapping, and this gap report.</p>
+<p>Phase 4: mature toward v1.4. Adopt v1.3 (dropping the deprecated ProviderName and Publisher path), then v1.4, adding the Invoice Detail and billing-period datasets for reconciliation. Re-certify against the then-current baseline.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<p>Available now, because daily, resource-level, SKU-level, EUR cost data with valid enums already exists:
+- Analyze costs by service name.
+- Analyze service costs by region.
+- Analyze service costs month over month.
+- Analyze resource costs by SKU.
+- Analyze costs of components of a resource (the STACKIT price-component model maps directly).
+- Compare resource usage month over month.
+- Identify anomalous daily spending (by resource or project, adapted for the single-account model).
+- Analyze tag coverage (once the Tags representation is confirmed).
+- Determine Effective Savings Rate (trivially zero today, since effective equals list; the query still runs).</p>
+<p>Unlocked by Phase 1 allocation work:
+- Analyze cost per compute service for a subaccount and Analyze service costs by subaccount, once the STACKIT project or folder hierarchy is mapped to the SubAccount family (today these run against the <code>x_Project</code> columns instead).
+- Compare billed cost per subaccount to budget.</p>
+<p>Out of scope for STACKIT&rsquo;s current model:
+- Commitment-discount coverage, effective-cost breakdown, and savings-rate-by-commitment use cases: STACKIT sells no commitment-based discounts in this dataset, so the commitment-discount family is null-valid.
+- Capacity-reservation analysis: no capacity reservations in this dataset.
+- Multi-currency allocation: STACKIT bills in EUR only.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Run the published example FOCUS report and a live export through the FOCUS Validator against v1.2 and record the results.</li>
+<li>Confirm the Tags representation and the SubAccount versus <code>x_Project</code> modeling choice against the FOCUS Requirements Model.</li>
+<li>Populate ResourceName in the export (documented as planned) and decide the SubAccount mapping.</li>
+<li>On reaching GA, contact member-cert@finops.org for the FinOps Certified FOCUS RFI and assemble the four certification deliverables.</li>
+<li>Plan the v1.3 then v1.4 migration, retiring the deprecated ProviderName and Publisher path and adding the reconciliation datasets.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>STACKIT emits a native FOCUS report supporting v1.1 and v1.2, at billing-account level, delivered daily to Object Storage as gzip CSV: high confidence, from STACKIT documentation and the downloadable example export.</li>
+<li>All 57 v1.2 columns present plus four <code>x_</code> extension columns; all 21 Mandatory columns populated in the sample: high confidence, verified directly against the example CSV header and sample rows.</li>
+<li>Cost columns reconcile (BilledCost = EffectiveCost = ListCost = ContractedCost) and this is the benign equal-cost case, not the list-cost trap: high confidence for the sampled pay-as-you-go usage; medium confidence that no product line anywhere introduces credits or adjustments that would separate the cost columns, since the sample is limited to usage rows.</li>
+<li>ResourceName, SubAccount family, and SkuMeter are present but empty in the sample: high confidence from the sample; ResourceName is documented by STACKIT as planned.</li>
+<li>Tags representation (JSON object) is an accepted key-value form pending a Requirements Model confirmation: medium confidence, flagged for validation rather than asserted conformant.</li>
+<li>Feature levels verified against the bundled v1.2 reference; the bundled table&rsquo;s SPEC_VERSIONS_AS_OF stamp (2026-06-23) was cross-checked against the live FOCUS spec pages (v1.2 current certification baseline, v1.4 latest, ratified 2026-06-04) and matched, so no refresh was required.</li>
+<li>STACKIT is not a Supported (certified) provider on focus.finops.org/get-started as of the prepared date: high confidence.</li>
+<li>Not a formal certification result. This score reflects the data source reviewed.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>STACKIT docs, Understand cloud costs and billing: https://docs.stackit.cloud/platform/cost-and-billing/</li>
+<li>STACKIT docs, FOCUS report (Beta): https://docs.stackit.cloud/platform/cost-and-billing/focus/</li>
+<li>STACKIT example FOCUS report (CSV): https://docs.stackit.cloud/platform/cost-and-billing/focus/ (Example FOCUS report download)</li>
+<li>STACKIT docs, Download FOCUS reports from Object Storage: https://docs.stackit.cloud/platform/cost-and-billing/how-tos/download-focus-report-from-object-storage/</li>
+<li>STACKIT docs, Resource labelling: https://docs.stackit.cloud/platform/cost-and-billing/labels/</li>
+<li>STACKIT docs, Cost Dashboard and Cost API (v3): https://docs.stackit.cloud/platform/cost-and-billing/cost-dashboard/</li>
+<li>STACKIT docs, Retrieve invoices (Invoice Exporter API v1): https://docs.stackit.cloud/platform/cost-and-billing/how-tos/retrieve-stackit-invoices/</li>
+<li>STACKIT pricing: https://stackit.com/en/prices/cloud</li>
+<li>FOCUS Specification: https://focus.finops.org/focus-specification/</li>
+<li>FinOps Foundation FOCUS: https://focus.finops.org/</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alibaba Cloud and FOCUS: Conformance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/AlibabaCloud-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="alibaba-cloud-and-focus-conformance-gap-and-adoption-roadmap">Alibaba Cloud and FOCUS: Conformance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Provider in scope:</strong> Alibaba Cloud (Standard Bill &ldquo;FOCUS 1.0 with Alibaba Cloud columns,&rdquo; Preview)
+<strong>Prepared:</strong> July 1, 2026
+<strong>Source analyzed:</strong> Alibaba Cloud User Center documentation, &ldquo;Export FOCUS 1.0 with Alibaba Cloud columns (Preview) data&rdquo; and the companion &ldquo;FOCUS 1.0 with Alibaba Cloud columns (Preview) conformance gaps&rdquo; page (both last updated July 22, 2025), plus the FOCUS get-started listing for Alibaba Cloud.
+<strong>FOCUS baseline for scoring:</strong> v1.2 (the current certification baseline). <strong>Version shipped by the provider:</strong> v1.0.</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Alibaba Cloud ships a real FOCUS export today. It publishes a &ldquo;Standard Bill FOCUS&rdquo; dataset branded &ldquo;FOCUS 1.0 with Alibaba Cloud columns (Preview),&rdquo; delivered to an Object Storage Service (OSS) bucket on a monthly subscription, with the FOCUS column IDs, key-value tags, and the core cost columns already in place. The get-started page lists the supported version as v1.0, and the export is explicitly an invitational Preview.</p>
+<p>The gap is therefore about version and completeness, not existence. Measured against the v1.2 certification baseline, two things stand out. First, the export targets v1.0, so the columns added in v1.1 and v1.2 (BillingAccountType, SubAccountType, InvoiceId, the pricing-currency family, ServiceSubcategory, capacity-reservation columns, SKU Meter and SKU Price Details, and CommitmentDiscountQuantity/Unit) are simply out of scope for the current build. Second, within the v1.0 columns it does emit, Alibaba&rsquo;s own documentation lists a set of columns that are null for all line items today: ChargeDescription, ConsumedQuantity, ConsumedUnit, ContractedCost, ContractedUnitPrice, SkuId, and SkuPriceId. Several of these are Mandatory in v1.2.</p>
+<p>The single most consequential gap is ContractedCost, which is Mandatory and non-nullable in v1.2 but null for all line items in the current export. BilledCost, EffectiveCost, and ListCost are present and non-null, which is the harder half of the cost picture. The export also carries two flagged deviations: timestamps use UTC+08:00 rather than UTC, and the commitment-discount columns exist but are not populated with used or unused data.</p>
+<p><strong>Stat strip:</strong> 57 FOCUS columns (v1.2 baseline); 33 present and conformant; 5 of 8 Mandatory gaps are substantive; 2 deviations to fix.</p>
+<p><strong>Recommendation:</strong> Treat this as a mature Preview that is close on shape and cost coverage but incomplete on populated fields and one version behind the certification baseline. Prioritize populating ContractedCost, ConsumedQuantity/ConsumedUnit, and ChargeDescription, then convert timestamps to UTC, then move the build target from v1.0 to v1.2.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Alibaba Cloud exposes FOCUS data through the Expenses and Costs console under Bills &gt; Bill Subscription. A subscriber selects &ldquo;FOCUS Billing Data&rdquo; as the export type, picks a start billing month, and points the subscription at an OSS bucket and directory. Files are compressed .zip, split into parts for large months (<code>..._part_001.zip</code>), and named <code>{Account UID}_{Site ID}_{Bill Type}_{YYYYMM}.zip</code>, where Site ID 1 is the China site and 2 is the International site. The finalized file for a given month is pushed after 12:00 on the 4th day of the following month.</p>
+<p>Characteristics relevant to conformance:</p>
+<ul>
+<li>Granularity: the export carries charge-period columns (ChargePeriodStart, ChargePeriodEnd) alongside billing-period columns, so line items are resolved below the monthly billing period. This supports charge-level analysis.</li>
+<li>Format: FOCUS column IDs are used directly, Tags is typed as JSON (key-value), and currency and cost columns are typed as expected.</li>
+<li>Alibaba-specific columns: the export appends provider columns using an <code>X_</code> prefix (X_CommodityCode, X_CommodityName, X_BillingItemCode, X_BillingItemName, X_InstanceID), which is the correct FOCUS convention for custom columns.</li>
+<li>Stated limitation: Alibaba documents that the export is &ldquo;for analytical purposes only and can not be used as a basis for reconciliation,&rdquo; directing users to the official bill overview for settlement and payment. This is a material caveat for actuals-based use cases.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory (must be present and populated per its rules), Conditional (required when the provider&rsquo;s business model triggers the condition), Recommended (encouraged), or Optional. Conformance is judged column by column against the Requirements Model, which encodes the MUST, SHOULD, and MAY rules. A dataset conforms to a version when every Mandatory column is present and correctly populated and every applicable Conditional column is present.</p>
+<p>Feature levels in this report are taken from the verified v1.2 reference and were spot-checked against the live FOCUS specification. v1.2 defines 57 columns: 21 Mandatory, 32 Conditional, and 4 Recommended (AvailabilityZone, ChargeFrequency, InvoiceId, ServiceSubcategory).</p>
+<p>Because Alibaba ships a v1.0 export, some v1.2 Mandatory and Conditional columns did not exist in the version it built to. Those are marked as version-scope gaps in the table below, distinct from columns Alibaba emits but leaves null.</p>
+<h3 id="13-column-by-column-status-v12-baseline">1.3 Column-by-column status (v1.2 baseline)</h3>
+<p>Status legend: Present (emitted and aligned); Present, deviation (emitted, wrong format or value); Missing: Mandatory (required, absent or null); Missing: Recommended; Missing: Conditional (applies but absent); N/A: null valid (Conditional/Recommended that does not apply, should exist and be null).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.1</td>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>BilledCost</td>
+<td>M</td>
+<td>Yes, non-null</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.6</td>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.7</td>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present, deviation</td>
+</tr>
+<tr>
+<td>3.8</td>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present, deviation</td>
+</tr>
+<tr>
+<td>3.9</td>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>3.10</td>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>3.11</td>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.12</td>
+<td>ChargeClass</td>
+<td>M</td>
+<td>Yes (nullable)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.13</td>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>Emitted but null for all rows</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>3.14</td>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.15</td>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present, deviation</td>
+</tr>
+<tr>
+<td>3.16</td>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present, deviation</td>
+</tr>
+<tr>
+<td>3.17</td>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>Emitted, not populated</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.18</td>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>Emitted, not populated</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.19</td>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>Emitted, not populated</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.20</td>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.21</td>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>Emitted, not populated</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.22</td>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>Emitted, not populated</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.23</td>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.24</td>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Emitted but null for all rows</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.25</td>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>Emitted but null for all rows</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.26</td>
+<td>ContractedCost</td>
+<td>M</td>
+<td>Emitted but null for all rows</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>3.27</td>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>Emitted but null for all rows</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.28</td>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>Yes, non-null</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.29</td>
+<td>InvoiceId</td>
+<td>R</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>3.30</td>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.31</td>
+<td>ListCost</td>
+<td>M</td>
+<td>Yes, non-null</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.32</td>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>Yes (nullable in some scenarios)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.33</td>
+<td>PricingCategory</td>
+<td>C</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.34</td>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.35</td>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.36</td>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.37</td>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.38</td>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.39</td>
+<td>PricingUnit</td>
+<td>M</td>
+<td>Yes (nullable in some scenarios)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.40</td>
+<td>ProviderName</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.41</td>
+<td>PublisherName</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.42</td>
+<td>RegionId</td>
+<td>C</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.43</td>
+<td>RegionName</td>
+<td>C</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.44</td>
+<td>ResourceId</td>
+<td>C</td>
+<td>Yes (nullable for some offerings)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.45</td>
+<td>ResourceName</td>
+<td>C</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.46</td>
+<td>ResourceType</td>
+<td>C</td>
+<td>Yes (nullable for some offerings)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.47</td>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.48</td>
+<td>ServiceName</td>
+<td>M</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.49</td>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>No (added in v1.1)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>3.50</td>
+<td>SkuId</td>
+<td>C</td>
+<td>Emitted but null for all rows</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.51</td>
+<td>SkuMeter</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.52</td>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.53</td>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>Emitted but null for all rows</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.54</td>
+<td>SubAccountId</td>
+<td>C</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.55</td>
+<td>SubAccountName</td>
+<td>C</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.56</td>
+<td>SubAccountType</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.57</td>
+<td>Tags</td>
+<td>C</td>
+<td>Yes (JSON key-value)</td>
+<td>Present</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Reading the tally:</strong> 33 columns Present and conformant. 8 Mandatory columns fall short of the v1.2 rules: 6 through timestamp deviations (BillingPeriodStart/End, ChargePeriodStart/End) that carry correct data in a near-correct shape, plus ChargeDescription and ContractedCost, which are null for all line items. Counting distinct Mandatory columns that need data or a fix: ChargeDescription and ContractedCost are the two data gaps, and the four timestamp columns are a single systematic deviation. The Conditional gaps split into columns Alibaba emits but leaves null (ConsumedQuantity, ConsumedUnit, ContractedUnitPrice, SkuId, SkuPriceId, and the commitment-discount family) and columns that did not exist in v1.0 (the pricing-currency family, SubAccountType, BillingAccountType, SKU Meter/Price Details, CommitmentDiscountQuantity/Unit).</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What is solved, and what remains</h3>
+<p><strong>Solved (the hard parts):</strong></p>
+<ul>
+<li>Three of four cost columns are present and non-null: BilledCost, EffectiveCost, and ListCost. Getting EffectiveCost right (amortized, after discounts) is the difficult half of the cost model, and Alibaba populates it.</li>
+<li>Account and attribution identity is in place: BillingAccountId/Name, SubAccountId/Name, ResourceId/Name/Type, RegionId/Name, AvailabilityZone, and key-value Tags. This is a strong allocation foundation.</li>
+<li>Service classification (ServiceCategory, ServiceName), charge classification (ChargeCategory, ChargeClass, ChargeFrequency), and pricing quantity/unit are present.</li>
+<li>FOCUS shape is correct: FOCUS column IDs, JSON key-value tags, and <code>X_</code>-prefixed custom columns.</li>
+</ul>
+<p><strong>Substantive gaps (real data not currently in the export):</strong></p>
+<ul>
+<li>ContractedCost (Mandatory): null for all line items. This is the one Mandatory cost column missing, and it requires surfacing negotiated/contracted pricing back to each line.</li>
+<li>ConsumedQuantity and ConsumedUnit (Conditional): null for all line items, though Alibaba clearly supports usage measurement, so the condition applies.</li>
+<li>ContractedUnitPrice (Conditional): null for all line items.</li>
+<li>Commitment-discount population: the columns exist but do not carry used/unused data for RI and resource-plan discounts, so amortized commitment analysis is not yet possible from this export.</li>
+</ul>
+<p><strong>Trivial or version-scope gaps (plumbing, not a data problem):</strong></p>
+<ul>
+<li>ChargeDescription (Mandatory, nullable-tolerant in practice) is a text field Alibaba can populate from existing commodity/billing-item names it already emits in <code>X_</code> columns.</li>
+<li>SkuId and SkuPriceId (Conditional) map to Alibaba&rsquo;s existing commodity/billing-item identifiers.</li>
+<li>The v1.1 and v1.2 columns absent from this v1.0 build (BillingAccountType, SubAccountType, InvoiceId, pricing-currency family, ServiceSubcategory, SKU Meter/Price Details, capacity-reservation family, CommitmentDiscountQuantity/Unit) are version-scope, addressed by moving the build target to v1.2.</li>
+</ul>
+<p>The reconciliation caveat matters here. Alibaba states the export is for analysis, not reconciliation. That signals BilledCost/EffectiveCost on this feed may not tie exactly to the settled invoice, so any actuals-based use should reconcile against the official bill.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<ul>
+<li>Timestamp time zone: BillingPeriodStart/End and ChargePeriodStart/End are emitted in ISO 8601 but with UTC+08:00 offsets (for example, <code>2025-05-01T00:00:00+08:00</code>). FOCUS requires date/time values in UTC. This is a straightforward conversion.</li>
+<li>Commitment-discount population: the commitment-discount columns are present but not populated with used or unused rows, so they do not yet meet the Conditional requirement for a provider that supports commitment discounts.</li>
+</ul>
+<p>Done right already: Tags is JSON key-value (not an array of bare strings), custom columns use the <code>X_</code> prefix, and currency uses standard codes.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Alibaba ships v1.0 today. The certification baseline is v1.2, and the latest ratified version is v1.4. The pragmatic path is to close the v1.0 population and deviation gaps first (they apply regardless of version), then advance the build target to v1.2 to align with the certification baseline, picking up the v1.1 and v1.2 columns along the way. Designing toward v1.2 now avoids reworking the schema twice.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The current program is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;; the RFI contact is member-cert@finops.org. Membership is required for certification, though contributing to the spec is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is a seed for that). Open tooling supports the work: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the machine-readable FOCUS Requirements Model. The get-started listing does not assert a formal certification for Alibaba Cloud; it lists the supported version as v1.0.</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate what exists.</strong> Run a sample export through the FOCUS Validator against v1.0 to establish a baseline, and confirm which columns are null-for-all versus conditionally null. Confirm scope and the reconciliation caveat with stakeholders.</p>
+<p><strong>Phase 1: Close the substantive Mandatory and near-Mandatory data gaps.</strong> Populate ContractedCost (Mandatory), ConsumedQuantity and ConsumedUnit, and ContractedUnitPrice. Populate ChargeDescription from existing commodity/billing-item text. This unlocks the bulk of allocation and usage analysis.</p>
+<p><strong>Phase 2: Fix the deviations.</strong> Convert all four timestamp columns to UTC. Populate the commitment-discount columns with used/unused rows for RI and resource plans, or document why the condition does not apply where it genuinely does not.</p>
+<p><strong>Phase 3: Round out Conditional and Recommended columns within v1.0 scope.</strong> Populate SkuId and SkuPriceId from Alibaba&rsquo;s commodity/billing-item identifiers.</p>
+<p><strong>Phase 4: Advance the build target to v1.2 and certify.</strong> Add the v1.1 and v1.2 columns (BillingAccountType, SubAccountType, InvoiceId, pricing-currency family, ServiceSubcategory, SKU Meter/Price Details, capacity-reservation columns, CommitmentDiscountQuantity/Unit), re-validate against v1.2, and pursue the FinOps Certified FOCUS v1.2 Conformant program.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<ul>
+<li>Available now (resource-, tag-, region-, and charge-period data plus BilledCost/EffectiveCost/ListCost exist): cost allocation by tag and sub-account, service and region spend breakdowns, effective-cost trending, and cross-provider normalization for multi-cloud reporting.</li>
+<li>Unlocked by Phase 1: usage-normalized efficiency analysis (needs ConsumedQuantity/Unit) and contracted-rate analysis (needs ContractedCost/ContractedUnitPrice).</li>
+<li>Unlocked by Phase 2: commitment-discount coverage and utilization reporting (needs populated commitment-discount rows), and any time-zone-sensitive daily reconciliation (needs UTC timestamps).</li>
+<li>Out of scope until Phase 4 or by model: capacity-reservation reporting and SKU Meter/Price Details analysis (not in the v1.0 build). Invoice-accurate reconciliation is limited by the provider&rsquo;s stated &ldquo;analysis only&rdquo; caveat and should reconcile against the official bill.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Run a current sample export through the FOCUS Validator (v1.0) to confirm the null-for-all column set and establish a measured baseline.</li>
+<li>Scope Phase 1: populate ContractedCost, ConsumedQuantity/ConsumedUnit, ContractedUnitPrice, and ChargeDescription.</li>
+<li>Convert the four timestamp columns from UTC+08:00 to UTC.</li>
+<li>Decide the target version (recommend v1.2) and map the v1.1/v1.2 additions to Alibaba&rsquo;s native billing model.</li>
+<li>Engage member-cert@finops.org to understand the v1.2 conformance RFI and deliverables.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>Version shipped (v1.0) and Preview status: high confidence. The get-started page lists &ldquo;Version Supported: v1.0,&rdquo; and Alibaba&rsquo;s own docs title the feature &ldquo;FOCUS 1.0 with Alibaba Cloud columns (Preview).&rdquo;</li>
+<li>Delivery mechanism (OSS subscription, monthly, zip, finalized after the 4th): high confidence, taken directly from Alibaba&rsquo;s export guide.</li>
+<li>The null-for-all and deviation lists (ChargeDescription, ConsumedQuantity/Unit, ContractedCost, ContractedUnitPrice, SkuId, SkuPriceId null; UTC+08:00 timestamps; unpopulated commitment discounts): high confidence, taken directly from Alibaba&rsquo;s published conformance-gaps page.</li>
+<li>Present/Conditional classifications for columns Alibaba lists as populated (RegionId/Name, ResourceId/Name/Type, PricingCategory, SubAccountId/Name, Tags): solid confidence, based on the documented column list and descriptions rather than an inspected sample file.</li>
+<li>Feature levels: verified against the bundled v1.2 reference and spot-checked against the live spec on this date (ChargeClass Mandatory/nullable, ChargeFrequency Recommended confirmed). No cache refresh required.</li>
+<li>Substantive-versus-trivial calls and the RAG score reflect the documented data source, not a Validator run on a live sample; a Validator pass in Phase 0 is the objective arbiter.</li>
+<li>Overall data quality for this analysis: solid. Alibaba publishes both a column dictionary and an explicit conformance-gaps page, which is unusually complete source material.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>FOCUS get-started listing, Alibaba Cloud: https://focus.finops.org/get-started/alibaba-cloud/</li>
+<li>Alibaba Cloud, &ldquo;Export FOCUS 1.0 with Alibaba Cloud columns (Preview) data&rdquo;: https://www.alibabacloud.com/help/en/user-center/export-alibaba-cloud-standard-billing-focus</li>
+<li>Alibaba Cloud, &ldquo;FOCUS 1.0 with Alibaba Cloud columns (Preview) conformance gaps&rdquo;: https://www.alibabacloud.com/help/en/user-center/alibaba-cloud-focus-1-0-preview-field-differences</li>
+<li>FinOps Foundation, &ldquo;Building a FOCUS Data Export Pipeline for Alibaba Cloud&rdquo;: https://www.finops.org/assets/building-a-focus-data-export-pipeline-for-alibaba-cloud/</li>
+<li>FOCUS Specification: https://focus.finops.org/focus-specification/</li>
+<li>FinOps Certified FOCUS Conformant program: https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

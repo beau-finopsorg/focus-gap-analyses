@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tigris &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Tigris-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="tigris-focus-data-generator-gap-analysis">Tigris &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Tigris Data Inc.<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Tigris public pricing page and <code>pricing.md</code>; Tigris docs (billing, organizations, bucket locations, storage tiers, S3 API compatibility, Partner Integrations API); Tigris blog (billing on Prometheus, Fly.io billing launch); Fly.io Tigris and pricing docs<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 11 Present, 12 Deviation, 4 Missing Mandatory, 12 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Tigris is a globally distributed, S3-compatible object storage service. Buckets default to a Global location that places data near where it is accessed, with Multi-region, Dual-region, and Single-region options. Pricing is simple and fully published: storage per GB-month by tier and location type, Class A and Class B requests per 1,000, object notifications per 1,000, retrieval fees on two tiers, and zero egress. Customers buy direct from Tigris Data Inc. or through Fly.io, which passes Tigris charges through on the Fly invoice.</p>
+<p><strong>Public billing documentation is thin.</strong> Tigris documents a dashboard Usage page, monthly invoices and receipts, and nothing else a customer can pull programmatically. There is no billing export, cost API, CSV download, or customer-facing metrics endpoint, and the S3 bucket metrics and inventory APIs return 501. The only usage and invoice API is the Partner Integrations API, which is partner-only and whose endpoint reference pages returned 404 on November 17, 2026, so its fields are not public. Several Tigris doc pages cited by search engines also returned 404. This analysis therefore assesses what Tigris&rsquo;s billing model and data model could supply, not a dataset that exists today.</p>
+<p>On that basis, of the 21 Mandatory columns, 10 map directly, 7 need derivation, and 4 are missing. <strong>2 of the 4 missing Mandatory columns are substantive.</strong> BilledCost and EffectiveCost exist only as invoice totals; the free tier (5 GB Standard storage, 10,000 Class A and 100,000 Class B requests per month) and any credits are applied at the organization-month level and would have to be allocated back to bucket-by-day rows. ListCost and ContractedCost are a price-sheet join once usage exists at meter grain.</p>
+<p>The encouraging part: Tigris already computes billing from per-organization, per-bucket Prometheus metrics (request counts, storage by tier), and already produces daily per-organization usage for partners. The data exists inside Tigris; it is not exposed to customers.</p>
+<p><strong>Recommendation:</strong> Publish a daily FOCUS export per organization with one row per bucket × meter (storage tier and location type, Class A requests, Class B requests, retrieval, notifications) × day, carrying bucket name, location, bucket tags, and priced ListCost, BilledCost, and EffectiveCost, with free-tier allocation and Credit and Tax rows that reconcile to the invoice. Deliver it as a dashboard download and an API, and extend the same export to the Partner Integrations API so Fly.io can pass it through.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<ul>
+<li><strong>Dashboard Usage page:</strong> Current and historical charges, plus downloadable past invoices and receipts. Shows storage size and object count per bucket. No documented line-item or CSV export.</li>
+<li><strong>Monthly invoice:</strong> Calendar-month, USD, issued at period end and auto-charged. Stripe is the billing system. Invoice line structure is not documented.</li>
+<li><strong>Partner Integrations API</strong> (<code>mgmt.storage.dev</code>): Get Account Invoice (consolidated monthly per partner), Get Invoice (monthly per organization), and Get Usage (daily per organization). Partner-only; field names are not public; per-bucket breakdown is not documented.</li>
+<li><strong>Internal metering:</strong> Per Tigris&rsquo;s September 23, 2025 engineering blog, charges are computed from Prometheus metrics in VictoriaMetrics, per organization and per bucket, including request counts and storage tier. No customer metrics endpoint is documented.</li>
+<li><strong>Fly.io path:</strong> Buckets created through Fly appear on the regular Fly bill under the Fly organization; there is no separate Tigris invoice or account.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Storage tiers (single-region / multi-region, per GB-month):</strong> Standard $0.02 / $0.025; Infrequent Access $0.01 / $0.015 (30-day minimum, $0.01/GB retrieval); Archive $0.004 / $0.006 (90-day minimum, about one-hour restore); Archive Instant Retrieval $0.004 / $0.006 (90-day minimum, $0.03/GB retrieval). S3 storage classes <code>STANDARD</code>, <code>STANDARD_IA</code>, <code>GLACIER</code>, <code>GLACIER_IR</code>.</li>
+<li><strong>Location types:</strong> Global (default, $0.02/GB-month Standard, no per-region charge), Multi-region (USA or EUR), Dual-region (billed at single-region price per region), Single-region. Region codes <code>sjc</code>, <code>ord</code>, <code>iad</code>, <code>ams</code>, <code>fra</code>. Price varies by location type, not by region.</li>
+<li><strong>Requests:</strong> Class A (PUT, COPY, POST, LIST) $0.005 per 1,000 single-region, $0.01 per 1,000 multi-region; Class B (GET, SELECT, others) $0.0005 per 1,000. DELETE, CANCEL, and unauthorized requests are free.</li>
+<li><strong>Other meters:</strong> Object notifications $0.01 per 1,000 events. Egress is free. No fees for forks, snapshots, or lifecycle rules.</li>
+<li><strong>Free tier:</strong> 5 GB Standard storage, 10,000 Class A, and 100,000 Class B requests per month.</li>
+<li><strong>Enterprise:</strong> &ldquo;Custom&rdquo; pricing by contacting sales. No committed-use, reserved, or prepaid terms are published.</li>
+<li><strong>Hierarchy:</strong> User, Organization (billed separately, roles Owner/Admin/Member), Bucket. No projects or sub-accounts.</li>
+<li><strong>Tags:</strong> S3 <code>PutBucketTagging</code> and <code>PutObjectTagging</code> are supported. The console has no tag UI, and nothing indicates tags reach billing.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Because Tigris has no customer billing dataset, this analysis marks a column Present when the value exists in a customer-visible Tigris surface (dashboard, invoice, organization settings) and maps one-to-one, and Deviation when it exists but must be derived or re-cut. Missing means no documented customer surface carries it.</p>
+<p>Tigris publishes no commitment, reservation, or prepaid program, so the CommitmentDiscount and CapacityReservation families are N/A. Organizations have no sub-account layer, so the SubAccount family is N/A. Pricing and billing are USD only, so the PricingCurrency family is N/A. Zones are not exposed, so AvailabilityZone is N/A. Tigris does deploy into named regions and supports bucket tags, so RegionId, RegionName, and Tags apply. Feature levels below follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Tigris source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice totals only; free tier and credits applied at organization-month level, never at bucket or day grain</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>No amortization needed (no published commitments), but requires the same free-tier and credit allocation as BilledCost</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not in data; public price sheet × usage by tier, location type, and request class</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not in data; = ListCost for self-serve, custom Enterprise rate otherwise</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Tigris organization ID; Fly organization ID for Fly-provisioned buckets</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>First day of calendar month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>First day of following month (exclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Monthly only for customers; daily exists in partner Get Usage and internal metrics</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>As above</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Invoice line text (undocumented); derive from meter, tier, and location (e.g., &ldquo;Standard storage · single-region · iad&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for metered lines; &ldquo;Credit&rdquo; for free tier and promotional credits; &ldquo;Tax&rdquo; where applied</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued invoices</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Tigris Data Inc.&rdquo; for direct; &ldquo;Fly.io&rdquo; for Fly-provisioned buckets</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Tigris&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Tigris&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>&ldquo;Tigris Object Storage&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Not emitted; constant &ldquo;Storage&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>GB-months, 1,000-request blocks, GB retrieved, 1,000 notifications; free tier makes storage and requests tiered, so compute against the rate basis</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Not emitted; normalize to &ldquo;GB-Months&rdquo;, &ldquo;1000 Requests&rdquo;, &ldquo;GB&rdquo;, &ldquo;1000 Events&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Storage bytes by tier and request counts exist in internal metrics; dashboard shows storage size per bucket</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Implied; emit &ldquo;GB-Months&rdquo;, &ldquo;Requests&rdquo;, &ldquo;GB&rdquo;, &ldquo;Events&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not in data; public price sheet</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not in data; = ListUnitPrice for self-serve, Enterprise contract otherwise</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; for all metered usage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Not emitted; &ldquo;Organization&rdquo; (direct) or &ldquo;Fly Organization&rdquo; (via Fly)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>N/A: no project or sub-account layer under an organization</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not on any billing surface; bucket is the natural resource (bucket names are unique)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not on any billing surface; bucket name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not emitted; &ldquo;Bucket&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; tier × location type × meter forms a small SKU set</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>S3 bucket tags exist; not carried into billing</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced and billed in USD only</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Not exposed; &ldquo;Storage&rdquo;, &ldquo;Class A Requests&rdquo;, &ldquo;Class B Requests&rdquo;, &ldquo;Retrieval&rdquo;, &ldquo;Object Notifications&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for tier, location type, and minimum storage duration</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Not on billing surfaces; bucket location config (<code>sjc</code>, <code>ord</code>, <code>iad</code>, <code>ams</code>, <code>fra</code>, or Global/Multi-region)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Not on billing surfaces</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: no published commitment program</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number on downloadable invoices</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Usage-Based&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not emitted; &ldquo;Object Storage&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: zones are not exposed</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 11 Present, 12 Deviation, 4 Missing Mandatory, 12 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Organization as billing account, USD-only calendar-month billing, invoice numbers, a single service with a small and fully published price sheet, and no commitment or reservation mechanics to model. Tigris&rsquo;s pricing is among the easiest in this library to express in FOCUS.</p>
+<p><strong>Substantive (2 of 4 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>BilledCost.</strong> Customers get invoice totals only. Row-level BilledCost requires pricing each bucket-by-meter-by-day row, allocating the monthly free tier across rows, and emitting Credit and Tax rows so the sum reconciles to the invoice.</li>
+<li><strong>EffectiveCost.</strong> With no published commitments, EffectiveCost equals BilledCost on usage rows, but it inherits the same free-tier and credit allocation. If Enterprise contracts include prepaid or committed spend, amortization is added.</li>
+</ul>
+<p><strong>Trivial (2 of 4 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Join the public price sheet by tier, location type, and request class. Storage and requests are tiered by the free allowance, so compute against the rate basis rather than copying consumption.</li>
+<li><strong>ContractedCost.</strong> Equals ListCost for self-serve; join the Enterprise contract rate otherwise.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No customer dataset.</strong> Every column above is a design target, not a delivered field. The first deliverable is an export of any shape.</li>
+<li><strong>No bucket grain.</strong> Billing is computed per bucket internally but surfaced per organization. Without bucket rows there is no showback, chargeback, or tag-based allocation.</li>
+<li><strong>Fly.io pass-through.</strong> Fly-provisioned usage is billed by Fly under a Fly organization. A Tigris FOCUS export only reaches those customers if Fly carries it, which depends on the Partner Integrations API exposing it.</li>
+<li><strong>Global location.</strong> Global buckets have no fixed region. RegionId needs a rule (null, or a synthetic &ldquo;global&rdquo; value) and SkuPriceDetails must carry the location type that actually drives price.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>PricingQuantity, PricingUnit, ConsumedQuantity, ConsumedUnit:</strong> Emit storage as GB-Months per tier and location type, requests in their native counts with PricingUnit &ldquo;1000 Requests&rdquo;, retrieval in GB, and notifications as &ldquo;1000 Events&rdquo;. Keep minimum-duration charges for early-deleted Infrequent Access and Archive objects as their own rows.</p>
+<p><strong>ChargePeriodStart and ChargePeriodEnd:</strong> Move from monthly to daily, which Tigris already produces for partners.</p>
+<p><strong>ServiceCategory, ChargeCategory, ChargeFrequency, PricingCategory, ChargeDescription, BillingAccountType:</strong> Derive as shown in the table.</p>
+<p><strong>Already right:</strong> Organization identity, USD currency, calendar-month billing periods, and invoice numbers map cleanly.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is in release candidate with ratification scheduled for December 3, 2026. The Invoice Detail dataset (v1.4) suits the Fly.io consolidated-invoice path.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no sub-accounts, commitments, reservations, zones, or alternate currencies) and the RegionId rule for Global buckets.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of internal per-bucket metrics for a test organization with the matching invoice. Hand-build a FOCUS file, run it through the Validator, and settle the free-tier allocation rule and the Global-bucket RegionId rule.</p>
+<p><strong>Phase 1: Export.</strong> Ship a daily per-organization CSV and API at bucket × meter × day grain with BillingAccount, ChargePeriod, Service, Resource, Region, Sku, Pricing, and Consumed columns. This is the prerequisite for everything else.</p>
+<p><strong>Phase 2: Close Mandatory gaps.</strong> Price each row for ListCost and ListUnitPrice; join Enterprise rates for ContractedCost and ContractedUnitPrice; allocate the free tier and credits for BilledCost and EffectiveCost; emit Credit and Tax rows that reconcile to the invoice.</p>
+<p><strong>Phase 3: Fill Conditional and Recommended.</strong> Carry S3 bucket tags into Tags as key-value pairs; add SkuPriceId, SkuPriceDetails, and ServiceSubcategory. Expose the same export through the Partner Integrations API for Fly.io.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add recency and completeness metadata (v1.3) and the Invoice Detail dataset (v1.4); certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Today:</strong> Monthly organization-level spend from invoices; manual per-bucket storage trending from the dashboard.</li>
+<li><strong>After Phase 1:</strong> Per-bucket usage trending, request-pattern anomaly detection, and tier-mix analysis.</li>
+<li><strong>After Phase 2:</strong> Invoice reconciliation, bucket-level showback and chargeback in dollars, and actuals-based budgeting and forecasting.</li>
+<li><strong>After Phase 3:</strong> Tag-based allocation, cross-provider object storage unit cost comparison (Tigris vs. S3, R2, GCS), and Fly.io customers seeing Tigris spend in FOCUS.</li>
+<li><strong>Out of scope:</strong> Commitment utilization, capacity reservation management, availability zone analysis, and sub-account rollups.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Tigris contact from KubeCon NA 2026 to identify the owner of billing and the Partner Integrations API.</li>
+<li>Ask Tigris to confirm whether any customer usage export exists that the public docs do not describe, and to share the Get Usage and Get Invoice field schemas.</li>
+<li>Confirm the invoicing legal entity, tax handling, credit programs, and whether Enterprise contracts include committed spend.</li>
+<li>Build a v1.2 sample from one month of per-bucket metrics and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Published prices, tiers, location types, region codes, free-tier allowances, and zero egress, from the Tigris pricing page, <code>pricing.md</code>, and docs.</li>
+<li><strong>High:</strong> No customer billing export, cost API, or metrics endpoint is publicly documented, and S3 bucket metrics and inventory APIs return 501.</li>
+<li><strong>High:</strong> Fly-provisioned Tigris usage is billed on the Fly invoice, per Fly.io docs.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> Billing is computed from per-organization, per-bucket Prometheus metrics, per Tigris&rsquo;s own engineering blog rather than product docs.</li>
+<li><strong>Moderate:</strong> &ldquo;Tigris Data Inc.&rdquo; as InvoiceIssuerName; the service terms page returned 404 and the name rests on a search-result snippet.</li>
+<li><strong>Moderate:</strong> No commitment program. None is published, but Enterprise pricing is &ldquo;custom&rdquo;; if contracts include committed spend, the seven CommitmentDiscount columns become applicable.</li>
+<li><strong>Low:</strong> Partner Integrations API fields and grain; endpoint reference pages returned 404 on November 17, 2026.</li>
+<li><strong>Low:</strong> Infrequent Access minimum duration (current pages say 30 days; an archived snippet said 90), the &ldquo;$50 free credits&rdquo; offer, tax handling, and invoice line structure, none of which could be confirmed from live pages.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Tigris Pricing: <a href="https://www.tigrisdata.com/pricing/">tigrisdata.com/pricing</a> · <a href="https://www.tigrisdata.com/pricing.md">pricing.md</a></li>
+<li>Tigris Billing: <a href="https://www.tigrisdata.com/docs/account-management/billing/">tigrisdata.com/docs/account-management/billing</a></li>
+<li>Tigris Organizations: <a href="https://www.tigrisdata.com/docs/account-management/organizations/">tigrisdata.com/docs/account-management/organizations</a></li>
+<li>Tigris Bucket Locations: <a href="https://www.tigrisdata.com/docs/buckets/locations/">tigrisdata.com/docs/buckets/locations</a></li>
+<li>Tigris Storage Tiers: <a href="https://www.tigrisdata.com/docs/objects/tiers/">tigrisdata.com/docs/objects/tiers</a></li>
+<li>Tigris S3 API Compatibility: <a href="https://www.tigrisdata.com/docs/api/s3/">tigrisdata.com/docs/api/s3</a></li>
+<li>Tigris Partner Integrations: <a href="https://tigrisdata.com/docs/partner-integrations/">tigrisdata.com/docs/partner-integrations</a></li>
+<li>Tigris blog, billing on Prometheus (Sept. 23, 2025): <a href="https://www.tigrisdata.com/blog/billing-prometheus/">tigrisdata.com/blog/billing-prometheus</a></li>
+<li>Tigris blog, enabling billing in July: <a href="https://www.tigrisdata.com/blog/enabling-billing-for-tigris-in-july/">tigrisdata.com/blog/enabling-billing-for-tigris-in-july</a></li>
+<li>Fly.io Tigris docs: <a href="https://docs.fly.io/tigris">docs.fly.io/tigris</a> · <a href="https://docs.fly.io/about/pricing/">Fly.io Pricing</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

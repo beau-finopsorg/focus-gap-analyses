@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harness &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Harness-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="harness-focus-data-generator-gap-analysis">Harness &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Harness Inc.<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Public Harness documentation only: Harness pricing page; Developer 360 pricing announcement; Subscriptions and Licenses docs (Account Settings &gt; Subscriptions, Cloud Credits); CI subscription and Harness Cloud credit docs; Cloud Marketplace offerings docs; Cloud &amp; AI Cost Management (CACM) Custom Cost Provider and data ingestion reference<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 16 Present, 8 Deviation, 3 Missing Mandatory, 19 Missing Conditional, 1 Missing Recommended, 10 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Harness sells a software delivery platform: Continuous Integration, Continuous Delivery &amp; GitOps, Infrastructure as Code Management (IACM), Security Testing Orchestration (STO), Supply Chain Security (SCS), Feature Management &amp; Experimentation (FME), Internal Developer Portal (IDP), Chaos Engineering, Service Reliability Management (SRM), Database DevOps, Software Engineering Insights, and Cloud &amp; AI Cost Management (CACM, formerly CCM). It bills on four meters at once: per-developer licenses (&ldquo;Developer 360&rdquo;), consumption entitlements bundled with those licenses (services, executions, scans), CACM licensed on managed cloud spend, and Harness Cloud credits drawn down per build minute.</p>
+<p><strong>Public billing documentation is thin.</strong> Harness publishes no billing API, no invoice field definitions, and no usage export. The richest surface is the in-app <strong>Cloud Credits</strong> page, which breaks credit usage down by organization, project, and resource class, and even that sits behind a feature flag (<code>PL_ENABLE_LICENSE_USAGE_COMPUTE</code>). Plan names are inconsistent across Harness&rsquo;s own pages (Free/Enterprise in the docs, Free/Essentials/Enterprise on the pricing page, Free/Startup/Enterprise in the CI limits tables), and Essentials and Enterprise are &ldquo;priced by quotation.&rdquo; Every Present status below rests on in-app pages and standard invoicing, not on a documented data contract.</p>
+<p>Harness touches FOCUS in two directions:</p>
+<ol>
+<li><strong>Harness as a data generator for its own charges.</strong> Weak. Of the 21 Mandatory columns, 18 have a source and 3 are missing. One gap is substantive: <strong>EffectiveCost</strong>, because licenses are contracted up front and Harness Cloud credits are prepaid, roll over, and expire after a year. <strong>ListCost</strong> and <strong>ContractedCost</strong> are price-book joins.</li>
+<li><strong>Harness as a FOCUS consumer.</strong> CACM&rsquo;s Custom Cost Provider ingests third-party spend as a FOCUS CSV. It references FOCUS v1.1, lists 17 columns as &ldquo;mandatory,&rdquo; and omits BilledCost, ListCost, and BillingCurrency. It lags the spec by three releases.</li>
+</ol>
+<p>The irony is the headline. A Harness customer can load a SaaS vendor&rsquo;s FOCUS file into Harness CACM, but cannot load Harness&rsquo;s own bill, including the CACM license itself, because Harness does not produce one.</p>
+<p><strong>Recommendation:</strong> Turn the Cloud Credits breakdown into a monthly FOCUS export per account: one Usage row per resource class × project × day for credit consumption, Purchase rows for license terms and credit packs, a CommitmentDiscount draw-down against prepaid credits, and Tax and Credit rows so the dataset reconciles to the invoice. Publish it through the same API surface CACM already uses, and let CACM ingest it natively as the reference implementation.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>Harness&rsquo;s own billing data (the subject of the column table):</p>
+<ul>
+<li><strong>Account Settings &gt; Subscriptions:</strong> Plan type, subscribed limits, start and expiry dates, developer license counts, consumption entitlements, and &ldquo;License Utilization&rdquo; (users over licenses). Payment details and billing admins live under Account Settings &gt; Billing. Self-service &ldquo;is not available for all modules.&rdquo; No export is documented.</li>
+<li><strong>Cloud Credits page</strong> (feature flag <code>PL_ENABLE_LICENSE_USAGE_COMPUTE</code>): &ldquo;Available Credits,&rdquo; &ldquo;Month-to-date Credit Usage,&rdquo; &ldquo;Next Expiry Date,&rdquo; and &ldquo;Credit Overage&rdquo;; a <strong>Credits Breakdown</strong> by organization, project, or resource class with date filters; and a <strong>Credits Allocation</strong> table with Start Date, Expiry Date, Type (Free, Team, Enterprise), Quota, Used, Available, and Status. No pipeline-level breakdown is documented.</li>
+<li><strong>Invoices:</strong> Credit overages are invoiced in arrears and due within 30 days. No public invoice sample or field list. No documented invoice download API.</li>
+<li><strong>Pricing page:</strong> Prices in USD. Free is $0; Essentials (CD &amp; GitOps, CI, IACM, STO; one organization, up to 500 users) and Enterprise are priced by quotation.</li>
+<li><strong>Harness Cloud credit rates</strong> (effective September 1, 2026): credits = execution minutes × minute multiplier, at $0.005 per credit. Linux AMD64 runs from xsmall (×1, $0.005 per minute) to xxxlarge (×48, $0.24 per minute); Windows from small (×4) to xxxlarge (×96); macOS ARM64 M4 medium is ×36 ($0.18 per minute).</li>
+</ul>
+<p>Harness&rsquo;s FOCUS intake for third-party spend (assessed separately in 1.4):</p>
+<ul>
+<li><strong>CACM Custom Cost Provider:</strong> UI upload of a FOCUS CSV (20 MB per file) under External Cost Data Sources. Data feeds Perspectives, Budgets, Cost Categories, and the Unified BI dashboard source.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Meters:</strong> Developer licenses (CODE, CI, IDP, AIDI, FME count developers directly). Consumption entitlements per developer: 1 service per 3 developers (CD &amp; GitOps, SRM, Chaos), 120 IACM executions per developer per year, 100 STO scans and 100 SCS executions per developer per month; add-ons purchasable. Database DevOps is licensed per database instance. CACM is &ldquo;licensed as a Monthly/Annual Cloud Spend that is managed and optimized via Harness.&rdquo;</li>
+<li><strong>Credits:</strong> Free plans get 2,000 credits per month, expiring at month end. Paid credits roll over month to month and generally expire one year from purchase. Usage beyond the pool is allowed and invoiced in arrears.</li>
+<li><strong>Hierarchy:</strong> Account &gt; Organization &gt; Project. Credit usage is already attributed to organization and project.</li>
+<li><strong>Marketplaces:</strong> AWS Marketplace (contract purchase, then a CSM provisions the license) and Google Cloud Marketplace (Software Delivery Platform as private offer; Continuous Delivery as private or public offer). Azure Marketplace is not listed.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Harness groups usage into organizations and projects and already attributes credit consumption to them, so the SubAccount family applies. Prepaid Harness Cloud credits are a spend commitment drawn down by usage with overage billed at a separate rate, so this analysis treats the CommitmentDiscount family as applicable. Harness has one billing account type, no customer-selected pricing regions or zones in any billing surface, no capacity reservations, and USD-only pricing; those columns are N/A and should exist as null. Feature levels follow the FOCUS v1.2 Content Constraints.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Harness source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice amount; no line-level export per module, meter, or project</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs amortization of up-front license terms and prepaid credit packs, and allocation of free monthly credits</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not exposed; credit price ($0.005) × credits is public, license prices are quoted</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not exposed; contract rate card × PricingQuantity</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Harness account ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Harness account name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice period start</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice period end (exclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Credits Breakdown date filter; license term start</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Credits Breakdown date filter; license term end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Invoice line description</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for license terms and credit packs; &ldquo;Usage&rdquo; for credit consumption and overage; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; from the invoice</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Harness Inc.&rdquo; for direct; &ldquo;Amazon Web Services&rdquo; or &ldquo;Google&rdquo; for marketplace purchases</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Harness&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Harness&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Harness module (e.g., &ldquo;Continuous Integration&rdquo;, &ldquo;Continuous Delivery &amp; GitOps&rdquo;, &ldquo;Security Testing Orchestration&rdquo;, &ldquo;Cloud &amp; AI Cost Management&rdquo;, &ldquo;Harness Cloud&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Developer Tools&rdquo; for CI, CD, IACM, IDP, FME, Chaos, Database DevOps, and Harness Cloud; &ldquo;Security&rdquo; for STO and SCS; &ldquo;Management and Governance&rdquo; for CACM and SRM</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Developers, services, executions, scans, credits; credits are minutes × multiplier rounded to the minute, so compute against the credit, not the minute</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize: &ldquo;Developers&rdquo;, &ldquo;Services&rdquo;, &ldquo;Executions&rdquo;, &ldquo;Scans&rdquo;, &ldquo;Credits&rdquo;, &ldquo;Database Instances&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Subscriptions and Cloud Credits counts (developers in last 30 days, services, credits used)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Implicit in the UI; normalize to FOCUS unit format (&ldquo;Developers&rdquo;, &ldquo;Minutes&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not in billing data; $0.005 per credit is public, license prices are not</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed; contract rates</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Committed&rdquo; for credits drawn from a prepaid pool; &ldquo;Standard&rdquo; for overage and licenses</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>N/A: one account type (Harness account)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Not in billing; Harness organization or project identifier (Credits Breakdown already groups by both)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Not in billing; organization or project name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not in billing; &ldquo;Organization&rdquo; or &ldquo;Project&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not in billing; pipeline (credits), service (CD entitlements), or database instance (Database DevOps)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not in billing; pipeline, service, or database instance name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not in billing; &ldquo;Pipeline&rdquo;, &ldquo;Service&rdquo;, &ldquo;Database Instance&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; plan, module, and resource class codes</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Harness entity tags on pipelines, services, and projects are not carried into billing</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced and billed in USD only</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Resource class in Credits Breakdown (e.g., Linux AMD64 medium); license type in Subscriptions</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; the minute multiplier (×1 to ×96) and core/memory size belong here</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: no region appears in any pricing or billing surface</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Credit allocation (Credits Allocation table row); not exported</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Harness Cloud Credits&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Spend&rdquo;; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo;/&rdquo;Unused&rdquo;; Credits Allocation shows Used and Available but not per row</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Credits drawn from the allocation</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;Credits&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Recurring&rdquo; for licenses and CACM; &ldquo;One-Time&rdquo; for credit packs; &ldquo;Usage-Based&rdquo; for credit consumption and overage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map each module to an allowed v1.2 value</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: Harness operates the build infrastructure; zones are not customer-billed</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 16 Present, 8 Deviation, 3 Missing Mandatory, 19 Missing Conditional, 1 Missing Recommended, 10 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Account identity, USD billing, invoice numbers, a public per-credit price and minute-multiplier table, license and entitlement counts, and credit usage already attributed to organization, project, and resource class. Harness has done the hard attribution work for Harness Cloud; it just keeps it in a UI.</p>
+<p><strong>Substantive (1 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Licenses are contracted for a term and credits are prepaid, roll over, and expire after a year. Producing EffectiveCost means amortizing license fees across the term, amortizing each credit pack across the credits actually drawn (with unused credits at expiry as a separate charge), and allocating the 2,000 free monthly credits on Free plans. No current surface does any of this.</li>
+</ul>
+<p><strong>Trivial (2 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> For Harness Cloud, credits × $0.005 from the public rate table. For licenses, Harness holds an internal price book behind every quote; expose it, or set ListCost to ContractedCost where no list price exists.</li>
+<li><strong>ContractedCost.</strong> Harness&rsquo;s billing system already holds each Order Form&rsquo;s rate card; expose it per row.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No billing data feed.</strong> Subscriptions and Cloud Credits are UI-only, and Cloud Credits is feature-flagged. No API, export, or invoice field list is published. Nothing about Harness&rsquo;s own charges reaches a FinOps tool except invoice PDFs.</li>
+<li><strong>Developer licenses do not allocate cleanly.</strong> A developer seat is not tied to a project in any documented surface, and license assignment is &ldquo;an honor system.&rdquo; Chargeback of the largest line on most Harness invoices needs an allocation rule (e.g., developers active per project in the last 30 days) that Harness would have to define.</li>
+<li><strong>Marketplace split.</strong> AWS and Google Cloud Marketplace buyers see Harness as one contract line in the hyperscaler&rsquo;s FOCUS data. A Harness export with InvoiceIssuerName set to the marketplace is the only way to break that line into modules and credits.</li>
+</ul>
+<p><strong>Harness as a FOCUS consumer:</strong></p>
+<p>CACM&rsquo;s Custom Cost Provider is welcome, but its intake contract deviates from the spec in ways that matter:</p>
+<ul>
+<li><strong>Version lag.</strong> The doc says &ldquo;FOCUSv1&rdquo; and links the v1.1 PDF. v1.2, v1.3, and v1.4 have all been ratified since. No v1.2 SaaS columns (InvoiceId, pricing-currency columns, BillingAccountType) are mentioned.</li>
+<li><strong>Wrong columns required.</strong> The 17 &ldquo;mandatory&rdquo; fields include EffectiveCost but omit BilledCost, ListCost, ContractedCost, BillingCurrency, ChargeDescription, ServiceCategory, PricingQuantity, and InvoiceIssuerName, all Mandatory in FOCUS. CACM therefore cannot reconcile ingested data to an invoice or tell amortized from billed spend.</li>
+<li><strong>Conditional treated as Mandatory.</strong> RegionName, ResourceId, SkuId, SubAccountId, SubAccountName, and Tags are required on upload. A SaaS vendor with no regions or sub-accounts (most of them) must fabricate values or fail ingestion, which defeats the point of accepting a conformant file.</li>
+<li><strong>Manual, one-shot intake.</strong> 20 MB UI uploads with no API or scheduled refresh. Anomaly detection on ingested data requires a support ticket.</li>
+</ul>
+<p>Native AWS, GCP, and Azure ingestion reads CUR, BigQuery, and Cost Management exports; the docs do not say whether CACM reads the hyperscalers&rsquo; own FOCUS exports.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost:</strong> Emit one row per module, meter, and project rather than an invoice total, plus Tax and Credit rows, so that BilledCost summed per InvoiceId equals the invoice total.</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Purchase&rdquo; for license terms, CACM, and credit packs; &ldquo;Usage&rdquo; for credit consumption and overage; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; as above.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Developer Tools&rdquo; for CI, CD &amp; GitOps, IACM, IDP, FME, Chaos, Database DevOps, and Harness Cloud; &ldquo;Security&rdquo; for STO and SCS; &ldquo;Management and Governance&rdquo; for CACM and SRM.</p>
+<p><strong>PricingQuantity and PricingUnit:</strong> Price Harness Cloud in &ldquo;Credits,&rdquo; not minutes: PricingQuantity = rounded minutes × multiplier, ListUnitPrice = $0.005, and the multiplier goes in SkuPriceDetails. ConsumedQuantity carries the raw minutes. Licenses use &ldquo;Developers&rdquo; (or &ldquo;Database Instances&rdquo;); entitlement overages use &ldquo;Services,&rdquo; &ldquo;Executions,&rdquo; or &ldquo;Scans.&rdquo;</p>
+<p><strong>ConsumedUnit, PricingCategory, ChargeFrequency:</strong> Derive from meter type as shown in the table.</p>
+<p><strong>Already right:</strong> USD-only billing, a published credit price and multiplier table, and an Account &gt; Organization &gt; Project hierarchy that maps directly to BillingAccount and SubAccount.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is a candidate release; its scope is on the FOCUS site. The v1.3 Contract Commitment dataset fits prepaid credit packs and multi-year license Order Forms better than per-row CommitmentDiscount columns alone. Upgrade the CACM intake to v1.2 or later in the same program so Harness can ingest its own export.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (single account type, no billed regions, zones, reservations, or alternate currencies) and the decision on modeling prepaid credits as a commitment discount. Certification covers Harness&rsquo;s billing export as a data generator; CACM&rsquo;s intake is a consumer concern and is not certified.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of Subscriptions, Cloud Credits, and invoice data for a Free account and an Enterprise account with prepaid credits. Hand-build a v1.2 file and run it through the Validator. Decide the credit commitment model and the developer-license allocation rule.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Join the credit rate table and internal price book for ListCost and ListUnitPrice, and the Order Form rate card for ContractedCost. Amortize license terms and credit packs for EffectiveCost. Emit line-level BilledCost with Tax and Credit rows so it reconciles to the invoice.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Derive ChargeCategory, ServiceCategory, ChargeFrequency, and PricingCategory; price Harness Cloud in credits; normalize PricingUnit and ConsumedUnit.</p>
+<p><strong>Phase 3: Allocation and Conditional columns.</strong> Add SubAccountId, SubAccountName, and SubAccountType from organization and project; ResourceId, ResourceName, and ResourceType per pipeline, service, and database instance; Tags from Harness entity tags; SkuId, SkuPriceId, and SkuPriceDetails (minute multiplier); the CommitmentDiscount family for credit draw-down; and ServiceSubcategory. Deliver by API and scheduled push to object storage, and take the Cloud Credits page out from behind its feature flag.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Invoice Detail dataset; certify at v1.2 and re-certify as the program advances. In parallel, bring CACM&rsquo;s Custom Cost Provider to v1.2+: require the spec&rsquo;s Mandatory columns, accept null Conditional columns, and add an ingestion API.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, actuals-based budgeting and forecasting, and amortized spend reporting for Harness.</li>
+<li><strong>After Phase 2:</strong> Spend by service category across providers, and license-versus-consumption mix analysis.</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback of Harness Cloud by organization, project, pipeline, or tag; unit economics per build minute and per pipeline run; prepaid credit utilization and expiry-risk tracking; and anomaly detection on credit burn by resource class.</li>
+<li><strong>Out of scope:</strong> Capacity reservation management, regional cost analysis, and multi-currency analysis.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Harness contact from KubeCon NA 2026 to reach the owners of Harness billing and of CACM&rsquo;s Custom Cost Provider.</li>
+<li>Confirm what invoices and the Cloud Credits page contain today (line items, per-project detail, export, general availability of the feature flag).</li>
+<li>Confirm the current plan lineup and whether any license list prices are public.</li>
+<li>Build a v1.2 sample from one billing month and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code> and confirm FinOps Foundation membership status.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Harness Cloud credit mechanics (minute multipliers, $0.005 per credit, 2,000 free monthly credits, one-year expiry, overage in arrears) come from Harness&rsquo;s CI subscription docs.</li>
+<li><strong>High:</strong> Developer 360 licensing and consumption entitlements per developer come from Harness&rsquo;s subscriptions docs and pricing announcement.</li>
+<li><strong>High:</strong> CACM Custom Cost Provider references FOCUS v1.1, requires the 17 listed columns, and accepts 20 MB UI uploads only, per Harness&rsquo;s docs.</li>
+<li><strong>High:</strong> Feature levels match the bundled FOCUS v1.2 Content Constraints table (verified June 23, 2026); v1.4 remains the latest ratified version and v1.5 is a candidate release. A live spot-check through the FOCUS MCP was not run for this analysis.</li>
+<li><strong>Moderate:</strong> Present status for invoice-sourced columns (ChargeDescription, InvoiceId, billing periods). Harness publishes no invoice sample or field list, so presence is inferred from standard invoicing.</li>
+<li><strong>Moderate:</strong> Treating prepaid Harness Cloud credits as a spend commitment discount. If Harness models them as simple prepayment with no rate benefit, the seven CommitmentDiscount columns become N/A and the amortization moves entirely into EffectiveCost.</li>
+<li><strong>Moderate:</strong> ServiceCategory mappings; &ldquo;Developer Tools,&rdquo; &ldquo;Security,&rdquo; and &ldquo;Management and Governance&rdquo; are the closest v1.2 values.</li>
+<li><strong>Moderate:</strong> USD-only pricing. The pricing page lists USD; non-USD Order Forms are not documented either way.</li>
+<li><strong>Low:</strong> RegionId as N/A. Harness may run SaaS clusters or Harness Cloud capacity in customer-selectable regions; no billing surface shows one.</li>
+<li><strong>Low:</strong> Current plan lineup and list prices. Harness&rsquo;s own pages disagree (Free/Enterprise, Free/Essentials/Enterprise, Free/Startup/Enterprise), and a $57 per developer per month Startup price appears only in third-party summaries.</li>
+<li><strong>Low:</strong> InvoiceIssuerName as &ldquo;Harness Inc.&rdquo; No public invoice names the issuing entity.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Harness Pricing: <a href="https://www.harness.io/pricing">harness.io/pricing</a></li>
+<li>Introducing Developer 360 Pricing by Harness: <a href="https://www.harness.io/blog/introducing-developer-360-pricing-by-harness">harness.io/blog/introducing-developer-360-pricing-by-harness</a></li>
+<li>Harness Subscriptions and Licenses: <a href="https://developer.harness.io/docs/platform/subscriptions-licenses/subscriptions">developer.harness.io/docs/platform/subscriptions-licenses/subscriptions</a></li>
+<li>CI Subscriptions and Harness Cloud Credits: <a href="https://developer.harness.io/docs/continuous-integration/get-started/ci-subscription-mgmt/">developer.harness.io/docs/continuous-integration/get-started/ci-subscription-mgmt/</a></li>
+<li>Cloud Marketplace Offerings: <a href="https://developer.harness.io/harness-platform/subscriptions-and-licenses/cloud-marketplaces">developer.harness.io/harness-platform/subscriptions-and-licenses/cloud-marketplaces</a></li>
+<li>CACM Custom Cost Provider: <a href="https://developer.harness.io/cloud-cost-management/integrations/custom-cost-provider">developer.harness.io/cloud-cost-management/integrations/custom-cost-provider</a></li>
+<li>CACM Data Ingestion Reference: <a href="https://developer.harness.io/cloud-cost-management/resources/data-ingestion-reference">developer.harness.io/cloud-cost-management/resources/data-ingestion-reference</a></li>
+<li>CloudZero, Harness Pricing (third-party summary): <a href="https://www.cloudzero.com/blog/harness-pricing/">cloudzero.com/blog/harness-pricing/</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

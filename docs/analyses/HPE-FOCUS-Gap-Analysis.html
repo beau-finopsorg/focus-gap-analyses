@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HPE &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/HPE-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="hpe-focus-data-generator-gap-analysis">HPE &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: June 25, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> HPE (Hewlett Packard Enterprise)<br>
+<strong>Prepared:</strong> June 25, 2026<br>
+<strong>Source:</strong> HPE GreenLake Platform API; HPE invoice system<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 29 Present, 10 Deviation, 0 Missing Mandatory, 7 Missing Conditional, 1 Missing Recommended, 10 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>HPE GreenLake delivers on-premises infrastructure as a pay-per-use service: customers meter actual consumption of compute, storage, and networking capacity and pay monthly based on usage above a committed minimum. This model gives HPE a billing data structure with clear PricingQuantity and PricingUnit per meter, and a workspace/tenant account hierarchy that maps to FOCUS SubAccount. All 21 Mandatory columns have source data. The 10 Deviations cover cost enrichment (list and contracted pricing are enterprise-negotiated), ChargeCategory and ServiceCategory derivation, and CommitmentDiscountStatus logic. Seven Missing Conditional columns are in the SKU price catalog and unit price families, which HPE&rsquo;s billing API does not expose for enterprise customers. Ten columns are N/A: the CommitmentDiscount family (HPE&rsquo;s minimum commitment is a pricing tier, not a per-resource discount) and CapacityReservation.</p>
+<p><strong>Recommendation:</strong> Build the GreenLake metered consumption transform first. HPE&rsquo;s per-meter billing, resource hierarchy, and workspace structure give a conformant structural foundation. Add list and contracted pricing from HPE&rsquo;s price book as a supplementary data step. Tag support and ServiceCategory mapping round out the dataset.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>HPE GreenLake Platform API</strong>: HPE GreenLake exposes billing and usage data through the GreenLake Platform API and the HPE Consumption Analytics service. Endpoints provide monthly usage metrics per service, workspace, and resource. Key fields: <code>workspace_id</code>, <code>workspace_name</code>, <code>service_name</code>, <code>meter_name</code>, <code>quantity</code>, <code>unit</code>, <code>cost</code>, <code>currency</code>, <code>start_date</code>, <code>end_date</code>, <code>resource_id</code>, <code>resource_name</code>.</p>
+<p><strong>HPE Invoice System</strong>: Monthly invoices are generated per customer account. Invoice data includes: invoice number, billing period, line items per service and meter, totals.</p>
+<p>Key characteristics for FOCUS:
+- <strong>Metered model:</strong> HPE GreenLake bills per meter per service (compute: vCPU-hours, RAM GB-hours; storage: TB-hours). PricingQuantity and PricingUnit are present for all charge rows.
+- <strong>Enterprise pricing:</strong> HPE GreenLake pricing is entirely enterprise-negotiated. No public API-accessible list price or rate card exists. ListUnitPrice and ContractedUnitPrice require supplementary price book data.
+- <strong>Workspace hierarchy:</strong> HPE GreenLake organizes resources within Workspaces (and sometimes Tenants within Workspaces). This maps to FOCUS SubAccountId and SubAccountName.
+- <strong>On-premises deployment:</strong> HPE GreenLake is deployed in customer or HPE data centers. The physical location maps to RegionId/RegionName but the concept of AvailabilityZone does not apply.
+- <strong>Tags:</strong> HPE GreenLake supports resource-level tagging. Tag data is available via the GreenLake API.
+- <strong>Minimum commitment:</strong> HPE GreenLake contracts include a minimum committed monthly payment. This is a pricing tier, not a per-resource CommitmentDiscount. Charges above the committed minimum are billed at a higher rate; charges at or below the committed level are billed at the committed rate.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. Each column carries a feature level: Mandatory (must exist and be populated where applicable), Conditional (must exist; populated when the provider&rsquo;s model triggers the condition, otherwise null), or Recommended. A conformant dataset presents the full column set under FOCUS column IDs, populates every Mandatory column, satisfies Conditional columns where applicable, and uses the correct types and allowed values.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>HPE source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Monthly invoice amount per meter or line item</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>For committed-tier usage, = BilledCost; for usage above committed minimum billed at overage rate, requires cost recalculation to reflect what the amortized commitment cost would have been</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>HPE list price × PricingQuantity; HPE&rsquo;s list price (MSRP) exists in the HPE price book but is not exposed via API; requires supplementary price book data</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Enterprise-negotiated rate × PricingQuantity; not accessible via the billing API</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>HPE customer account number</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Customer company name from HPE contract</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Invoice currency (USD, EUR, or regional currency per contract)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice period start date</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice period end date</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Meter period start (typically = BillingPeriodStart for monthly billing)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Meter period end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Meter name + service label (e.g., &ldquo;Compute - vCPU Hours&rdquo;, &ldquo;Storage - Capacity TB Hours&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for metered consumption; &ldquo;Recurring&rdquo; charges are technically &ldquo;Usage&rdquo; in FOCUS terms; &ldquo;Adjustment&rdquo; for credits or corrections</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for correction charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Hewlett Packard Enterprise&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;HPE&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;HPE&rdquo; for HPE services; third-party software publisher names for software-as-a-service layers</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>HPE GreenLake service name (e.g., &ldquo;HPE GreenLake for Compute&rdquo;, &ldquo;HPE GreenLake for Block Storage&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Map HPE service type to FOCUS enum: Compute services → &ldquo;Compute&rdquo;; Block/Object/File storage → &ldquo;Storage&rdquo;; Networking services → &ldquo;Networking&rdquo;; Database services → &ldquo;Databases&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Meter quantity (e.g., vCPU-hours, TB-hours, port-hours)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Meter unit (e.g., &ldquo;vCPU-Hour&rdquo;, &ldquo;TB-Hour&rdquo;, &ldquo;Port-Hour&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Actual measured consumption; for HPE GreenLake, typically = PricingQuantity (metered at point of consumption)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>= PricingUnit</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>HPE MSRP (list price) per meter unit; not exposed via billing API; requires HPE price book integration</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Enterprise-negotiated rate per meter unit; not exposed via billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Committed&rdquo; for usage within the minimum commitment tier; &ldquo;Standard&rdquo; for overage usage above the committed minimum</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Conditional</td>
+<td>&ldquo;Usage-Based&rdquo; for metered consumption charges; &ldquo;Recurring&rdquo; for flat monthly fees (support, software licenses)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from HPE customer agreement type (e.g., &ldquo;Enterprise&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>HPE GreenLake Workspace ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>HPE GreenLake Workspace name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Workspace&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>HPE GreenLake resource identifier; format varies by service type (server IDs, volume IDs, etc.)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Resource display name from GreenLake API</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>HPE service resource type (e.g., &ldquo;Virtual Machine&rdquo;, &ldquo;Block Volume&rdquo;, &ldquo;Network Port&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>HPE part number or service SKU from price book</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>HPE GreenLake resource tags; parse to FOCUS key-value format</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>= BillingCurrency</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice; Missing because ListUnitPrice requires price book integration</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ContractedUnitPrice; Missing because ContractedUnitPrice requires enterprise pricing data</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>= EffectiveCost; Deviation because EffectiveCost requires commitment-tier logic</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Meter identifier exists in billing data but does not map to a FOCUS SkuMeter display name format</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Price book rate identifier not exposed in billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Tiered pricing details not exposed in billing API; HPE GreenLake has committed vs. overage tiers</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>HPE data center or customer site location code</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>HPE data center display name (e.g., &ldquo;HPE US East Data Center&rdquo;, &ldquo;Customer Site - London&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: HPE&rsquo;s minimum commitment is a pricing tier, not a per-resource commitment discount in the FOCUS sense</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: HPE on-premises hardware does not have a FOCUS CapacityReservation construct</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>HPE invoice number</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>No native field; requires mapping from HPE service names to subcategory labels</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: HPE GreenLake is deployed in physical data centers; the cloud AZ concept does not apply</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 29 Present, 10 Deviation, 0 Missing Mandatory, 7 Missing Conditional, 1 Missing Recommended, 10 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved</strong></p>
+<p>HPE GreenLake&rsquo;s metered consumption model provides clean PricingQuantity and PricingUnit for every charge row. The workspace hierarchy maps to FOCUS SubAccountId and SubAccountName. Resource identifiers, names, and types are available from the GreenLake API. RegionId and RegionName cover HPE data center locations. InvoiceId is available from the HPE invoice system.</p>
+<p><strong>Remaining</strong></p>
+<p>The main gap is unit pricing. HPE GreenLake pricing is enterprise-negotiated, and neither the list price (MSRP) nor the contracted rate is exposed via the billing API. ListUnitPrice and ContractedUnitPrice require integration with HPE&rsquo;s price book, which is typically delivered as a spreadsheet or customer portal document. ResourceId needs a consistent format mapping across HPE&rsquo;s diverse resource types.</p>
+<p>The CommitmentDiscount family is N/A because HPE&rsquo;s minimum commitment is a pricing-tier mechanism, not a per-resource FOCUS CommitmentDiscount construct. Seven Missing Conditional columns are in the SKU price catalog and unit price families.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>EffectiveCost</strong><br>
+For usage within the committed minimum tier, EffectiveCost = BilledCost. For overage usage billed at the higher overage rate, FOCUS EffectiveCost should reflect what the amortized committed rate would have been, not the overage rate. This requires knowing the committed minimum amount and prorating it.</p>
+<p><strong>ListCost and ContractedCost</strong><br>
+Integrate HPE&rsquo;s MSRP price book for ListCost. ContractedCost requires the customer&rsquo;s negotiated rate, which HPE does not expose via the billing API. Until HPE provides a programmatic rate-card API, both require supplementary data files per customer.</p>
+<p><strong>ChargeCategory</strong><br>
+Derive from charge type: metered consumption → &ldquo;Usage&rdquo;; adjustment credits → &ldquo;Credit&rdquo;; one-time setup fees → &ldquo;Purchase&rdquo;.</p>
+<p><strong>ServiceCategory</strong><br>
+Map HPE GreenLake service types: compute services → &ldquo;Compute&rdquo;; block, object, file storage → &ldquo;Storage&rdquo;; networking ports and switches → &ldquo;Networking&rdquo;; database services → &ldquo;Databases&rdquo;; Kubernetes and container services → &ldquo;Compute&rdquo;.</p>
+<p><strong>ResourceId</strong><br>
+HPE GreenLake assigns resource IDs that vary by service type (server UUIDs, volume IDs, etc.). Define a consistent format convention for the FOCUS ResourceId column that normalizes across HPE&rsquo;s resource types.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2. ProviderName and PublisherName are deprecated in v1.3 and removed in v1.4.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. HPE&rsquo;s 0 Missing Mandatory makes the structural conformance bar achievable after Phase 1. The ListCost/ContractedCost supplementary data approach must be documented during certification.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0:</strong> Confirm GreenLake Platform API access. Pull sample billing data for one month across compute, storage, and networking. Verify field availability for meter quantities, workspace IDs, and resource identifiers.</p>
+<p><strong>Phase 1: Core metered consumption transform.</strong> Map BilledCost, ChargePeriod, BillingAccount, SubAccount (workspace), ResourceId/Name/Type, RegionId/Name, ServiceName, SkuId, PricingQuantity/Unit, ConsumedQuantity/Unit, InvoiceId, ChargeClass, InvoiceIssuerName. Derive ChargeCategory and ServiceCategory from service type. Delivers conformant output for the 29 Present columns.</p>
+<p><strong>Phase 2: Cost enrichment.</strong> Integrate HPE price book (MSRP) for ListCost and ListUnitPrice. Add contracted rate file per customer for ContractedCost. Implement PricingCategory = &ldquo;Committed&rdquo; vs. &ldquo;Standard&rdquo; based on minimum commitment tier. Implement EffectiveCost logic for overage rows. Add Tags from GreenLake API.</p>
+<p><strong>Phase 3: Finalize and certify.</strong> Add ServiceSubcategory mapping. Drop ProviderName, PublisherName (v1.4). Validate with FOCUS Validator. Submit for certification.</p>
+<h3 id="24-focus-use-cases-hpe-greenlake-customers-unlock">2.4 FOCUS Use Cases HPE GreenLake Customers Unlock</h3>
+<p><strong>After Phase 1:</strong> Cost by service and meter across all GreenLake workspaces. Resource-level cost attribution. Site/data-center cost comparison. Invoice reconciliation via InvoiceId.</p>
+<p><strong>After Phase 2:</strong> List vs. contracted vs. billed cost comparison to verify enterprise discount application. PricingCategory-based reporting to show committed vs. overage consumption cost. Tag-based chargeback by team or project.</p>
+<p><strong>Out of scope:</strong> CommitmentDiscount use cases (HPE&rsquo;s minimum commitment is a pricing tier, not a FOCUS CommitmentDiscount). AvailabilityZone analysis. Capacity reservation tracking.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Establish access to the HPE GreenLake Platform API and pull a sample monthly billing dataset across compute, storage, and networking meters.</li>
+<li>Obtain the HPE MSRP price book (typically a spreadsheet from HPE) and map each meter unit to a list unit price. Design the programmatic price book integration.</li>
+<li>Build the ServiceCategory and ChargeCategory mapping tables from HPE service type identifiers.</li>
+<li>Define the ResourceId format convention to normalize resource IDs across HPE&rsquo;s diverse resource types.</li>
+<li>Run the Phase 1 transform through the FOCUS Validator. Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> HPE GreenLake&rsquo;s metered billing exposes per-meter quantity, unit, cost, workspace, and resource data. The 29 Present columns are grounded in documented GreenLake API fields.</li>
+<li><strong>High:</strong> HPE GreenLake Workspace hierarchy maps cleanly to FOCUS SubAccountId and SubAccountName. Workspace IDs and names are available from the GreenLake account management API.</li>
+<li><strong>Moderate:</strong> ServiceCategory and ChargeCategory mapping. HPE&rsquo;s service catalog is broad (compute, storage, networking, databases, containers). A comprehensive mapping requires reviewing the full GreenLake service catalog.</li>
+<li><strong>Low:</strong> ListCost and ContractedCost from the HPE price book. The price book is typically a static document, not a machine-readable API. Automated integration requires either HPE publishing a pricing API or a manual ETL process per customer.</li>
+<li><strong>Unknown:</strong> CommitmentDiscount applicability. If HPE introduces a per-resource commitment model (analogous to cloud reserved instances) in a future GreenLake release, the N/A status of the CommitmentDiscount family should be revisited.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>HPE GreenLake Platform Documentation: <a href="https://developer.greenlake.hpe.com">developer.greenlake.hpe.com</a></li>
+<li>HPE GreenLake Consumption Analytics: <a href="https://www.hpe.com/us/en/services/greenlake.html">hpe.com/h20195/v2/GetPDF.aspx/a00120892enw.pdf</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

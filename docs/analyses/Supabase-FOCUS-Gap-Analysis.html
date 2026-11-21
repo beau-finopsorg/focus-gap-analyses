@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supabase &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Supabase-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="supabase-focus-data-generator-gap-analysis">Supabase &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Supabase<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Supabase docs (About billing, Your monthly invoice, Billing FAQ, Control your costs, Manage Compute usage, Regions); Supabase Management API OpenAPI spec; August 2024 invoice changelog; Supabase pricing page; AWS Marketplace listing<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 13 Present, 17 Deviation, 4 Missing Mandatory, 7 Missing Conditional, 1 Missing Recommended, 15 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Supabase is a managed Postgres platform. Each project is a dedicated Postgres instance with Auth, Storage, Edge Functions, Realtime, and logging attached. Billing is per organization: one plan (Free, Pro from $25, Team from $599, Enterprise custom), one billing cycle anchored to the organization&rsquo;s creation date, and one monthly invoice in USD. Compute is billed hourly per project; everything else is usage against organization-wide quotas, with overage billed in arrears.</p>
+<p><strong>Public billing documentation is thin.</strong> Supabase documents its invoice layout, quotas, and unit prices well, but documents no way to get billing data out other than reading it. There is no billing export, no CSV download, and no cost or invoice endpoint in the Management API. Invoices arrive by email and on the dashboard invoices page; the organization usage page shows a per-project daily breakdown on hover and nothing more. The Management API&rsquo;s only billing-adjacent surfaces are a per-project add-ons endpoint (selected compute size and add-ons with a list <code>price.amount</code>, no currency) and request-count analytics with no cost. This analysis therefore assesses what Supabase&rsquo;s invoice and data model could supply, not a dataset that exists today.</p>
+<p>The invoice itself is better shaped than most. Since August 2024, most line items carry the project reference, quotas appear as explicit discounts, the $10 monthly compute credit appears as a discount, and tax is shown separately. Thirteen of 57 FOCUS v1.2 columns have a clean source and 17 of 21 Mandatory columns have one. The four missing Mandatory columns are the cost columns, and two of them (<strong>BilledCost</strong> and <strong>EffectiveCost</strong>) are substantive: quotas, compute credits, and prepaid credit top-ups are netted at the organization level and must be allocated back to project rows.</p>
+<p><strong>Recommendation:</strong> Publish a daily FOCUS export per organization with one row per project × line item (compute size, add-on variant, usage meter) × day, carrying project ref, region, and ListCost, BilledCost, EffectiveCost, and ContractedCost with quota and compute-credit discounts allocated to the projects that consumed them. Emit Purchase rows for the plan fee and fixed add-ons, Credit rows for top-ups and compute credits, and Tax rows. Deliver it through a Management API endpoint and a dashboard CSV download.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<ul>
+<li><strong>Monthly invoice</strong> (email and dashboard invoices page): One invoice per organization per billing cycle. It combines fixed fees for the current cycle (plan subscription, HIPAA, priority support; paid in advance) with usage fees for the previous cycle (paid in arrears). Most usage lines carry the project reference, quantity, quota, and amount, for example &ldquo;Compute Hours Small&rdquo; per project, Egress with a 250 GB quota and billed GB, and Custom Domain hours. Quotas and the $10 compute credit are shown as discounts. Tax is a separate line at the bottom. Supabase states its payment provider cannot regenerate past invoices.</li>
+<li><strong>Organization usage page</strong> (dashboard only): Usage per line item for all projects or one selected project, with a daily breakdown on hover. Usage data is delayed up to one hour. No documented export.</li>
+<li><strong>Upcoming Invoice</strong> (dashboard only): An estimate of the current cycle.</li>
+<li><strong>Management API</strong> (<code>api.supabase.com/v1</code>): No billing, invoice, usage-cost, or spend endpoint. <code>GET /v1/projects</code> returns <code>ref</code>, <code>name</code>, <code>region</code>, <code>organization_slug</code>, <code>created_at</code>, and <code>status</code>. <code>GET /v1/organizations/{slug}</code> returns <code>name</code> and <code>plan</code>. <code>GET /v1/projects/{ref}/billing/addons</code> returns <code>selected_addons[]</code> with <code>type</code> (<code>compute_instance</code>, <code>custom_domain</code>, <code>pitr</code>, <code>ipv4</code>, <code>auth_mfa_phone</code>, <code>auth_mfa_web_authn</code>, <code>log_drain</code>, <code>etl_pipeline</code>) and a <code>variant</code> (<code>id</code> such as <code>ci_small</code> or <code>pitr_7</code>, <code>name</code>, and <code>price</code> with <code>type</code> fixed or usage, <code>interval</code> monthly or hourly, and <code>amount</code>). The <code>usage.api-counts</code> analytics endpoint returns request counts by service with no cost.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Compute:</strong> Billed per project per hour, with partial hours rounded up. Micro $0.01344/hr (~$10/mo) through 16XL $5.12/hr (~$3,730/mo); larger sizes by sales. Nano is billed at the Micro rate on paid plans. Not covered by the Spend Cap.</li>
+<li><strong>Compute credits:</strong> Paid plans include $10 per month, reset monthly, and do not cover Read Replica or Branching compute.</li>
+<li><strong>Usage items with organization-wide quotas (Pro/Team):</strong> Egress 250 GB then $0.09/GB; cached egress 250 GB then $0.03/GB; disk 8 GB per project then $0.125/GB; MAU 100,000 then $0.00325; third-party MAU priced the same; SSO MAU 50 then $0.015; Storage 100 GB then $0.021/GB; image transformations 100 then $5 per 1,000; Edge Function invocations 2 million then $2 per million; Realtime messages 5 million then $2.50 per million; Realtime peak connections 500 then $10 per 1,000; log ingestion 20 GB then $0.50/GB.</li>
+<li><strong>Project add-ons:</strong> Compute, Read Replicas, Disk (IOPS and throughput), PITR ($100 per month per 7 days of retention), Custom Domain ($10 per month), IPv4, Advanced MFA Phone, Log Drains ($60 per drain per month plus events and egress), Branching ($0.01344 per branch-hour), and Pipelines. Add-ons and storage are prorated to the hour.</li>
+<li><strong>Hierarchy:</strong> Organization (billing), then projects (each with a <code>ref</code>), then branches and read replicas.</li>
+<li><strong>Regions:</strong> 17 specific regions using AWS-style IDs (<code>us-east-1</code>, <code>eu-central-1</code>, <code>ap-southeast-1</code>, and others) plus three general regions (Americas, Europe, APAC). Project <code>region</code> is in the Management API, not on the invoice.</li>
+<li><strong>No tags:</strong> No project tag or label feature appears in the billing or platform docs reviewed.</li>
+<li><strong>No commitment discounts:</strong> No reserved compute or annual plans. Credit top-ups prepay future invoices and substitute for annual billing; they carry no rate benefit.</li>
+<li><strong>Invoicing:</strong> USD only; credit card only, with alternatives for large upfront payments by ticket. The payment entity is in Singapore. Pro and Team are also sold through AWS Marketplace (for customers with AWS spend commitments) and Vercel Marketplace, where the marketplace handles tax. Sales tax, VAT, and GST roll out between May 1 and June 30, 2026.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Supabase deploys projects into named regions, so RegionId and RegionName apply. Supabase sells no commitment discounts or capacity reservations, exposes no availability zones, prices only in USD, and has no tags; those 15 columns are N/A and should exist as null. Because no machine-readable billing dataset exists, the source for each column below is the monthly invoice, joined to the Management API where noted. Feature levels follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Supabase source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice line amounts only, on a PDF; quota and compute-credit discounts and credit top-ups are netted per organization, not allocated to project rows</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs the same allocation of quotas and compute credits, plus a treatment for prepaid credit top-ups</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not in any dataset; gross quantity on the invoice × public unit price</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not in any dataset; = ListCost for self-serve, Enterprise custom rates otherwise</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Organization <code>slug</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization <code>name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo; (all invoices are issued in USD)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice billing cycle start (anchored to organization creation date)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice billing cycle end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Not per line; current cycle for fixed fees, previous cycle for usage; daily detail exists only on the usage page</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>As ChargePeriodStart</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Invoice line item name (e.g., &ldquo;Compute Hours Small&rdquo;, &ldquo;Egress&rdquo;, &ldquo;Custom Domain&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for metered items; &ldquo;Purchase&rdquo; for plan and fixed add-ons; &ldquo;Credit&rdquo; for compute credits and top-ups; &ldquo;Tax&rdquo; for the tax line</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for adjustments to prior cycles</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Not named in docs (payment entity in Singapore); &ldquo;Amazon Web Services&rdquo; or &ldquo;Vercel&rdquo; for marketplace organizations</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Supabase&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Supabase&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Invoice lines are meters, not services; map to &ldquo;Supabase Database&rdquo;, &ldquo;Supabase Auth&rdquo;, &ldquo;Supabase Storage&rdquo;, &ldquo;Supabase Edge Functions&rdquo;, &ldquo;Supabase Realtime&rdquo;, &ldquo;Supabase Logs&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Databases&rdquo; for compute, disk, replicas, PITR, branching; &ldquo;Identity&rdquo; for Auth MAU and MFA; &ldquo;Storage&rdquo; for Storage; &ldquo;Compute&rdquo; for Edge Functions; &ldquo;Networking&rdquo; for egress, IPv4, custom domains; &ldquo;Management and Governance&rdquo; for logs and drains</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Billed quantity on invoice (hours, GB, MAU, invocations); must be expressed in each meter&rsquo;s rate block (per million, per 1,000)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Implied by line item; normalize to &ldquo;Hours&rdquo;, &ldquo;GB&rdquo;, &ldquo;Users&rdquo;, &ldquo;1000000 Invocations&rdquo;, &ldquo;1000 Connections&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Invoice shows billed quantity and quota; total consumption must be reconstructed</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Implied; emit explicit FOCUS-format units</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not in data; public pricing page and add-on <code>price.amount</code></td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not in data; = ListUnitPrice for self-serve</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; (no committed pricing)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Not emitted; constant &ldquo;Organization&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Project <code>ref</code> on most invoice lines</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Project <code>name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not emitted; constant &ldquo;Project&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Project <code>ref</code> only; read replicas, branches, drains, and domains are not identified separately</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Project name only; same limitation</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not emitted; derive from add-on <code>type</code> (<code>compute_instance</code>, <code>pitr</code>, <code>custom_domain</code>, and so on)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not on invoice; add-on variant IDs (<code>ci_small</code>, <code>pitr_7</code>) exist in the Management API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Invoice line item names act as meters (&ldquo;Compute Hours&rdquo;, &ldquo;Egress&rdquo;, &ldquo;Monthly Active Users&rdquo;, &ldquo;Realtime Messages&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for compute size, quota, and rate block</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Not on invoice; project <code>region</code> in the Management API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Not on invoice; names on the Regions doc</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: no project tags or labels</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced and billed in USD only</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: no commitment discounts; credit top-ups carry no rate benefit</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number on the dashboard invoices page</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Recurring&rdquo; for plan and fixed add-ons; &ldquo;Usage-Based&rdquo; for metered items; &ldquo;One-Time&rdquo; for credit top-ups</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not emitted; map each service to an allowed v1.2 value</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: zones are not exposed to customers</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 13 Present, 17 Deviation, 4 Missing Mandatory, 7 Missing Conditional, 1 Missing Recommended, 15 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Organization as billing account, project as sub-account on most invoice lines, USD billing, invoice numbers and cycles, meter-style line item names, explicit quota and credit discounts, separate tax, and a published price for every meter. The invoice is close to a FOCUS row set; it is just trapped in a PDF.</p>
+<p><strong>Substantive (2 of 4 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>BilledCost.</strong> Quotas are organization-wide (egress, MAU, storage, invocations are summed across projects), and the $10 compute credit is one organization-level discount. Row-level BilledCost requires allocating those discounts to the projects that consumed them, plus Tax and Credit rows, so the rows sum to the invoice.</li>
+<li><strong>EffectiveCost.</strong> Equals BilledCost once the allocation is done, except for credit top-ups: prepaid balances that pay future invoices and are taxed at purchase. Supabase must decide whether top-ups appear as a Purchase row with usage rows carrying their full cost, or as a balance applied at invoice time, and document it.</li>
+</ul>
+<p><strong>Trivial (2 of 4 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Supabase owns the price list and the invoice already shows gross quantity and quota. Multiply the pre-quota quantity by the public unit price.</li>
+<li><strong>ContractedCost.</strong> Equals ListCost for Free, Pro, and Team. Enterprise custom pricing needs the order-form rate.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No delivery path.</strong> There is no export, CSV, or API for billing data. Every FOCUS column depends on Supabase building one; this is the first gap, not the last.</li>
+<li><strong>Monthly grain.</strong> The invoice is monthly. Daily per-project usage exists in the dashboard, so Supabase meters at least daily (usage is under one hour delayed), but it is not exposed.</li>
+<li><strong>Mixed periods on one invoice.</strong> Each invoice combines current-cycle fixed fees with previous-cycle usage. Rows must carry their own ChargePeriod rather than inheriting the invoice cycle.</li>
+<li><strong>Sub-project resources.</strong> Read replicas, branches, log drains, and custom domains roll up to the project <code>ref</code>; per-resource IDs are needed for ResourceId.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>PricingQuantity, PricingUnit, ConsumedQuantity, ConsumedUnit:</strong> Emit ConsumedQuantity as total usage before quota, and PricingQuantity in each meter&rsquo;s rate block (for example &ldquo;1000000 Invocations&rdquo; for Edge Functions, &ldquo;1000000 Messages&rdquo; for Realtime, &ldquo;1000 Connections&rdquo; for peak connections, &ldquo;Hours&rdquo; for compute). Keep billed-after-quota quantity as an <code>x_BilledQuantity</code> custom column.</p>
+<p><strong>ServiceName and ServiceCategory:</strong> Group meters into Supabase products. Use &ldquo;Databases&rdquo; for compute, disk, replicas, PITR, and branching; &ldquo;Identity&rdquo; for Auth; &ldquo;Storage&rdquo; for Storage; &ldquo;Compute&rdquo; for Edge Functions; &ldquo;Networking&rdquo; for egress, IPv4, and custom domains; and &ldquo;Management and Governance&rdquo; for logs and log drains.</p>
+<p><strong>ChargePeriodStart and ChargePeriodEnd:</strong> Use the previous cycle for usage rows and the current cycle for fixed fees, then move to daily rows.</p>
+<p><strong>InvoiceIssuerName:</strong> Emit the legal entity that issues direct invoices, and the marketplace for AWS and Vercel organizations.</p>
+<p><strong>ResourceId, ResourceName, ResourceType:</strong> Emit replica, branch, drain, and domain identifiers under their project; derive ResourceType from the add-on <code>type</code>.</p>
+<p><strong>ChargeCategory, ChargeFrequency, PricingCategory, BillingAccountType, SubAccountType:</strong> Derive as shown in the table.</p>
+<p><strong>Already right:</strong> Organization slug and name, project refs, USD, invoice numbers, line item names as meters, and separate quota, credit, and tax lines map cleanly.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is in release candidate with ratification scheduled for December 3, 2026. The v1.3 recency and completeness columns suit Supabase&rsquo;s near-real-time usage data, and the v1.4 Invoice Detail dataset fits its mixed-period invoice.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no tags, zones, commitments, reservations, or alternate currencies) and the treatment of quotas, compute credits, and credit top-ups.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Take one month of invoices and usage-page data for a multi-project Pro organization. Hand-build a FOCUS file, run it through the Validator, and decide how quotas, compute credits, and top-ups allocate to projects.</p>
+<p><strong>Phase 1: Export.</strong> Ship a daily per-organization CSV and Management API endpoint at project × line item × day grain with BillingAccount, SubAccount, ChargePeriod, ChargeDescription, SkuMeter, ConsumedQuantity, ConsumedUnit, and RegionId. This is the prerequisite for everything else.</p>
+<p><strong>Phase 2: Close Mandatory gaps.</strong> Add ListCost and ListUnitPrice from the price list, ContractedCost and ContractedUnitPrice, and BilledCost and EffectiveCost with quota and credit discounts allocated. Add Purchase, Credit, and Tax rows so BilledCost reconciles to the invoice.</p>
+<p><strong>Phase 3: Fix deviations and fill Conditional columns.</strong> Derive ChargeCategory, ServiceName, ServiceCategory, ChargeFrequency, and PricingCategory; normalize pricing units; emit SkuId from add-on variant IDs, SkuPriceId, SkuPriceDetails, RegionName, per-resource IDs, InvoiceIssuerName, and ServiceSubcategory.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add recency and completeness columns and the Invoice Detail dataset; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Today, from the invoice:</strong> Monthly spend by project for most line items, read by hand.</li>
+<li><strong>After Phase 1:</strong> Daily usage trending, anomaly detection, and project inventory by region, in usage units.</li>
+<li><strong>After Phase 2:</strong> Invoice reconciliation, chargeback and showback by project in dollars, and actuals-based budgeting and forecasting.</li>
+<li><strong>After Phase 3:</strong> Cross-provider spend by service category, compute rightsizing by instance size, and unit economics per MAU or per invocation.</li>
+<li><strong>Out of scope:</strong> Commitment utilization, capacity reservation management, availability zone analysis, and tag-based allocation (unless Supabase adds project labels).</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Supabase contact from KubeCon NA 2026 to identify the owner of billing and the Management API.</li>
+<li>Confirm whether daily per-project, per-meter usage can be exported from the system behind the usage page.</li>
+<li>Confirm the legal entity on direct invoices, how Enterprise contracts are priced and invoiced, and whether any Enterprise contract includes commitments.</li>
+<li>Confirm whether project tags or labels are planned.</li>
+<li>Build a v1.2 sample from one month of a multi-project organization and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Supabase has no billing export, CSV download, or billing, invoice, or cost endpoint in the Management API. No doc reviewed mentions one, and the OpenAPI spec&rsquo;s billing paths cover add-on configuration only.</li>
+<li><strong>High:</strong> Invoice structure (mixed fixed and usage periods, project refs on most lines, quotas and compute credits as discounts, separate tax), USD-only billing, hourly compute pricing, quotas, and unit prices, from Supabase docs and the pricing page.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> Supabase has no tags. No tag feature appears in the docs reviewed; the organization response has an undocumented <code>opt_in_tags</code> field that does not appear to be resource tagging.</li>
+<li><strong>Moderate:</strong> CommitmentDiscount N/A. True for self-serve plans and top-ups; Enterprise contract terms are not public and could include commitments.</li>
+<li><strong>Moderate:</strong> Management API field lists for projects, organizations, and add-on analytics were read partly from a summary of the OpenAPI spec; the add-ons response and analytics response shapes were read directly.</li>
+<li><strong>Low:</strong> InvoiceIssuerName. Docs name only a payment entity in Singapore, not the invoicing legal entity.</li>
+<li><strong>Low:</strong> Which invoice lines lack a project ref. Supabase says &ldquo;the majority&rdquo; carry one; organization-level lines (plan fee, MAU, likely others) must be allocated or left with a null SubAccountId.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>About billing on Supabase: <a href="https://supabase.com/docs/guides/platform/billing-on-supabase">supabase.com/docs/guides/platform/billing-on-supabase</a></li>
+<li>Your monthly invoice: <a href="https://supabase.com/docs/guides/platform/your-monthly-invoice">supabase.com/docs/guides/platform/your-monthly-invoice</a></li>
+<li>Billing FAQ: <a href="https://supabase.com/docs/guides/platform/billing-faq">supabase.com/docs/guides/platform/billing-faq</a></li>
+<li>Control your costs: <a href="https://supabase.com/docs/guides/platform/cost-control">supabase.com/docs/guides/platform/cost-control</a></li>
+<li>Manage Compute usage: <a href="https://supabase.com/docs/guides/platform/manage-your-usage/compute">supabase.com/docs/guides/platform/manage-your-usage/compute</a></li>
+<li>Improved invoices and more timely usage data (changelog): <a href="https://supabase.com/changelog/28480-improved-invoices-and-more-timely-usage-data">supabase.com/changelog/28480</a></li>
+<li>Regions: <a href="https://supabase.com/docs/guides/platform/regions">supabase.com/docs/guides/platform/regions</a></li>
+<li>Management API OpenAPI spec: <a href="https://api.supabase.com/api/v1-json">api.supabase.com/api/v1-json</a></li>
+<li>Supabase Pricing: <a href="https://supabase.com/pricing">supabase.com/pricing</a></li>
+<li>Supabase on AWS Marketplace: <a href="https://aws.amazon.com/marketplace/pp/prodview-zjciuce2qsb3q">aws.amazon.com/marketplace/pp/prodview-zjciuce2qsb3q</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

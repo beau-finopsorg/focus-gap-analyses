@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dynatrace &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Dynatrace-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="dynatrace-focus-data-generator-gap-analysis">Dynatrace &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: June 25, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Dynatrace<br>
+<strong>Prepared:</strong> June 25, 2026<br>
+<strong>Source:</strong> Dynatrace DPS Usage API; Dynatrace billing dashboard<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 27 Present, 10 Deviation, 0 Missing Mandatory, 3 Missing Conditional, 1 Missing Recommended, 16 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Dynatrace bills through its Dynatrace Platform Subscription (DPS) model: a unified credit pool called Davis Data Units (DDUs) consumed across infrastructure monitoring, log management, application security, digital experience monitoring, and business analytics. Each capability has a DDU consumption rate. Dynatrace&rsquo;s Usage API provides per-capability, per-environment consumption data. All 21 Mandatory columns have source data. Sixteen columns are N/A: no per-resource IDs at the billing layer, no regional billing, and no commitment discount constructs (DPS commitments are pricing tiers, not FOCUS CommitmentDiscounts).</p>
+<p><strong>Recommendation:</strong> Implement one FOCUS row per Dynatrace capability × environment × billing period. PricingUnit = &ldquo;Davis Data Units&rdquo; across all capabilities; SkuMeter = capability name (e.g., &ldquo;Infrastructure Monitoring DDUs&rdquo;). Public on-demand DDU rates cover ListUnitPrice; enterprise DPS commitment rates require supplementary pricing.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>Dynatrace Usage API</strong>: Returns daily DDU consumption broken down by capability and by environment. Environments map to SubAccountId. Key capabilities: Infrastructure Monitoring, Log Management and Analytics, Application Security, Digital Experience Monitoring, Business Analytics, Synthetic Monitoring.</p>
+<p>Key characteristics:
+- <strong>Unified credit model:</strong> All Dynatrace capabilities consume DDUs from a shared pool. One PricingUnit spans all rows.
+- <strong>Environment hierarchy:</strong> Dynatrace deployments use environments (e.g., dev, staging, prod). These map to SubAccountId/SubAccountName.
+- <strong>Public on-demand pricing:</strong> Dynatrace publishes per-DDU on-demand rates for all major capabilities. ListUnitPrice is derivable.
+- <strong>DPS commitments:</strong> Customers commit to a DDU pool annually. This is PricingCategory = &ldquo;Committed&rdquo;, not a FOCUS CommitmentDiscount.
+- <strong>No resource IDs:</strong> Billing aggregates by capability; no per-host or per-service IDs at the billing layer.
+- <strong>No regional billing:</strong> Dynatrace is a global SaaS platform. Data residency options exist but do not create separate billing line items.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. DPS annual commitments map to PricingCategory = &ldquo;Committed&rdquo;. CommitmentDiscount columns are N/A.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Dynatrace source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice amount per capability per billing period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>= BilledCost (no prepaid amortization at DDU level)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>On-demand DDU rate × DDU quantity from pricing page</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>DPS commitment rate × quantity; not in Usage API for enterprise</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Dynatrace tenant ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Customer organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>USD or EUR</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>First day of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Last day of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Start of usage period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>End of usage period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Derive: capability name + unit (e.g., &ldquo;Dynatrace Infrastructure Monitoring · Davis Data Units&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for all DDU consumption</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for corrections</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Dynatrace LLC&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Dynatrace&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Dynatrace&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Dynatrace Infrastructure Monitoring&rdquo;, &ldquo;Dynatrace Log Management&rdquo;, &ldquo;Dynatrace Application Security&rdquo;, etc.</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Management and Governance&rdquo; for observability and security capabilities</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>DDU quantity consumed per capability per period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>&ldquo;Davis Data Units&rdquo; across all capabilities</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>= PricingQuantity (DDUs consumed)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>&ldquo;Davis Data Units&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>On-demand DDU rate per capability from Dynatrace pricing page</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>DPS commitment rate per DDU; Deviation for enterprise accounts</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Standard&rdquo; for on-demand; &ldquo;Committed&rdquo; for DPS commitment</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Conditional</td>
+<td>&ldquo;Usage-Based&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Enterprise&rdquo; or &ldquo;Direct&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Dynatrace environment ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Environment name (e.g., &ldquo;production&rdquo;, &ldquo;staging&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Environment&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>N/A: DDU billing does not expose per-host or per-service IDs</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Dynatrace capability code (e.g., &ldquo;infra_monitoring&rdquo;, &ldquo;log_analytics&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: Dynatrace billing does not expose resource tags at the billing layer</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>USD or EUR</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ContractedUnitPrice; Deviation for enterprise rates</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>= EffectiveCost</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Capability name (e.g., &ldquo;Infrastructure Monitoring DDUs&rdquo;, &ldquo;Log Analytics DDUs&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>No pricing catalog ID in Dynatrace Usage API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not applicable (flat per-DDU pricing per capability)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: Dynatrace billing is not region-specific</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: DPS commitments are pricing tiers, not FOCUS CommitmentDiscount</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number from Dynatrace billing dashboard</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Map from capability: &ldquo;Infrastructure Monitoring&rdquo;, &ldquo;Log Management&rdquo;, &ldquo;Application Security&rdquo;, &ldquo;Digital Experience&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: global SaaS with no per-zone billing</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 27 Present, 10 Deviation, 0 Missing Mandatory, 3 Missing Conditional, 1 Missing Recommended, 16 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Per-capability DDU usage, environment hierarchy, billing period, on-demand pricing, invoice numbers. All 21 Mandatory columns have source data.</p>
+<p><strong>Remaining:</strong> Enterprise DPS commitment rates require supplementary pricing data. SkuPriceId and SkuPriceDetails absent. Missing: Conditional (3).</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>PricingUnit:</strong> &ldquo;Davis Data Units&rdquo; across all capabilities. SkuMeter differentiates by capability (e.g., &ldquo;Infrastructure Monitoring DDUs&rdquo;).</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Usage&rdquo; for all DDU consumption. Credit adjustments → &ldquo;Credit&rdquo;.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Management and Governance&rdquo; for all observability, security, and analytics capabilities.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. Document DPS commitments as PricingCategory = &ldquo;Committed&rdquo;, not CommitmentDiscount.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0:</strong> Enable Dynatrace Usage API access. Pull one month of per-capability, per-environment DDU consumption.</p>
+<p><strong>Phase 1: Core DDU transform.</strong> Map Infrastructure Monitoring and Log Management rows. Derive ChargeCategory, ServiceName, PricingUnit = &ldquo;Davis Data Units&rdquo;, SkuMeter, PricingCategory. Add environment SubAccount mapping.</p>
+<p><strong>Phase 2: Full capability portfolio.</strong> Extend to all active capabilities. Integrate DPS commitment rates for ContractedCost.</p>
+<p><strong>Phase 3: Certify.</strong> Add ServiceSubcategory. Drop ProviderName, PublisherName (v1.4). Validate and certify.</p>
+<h3 id="24-focus-use-cases-dynatrace-customers-unlock">2.4 FOCUS Use Cases Dynatrace Customers Unlock</h3>
+<p><strong>After Phase 1:</strong> Per-capability DDU cost by environment. On-demand vs. DPS commitment rate comparison. Infrastructure + log management cost by team.</p>
+<p><strong>After Phase 2:</strong> Full observability portfolio cost by capability. ServiceSubcategory-level cost allocation. Cross-capability DDU efficiency.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Enable Dynatrace Usage API access and pull one month of per-capability, per-environment DDU data.</li>
+<li>Build a capability → SkuMeter mapping table from Dynatrace&rsquo;s DDU taxonomy.</li>
+<li>Implement Phase 1 transform (Infrastructure Monitoring + Log Management) and run through FOCUS Validator.</li>
+<li>Identify DPS commitment rate for PricingCategory derivation.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Dynatrace Usage API provides DDU consumption by capability and environment. All 27 Present columns are grounded in documented API fields.</li>
+<li><strong>High:</strong> Environment hierarchy maps cleanly to SubAccountId.</li>
+<li><strong>Moderate:</strong> DPS commitment rate derivation for ContractedCost.</li>
+<li><strong>Low:</strong> Enterprise ContractedCost. Custom negotiated rates require supplementary data.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Dynatrace DPS Usage: <a href="https://docs.dynatrace.com/docs/platform/davis-data-units">docs.dynatrace.com/docs/platform/davis-data-units</a></li>
+<li>Dynatrace Pricing: <a href="https://www.dynatrace.com/pricing/">dynatrace.com/pricing</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

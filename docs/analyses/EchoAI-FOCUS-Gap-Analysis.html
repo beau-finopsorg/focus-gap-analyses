@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Echo &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/EchoAI-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="echo-focus-data-generator-gap-analysis">Echo &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Echo Software Ltd. (Echo, Inc. in the echo.ai site footer)<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Echo pricing page and FAQ; echo.ai product pages (Container Images, Integrations, image catalog); echo.ai Terms of Use; press coverage of the Series A and the Minimus asset acquisition<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 17 Present, 6 Deviation, 2 Missing Mandatory, 10 Missing Conditional, 1 Missing Recommended, 21 N/A</p>
+<blockquote>
+<p><strong>Public billing docs are thin.</strong> Echo publishes no prices, no billing or usage export, no invoice format, no billing or registry API, and no account hierarchy. Its product docs (docs.echohq.com) sit behind a customer login. The only public billing facts are two quote-based pricing models (per artifact, or all-access priced by engineering headcount) and a statement that Echo sells through the AWS, Azure, and GCP marketplaces. The column table below is therefore mapped against what a standard SaaS invoice and order form would carry, not against any documented Echo schema. Treat every &ldquo;Present&rdquo; status as provisional until Echo shares a sample invoice and whatever usage view the customer portal provides.</p>
+</blockquote>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Echo sells hardened, CVE-free software artifacts: container base images (including FIPS 140-3 and STIG-hardened variants), language libraries, VM images, serverless runtimes, and OS packages, plus Helm charts and end-of-life support. Images are rebuilt continuously, ship with SBOM, provenance, and VEX, and are mirrored into the customer&rsquo;s own registry (ECR, ACR, Artifact Registry, JFrog, Docker Hub, GitHub Packages, Nexus, Harbor, Quay). Echo raised a $35M Series A in December 2025 and acquired Minimus&rsquo;s hardened-image assets in August 2026.</p>
+<p>Pricing is custom-quoted under one of two models: <strong>pay per artifact</strong>, or <strong>access to all artifacts priced by the size of the engineering organization</strong>, where an engineer is &ldquo;any individual who has made a commit to a private repository within the last 180 days.&rdquo; A startup plan exists. Customers can switch models as their contract permits. Echo also sells through cloud marketplaces.</p>
+<p>This is a contract-subscription vendor with no published data surface. Mapped against assumed invoice content, 17 of 57 FOCUS v1.2 columns map directly and 19 of 21 Mandatory columns have a likely source. <strong>EffectiveCost</strong> is the substantive Mandatory gap: subscriptions are contracted for a term and invoiced up front, so a FOCUS dataset must amortize them into per-period rows, and no per-period data exists today. <strong>ListCost</strong> is trivial once Echo defines a list rate per artifact and per engineer; until then it equals ContractedCost.</p>
+<p>The larger gaps sit outside the column table. Echo has no machine-readable billing delivery at all, no per-period granularity, and no allocation: neither the artifacts a customer consumes nor the engineer count that drives the all-access price is exposed alongside cost. For marketplace buyers, the hyperscaler&rsquo;s own FOCUS export is the only FOCUS-shaped record of Echo spend today, with the cloud provider as invoice issuer.</p>
+<p><strong>Recommendation:</strong> Publish a monthly FOCUS export per customer from the Echo portal: one Purchase row per subscription term, monthly rows carrying amortized EffectiveCost, one row per entitled artifact under the per-artifact model (ResourceId = artifact), and the measured engineer count as ConsumedQuantity under the all-access model, plus Tax and Credit rows so the dataset reconciles to the invoice. Deliver it through an API or a scheduled object-storage drop.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>Echo publishes no billing data interface. The material available for a FOCUS mapping:</p>
+<ul>
+<li><strong>Pricing page and FAQ:</strong> Two models, pay per artifact or all-access priced by engineering-organization size. Exact prices by custom quote. Startup plan by contacting sales. Switching models allowed within contract terms. No published prices, free tier, or billing cadence.</li>
+<li><strong>Invoices and order forms (direct contracts):</strong> Not publicly documented. The analysis assumes a standard SaaS invoice: invoice number, customer, service term, line description (product and pricing model), quantity (artifacts or engineers), unit price, amount, and currency.</li>
+<li><strong>Customer portal (app.echohq.com) and docs (docs.echohq.com):</strong> Both require a login. Nothing public describes a billing page, usage view, export, or API.</li>
+<li><strong>Marketplaces:</strong> The pricing FAQ says Echo supports &ldquo;all of the popular marketplaces, including AWS, Azure, and GCP&rdquo;; the Integrations page lists AWS and Azure Marketplace as &ldquo;Available for consumption.&rdquo; Marketplace purchases reach the buyer as line items in the cloud provider&rsquo;s billing data, invoiced by the cloud provider.</li>
+<li><strong>Product telemetry:</strong> Echo must measure engineer headcount (private-repository committers over 180 days) to price the all-access model, and must know which artifacts each customer is entitled to under the per-artifact model. Neither measure is exposed with cost.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Products:</strong> Echo Containers, Echo Libraries, Echo VMs, Echo Serverless, Echo OS Packages, and Echo Frontier; Helm charts and EOL support in the ecosystem.</li>
+<li><strong>Pricing units:</strong> Artifacts (per-artifact model) or engineers (all-access model).</li>
+<li><strong>Commercial terms:</strong> Custom quotes and contracts; no public list price.</li>
+<li><strong>Delivery:</strong> Images mirrored into the customer&rsquo;s registry; no Echo-hosted regions or zones in the pricing.</li>
+<li><strong>Entity:</strong> The Terms of Use name Echo Software Ltd. under Israeli law; the site footer reads Echo, Inc.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Three modeling decisions drive this analysis:</p>
+<ul>
+<li><strong>The contract is a prepaid subscription, not a commitment discount.</strong> FOCUS defines a commitment discount as reduced rates in exchange for a commitment. Echo publishes no uncommitted rate, so no discount is visible, and the seven CommitmentDiscount columns are N/A. EffectiveCost still has to amortize the prepayment across the service term. From v1.3 the Contract Commitment dataset is the natural home for the contract itself.</li>
+<li><strong>Artifacts are the resources behind per-artifact charges.</strong> Each entitled image, library, or VM image is what the customer pays for, so ResourceId, ResourceName, and ResourceType are Missing, not N/A.</li>
+<li><strong>Engineer headcount is a measured quantity.</strong> The all-access price depends on a rolling 180-day committer count that Echo measures, so ConsumedQuantity and ConsumedUnit are Missing, not N/A.</li>
+</ul>
+<p>Echo has no documented sub-account hierarchy, billing tags, regions, zones, capacity reservations, alternate pricing currencies, or multiple billing-account types; those columns are N/A and should exist as null. Feature levels follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Echo source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice line amount (direct contracts)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs the up-front subscription amortized across the service term, plus credit allocation</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not available: no list price exists; define list rates per artifact and per engineer, or set equal to ContractedCost</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Invoice unit price × quantity (custom-quoted rate)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Echo customer or organization identifier on the invoice and in the portal</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Customer legal or organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Invoice currency (USD assumed)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice billing period start</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice billing period end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Service term start on the invoice line</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Service term end on the invoice line</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Invoice line description</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for subscriptions; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; rows from the invoice</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Echo Software Ltd.&rdquo; for direct contracts; the cloud provider for marketplace purchases</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Echo&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Echo&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Product name (e.g., &ldquo;Echo Containers&rdquo;, &ldquo;Echo Libraries&rdquo;, &ldquo;Echo VMs&rdquo;, &ldquo;Echo Serverless&rdquo;, &ldquo;Echo OS Packages&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Security&rdquo; for all products</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Invoice quantity (artifacts or engineers); must be non-null on every non-Tax row</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize: &ldquo;Artifacts&rdquo; or &ldquo;Engineers&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Not exposed: measured engineer count (180-day committers) or artifacts in use</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not available: no public price list</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Invoice unit price</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>N/A: single customer account type</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>N/A: no documented sub-account hierarchy</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not exposed: candidate is the artifact identifier (e.g., image name such as &ldquo;golang-fips&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Container Image&rdquo;, &ldquo;Library&rdquo;, &ldquo;VM Image&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; internal product and pricing-model codes</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: no billing tags or labels</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: single pricing currency assumed</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Engineers&rdquo; for all-access, &ldquo;Artifacts&rdquo; for per-artifact)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed to distinguish pricing model, artifact type, and startup plan</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: no region-based pricing; images mirror into the customer&rsquo;s registry</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: prepaid subscription with no visible commitment discount</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Recurring&rdquo; for subscriptions</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map each product to an allowed v1.2 Security subcategory</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: no zones</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 17 Present, 6 Deviation, 2 Missing Mandatory, 10 Missing Conditional, 1 Missing Recommended, 21 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved (provisionally):</strong> Billing account, currency, billing and service periods, invoice line descriptions, contracted unit prices, invoice numbers, and product names should all exist on Echo&rsquo;s invoices. None is publicly documented.</p>
+<p><strong>Substantive (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Subscriptions are contracted for a term and invoiced ahead of use. Producing EffectiveCost means splitting each purchase into per-period rows across its service term and allocating any credits back to the charges they offset. Echo exposes no per-period data today.</li>
+</ul>
+<p><strong>Trivial (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Echo owns its pricing. Once it sets a list rate per artifact and per engineer, ListCost is that rate × PricingQuantity. Without a list rate, ListCost equals ContractedCost.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No delivery path.</strong> No billing API, usage export, or documented portal view exists. Nothing about Echo&rsquo;s own charges reaches a FinOps tool except invoice PDFs and, for marketplace buyers, the hyperscaler&rsquo;s billing data.</li>
+<li><strong>No granularity.</strong> A term subscription invoiced once gives one row per term. FinOps tools need at least monthly rows.</li>
+<li><strong>No allocation.</strong> Under the per-artifact model, the artifact is the natural allocation key; under all-access, the engineer count is. Neither is exposed with cost, so customers cannot charge Echo spend back to the teams that consume the images.</li>
+<li><strong>Marketplace split.</strong> Marketplace purchases carry the cloud provider as invoice issuer and appear only in that provider&rsquo;s export. A customer buying partly direct and partly through a marketplace has no single view.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>ChargeCategory:</strong> &ldquo;Purchase&rdquo; for subscription lines; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; rows broken out so that BilledCost summed per InvoiceId equals the invoice total.</p>
+<p><strong>ServiceCategory and ServiceSubcategory:</strong> &ldquo;Security&rdquo; for every product. Map each product to an allowed v1.2 Security subcategory and confirm the choice against the spec&rsquo;s value list.</p>
+<p><strong>PricingQuantity and PricingUnit:</strong> Every non-Tax row needs a quantity: entitled artifacts under the per-artifact model, engineers under all-access. Use &ldquo;Artifacts&rdquo; and &ldquo;Engineers&rdquo; consistently. If the engineer count is re-measured during the term, PricingQuantity must reflect the contracted count, with ConsumedQuantity carrying the measured one.</p>
+<p><strong>ChargeFrequency and PricingCategory:</strong> &ldquo;Recurring&rdquo; and &ldquo;Standard&rdquo; for subscriptions.</p>
+<p><strong>Already right:</strong> Echo&rsquo;s two pricing units (artifacts and engineers) are concrete, countable, and map cleanly to FOCUS quantity and unit columns once exposed.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is in release candidate with ratification scheduled for December 3, 2026. The v1.3 Contract Commitment dataset fits Echo&rsquo;s term contracts, and the v1.4 Invoice Detail dataset fits an invoice-centric vendor with no usage feed.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no sub-accounts, tags, regions, reservations, commitment discounts, or alternate currencies) and the decision to model contracts as prepaid subscriptions.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Obtain one sample invoice and order form for each pricing model. Confirm the invoicing entity, currency, and what the customer portal shows. Hand-build a v1.2 file from them and run it through the Validator.</p>
+<p><strong>Phase 1: Close Mandatory gaps and ship a feed.</strong> Generate monthly rows per subscription with amortized EffectiveCost. Set ListCost from a defined list rate or equal to ContractedCost. Add Tax and Credit rows. Deliver the file through the portal, an API, or a scheduled object-storage drop.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Derive ChargeCategory, ServiceCategory, ChargeFrequency, and PricingCategory; normalize PricingUnit; populate PricingQuantity on every non-Tax row.</p>
+<p><strong>Phase 3: Allocation and Conditional columns.</strong> Add ResourceId, ResourceName, and ResourceType per artifact; ConsumedQuantity and ConsumedUnit for measured engineer counts; SkuId, SkuMeter, SkuPriceId, and SkuPriceDetails; ListUnitPrice; and ServiceSubcategory.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Contract Commitment and Invoice Detail datasets; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, amortized spend reporting, and actuals-based budgeting for Echo alongside cloud spend.</li>
+<li><strong>After Phase 2:</strong> Spend by service category across providers (Echo as Security spend).</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback by artifact, unit cost per image or per engineer, and tracking engineer-count growth against the all-access price.</li>
+<li><strong>Out of scope:</strong> Region analysis, capacity reservation management, commitment discount utilization, and tag-based allocation.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up on the KubeCon booth conversation and request a sample invoice and order form for each pricing model.</li>
+<li>Confirm the invoicing entity (Echo Software Ltd. or Echo, Inc.), billing currencies, and how engineer counts are measured and trued up.</li>
+<li>Ask what billing or usage data the customer portal shows today and whether any export exists.</li>
+<li>Build a v1.2 sample from one contract and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Echo publishes no prices, billing or usage export, invoice format, or billing API; its docs require a login. The two pricing models and the engineer definition come from Echo&rsquo;s pricing page.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; the bundled table was spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> Present status for invoice-sourced columns. No Echo invoice is public, so presence assumes standard SaaS invoice content.</li>
+<li><strong>Moderate:</strong> Treating contracts as prepaid subscriptions rather than commitment discounts. If Echo discounts committed terms against a published rate, the CommitmentDiscount family becomes applicable.</li>
+<li><strong>Low:</strong> InvoiceIssuerName. The Terms of Use name Echo Software Ltd.; the site footer names Echo, Inc. Either may invoice, depending on customer location.</li>
+<li><strong>Low:</strong> USD as the sole billing currency. Nothing public states it.</li>
+<li><strong>Low:</strong> Marketplace mechanics. Echo claims AWS, Azure, and GCP marketplace support but lists only AWS and Azure on its Integrations page; no listing&rsquo;s pricing dimensions were verified.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Echo Pricing: <a href="https://www.echo.ai/pricing">echo.ai/pricing</a></li>
+<li>Echo Container Images: <a href="https://www.echo.ai/product/container-images">echo.ai/product/container-images</a></li>
+<li>Echo Integrations: <a href="https://www.echo.ai/product/integrations">echo.ai/product/integrations</a></li>
+<li>Echo Image Catalog: <a href="https://www.echo.ai/image-pulling">echo.ai/image-pulling</a></li>
+<li>Echo Terms of Use: <a href="https://www.echo.ai/legal/terms-of-use">echo.ai/legal/terms-of-use</a></li>
+<li>SiliconANGLE, Series A (December 16, 2025): <a href="https://siliconangle.com/2025/12/16/vulnerability-free-container-image-startup-echo-software-raises-35m/">siliconangle.com</a></li>
+<li>Cloud Native Now, Minimus asset acquisition: <a href="https://cloudnativenow.com/features/echo-acquires-hardened-container-assets-from-minimus/">cloudnativenow.com</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

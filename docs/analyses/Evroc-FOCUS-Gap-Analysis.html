@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>evroc &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Evroc-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="evroc-focus-data-generator-gap-analysis">evroc &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: July 6, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> evroc AB (Stockholm, Sweden)
+<strong>Prepared:</strong> July 6, 2026
+<strong>Source:</strong> evroc public documentation (docs.evroc.com), evroc CLI and API reference, evroc.com service and pricing pages. No billing, cost, or usage-export interface is documented.
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4
+<strong>Status:</strong> evroc is not listed on the FOCUS Supported providers page, so this is a readiness assessment, not a conformance verdict.
+<strong>Tally:</strong> 0 Present, 0 Deviation, 21 Missing Mandatory, 4 Missing Recommended, 21 Missing Conditional, 11 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>evroc is an early-stage European sovereign hyperscaler that went live in July 2025, operating from data centers in Stockholm (<code>se-sto</code>) and Mougins, France, with a stated plan to reach ten hyperscale sites by 2030. Its platform offers Compute (CPU and GPU virtual machines), Object Storage, File Store, Networking, IAM, and an inference product called Think. The platform primitives that FOCUS attribution depends on are already strong: a two-level Organization to Project account hierarchy, region and zone identifiers, per-resource IDs, and key-value labels on nearly every resource type.</p>
+<p>The finding that governs this analysis is a structural one: evroc publishes no billing, cost, or usage-export interface. There is no cost and usage report, no billing API, no invoice export, and no published price list (pricing on the public site loads dynamically and is not retrievable, and the docs contain no pricing reference). Billing is administered at the Organization level through the console and through evroc support, not through a queryable data surface. As a result, none of the 57 FOCUS columns can be marked Present today: there is no cost record to map. Conformance for evroc is therefore a data-production effort, building a billing dataset that does not yet exist in a customer-consumable form, rather than a reshaping of an existing feed.</p>
+<p>This is normal for a provider at evroc&rsquo;s stage and should not be read as a deficiency in the platform. The account, resource, and region primitives mean the eventual FOCUS build has a solid attribution spine to hang cost on once a rated billing record exists.</p>
+<p><strong>Recommendation:</strong> Treat FOCUS as a design input to evroc&rsquo;s billing engine, not a retrofit. The single highest-value step is to define a rated, resource-level daily charge record (one row per resource per day, carrying quantity, unit, rate, and cost in EUR, keyed to Organization, Project, region, zone, and resource ID). Once that record exists, evroc&rsquo;s existing hierarchy, region, and label primitives make the mandatory FOCUS spine largely mechanical to populate.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>There is no cost or usage data source to analyze. This section describes the platform primitives that a future FOCUS dataset would draw on, and states plainly where the billing data gap sits.</p>
+<p>What exists today, from the public documentation:</p>
+<ul>
+<li><strong>Account hierarchy:</strong> An Organization is the top-level entity (the company or team). Each Organization contains Projects, which are isolated containers for resources, users, and permission sets. Organization administrators &ldquo;manage billing and account settings,&rdquo; and evroc advises using separate Organizations for business units that need &ldquo;separate billing.&rdquo; This is a clean two-level hierarchy that maps to BillingAccount (Organization) and SubAccount (Project).</li>
+<li><strong>Resource identity:</strong> Compute VMs, disks, snapshots, placement groups, buckets, bucket service accounts, file stores, public IPs, security groups, subnets, and VPCs are all first-class resources with IDs, addressable through the CLI and REST API (<code>get</code>, <code>list</code>, <code>update</code>).</li>
+<li><strong>Regions and zones:</strong> A region such as <code>se-sto</code> (Stockholm) contains zones <code>se-sto-a</code>, <code>se-sto-b</code>, and <code>se-sto-c</code>. A second region operates in Mougins, France. Compute VMs and disks are zonal; VPCs, public IPs, and security groups are regional. This gives clean RegionId, RegionName, and AvailabilityZone values.</li>
+<li><strong>Labels (tags):</strong> Most resource types expose a <code>label</code> subcommand that adds or removes labels as key-value pairs (<code>--add key=value</code>, a string-to-string map). This is the FOCUS key-value tag shape, not an array of bare strings, so the tag primitive is well formed at the resource layer.</li>
+<li><strong>Services:</strong> Compute (CPU and GPU VMs), Object Storage (S3-compatible, regional, replicated across zones, 99.9% uptime), File Store, Networking, and Think (inference, with API keys, instances, and models). These map to FOCUS ServiceName and ServiceCategory values (Compute, Storage, Networking, AI and Machine Learning).</li>
+<li><strong>Currency:</strong> evroc AB is a Swedish company serving European customers; billing currency is EUR.</li>
+</ul>
+<p>Key limitations, which define the gap:</p>
+<ul>
+<li><strong>No billing or cost interface of any kind.</strong> The documentation covers Compute, Storage, IAM, Think, Networking, and Quotas. There is no billing product, no cost and usage export, no billing or invoicing API, and no usage-metering export documented. The API reference lists IAM, Object Storage, Compute, Networking, Quotas, and Think, with no billing or cost endpoint.</li>
+<li><strong>No published pricing.</strong> Public product pages render &ldquo;Loading pricing data&hellip;&rdquo; and expose no retrievable rate card, and the docs carry no pricing reference. Without published rates, ListUnitPrice and ListCost cannot be derived from public information.</li>
+<li><strong>No commitment or reservation mechanics documented.</strong> No reserved instances, savings plans, committed-use discounts, or capacity reservations appear anywhere in the documentation. VMs are provisioned on demand; Quotas govern allocation, not commitment-based pricing.</li>
+<li><strong>Metadata retained for billing, but not exposed to the customer as data.</strong> evroc&rsquo;s terms note that request metadata (timestamps, request and response sizes, error codes) is logged for &ldquo;operational, security, and billing purposes.&rdquo; That is an internal metering signal, not a customer-facing cost dataset.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is judged column by column against the feature level each column carries in the target version: Mandatory, Conditional, Recommended, or Optional. A conformant dataset must include and populate every Mandatory column, populate Conditional columns when the provider&rsquo;s business model triggers the condition, and may null Conditional or Recommended columns that do not apply. Because evroc emits no billing dataset, every column is currently absent. Feature levels below are taken from the verified FOCUS v1.2 reference, not from memory.</p>
+<p>Two families are genuinely not applicable to evroc&rsquo;s documented model and are marked N/A (the columns should still exist and be null in a conformant dataset): the seven CommitmentDiscount columns and the two CapacityReservation columns, because evroc documents no commitment or reservation constructs. AvailabilityZone is not N/A: evroc has real zones (<code>se-sto-a/b/c</code>), so it should be populated for zonal resources.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<p>Because evroc publishes no billing dataset, no column can be marked Present. Each Mandatory, Conditional, and Recommended column is classified by whether the platform primitives to populate it exist (making the eventual build trivial) or whether the underlying data does not exist yet (making it substantive). The &ldquo;evroc primitive&rdquo; column names the source a future build would draw on.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>evroc primitive (future source)</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>No billing record exists; rated cost must be produced</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>No billing record exists</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>No published rate card; must be produced</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>No billing record exists</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Organization ID (exists as a primitive, no billing surface)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization name</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>EUR (constant)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>No billing period is defined in any data surface</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>No billing period is defined</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>No charge record exists</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>No charge record exists</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Derivable from service plus resource once a record exists</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derivable (&ldquo;Usage&rdquo; for on-demand consumption)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>Null except corrections; trivial once a record exists</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;evroc AB&rdquo; (constant)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;evroc&rdquo; (constant)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;evroc&rdquo; (constant)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Service catalog (Compute, Object Storage, File Store, Think, Networking)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derivable (Compute, Storage, Networking, AI and Machine Learning)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Requires metered usage per rated line; not exposed</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Derivable per SKU (VM-Hours, GB-Month, tokens) once metering exists</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Requires metered usage; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Derivable per service once metering exists</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>No published rate card</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>No rated record exists</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Standard&rdquo; (on-demand); trivial once records exist</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>&ldquo;Usage-Based&rdquo; for consumption; derivable</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Organization is the billing entity; derivable</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Project ID (exists as a primitive)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Project name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Project&rdquo; (constant); derivable</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Resource IDs exist (VM, disk, bucket, filestore, IP)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Resource names exist</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Resource kind exists (virtualmachine, disk, bucket, filestore)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>VM resource profile / instance type; exists as a primitive</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Labels are key-value (<code>--add key=value</code>); correct shape, not on any billing line</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>EUR; trivial once records exist</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>No rated record exists</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>No rated record exists</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>No rated record exists</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Derivable per SKU once metering exists</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>No price catalog is published</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>No price catalog is published</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Region code exists (<code>se-sto</code>)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Region name (Stockholm; Mougins, France)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: no commitment construct documented</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no reservation construct documented</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>No invoice data surface is exposed</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Derivable (Virtual Machines, GPU VMs, Object Storage, File Store, Inference)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Zone code exists (<code>se-sto-a</code>, <code>-b</code>, <code>-c</code>) for zonal resources</td>
+<td>Missing: Recommended</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 0 Present, 0 Deviation, 21 Missing Mandatory, 4 Missing Recommended, 21 Missing Conditional, 11 N/A. The four Recommended columns are ChargeFrequency, InvoiceId, ServiceSubcategory, and AvailabilityZone. The eleven N/A columns are the seven CommitmentDiscount columns and the two CapacityReservation columns, plus none others; the remaining Conditional columns are genuinely Missing because the platform primitive exists but no billing line carries it.</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>What is solved (as primitives, not as billing data):</strong> The attribution spine is in good shape. Organization and Project give a two-level account hierarchy. Regions and zones are explicit and cleanly named. Resource IDs, names, and types exist across compute, storage, and networking. Labels are key-value, which is the correct FOCUS tag shape. The service catalog maps cleanly to FOCUS service categories. Invoice issuer, provider, publisher, and billing currency are constants. None of these require new data collection; they require a billing record to attach to.</p>
+<p><strong>What remains, and the split between substantive and trivial:</strong></p>
+<p>Twenty-one Mandatory columns are missing. The split matters more than the count:</p>
+<ul>
+<li><strong>Substantive (the real work):</strong> the four cost columns (BilledCost, EffectiveCost, ListCost, ContractedCost) plus the two metered quantity columns (PricingQuantity, PricingUnit) and the period columns (BillingPeriodStart/End, ChargePeriodStart/End). These depend on rated, metered, time-bounded charge records that do not exist in any customer-facing form today. This is the core data-production effort: build a billing engine that meters usage per resource, applies a rate card, and emits a daily rated charge record in EUR.</li>
+<li><strong>Trivial once records exist (plumbing):</strong> BillingAccountId/Name (Organization), InvoiceIssuerName, ProviderName, PublisherName, BillingCurrency (EUR), ServiceName, ServiceCategory, ChargeCategory, ChargeDescription, and ChargeClass (null except corrections). Each is a constant, a lookup, or a straightforward derivation. They are only &ldquo;missing&rdquo; because there is no row to place them on.</li>
+</ul>
+<p>Because evroc has no discounts, credits, commitments, or amortization documented anywhere, the list-cost trap resolves in the simpler direction: once a rated record exists, ListCost = BilledCost = EffectiveCost = ContractedCost for standard on-demand usage. The substantive difficulty is producing the rated record at all, not reconciling later invoice-time adjustments back to usage lines. If evroc introduces enterprise contracts, credits, or commitment pricing later, EffectiveCost and ContractedCost would become a substantive reconciliation gap at that point.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p>There are no deviations to fix, because there is no emitted billing data to deviate. This is the one silver lining of a greenfield state: evroc can adopt FOCUS column IDs, key-value tags, valid enums, and ISO formats (ISO 4217 EUR, ISO 8601 timestamps, inclusive-start exclusive-end periods) natively in the first version of its billing export, rather than reshaping a legacy schema. What evroc already does right at the primitive layer: labels are key-value (not bare strings), region and zone codes are stable and well formed, and the account hierarchy is clean.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026), the latest ratified version, and certify at the current certification baseline, FOCUS v1.2. Because evroc is greenfield on billing, there is no legacy schema to migrate: it can build directly to v1.4 column semantics and simply omit the columns v1.4 removed (ProviderName and PublisherName, removed in v1.4; retained here only for the v1.2 baseline table). Confirm the certification badge version against the program page before finalizing.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Contact <code>member-cert@finops.org</code> for the RFI. Membership is required for certification, though contributing to the spec is open and free. Open-source tooling supports the build: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST/SHOULD/MAY rules). For evroc, certification is downstream of a prerequisite that does not yet exist: a customer-consumable billing dataset.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p>Ordered by dependency. Phase 1 is the gate; nothing else is possible until a rated charge record exists.</p>
+<p><strong>Phase 0: Confirm scope and design to FOCUS.</strong> Decide the grain (recommended: one rated charge record per resource per day), the currency (EUR), and the target version (build v1.4, certify v1.2). Adopt FOCUS column IDs in the export schema from the start.</p>
+<p><strong>Phase 1: Produce a rated, resource-level charge record (the substantive build).</strong> Meter usage per resource per day (VM-Hours, GB-Month, inference tokens), apply a rate card, and emit BilledCost, EffectiveCost, ListCost, ContractedCost in EUR with ChargePeriodStart/End and BillingPeriodStart/End. Key each row to Organization (BillingAccountId), Project (SubAccountId), region, zone, and resource ID. This single phase moves the substantive Mandatory columns and, mechanically, most of the trivial ones.</p>
+<p><strong>Phase 2: Attach the attribution spine.</strong> Populate BillingAccountId/Name from Organization, SubAccountId/Name from Project, RegionId/Name and AvailabilityZone from the zone code, ResourceId/Name/Type from the resource, and Tags from resource labels (already key-value). Derive ServiceName, ServiceCategory, ChargeCategory, ChargeDescription, PricingUnit, and ConsumedQuantity/Unit.</p>
+<p><strong>Phase 3: Round out Conditional and Recommended columns.</strong> Add ServiceSubcategory, InvoiceId (once invoicing is a data surface), ChargeFrequency, SkuId/SkuMeter, and the pricing-currency columns. Publish a rate card so ListUnitPrice and SkuPriceId/SkuPriceDetails become populatable.</p>
+<p><strong>Phase 4: Validate and certify.</strong> Run sample data through the FOCUS Validator, build the native-to-FOCUS mapping, and open the RFI. Build to v1.4 semantics; omit ProviderName/PublisherName under v1.4.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<p>Because there is no cost data today, no FOCUS Use Case is currently supported. The sequencing below shows what each phase unlocks:</p>
+<ul>
+<li><strong>Unlocked by Phase 1 and 2 (cost data plus attribution):</strong> cost reporting and showback by Organization and Project, allocation by resource, allocation by tag, cost reporting by region and zone, and service-level cost breakdowns. evroc&rsquo;s clean hierarchy and label primitives make these strong as soon as a rated record with those keys exists.</li>
+<li><strong>Unlocked by Phase 3 (SKU and rate detail):</strong> unit-cost and rate analysis, and effective-rate reporting per SKU.</li>
+<li><strong>Out of scope for evroc&rsquo;s current model:</strong> commitment-based discount tracking, commitment utilization and coverage, and capacity-reservation reporting, because evroc documents no commitment or reservation constructs. These would come into scope only if evroc introduces those mechanics.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Confirm the billing-record grain and target versions (build v1.4, certify v1.2), and adopt FOCUS column IDs in the billing export schema from the outset.</li>
+<li>Stand up the Phase 1 rated charge record: meter usage per resource per day, apply a rate card, and emit the four cost columns in EUR with charge and billing periods.</li>
+<li>Attach the attribution spine (Organization, Project, region, zone, resource ID, labels) to each charge record.</li>
+<li>Run a sample export through the FOCUS Validator and open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> evroc publishes no billing, cost, or usage-export interface. The documentation, CLI, and API reference contain no billing product or endpoint, and no rate card is published. This is the load-bearing finding, and it is well supported by the public sources reviewed.</li>
+<li><strong>High:</strong> The account hierarchy (Organization to Project), regions and zones (<code>se-sto-a/b/c</code>; Mougins), resource identity, and key-value labels exist as platform primitives. These are directly documented.</li>
+<li><strong>High:</strong> No commitment-discount or capacity-reservation mechanics are documented, so the eleven columns in those two families are correctly N/A.</li>
+<li><strong>Moderate:</strong> Billing currency is EUR (inferred from evroc AB being a Swedish company serving European customers; not confirmed on a billing artifact, because none is published).</li>
+<li><strong>Moderate:</strong> The mapping of platform primitives to specific FOCUS columns is sound in principle, but is provisional until an actual billing record exists to validate field names, types, and grain against. Every &ldquo;Present&rdquo; verdict is deferred precisely because no such record could be inspected.</li>
+<li><strong>Provisional overall:</strong> This is a readiness assessment based on public documentation for an early-stage provider, not a review of a billing dataset. evroc is not on the FOCUS Supported providers list, and nothing here should be read as a conformance result. The bundled FOCUS feature-level table (v1.2) was cache-validated on July 6, 2026: all versions v1.0 through v1.4 were confirmed present against the live spec, with v1.4 (June 4, 2026) the latest ratified version, matching the reference stamp.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>evroc: <a href="https://evroc.com/">evroc.com</a></li>
+<li>evroc User Documentation: <a href="https://docs.evroc.com/">docs.evroc.com</a></li>
+<li>evroc IAM Organizations: <a href="https://docs.evroc.com/products/iam/concepts/organizations.html">docs.evroc.com/products/iam/concepts/organizations.html</a></li>
+<li>evroc Regions and Zones: <a href="https://docs.evroc.com/products/compute/concepts/regions-and-zones.html">docs.evroc.com/products/compute/concepts/regions-and-zones.html</a></li>
+<li>evroc Virtual Machines: <a href="https://evroc.com/cloud-services/virtual-machines/">evroc.com/cloud-services/virtual-machines</a></li>
+<li>evroc launch coverage: <a href="https://www.datacenterdynamics.com/en/news/sovereign-european-cloud-evroc-launches/">datacenterdynamics.com</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org/focus-specification/v1-2</a></li>
+<li>FOCUS Specification v1.4: <a href="https://focus.finops.org/focus-specification/v1-4/">focus.finops.org/focus-specification/v1-4</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

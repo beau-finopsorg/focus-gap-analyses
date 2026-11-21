@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zoom &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Zoom-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="zoom-focus-data-generator-gap-analysis">Zoom &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 18, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Zoom Communications, Inc.<br>
+<strong>Prepared:</strong> November 18, 2026<br>
+<strong>Source:</strong> Zoom Billing API (<code>GET /accounts/{accountId}/billing/invoices</code>, <code>GET /accounts/{accountId}/billing/invoices/{invoiceId}</code>, <code>GET /accounts/{accountId}/billing/usage</code>, <code>GET /accounts/{accountId}/billing/information</code>); Zoom Phone reports API (<code>GET /phone/reports/call_charges</code>, plus SMS and fax charge reports); Zoom pricing page<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 9 Present, 20 Deviation, 3 Missing Mandatory, 7 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Zoom sells per-license subscriptions (Zoom Workplace Basic, Pro, Business, Business Plus, Enterprise) billed monthly or annually in advance, plus add-ons (Large Meetings, Webinars, Sessions/Events, Rooms, Cloud Storage, Contact Center, Zoom Phone) and metered usage (Zoom Phone pay-as-you-go calling, SMS, and fax; Video SDK minutes above the included allowance). Large customers run a master account with sub-accounts, and Zoom also sells through resellers and partners.</p>
+<p>Zoom is ahead of most SaaS vendors in this library on programmatic billing access. The invoice detail endpoint returns line items with <code>charge_name</code>, <code>start_date</code>, <code>end_date</code>, <code>quantity</code>, <code>total_amount</code>, and <code>tax_amount</code>, and the Zoom Phone call charges report carries per-call <code>rate</code>, <code>charge_mode</code>, <code>currency</code>, and <code>total_charge</code>. What it lacks is price context and allocation detail: no unit or list price on invoice lines, no unit of measure, no SKU or price ID for direct customers, no per-user or per-resource attribution, and plan usage that reports counts and storage as strings with no cost attached. The invoice APIs are also heavily rate limited (invoice detail: one request every 30 minutes, 100 per day per account).</p>
+<p>All 21 Mandatory columns except three have a documented source or a direct derivation. One of the three gaps is substantive. <strong>EffectiveCost</strong> requires amortizing annual prepaid licenses and add-ons across their term; invoice lines carry the billed amount only. <strong>ListCost</strong> and <strong>PricingUnit</strong> are plumbing: Zoom owns its price book and units. <strong>BilledCost</strong> is present but needs tax split out of each line into its own Tax rows.</p>
+<p>Zoom is also a FOCUS consumer: its FinOps team uses FOCUS to consolidate its own multi-cloud and data-center cost data. That makes the ask familiar to the people Zoom would staff it with.</p>
+<p><strong>Recommendation:</strong> Publish a monthly FOCUS export per billing account (and per sub-account under a master), built from the invoice line items Zoom already exposes. One Purchase row per license subscription and add-on per term with list and contracted unit prices, one Usage row per metered product (Phone calling, SMS, fax, Video SDK minutes) per charge period, separate Tax rows, and Credit rows for promotions and service credits. Add SkuId and SkuPriceId from the plan catalog and amortize prepaid terms for EffectiveCost.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>Zoom&rsquo;s public billing surface, all under <code>https://api.zoom.us/v2</code> and available on Pro or higher plans (pass <code>me</code> as <code>accountId</code> for your own account):</p>
+<ul>
+<li><strong><code>GET /accounts/{accountId}/billing/invoices</code></strong> (<code>from</code>, <code>to</code>; range up to one year, within the past three years): top-level <code>currency</code> and <code>invoices[]</code> of <code>{id, invoice_number, invoice_date, due_date, target_date, status, total_amount, tax_amount, balance}</code>. Rate limit HEAVY.</li>
+<li><strong><code>GET /accounts/{accountId}/billing/invoices/{invoiceId}</code></strong>: the same header fields plus <code>invoice_items[]</code> of <code>{charge_name, charge_number, charge_type, start_date, end_date, quantity, total_amount, tax_amount, partner_sku, purchase_order_number}</code>. <code>charge_type</code> example: &ldquo;Billed on master&rdquo;. No unit price, list price, or unit of measure. One request every 30 minutes, 100 per day per account.</li>
+<li><strong><code>GET /accounts/{accountId}/billing/usage</code></strong>: plan usage per subscription (<code>plan_base</code>, <code>plan_recording</code>, <code>plan_webinar</code>, <code>plan_phone_*</code>, <code>plan_zoom_video_management</code>, and others), each with <code>zr_sub_refer_id</code>. Seat plans report <code>hosts</code>, <code>usage</code>, <code>pending</code>; storage plans report <code>free_storage</code>, <code>plan_storage</code>, <code>plan_storage_usage</code>, <code>plan_storage_exceed</code> as strings (e.g., &ldquo;10 GB&rdquo;). No cost or price fields.</li>
+<li><strong><code>GET /accounts/{accountId}/billing/information</code></strong> and <strong><code>GET /accounts/{accountId}/plans</code></strong>: plan <code>type</code>, <code>hosts</code>, <code>status</code> (active, cancelled, expired), <code>service_effective_date</code>, <code>next_invoice_date</code>. Video SDK plans carry <code>overage_price</code> and <code>included_minutes</code>.</li>
+<li><strong><code>GET /phone/reports/call_charges</code></strong> (and <code>sms_charges</code>, <code>fax_charges</code>): monthly per-call charge records with duration in minutes, <code>charge_mode</code> (per_min, per_call, per_call_per_min, and variants), <code>rate</code>, <code>currency</code>, <code>total_charge</code>, and <code>billing_number</code>; filterable by billing account.</li>
+<li><strong>Master account APIs:</strong> Zoom states that only approved partners may use master account APIs to manage sub-accounts&rsquo; billing. Sub-account invoice reports exist (<code>/accounts/billing/invoice_reports</code>) under the <code>billing:master</code> scope.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>License subscriptions:</strong> Workplace Pro and Business per user, monthly or annual (annual discounted); Enterprise and Business Plus through sales. Pro and Business include 10 GB cloud recording per license; Enterprise includes unlimited.</li>
+<li><strong>Add-ons:</strong> Cloud storage blocks, Large Meetings, Webinars, Sessions, Rooms, Contact Center, Zoom Phone (metered, regional unlimited, global select).</li>
+<li><strong>Metered usage:</strong> Zoom Phone pay-as-you-go calling billed per minute or per call by destination; SMS and fax charges; Video SDK minutes above <code>included_minutes</code> at <code>overage_price</code>.</li>
+<li><strong>Hierarchy:</strong> Master account with sub-accounts; charges can be billed on master or on each sub-account.</li>
+<li><strong>Channels:</strong> Direct self-serve, direct sales, and partners/resellers (<code>partner_sku</code> and <code>purchase_order_number</code> support reseller billing).</li>
+<li><strong>No tags, no cloud regions:</strong> Phone rates vary by calling destination, not by service region.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Zoom documents no commitment-based discounts: annual billing is a subscription term, and plan allowances (cloud storage, Video SDK minutes) are included quantities, not drawn-down commitments. The CommitmentDiscount family is therefore N/A, as are capacity reservations, region columns, alternate pricing currencies, and tags. Those columns should exist as null. Master accounts with sub-accounts trigger the SubAccount columns. Feature levels follow the FOCUS v1.2 Content Constraints, consistent with the live-spec check performed for this library on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Zoom source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td><code>invoice_items[].total_amount</code>; split <code>tax_amount</code> into separate Tax rows</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs amortization of annual prepaid licenses and add-ons</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not exposed; join Zoom price book × PricingQuantity</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Derive from pre-tax <code>total_amount</code> where no credits are netted into the line</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td><code>accountId</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Not on invoice; join account name from the Accounts API</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Invoice <code>currency</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Not explicit; derive from <code>target_date</code> and the subscription cycle</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Not explicit; derive as above</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td><code>invoice_items[].start_date</code> (date only; convert to ISO 8601 datetime)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td><code>invoice_items[].end_date</code> (date only; convert and make exclusive)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td><code>invoice_items[].charge_name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td><code>charge_type</code> (&ldquo;Billed on master&rdquo;) is not a FOCUS value; derive &ldquo;Purchase&rdquo;, &ldquo;Usage&rdquo;, &ldquo;Tax&rdquo;, &ldquo;Credit&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Zoom Communications, Inc.&rdquo;; reseller name for partner-billed accounts</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Zoom&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Zoom&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Derive from <code>charge_name</code> and plan type (e.g., &ldquo;Zoom Workplace&rdquo;, &ldquo;Zoom Phone&rdquo;, &ldquo;Zoom Webinars&rdquo;, &ldquo;Zoom Rooms&rdquo;, &ldquo;Zoom Contact Center&rdquo;, &ldquo;Zoom Video SDK&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Business Applications&rdquo; for Workplace, Phone, Webinars, Events, Rooms, Contact Center; &ldquo;Storage&rdquo; for cloud storage add-ons; &ldquo;Developer Tools&rdquo; for Video SDK; &ldquo;AI and Machine Learning&rdquo; for paid AI add-ons</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td><code>invoice_items[].quantity</code> (licenses); Phone minutes or calls from charge reports</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Not exposed; &ldquo;Licenses&rdquo;, &ldquo;Minutes&rdquo;, &ldquo;Calls&rdquo;, &ldquo;Messages&rdquo;, &ldquo;GB&rdquo;</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td><code>/billing/usage</code> <code>usage</code>, <code>plan_storage_usage</code> (strings); Phone call duration</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Embedded in strings (e.g., &ldquo;10 GB&rdquo;); parse and normalize</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed; public pricing page for self-serve plans</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Derive <code>total_amount</code> ÷ <code>quantity</code> for flat-rate licenses; Phone <code>rate</code> for calls</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; (no commitment pricing)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from master, sub-account, direct, or partner relationship</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Sub-account <code>accountId</code>; master-billed lines carry <code>charge_type</code> only</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Join sub-account name from master account API (approved partners only)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not exposed (&ldquo;Sub Account&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not exposed; candidates are licensed user, phone number, Room, and SDK app IDs</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td><code>partner_sku</code> (partner-billed only); <code>charge_number</code> is a charge ID, not a SKU</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: no billing tags or labels</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced in billing currency</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td><code>plan_*</code> usage node names; Phone <code>charge_mode</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for monthly vs. annual terms, Phone destination rates, Video SDK included minutes and overage price</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: nothing priced by service region</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: no commitment discounts documented</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td><code>invoice_number</code> (or <code>id</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Recurring&rdquo; for licenses and add-ons; &ldquo;Usage-Based&rdquo; for Phone, SMS, fax, and Video SDK overage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map each product to an allowed v1.2 ServiceSubcategory value</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: no zones</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 9 Present, 20 Deviation, 3 Missing Mandatory, 7 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Line-item invoices with service periods, quantities, amounts, and per-line tax; per-call Phone charges with rates and currency; plan and usage state per subscription; a master and sub-account hierarchy; and stable invoice numbers. All exposed through a documented, authenticated API.</p>
+<p><strong>Substantive (1 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Annual licenses and add-ons are billed in advance. EffectiveCost requires amortizing each purchase across its service term (the <code>start_date</code> and <code>end_date</code> on the line make this mechanical) and allocating any negotiated Enterprise discounts or service credits back to the charges they offset.</li>
+</ul>
+<p><strong>Trivial (2 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Zoom owns the price book; join list unit price × PricingQuantity. Self-serve prices are public.</li>
+<li><strong>PricingUnit.</strong> Zoom knows the unit for every charge; add it to the invoice line. For Phone calling, PricingQuantity and PricingUnit depend on <code>charge_mode</code>: per-minute charges price on minutes, per-call charges on calls, and &ldquo;after T duration&rdquo; modes need computation against the rate basis, not a copy of call duration.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No allocation dimension.</strong> Invoice lines are per subscription, not per user, phone number, or Room. Customers cannot charge back Zoom spend below the sub-account level from billing data. The Phone charges report is the one exception.</li>
+<li><strong>Usage without cost.</strong> <code>/billing/usage</code> reports seat counts and storage consumption with no price, and storage values are strings with embedded units.</li>
+<li><strong>Rate limits.</strong> Invoice detail allows one request every 30 minutes and 100 per day per account. A tenant with dozens of sub-accounts and monthly invoices cannot backfill quickly.</li>
+<li><strong>Partner gating.</strong> Master account billing APIs are limited to approved partners, so a large enterprise may not be able to pull sub-account billing without Zoom&rsquo;s involvement.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost:</strong> Emit <code>tax_amount</code> as its own Tax row per line instead of carrying it alongside <code>total_amount</code>, and state whether <code>total_amount</code> is pre- or post-tax.</p>
+<p><strong>ChargePeriodStart and ChargePeriodEnd:</strong> Convert dates to ISO 8601 UTC datetimes with an exclusive end.</p>
+<p><strong>BillingPeriodStart and BillingPeriodEnd:</strong> Expose the invoice&rsquo;s billing period explicitly rather than only <code>target_date</code>.</p>
+<p><strong>ChargeCategory:</strong> Replace <code>charge_type</code> with FOCUS values: &ldquo;Purchase&rdquo; for licenses and add-ons, &ldquo;Usage&rdquo; for Phone, SMS, fax, and Video SDK overage, &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; rows from the invoice.</p>
+<p><strong>ServiceName and ServiceCategory:</strong> Publish a fixed product list mapped as shown in the table.</p>
+<p><strong>ContractedCost and ContractedUnitPrice:</strong> Add unit price to each invoice line so these are read, not divided.</p>
+<p><strong>ConsumedQuantity and ConsumedUnit:</strong> Return storage usage as a number plus unit, and add cost to <code>/billing/usage</code>.</p>
+<p><strong>SkuId and SkuMeter:</strong> Populate a SKU for direct customers, not only partners, and expose meter names on invoice lines.</p>
+<p><strong>BillingAccountName, BillingAccountType, SubAccountId, SubAccountName:</strong> Put names and the master or sub-account relationship on every line.</p>
+<p><strong>PricingCategory and ChargeFrequency:</strong> Derive from product type as shown in the table.</p>
+<p><strong>Already right:</strong> Line-level invoice items with service dates and quantities, per-line tax, per-call Phone rates with currency, invoice numbers, and a real account hierarchy.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is a release candidate with ratification scheduled for December 3, 2026. Zoom&rsquo;s invoice header endpoint maps closely to the v1.4 Invoice Detail and billing-period datasets.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no commitments, reservations, regions, tags, or alternate pricing currencies) and how partner-billed accounts are represented.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one billing period of invoice detail for a self-serve Pro account, a master account with sub-accounts, and a Zoom Phone metered account. Hand-build a FOCUS file and run it through the Validator. Confirm whether <code>total_amount</code> includes tax and whether credits are netted into lines.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Add unit, list unit price, and contracted unit price to invoice lines. Amortize annual licenses and add-ons for EffectiveCost. Emit Tax and Credit rows so BilledCost reconciles to each invoice.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Map ChargeCategory, ServiceName, ServiceCategory, ChargeFrequency, and PricingCategory; convert charge dates to datetimes; expose billing periods; join names onto every row; fold Phone call charges into the same dataset with PricingQuantity computed per <code>charge_mode</code>.</p>
+<p><strong>Phase 3: Allocation and Conditional columns.</strong> Add SubAccountType; ResourceId, ResourceName, and ResourceType (user, phone number, Room, SDK app); SkuId, SkuPriceId, and SkuPriceDetails for all customers; and ServiceSubcategory. Relax invoice API rate limits or deliver the dataset as a scheduled export.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Invoice Detail dataset; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, amortized spend reporting, and actuals-based budgeting and forecasting.</li>
+<li><strong>After Phase 2:</strong> Spend by service category across providers, Phone usage cost trending, and license-versus-usage mix analysis.</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback by sub-account, user, or Room; license utilization against cost; and anomaly detection on Phone and Video SDK overages.</li>
+<li><strong>Out of scope:</strong> Commitment discount utilization, capacity reservation management, region-based analysis, and tag-based allocation (unless Zoom adds labels).</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Reach Zoom&rsquo;s FinOps team, already a FOCUS consumer, to identify the owner of billing data and the Billing API.</li>
+<li>Request a sample invoice detail payload (self-serve, master with sub-accounts, and Phone metered) to confirm tax treatment, credit handling, and <code>charge_type</code> values.</li>
+<li>Confirm the scope of the partner restriction on master account billing APIs for direct enterprise customers.</li>
+<li>Build a v1.2 sample from one billing period and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Invoice list and detail fields, plan usage fields, scopes, rate limits, and the approved-partner restriction come from Zoom&rsquo;s Master Account Billing API reference.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints, and &ldquo;Business Applications&rdquo; is a valid ServiceCategory value.</li>
+<li><strong>Moderate:</strong> Zoom Phone call charges fields (<code>charge_mode</code>, <code>rate</code>, <code>currency</code>, <code>total_charge</code>) come from secondary mirrors of the Zoom Phone API reference; the official page could not be loaded.</li>
+<li><strong>Moderate:</strong> Whether <code>total_amount</code> on invoice lines is pre- or post-tax, and whether discounts and credits are netted into lines. Undocumented; this drives the BilledCost and ContractedCost classifications.</li>
+<li><strong>Moderate:</strong> Commitment discount family as N/A. If Enterprise contracts include prepaid credit pools or drawn-down minute commitments, these seven columns become applicable.</li>
+<li><strong>Moderate:</strong> Zoom as a FOCUS consumer rests on a third-party vendor blog, not a Zoom statement. No public Zoom statement on producing FOCUS data was found.</li>
+<li><strong>Low:</strong> Pricing. Workplace Pro at $14.16 and Business at $18.33 per user per month billed annually ($16.99 and $21.99 monthly) come from third-party summaries as of October 2026, not Zoom&rsquo;s own page, and are not used in any classification.</li>
+<li><strong>Low:</strong> Multi-currency billing. Zoom bills in several currencies; whether Phone charge records can differ from invoice currency is unconfirmed.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Zoom Master Account Billing API reference: <a href="https://developers.zoom.us/docs/api/billing/ma/">developers.zoom.us/docs/api/billing/ma/</a></li>
+<li>Zoom Developer Forum, invoices for sub-accounts: <a href="https://devforum.zoom.us/t/invoice-for-sub-account/76892">devforum.zoom.us/t/invoice-for-sub-account/76892</a></li>
+<li>Zoom Phone API, Get call charges usage report (mirror): <a href="https://developers.qodex.ai/zoom-public/zoom-phone-api/phone-reports-call_charges/get-call-charges-usage-report">developers.qodex.ai</a></li>
+<li>Zoom Community, Charge and Rate in CallLog endpoint: <a href="https://community.zoom.com/t5/Zoom-Phone-System/Charge-and-Rate-in-CallLog-Endpoint/m-p/50283">community.zoom.com</a></li>
+<li>Zoom pricing summary 2026 (third party): <a href="https://www.eesel.ai/blog/zoom-pricing">eesel.ai/blog/zoom-pricing</a></li>
+<li>PointFive, FinOps Foundation&rsquo;s FOCUS initiative: <a href="https://www.pointfive.co/blog/finops-foundations-focus-initiative">pointfive.co</a></li>
+<li>FOCUS ServiceCategory (v1.2): <a href="https://focus.finops.org/docs/specification/v1-2/columns/service-category/">focus.finops.org</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

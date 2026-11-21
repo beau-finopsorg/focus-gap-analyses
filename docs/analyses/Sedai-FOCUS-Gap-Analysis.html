@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sedai &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Sedai-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="sedai-focus-data-generator-gap-analysis">Sedai &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Sedai, Inc.<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Sedai pricing page (Sedai Billing Unit model); Sedai docs (docs.sedai.io: Augmented FinOps onboarding, integrations, tag configuration, groups); Sedai MCP server page; AWS Marketplace listing<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 15 Present, 8 Deviation, 2 Missing Mandatory, 14 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Sedai sells an autonomous cloud optimization platform covering Kubernetes (EKS, AKS, GKE, and on-premises clusters), AWS Lambda, ECS, EC2, and storage, Azure VMs, GCP Dataflow, Databricks, Kubernetes GPU workloads, and a FinOps module. It charges in Sedai Billing Units (SBUs): one SBU per vCPU the platform manages. Customers sign a fixed annual commitment sized to expected usage; usage above the commitment is charged at the same rate, with no penalty. Quotes are custom. Sedai is also sold as SaaS through AWS Marketplace on 12-month contracts with usage overages.</p>
+<p>Sedai has the billing model FOCUS handles well, metered usage against a prepaid commitment, but it publishes nothing to put in a FOCUS dataset. Its docs describe no billing API, usage export, or invoice API for Sedai&rsquo;s own charges. The integrations cover IaC, notifications, and ticketing only, and the MCP server returns savings data, not Sedai&rsquo;s charges. Everything a customer can see about Sedai spend is on an invoice or, for Marketplace buyers, in AWS&rsquo;s billing data.</p>
+<p>Mapped against invoice and order-form content, 15 of 57 FOCUS v1.2 columns map directly and 19 of 21 Mandatory columns have a source. <strong>EffectiveCost</strong> is the substantive Mandatory gap: the annual SBU commitment is paid ahead of use, so amortizing it requires per-period SBU consumption that Sedai does not expose. <strong>ListCost</strong> is trivial once Sedai sets a list SBU rate; pricing is custom-quoted today. The bigger gaps sit outside the column table: no machine-readable delivery at all, no per-period consumption, and no allocation to the clusters, workloads, and cloud accounts that consume the SBUs.</p>
+<p>Sedai already <strong>consumes</strong> FOCUS. Its AWS FinOps onboarding accepts &ldquo;Focus 1.0 (Standard Data Export)&rdquo; alongside legacy CUR, though it prefers CUR. That puts Sedai on both sides of the specification and makes it a natural candidate to generate FOCUS for its own charges.</p>
+<p><strong>Recommendation:</strong> Publish a monthly FOCUS export per customer: one Purchase row per annual SBU commitment, one Usage row per managed resource (cluster, workload, or VM) per day or month, with ConsumedQuantity in vCPUs and EffectiveCost amortized from the commitment, plus overage, Tax, and Credit rows so the dataset reconciles to the invoice. Expose it through the existing platform (API or scheduled object-storage drop), and carry the connected cloud account as SubAccountId and the managed resource&rsquo;s tags as Tags.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>Sedai publishes no billing data interface. The material available for a FOCUS mapping:</p>
+<ul>
+<li><strong>Invoices and order forms (direct contracts):</strong> Not publicly documented. The analysis assumes a standard SaaS invoice: invoice number, customer, service term, line description (annual SBU commitment, overage), quantity in SBUs, unit price, amount, and USD currency.</li>
+<li><strong>AWS Marketplace (channel sales):</strong> &ldquo;Sedai - Autonomous Cloud Optimization and Management Platform,&rdquo; a SaaS contract with usage overages and 12-month terms. Listed dimensions include a $1 30-day POC offer and placeholder tiers; real pricing runs through private offers. These charges reach the buyer as AWS Marketplace line items in AWS billing data, invoiced by AWS, not Sedai.</li>
+<li><strong>Sedai platform:</strong> Sedai must meter managed vCPUs to bill overage, but no customer-facing SBU usage view or export is documented.</li>
+<li><strong>Sedai MCP server:</strong> Lets users &ldquo;pull savings data&rdquo; and &ldquo;surface opportunities&rdquo; from coding assistants. It documents no tool names, fields, or charge data.</li>
+<li><strong>Tags and groups:</strong> Sedai reads cloud tags and Kubernetes annotations to control its behavior (prefixes <code>settings.sedai.io.</code>, <code>settings.sedai.io/</code>, <code>configs:sedai.io:</code>) and builds &ldquo;Groups&rdquo; that can infer cloud provider tags. These are control settings, not billing fields, but they show Sedai already holds the tag context of every resource it manages.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Unit:</strong> 1 SBU per vCPU managed, across clouds, Kubernetes, and on-premises.</li>
+<li><strong>Commitment:</strong> Fixed annual SBU commitment; overage at the committed rate; commitments adjustable.</li>
+<li><strong>Pricing:</strong> Custom quotes; no public per-SBU rate.</li>
+<li><strong>Hierarchy:</strong> Customer organization billed once; within it, Sedai connects cloud accounts, Azure subscriptions, and Kubernetes clusters, and organizes resources into Groups.</li>
+<li><strong>No regions, zones, or capacity reservations</strong> in Sedai&rsquo;s own pricing.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Two modeling decisions drive this analysis:</p>
+<ul>
+<li><strong>The annual SBU commitment is a prepaid purchase, not a commitment discount.</strong> FOCUS defines a commitment discount as reduced rates in exchange for a commitment. Sedai charges overage at the committed rate and publishes no uncommitted rate, so no discount is visible; the seven CommitmentDiscount columns are N/A. EffectiveCost still has to amortize the prepayment, since FOCUS defines it to include the applicable portion of prepaid purchases. From v1.3 the Contract Commitment dataset is the right home for the commitment itself.</li>
+<li><strong>Managed resources and connected cloud accounts are applicable allocation keys.</strong> SBUs are consumed per managed vCPU, so the cluster, workload, or VM is the resource behind each charge, and the connected cloud account or subscription is the grouping that owns it. The Resource, SubAccount, and Tags columns are therefore Missing, not N/A.</li>
+</ul>
+<p>Sedai has no regions, zones, capacity reservations, alternate pricing currencies, or multiple billing-account types; those columns are N/A and should exist as null. Feature levels follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Sedai source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice line amount (direct contracts)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs the annual SBU prepayment amortized over per-period consumption, plus credit allocation</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not available: no list SBU rate; join a rate card × PricingQuantity</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Contracted SBU rate × SBU quantity from the order form</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Sedai customer or tenant ID on the invoice</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Customer organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice service period start</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice service period end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Contract term start only; usage rows need daily or monthly periods from Sedai metering</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Contract term end only; same fix</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Invoice line description (e.g., &ldquo;Annual SBU commitment&rdquo;, &ldquo;SBU overage&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for the annual commitment; &ldquo;Usage&rdquo; for consumption and overage; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; rows from the invoice</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Sedai, Inc.&rdquo; for direct contracts (AWS for Marketplace)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Sedai&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Sedai&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>&ldquo;Sedai Autonomous Cloud Optimization Platform&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Management and Governance&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>SBU quantity on the order form; usage and overage rows need metered SBUs</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize &ldquo;SBU&rdquo; to a documented rate basis (e.g., &ldquo;vCPU-Months&rdquo;) and state whether it is average or peak managed vCPUs</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Not exposed: managed vCPUs per resource per period</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Not exposed: &ldquo;vCPUs&rdquo; or &ldquo;vCPU-Hours&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not available: no public or list SBU rate</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Contracted per-SBU rate on the order form</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; for all rows (no commitment discount)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>N/A: one billing-account type</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Not exposed: connected AWS account, Azure subscription, or GCP project that owns the managed resources</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;AWS Account&rdquo;, &ldquo;Azure Subscription&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not exposed: managed cluster, workload, function, or VM ID</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Kubernetes Workload&rdquo;, &ldquo;Lambda Function&rdquo;, &ldquo;EC2 Instance&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; internal plan code or Marketplace dimension key</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Not exposed: Sedai reads cloud tags and Kubernetes labels of managed resources but emits none with charges</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced and billed in USD only</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Not exposed: &ldquo;Managed vCPUs&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed to state the SBU-to-vCPU conversion and measurement basis</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: no region-based pricing</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: annual SBU commitment carries no rate discount (overage billed at the same rate)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Recurring&rdquo; for the annual commitment; &ldquo;Usage-Based&rdquo; for consumption and overage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map to &ldquo;Cost Management&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: no zones</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 15 Present, 8 Deviation, 2 Missing Mandatory, 14 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Billing account, currency, service periods, invoiced and contracted amounts, contracted SBU rate, line descriptions, and invoice numbers exist on Sedai&rsquo;s invoices and order forms.</p>
+<p><strong>Substantive (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> The annual SBU commitment is paid ahead of use. Producing EffectiveCost means amortizing that prepayment across the SBUs consumed in each period and allocating any credits back to the charges they offset. That requires per-period consumption data no Sedai output exposes today.</li>
+</ul>
+<p><strong>Trivial (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Sedai owns its price book. Define a list SBU rate (or document that ListUnitPrice equals the contracted rate where no list rate exists) and multiply by PricingQuantity.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No delivery path.</strong> No billing API, usage export, or invoice API is documented. A FOCUS dataset needs an API or scheduled object-storage drop.</li>
+<li><strong>No consumption view.</strong> Sedai meters managed vCPUs to bill overage but shows customers no SBU usage by period. Without it, customers cannot see how fast they burn the commitment or forecast overage.</li>
+<li><strong>Allocation.</strong> One invoice line per contract cannot be charged back. Sedai already knows which cluster, workload, and cloud account each managed vCPU belongs to and which tags it carries; emitting those as ResourceId, SubAccountId, and Tags is the most useful single addition.</li>
+<li><strong>Two channels.</strong> Marketplace buyers see Sedai charges in AWS billing data, invoiced by AWS; direct customers see a Sedai invoice. A Sedai FOCUS export should cover consumption for both, with InvoiceIssuerName set per channel so neither double-counts the purchase.</li>
+</ul>
+<p><strong>On the consumer side.</strong> Sedai&rsquo;s AWS onboarding accepts FOCUS 1.0 but prefers legacy CUR &ldquo;because it contains more data for calculating discounts,&rdquo; and reads monthly data only by default. Its Azure onboarding does not name the export type, and no GCP billing onboarding is documented. Moving AWS ingestion to the current FOCUS version, which carries the commitment-discount columns Sedai needs, and accepting FOCUS exports from Azure and GCP would remove three provider-specific parsers.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>ChargePeriodStart and ChargePeriodEnd:</strong> Emit Usage rows per day or month, not per contract term. Keep the Purchase row on the term.</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Purchase&rdquo; for the annual SBU commitment; &ldquo;Usage&rdquo; for consumption drawn against it and for overage; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; from the invoice, so that BilledCost summed per InvoiceId equals the invoice total.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Management and Governance&rdquo; for the platform.</p>
+<p><strong>PricingQuantity and PricingUnit:</strong> &ldquo;SBU&rdquo; is a Sedai-defined unit. State the rate basis (average or peak managed vCPUs per month, or vCPU-hours) and express PricingUnit in FOCUS unit format. Populate PricingQuantity on every Usage and overage row, not only the Purchase row.</p>
+<p><strong>ChargeFrequency and PricingCategory:</strong> &ldquo;Recurring&rdquo; for the annual commitment and &ldquo;Usage-Based&rdquo; for consumption; &ldquo;Standard&rdquo; pricing throughout.</p>
+<p><strong>Already right:</strong> USD-only billing, a single billing entity per customer, an explicit per-SBU contracted rate, and a unit (vCPUs) that converts cleanly to ConsumedQuantity.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is in release candidate with ratification scheduled for December 3, 2026. The Contract Commitment dataset (v1.3) fits Sedai&rsquo;s annual SBU commitment, and the Invoice Detail dataset (v1.4) fits its invoice reconciliation.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no regions, reservations, alternate currencies, or rate-discounted commitments) and the decision to treat the SBU commitment as a prepaid purchase.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of internal SBU metering for a direct customer and a Marketplace customer. Hand-build a FOCUS file from it plus the invoice and run it through the Validator. Fix the PricingUnit rate basis.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Define the list SBU rate for ListCost and ListUnitPrice. Emit per-period Usage rows and amortize the annual commitment across them for EffectiveCost. Add Tax and Credit rows so BilledCost reconciles to the invoice.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Derive ChargeCategory, ServiceCategory, ChargeFrequency, and PricingCategory; normalize PricingUnit; populate PricingQuantity and per-period charge periods on every Usage row.</p>
+<p><strong>Phase 3: Allocation and delivery.</strong> Add ResourceId, ResourceName, and ResourceType for each managed resource; SubAccountId, SubAccountName, and SubAccountType for the connected cloud account; Tags from the managed resource&rsquo;s cloud tags and Kubernetes labels; ConsumedQuantity and ConsumedUnit; SkuId, SkuMeter, SkuPriceId, and SkuPriceDetails; ServiceSubcategory. Ship an API or scheduled export, and expose it through the MCP server.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Contract Commitment and Invoice Detail datasets; certify at v1.2 and re-certify as the program advances. In parallel, move AWS ingestion to current FOCUS and accept FOCUS from Azure and GCP.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, amortized spend reporting, and actuals-based budgeting for the Sedai line item.</li>
+<li><strong>After Phase 2:</strong> Spend by service category across providers, and commitment burn-down and overage forecasting.</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback of Sedai fees to the teams and cloud accounts whose resources it manages, unit economics (Sedai cost per managed vCPU against savings delivered), and anomaly detection on managed-vCPU growth.</li>
+<li><strong>Out of scope:</strong> Region-based analysis, capacity reservation management, and commitment-discount utilization (no rate-discounted commitment).</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Sedai contact from KubeCon NA 2026 to identify the owner of billing and SBU metering.</li>
+<li>Confirm the SBU measurement basis (average vs. peak managed vCPUs), whether an uncommitted rate exists, and the invoicing legal entity.</li>
+<li>Build a v1.2 sample from one month of metering plus the invoice and run it through the FOCUS Validator.</li>
+<li>Agree on the commitment model (prepaid purchase vs. commitment discount) and the Marketplace versus direct row design.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Sedai bills 1 SBU per managed vCPU under a fixed annual commitment, with overage at the same rate and custom quotes. Its public docs describe no billing API, usage export, or invoice API for its own charges.</li>
+<li><strong>High:</strong> Sedai&rsquo;s AWS FinOps onboarding accepts &ldquo;Focus 1.0 (Standard Data Export)&rdquo; and prefers legacy CUR; it reads monthly data by default.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> Present status for invoice-sourced columns. Sedai&rsquo;s invoice layout is not public, so these follow standard SaaS invoice content.</li>
+<li><strong>Moderate:</strong> Treating the annual SBU commitment as a prepaid purchase. If Sedai&rsquo;s committed rate is below an uncommitted rate, the seven CommitmentDiscount columns become applicable and PricingCategory becomes &ldquo;Committed&rdquo; for drawn-down usage.</li>
+<li><strong>Moderate:</strong> &ldquo;Cost Management&rdquo; as the ServiceSubcategory value. Confirm it against the v1.2 allowed values before mapping.</li>
+<li><strong>Low:</strong> InvoiceIssuerName as &ldquo;Sedai, Inc.&rdquo; No public page names the invoicing entity.</li>
+<li><strong>Low:</strong> USD-only billing. Sedai publishes no currency terms; non-USD contracts would make the PricingCurrency columns applicable.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Sedai Pricing: <a href="https://www.sedai.io/pricing">sedai.io/pricing</a></li>
+<li>Sedai Docs: <a href="https://docs.sedai.io/get-started">docs.sedai.io/get-started</a></li>
+<li>Sedai Augmented FinOps: <a href="https://docs.sedai.io/get-started/onboarding/augmented-finops.md">docs.sedai.io/get-started/onboarding/augmented-finops</a></li>
+<li>Sedai AWS FinOps Onboarding: <a href="https://docs.sedai.io/get-started/onboarding/augmented-finops/aws-finops-onboarding.md">docs.sedai.io/&hellip;/aws-finops-onboarding</a></li>
+<li>Sedai Connect AWS Billing Account: <a href="https://docs.sedai.io/get-started/onboarding/augmented-finops/connect-aws-billing-account.md">docs.sedai.io/&hellip;/connect-aws-billing-account</a></li>
+<li>Sedai Connect Azure Billing Account: <a href="https://docs.sedai.io/get-started/onboarding/augmented-finops/connect-azure-billing-account.md">docs.sedai.io/&hellip;/connect-azure-billing-account</a></li>
+<li>Sedai Integrations: <a href="https://docs.sedai.io/get-started/platform/integrations.md">docs.sedai.io/get-started/platform/integrations</a></li>
+<li>Sedai Tag Configuration: <a href="https://docs.sedai.io/get-started/platform/settings/features/tag-configuration.md">docs.sedai.io/&hellip;/tag-configuration</a></li>
+<li>Sedai Groups: <a href="https://docs.sedai.io/get-started/platform/settings/groups.md">docs.sedai.io/get-started/platform/settings/groups</a></li>
+<li>Sedai MCP Server: <a href="https://sedai.io/platform/mcp.md">sedai.io/platform/mcp</a></li>
+<li>Sedai on AWS Marketplace: <a href="https://aws.amazon.com/marketplace/pp/prodview-6jog5c3bqub2e">aws.amazon.com/marketplace/pp/prodview-6jog5c3bqub2e</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

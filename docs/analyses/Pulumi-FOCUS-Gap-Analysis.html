@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulumi &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Pulumi-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="pulumi-focus-data-generator-gap-analysis">Pulumi &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Pulumi Corporation<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Public Pulumi documentation only: Pulumi pricing page and FAQ; edition selection guide; billing managers docs; <code>pulumi org usage get</code> CLI reference; Pulumi Cloud REST API index and OpenAPI spec (<code>api.pulumi.com/api/openapi/pulumi-spec.json</code>)<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 15 Present, 9 Deviation, 3 Missing Mandatory, 19 Missing Conditional, 1 Missing Recommended, 10 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Pulumi sells Pulumi Cloud, the managed backend for Pulumi infrastructure as code, plus Pulumi ESC (secrets and configuration), Insights (discovery and policy), Deployments (workflow minutes), and Neo (an AI infrastructure agent). Every meter draws from one pool of Pulumi Credits priced at $1 each: IaC resource-hours, ESC secret-hours, ESC API calls, discovered resource-hours, workflow minutes, and Neo tokens. Editions are Free, Essentials ($40 per month including 40 credits), Pro ($400 per month including 400 credits), and Enterprise (contract pricing).</p>
+<p><strong>Public billing documentation is thin.</strong> Pulumi publishes a clear rate card and, unusually, a usage API: six org-level summary endpoints in the Pulumi Cloud REST API, one per meter, at hourly to yearly granularity. But those endpoints return quantities only, with no dollar amounts, no currency, no SKU or price, and no breakdown by project or stack. No invoice API, invoice field list, or billing export is documented. The Billing &amp; usage page offers a &ldquo;download usage history&rdquo; file whose columns are not documented. Every cost column below rests on the public rate card and standard invoicing, not on a documented data contract.</p>
+<p>Of the 21 Mandatory FOCUS columns, 18 have a source and 3 are missing. One gap is substantive: <strong>EffectiveCost</strong>, because base fees buy credits that expire monthly, Pro and Enterprise sign annual commitments, and top-ups and volume tiers are discounted. <strong>ListCost</strong> and <strong>ContractedCost</strong> are rate-card joins.</p>
+<p>Pulumi is better placed than most SaaS vendors at this size. The meters are already hourly, already metered per product, and already exposed by API. What is missing is the price join, the allocation dimension, and a row-level shape.</p>
+<p><strong>Recommendation:</strong> Extend the existing usage summary endpoints into a monthly FOCUS export per organization: one Usage row per meter × stack × day, priced at the organization&rsquo;s rate, with Purchase rows for base fees, commitments, and top-ups, a CommitmentDiscount draw-down against the credit pool, and Tax rows so the dataset reconciles to the invoice. Carry stack tags into the Tags column.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<ul>
+<li><strong>Usage summary API</strong> (Pulumi Cloud REST API, <code>GET</code>, org-scoped): <code>GetUsageSummaryResourceHours</code> (<code>/api/orgs/{orgName}/resources/summary</code>), <code>GetUsageSummaryEnvironmentSecrets</code>, <code>GetUsageSummaryDiscoveredResourceHours</code>, <code>GetUsageSummaryDeployCompute</code>, <code>GetUsageSummaryInsightsScans</code>, and <code>GetUsageSummaryNeoTokens</code>. Parameters: <code>granularity</code> (hourly, daily, weekly, monthly, yearly; hourly limited to a two-day lookback), <code>lookbackDays</code> or <code>lookbackStart</code> (within the last year). Response: an array of <code>ResourceCountSummary</code> with <code>year</code>, <code>month</code>, <code>day</code>, <code>weekNumber</code>, <code>hour</code>, <code>resources</code> (average count), and <code>resourceHours</code> (sum). Only the Neo endpoint offers a tag breakdown (TaskID, Feature).</li>
+<li><strong>CLI:</strong> <code>pulumi org usage get</code> (experimental) wraps <code>GetUsageSummaryResourceHours</code> and returns resources under management and resource-hours, org level only.</li>
+<li><strong>Billing &amp; usage page:</strong> Tracks IaC resources, deployment minutes, and ESC secrets, with a usage history download. Restricted to org admins and billing managers, who can view payments and update the subscription and card. Monthly usage reports are emailed. No invoice download API or field list is documented.</li>
+<li><strong>Data Export</strong> (Pro and Enterprise): CSV of resource search results (project, stack, type, URN). Inventory only, no usage or cost.</li>
+<li><strong>Pricing page:</strong> USD. One credit = $1. Sales tax appears as a separate invoice line.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Meters and rates:</strong> IaC resources at $0.00025 per hour on Essentials and from $0.0005 per hour on Pro; ESC secrets at $0.000685 and $0.001 per hour; ESC API calls (ReadOpen only) at $0.10 per 10,000; discovered resources at $0.000025 and from $0.00005 per hour; workflow minutes (Discovery, Deployments, and agent workers) at $0.01; Neo at $3 per million tokens. Free includes 25 secrets, 10,000 API calls, and 500 workflow minutes. Enterprise is contract-priced on every meter.</li>
+<li><strong>Rounding:</strong> A partial resource-hour is billed as a full hour. Provider resources, component resources, and stacks all count as resources.</li>
+<li><strong>Credits and commitments:</strong> Essentials and Pro pay a base fee up front each month; included credits expire at the end of the term. Overage is billed in arrears on the first of the month. Discounted credit top-ups are available on Essentials and Pro. Annual commitments are available on Pro and Enterprise; volume pricing usually applies past about 4,750 IaC resources.</li>
+<li><strong>Hierarchy:</strong> Organization &gt; Project &gt; Stack. Stacks carry tags. Pro and Enterprise allow multiple organizations, teams, and tag-based access control.</li>
+<li><strong>Self-hosted:</strong> Enterprise only. A separate endpoint (<code>GetDeployUsageReport</code>) lets self-hosted customers self-report deployment consumption &ldquo;for billing reconciliation purposes.&rdquo;</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Usage is generated by stacks inside projects, and stacks carry tags, so the SubAccount, Resource, and Tags families apply. Prepaid base-fee credits and annual commitments are drawn down by usage with overage billed separately, so this analysis treats the CommitmentDiscount family as applicable. Pulumi has one billing account type (the organization), no billed regions or zones, no capacity reservations, and credits pegged 1:1 to USD; those columns are N/A and should exist as null. Feature levels follow the FOCUS v1.2 Content Constraints.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Pulumi source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice and card charges; no line-level cost per meter, project, or stack, and the usage API carries no dollar amounts</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs amortization of base fees, annual commitments, and discounted top-ups across credits drawn, plus expiry of unused monthly credits</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not exposed; public rate × quantity for Essentials and Pro</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not exposed; contract and volume rate × PricingQuantity</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Pulumi organization ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Pulumi organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Monthly term start</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Monthly term end (exclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Usage summary bucket (<code>year</code>/<code>month</code>/<code>day</code>/<code>hour</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Bucket start plus granularity</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Invoice line description</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for base fees, commitments, and top-ups; &ldquo;Usage&rdquo; for metered consumption and overage; &ldquo;Tax&rdquo; for sales tax; &ldquo;Credit&rdquo; for refunds</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Pulumi Corporation&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Pulumi&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Pulumi&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Product per meter: &ldquo;Pulumi IaC&rdquo;, &ldquo;Pulumi ESC&rdquo;, &ldquo;Pulumi Insights&rdquo;, &ldquo;Pulumi Deployments&rdquo;, &ldquo;Pulumi Neo&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Developer Tools&rdquo; for IaC and Deployments; &ldquo;Security&rdquo; for ESC; &ldquo;Management and Governance&rdquo; for Insights; &ldquo;AI and Machine Learning&rdquo; for Neo</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Usage API <code>resourceHours</code>, but the same field name carries resource-hours, secret-hours, minutes, and tokens; API calls and tokens are priced per 10,000 and per million</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Not emitted; normalize to &ldquo;Resource-Hours&rdquo;, &ldquo;Secret-Hours&rdquo;, &ldquo;Minutes&rdquo;, &ldquo;10000 Requests&rdquo;, &ldquo;1000000 Tokens&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Usage API <code>resourceHours</code> per meter</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Implicit in the endpoint; normalize as for PricingUnit</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not in data; public on the pricing page for Essentials and Pro</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed; contract and volume rates</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Committed&rdquo; for usage drawn from included or contracted credits; &ldquo;Standard&rdquo; for overage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>N/A: one account type (organization)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Not in usage data; Pulumi project (summaries are org-level only)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Not in usage data; project name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not in usage data; &ldquo;Project&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not in usage data; stack (<code>org/project/stack</code>), ESC environment, or Neo task</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not in usage data; stack, environment, or task name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not in usage data; &ldquo;Stack&rdquo;, &ldquo;Environment&rdquo;, &ldquo;Neo Task&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; edition × meter codes</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Stack tags exist but are not carried into usage data; Neo&rsquo;s TaskID/Feature breakdown is the only tagged usage</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: credits are pegged 1:1 to USD</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Implied by which usage endpoint returned the row; no meter name emitted</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; edition and volume tier belong here</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: no region appears in any pricing or billing surface</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Credit pool (monthly base fee, annual commitment, or top-up); not exported</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Pulumi Credits&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Spend&rdquo;; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo;/&rdquo;Unused&rdquo;; unused credits expire at term end but are not reported</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Credits drawn from the pool</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;Credits&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Recurring&rdquo; for base fees and annual commitments; &ldquo;One-Time&rdquo; for top-ups; &ldquo;Usage-Based&rdquo; for metered usage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map each product to an allowed v1.2 value</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: Pulumi operates the SaaS; zones are not customer-billed</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 15 Present, 9 Deviation, 3 Missing Mandatory, 19 Missing Conditional, 1 Missing Recommended, 10 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Organization identity, USD billing, a public per-meter rate card, hourly metering, and a documented, versioned usage API that already returns every meter by time bucket. Few SaaS vendors at Pulumi&rsquo;s stage expose this much.</p>
+<p><strong>Substantive (1 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Essentials and Pro pay a base fee up front for credits that expire at month end; Pro and Enterprise can sign annual commitments; top-ups are discounted; volume pricing applies at scale. EffectiveCost means amortizing each credit purchase across the credits actually drawn, recording unused credits at expiry, and pricing overage at the on-demand rate. No documented surface does this.</li>
+</ul>
+<p><strong>Trivial (2 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Usage quantity × the public rate for the organization&rsquo;s edition. Rates are flat per meter, so the join is direct. Enterprise has no public rate; use ContractedCost where no list price exists.</li>
+<li><strong>ContractedCost.</strong> Pulumi&rsquo;s billing system already holds each organization&rsquo;s contract and volume rates; expose them per row.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No allocation dimension.</strong> Usage summaries are org-wide. Pulumi already counts resources per stack (resource search returns project and stack per resource), but the usage API cannot group by either. Without a project or stack split, Pulumi spend cannot be charged back, which is the first thing a FinOps team asks of an IaC platform bill.</li>
+<li><strong>No cost or invoice data by API.</strong> Dollars live only on invoices and the Billing &amp; usage page. The usage API&rsquo;s single <code>resources</code>/<code>resourceHours</code> shape is reused for secrets, minutes, and tokens without unit labels.</li>
+<li><strong>Credit definition conflict.</strong> The OpenAPI spec says &ldquo;1 resource hour = 1 Pulumi credit&rdquo;; the pricing page says one credit costs $1 and a resource-hour costs $0.00025 to $0.0005. A FOCUS export forces one definition, since it drives PricingUnit, PricingCurrency, and the CommitmentDiscount unit.</li>
+</ul>
+<p><strong>Pulumi and FOCUS on the cloud side:</strong> Pulumi stacks provision the AWS, Azure, and Google Cloud resources that appear in those providers&rsquo; own FOCUS exports. Propagating stack and project tags to cloud resource tags (already possible in Pulumi programs) gives customers a join between hyperscaler FOCUS data and Pulumi stacks. That is a complementary story, not a substitute for Pulumi publishing FOCUS data for its own charges.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost:</strong> Emit one row per meter, project, and stack rather than an invoice total, plus Purchase, Tax, and Credit rows, so that BilledCost summed per InvoiceId equals the invoice total.</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Purchase&rdquo; for base fees, commitments, and top-ups; &ldquo;Usage&rdquo; for metered consumption and overage; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; as above.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Developer Tools&rdquo; for IaC and Deployments; &ldquo;Security&rdquo; for ESC; &ldquo;Management and Governance&rdquo; for Insights; &ldquo;AI and Machine Learning&rdquo; for Neo.</p>
+<p><strong>PricingQuantity and PricingUnit:</strong> Price each meter in its billed unit: resource-hours and secret-hours (partial hours rounded up), minutes, requests in blocks of 10,000, and tokens in blocks of one million. ConsumedQuantity carries the raw count.</p>
+<p><strong>SkuMeter, ConsumedUnit, PricingCategory, ChargeFrequency:</strong> Derive from meter and purchase type as shown in the table.</p>
+<p><strong>Already right:</strong> USD billing, a flat published rate per meter, hourly metering, and an Organization &gt; Project &gt; Stack hierarchy that maps directly to BillingAccount, SubAccount, and Resource.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is a candidate release; its scope is on the FOCUS site. The v1.3 Contract Commitment dataset fits Pro and Enterprise annual commitments better than per-row CommitmentDiscount columns alone.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (single account type, no billed regions, zones, reservations, or alternate currencies) and the decision on modeling the credit pool as a commitment discount.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of usage summaries and the invoice for an Essentials organization and a Pro organization with an annual commitment. Hand-build a v1.2 file and run it through the Validator. Settle the credit definition and the commitment model.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Join the public rate card for ListCost and the organization&rsquo;s contract rates for ContractedCost. Amortize base fees, commitments, and top-ups for EffectiveCost. Emit line-level BilledCost with Purchase, Tax, and Credit rows so it reconciles to the invoice.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Derive ChargeCategory, ServiceCategory, ChargeFrequency, PricingCategory, and SkuMeter; label units per meter.</p>
+<p><strong>Phase 3: Allocation and Conditional columns.</strong> Add a project and stack group-by to the usage API and populate SubAccountId, SubAccountName, and SubAccountType from project, and ResourceId, ResourceName, and ResourceType from stack, ESC environment, or Neo task; Tags from stack tags; SkuId, SkuPriceId, and SkuPriceDetails; ListUnitPrice and ContractedUnitPrice; the CommitmentDiscount family for credit draw-down; and ServiceSubcategory. Deliver by API and scheduled push to object storage.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Invoice Detail dataset; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, actuals-based budgeting and forecasting, and amortized spend reporting for Pulumi.</li>
+<li><strong>After Phase 2:</strong> Spend by service category across providers, and mix analysis across IaC, ESC, Insights, Deployments, and Neo.</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback by project, stack, or tag; unit economics per managed resource and per deployment; credit pool utilization and expiry-risk tracking; anomaly detection on resource-hour and Neo token growth; and a join from Pulumi stacks to hyperscaler FOCUS data.</li>
+<li><strong>Out of scope:</strong> Capacity reservation management, regional cost analysis, and multi-currency analysis.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Pulumi contact from KubeCon NA 2026 to reach the owners of Pulumi Cloud billing and the usage API.</li>
+<li>Confirm what the usage history download and invoices contain today (columns, line items, per-meter detail).</li>
+<li>Confirm the credit definition (resource-hour vs. $1) and how annual commitments, top-ups, and volume tiers are invoiced.</li>
+<li>Ask whether a project and stack group-by on the usage summary endpoints is feasible.</li>
+<li>Build a v1.2 sample from one billing month and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code> and confirm FinOps Foundation membership status.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Editions, base fees, included credits, per-meter rates, partial-hour rounding, monthly credit expiry, and overage in arrears come from Pulumi&rsquo;s pricing page.</li>
+<li><strong>High:</strong> Six org-scoped usage summary endpoints exist with quantity-only responses and no project or stack grouping, per the Pulumi Cloud OpenAPI spec. The spec is large and was read in part, so an undocumented billing endpoint elsewhere in it cannot be ruled out.</li>
+<li><strong>High:</strong> Feature levels match the bundled FOCUS v1.2 Content Constraints table (verified June 23, 2026); v1.4 remains the latest ratified version and v1.5 is a candidate release. A live spot-check through the FOCUS MCP was not run for this analysis.</li>
+<li><strong>Moderate:</strong> Present status for invoice-sourced columns (ChargeDescription, InvoiceId, billing periods). Pulumi publishes no invoice sample or field list, so presence is inferred from standard invoicing.</li>
+<li><strong>Moderate:</strong> Treating the credit pool as a spend commitment discount. If Pulumi models base-fee credits as simple prepayment, the seven CommitmentDiscount columns become N/A and the amortization moves entirely into EffectiveCost.</li>
+<li><strong>Moderate:</strong> ServiceCategory mappings; the v1.2 values chosen are the closest fit.</li>
+<li><strong>Moderate:</strong> PricingCurrency as N/A. If Pulumi defines credits as a unit distinct from USD (as the OpenAPI spec&rsquo;s &ldquo;1 resource hour = 1 Pulumi credit&rdquo; implies), the four PricingCurrency columns become applicable.</li>
+<li><strong>Low:</strong> Marketplace availability. The pricing page does not mention AWS, Azure, or Google Cloud Marketplace; if Pulumi sells through one, InvoiceIssuerName must name the marketplace for those rows.</li>
+<li><strong>Low:</strong> RegionId as N/A. No billing surface shows a customer-selected Pulumi Cloud region.</li>
+<li><strong>Low:</strong> InvoiceIssuerName as &ldquo;Pulumi Corporation.&rdquo; No public invoice names the issuing entity.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Pulumi Pricing: <a href="https://www.pulumi.com/pricing/">pulumi.com/pricing</a></li>
+<li>Choose an Edition: <a href="https://www.pulumi.com/docs/administration/get-started/choose-edition/">pulumi.com/docs/administration/get-started/choose-edition/</a></li>
+<li>Billing Managers: <a href="https://www.pulumi.com/docs/administration/concepts/billing-managers/">pulumi.com/docs/administration/concepts/billing-managers/</a></li>
+<li><code>pulumi org usage get</code>: <a href="https://www.pulumi.com/docs/iac/cli/commands/pulumi_org_usage_get/">pulumi.com/docs/iac/cli/commands/pulumi_org_usage_get/</a></li>
+<li>Pulumi Cloud REST API: <a href="https://www.pulumi.com/docs/reference/cloud-rest-api/">pulumi.com/docs/reference/cloud-rest-api/</a></li>
+<li>Pulumi Cloud OpenAPI spec: <a href="https://api.pulumi.com/api/openapi/pulumi-spec.json">api.pulumi.com/api/openapi/pulumi-spec.json</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

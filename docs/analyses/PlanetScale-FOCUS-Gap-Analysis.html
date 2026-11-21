@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlanetScale &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/PlanetScale-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="planetscale-focus-data-generator-gap-analysis">PlanetScale &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> PlanetScale, Inc.<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> PlanetScale API reference (List invoices, Get invoice, Get invoice line items, Get database); <code>pscale billing</code> CLI docs; PlanetScale billing, plans, pricing, Postgres pricing, Vitess pricing, regions, and Cloudflare docs; PlanetScale Terms of Service<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 14 Present, 15 Deviation, 4 Missing Mandatory, 8 Missing Conditional, 1 Missing Recommended, 15 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>PlanetScale is a managed database provider running Vitess (MySQL-compatible) and Postgres on AWS, GCP, and Azure, including the locally attached NVMe &ldquo;Metal&rdquo; tier. Plans apply per database, and each branch runs on its own cluster, billed at a monthly SKU rate (<code>PS-5</code> through <code>PS-2800</code>, <code>M-10</code> through <code>M-7680</code>) prorated to the millisecond. Storage, backups beyond the included amount, egress, extra replicas, read-only regions, dedicated PgBouncers, development branches, and SSO add separate charges. Invoices are monthly in USD, issued by PlanetScale, Inc. through Stripe, or by Cloudflare for databases created from the Cloudflare dashboard.</p>
+<p>PlanetScale is ahead of most providers in this cohort on one point: it has a documented, customer-facing <strong>invoice line-items API</strong> (<code>GET /organizations/{organization}/invoices/{id}/line-items</code>, also <code>pscale billing invoice line-items --format csv</code>) that returns a subtotal, description, metric name, database ID and name, and a resource object per line. That gives FOCUS a real starting dataset with database-level and resource-level attribution.</p>
+<p><strong>Public billing documentation is thin on the details that decide conformance.</strong> The line item has no quantity, unit, unit price, SKU, region, charge period, or currency. The docs do not list the values <code>metric_name</code> can take, do not say what kind of object <code>resource</code> is, and do not say whether <code>subtotal</code> is before or after coupons and proration discounts. Coupons appear only as an invoice note, and no credit, discount, tax, or commitment fields exist anywhere in the API. Enterprise contract and AWS Marketplace terms are not public. There is no FOCUS, S3, or warehouse export, and no PlanetScale page mentions FOCUS or FinOps.</p>
+<p>On that basis, of the 21 Mandatory columns, 9 map directly, 8 need derivation, and 4 are missing. <strong>2 of the 4 missing Mandatory columns are substantive.</strong> EffectiveCost requires allocating invoice-level coupons, proration discounts, and any Enterprise credits back to lines. PricingQuantity requires usage quantities (cluster hours, GB-months, GB transferred) that the line item does not carry. ListCost and PricingUnit are derivable from the public price catalog and <code>metric_name</code>.</p>
+<p><strong>Recommendation:</strong> Extend the existing line-items API rather than building a new surface. Add <code>quantity</code>, <code>unit</code>, <code>unit_price</code>, <code>sku</code> (for example <code>PS-40</code> or <code>M-320</code>), <code>region</code>, <code>branch_id</code> and <code>branch_name</code>, <code>charge_period_start</code> and <code>charge_period_end</code>, and <code>currency</code> to each line; emit coupons, proration discounts, credits, and tax as their own signed lines that sum to the invoice total; document the <code>metric_name</code> enumeration; and add a daily (or at least per-resize) grain. Then publish a FOCUS v1.2 CSV from the same pipeline.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<ul>
+<li><strong>Invoices API</strong> (<code>read_invoices</code> scope; <code>https://api.planetscale.com/v1</code>): <code>GET /organizations/{organization}/invoices</code> and <code>GET .../invoices/{id}</code> return <code>id</code>, <code>total</code> (stringified decimal), <code>billing_period_start</code>, <code>billing_period_end</code>, <code>paid</code>, and <code>overdue</code>. No currency, tax, or discount field.</li>
+<li><strong>Invoice line items</strong> (<code>GET .../invoices/{id}/line-items</code>, paginated): each line has <code>id</code>, <code>subtotal</code> (number), <code>description</code>, <code>metric_name</code> (&ldquo;the name of the billable item&rdquo;), <code>cloudflare_billed</code> (boolean), <code>database_id</code>, <code>database_name</code>, and <code>resource</code> (<code>id</code>, <code>name</code>, <code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code>).</li>
+<li><strong>CLI:</strong> <code>pscale billing invoice list | show | line-items</code> with <code>--format human|json|csv</code>. This is the only documented CSV path.</li>
+<li><strong>Dashboard:</strong> Settings &gt; Billing shows usage per database and links each invoice to a Stripe-hosted PDF. Spend alerts fire at 75% and 100% of a customer-set budget.</li>
+<li><strong>Database API</strong> (<code>GET .../databases/{database}</code>): a <code>region</code> object (<code>id</code>, <code>provider</code>, <code>slug</code>, <code>display_name</code>, <code>location</code>, <code>availability_zones[]</code>), plus <code>kind</code> (<code>mysql</code>, <code>postgresql</code>, <code>neki</code>), <code>plan</code>, <code>sharded</code>, and branch counts. Not joined to line items by PlanetScale; a consumer would join on <code>database_id</code>.</li>
+<li><strong>Public price catalog:</strong> a read-only Postgres table, <code>public.planetscale_prices</code> (<code>product</code>, <code>provider</code>, <code>region</code>, <code>machine_sku</code>, <code>disk_sku</code>, <code>replication_factor</code>, <code>price</code> in whole USD per month, <code>network_transfer_gb</code>), plus unauthenticated egress-rate and storage-rate endpoints. List prices only; not customer billing.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Compute:</strong> Monthly SKU rate per branch cluster, prorated to the millisecond, in HA (primary plus two replicas) and single-node forms on arm64 and x86-64. Resizes switch rates when the resize completes (PS-10 to PS-20 mid-month: $39/2 + $59/2 = $49).</li>
+<li><strong>Storage:</strong> Network-attached storage has 10 GB included, then is billed per instance (Vitess $0.50/GB per instance, so $1.50/GB for an HA branch; Postgres at regional gp3 or Hyperdisk rates plus IOPS and throughput above baseline). Metal storage is in the SKU price. Storage is prorated by branch hours over billing-period hours.</li>
+<li><strong>Other meters:</strong> Backups beyond 2x disk size at $0.023/GB-month; Postgres egress above 100 GB (production) or 10 GB (development) per branch at regional rates; private connections $0.01/GB; cross-region replica traffic $0.02 to $0.16/GB; extra replicas, read-only regions, VTGates, and <code>PGB-*</code> PgBouncers; Vitess development branch hours beyond the included 1,440; Postgres development branches $5/month; SSO $199/month per organization.</li>
+<li><strong>Discounts:</strong> Coupons (one active, not stackable) shown as an invoice note; &ldquo;Prorated discounts&rdquo; on invoices for partial-period branches. Self-serve Postgres has &ldquo;no upfront commitments.&rdquo; Enterprise terms are by contract and not public.</li>
+<li><strong>Hierarchy:</strong> Organization, Database, Branch, then cluster or keyspace. Teams exist for access control only.</li>
+<li><strong>Regions:</strong> Slugs are not uniform. Older AWS regions use short slugs (<code>us-east</code>, <code>eu-west</code>), newer ones are prefixed (<code>aws-us-east-2</code>, <code>gcp-us-central1</code>, <code>azure-eastus2</code>), and the price catalog uses native cloud IDs (<code>us-east-1</code>).</li>
+<li><strong>Tags:</strong> No resource tags or labels for cost allocation. The only &ldquo;tags&rdquo; are SQL query tags in Query Insights.</li>
+<li><strong>Channels:</strong> Direct (Stripe, card only), Cloudflare-billed (flagged per line by <code>cloudflare_billed</code>), AWS Marketplace for PlanetScale Managed, and Stripe Projects provisioning.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. This analysis treats the invoice line-items API as the candidate dataset. A column is Present when a line-item or invoice field maps one-to-one, and Deviation when the value exists in that API or can be derived from a documented field or constant but is not emitted in FOCUS form. Missing means no documented customer surface carries it at line grain.</p>
+<p>Because plans apply per database and every line carries <code>database_id</code> and <code>database_name</code>, the database maps to SubAccount and the line&rsquo;s <code>resource</code> (most likely the branch) maps to Resource. PlanetScale publishes no commitment or reservation program for self-serve, so the CommitmentDiscount and CapacityReservation families are N/A. Pricing and billing are USD only, so the PricingCurrency family is N/A. PlanetScale supports no user-defined resource tags, so Tags is N/A. HA clusters span three availability zones by design, so a per-line AvailabilityZone is not meaningful. Feature levels below follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>PlanetScale source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Line <code>subtotal</code>; coupons appear only as an invoice note and tax is not itemized, so lines may not sum to the invoice <code>total</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not emitted; needs coupon, proration-discount, and Enterprise credit allocation (and amortization if contracts include prepaid spend)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not emitted; = pre-coupon <code>subtotal</code> for self-serve, public price catalog × quantity for Enterprise</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Line <code>subtotal</code> is at the customer&rsquo;s rate before invoice-level coupons; emit as ContractedCost</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Organization ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Not emitted; constant &ldquo;USD&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice <code>billing_period_start</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice <code>billing_period_end</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Not on line items; billing period only, bounded by <code>resource.created_at</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Not on line items; billing period only, bounded by <code>resource.deleted_at</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Line <code>description</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for metered lines, &ldquo;Purchase&rdquo; for SSO, &ldquo;Credit&rdquo; for coupons and proration discounts, &ldquo;Tax&rdquo; where applied</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued invoices</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;PlanetScale, Inc.&rdquo; for direct; &ldquo;Cloudflare, Inc.&rdquo; where <code>cloudflare_billed</code> is true; AWS for Marketplace purchases</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;PlanetScale&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;PlanetScale&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Not emitted; derive from database <code>kind</code>: &ldquo;PlanetScale Vitess&rdquo;, &ldquo;PlanetScale Postgres&rdquo;, &ldquo;PlanetScale Neki&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Not emitted; constant &ldquo;Databases&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>No quantity on any line; cluster time derivable from resource lifecycle and resize history, but storage GB-months, egress GB above allowance, and backup overage are not</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Not emitted; derive from <code>metric_name</code> (&ldquo;Hours&rdquo;, &ldquo;GB-Months&rdquo;, &ldquo;GB&rdquo;, &ldquo;Branches&rdquo;) once the enumeration is documented</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Not emitted</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Not emitted</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not emitted; public <code>planetscale_prices</code> catalog and rate endpoints</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not emitted; = ListUnitPrice for self-serve, Enterprise contract otherwise</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Not emitted; &ldquo;Organization&rdquo;, or &ldquo;Cloudflare Account&rdquo; for Cloudflare-billed lines</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Line <code>database_id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Line <code>database_name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not emitted; constant &ldquo;Database&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Line <code>resource.id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Line <code>resource.name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not emitted; the <code>resource</code> object has no type field (&ldquo;Branch&rdquo;, &ldquo;Database&rdquo;, &ldquo;PgBouncer&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not on line items; <code>machine_sku</code> (<code>PS-40</code>, <code>M-320</code>, <code>PGB-*</code>) exists in the price catalog</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: no user-defined resource tags or labels</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced and billed in USD only</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Line <code>metric_name</code> (&ldquo;the name of the billable item&rdquo;); values undocumented</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for architecture, HA vs. single-node, replication factor, and included allowances</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Not on line items; database <code>region.slug</code> via the Database API, with inconsistent slug formats</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Not on line items; database <code>region.display_name</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: no published commitment program</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice <code>id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; for prorated clusters and metered lines; &ldquo;Recurring&rdquo; for SSO</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not emitted; &ldquo;Relational Databases&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: HA clusters span three zones by design</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 14 Present, 15 Deviation, 4 Missing Mandatory, 8 Missing Conditional, 1 Missing Recommended, 15 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> A documented, customer-facing line-item API with JSON and CSV output; organization, database, and resource attribution on every line; billing period and invoice ID; a Cloudflare-billed flag that identifies the invoice issuer per line; and a public, machine-readable price catalog. Few providers in this cohort start this close to a usable dataset.</p>
+<p><strong>Substantive (2 of 4 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Coupons are an invoice note, proration discounts are an invoice adjustment, and Enterprise credits are undocumented. Row-level EffectiveCost requires allocating each back to lines (proportionally to subtotal is the usual rule) and, if Enterprise contracts include prepaid or committed spend, amortizing it.</li>
+<li><strong>PricingQuantity.</strong> No line carries a quantity. Cluster time can be reconstructed from resource lifecycle and resize events, but storage GB-months (prorated by branch hours), egress GB above the per-branch allowance, and backup overage cannot be rebuilt from public data. Storage, egress, and development branch hours are all tiered by an included allowance, so PricingQuantity must be computed against the rate basis, not copied from consumption.</li>
+</ul>
+<p><strong>Trivial (2 of 4 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> For self-serve, the pre-coupon <code>subtotal</code> is the list amount. For Enterprise, join the public catalog by SKU, region, and replication factor once quantity and SKU are on the line.</li>
+<li><strong>PricingUnit.</strong> A lookup from <code>metric_name</code> once the enumeration is documented.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>Lines do not reconcile to the invoice.</strong> The API has no coupon, credit, discount, or tax lines, so the sum of <code>subtotal</code> values and the invoice <code>total</code> can differ with no machine-readable explanation. BilledCost is listed as a Deviation because the field exists, but closing it is real work.</li>
+<li><strong>Monthly grain only.</strong> Line items carry no charge period. A resize mid-month, or a branch created and deleted within the month, collapses into one subtotal. Daily or per-rate-segment lines are needed for anomaly detection and day-level allocation.</li>
+<li><strong>No region or SKU on the line.</strong> Both live on other endpoints or in the catalog, and region slugs come in three formats. A consumer joining <code>database_id</code> to the Database API gets the database&rsquo;s primary region, not the region of a read-only replica line.</li>
+<li><strong>Channel coverage.</strong> Cloudflare-billed lines appear in PlanetScale&rsquo;s API but are invoiced by Cloudflare; AWS Marketplace and PlanetScale Managed customers receive part of their bill from a hyperscaler. A FOCUS export must carry the correct InvoiceIssuerName per line, and Managed customers will need PlanetScale&rsquo;s rows alongside their own cloud&rsquo;s FOCUS data.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost and ContractedCost:</strong> Emit <code>subtotal</code> as ContractedCost, and emit BilledCost net of line-allocated coupons and proration discounts, with separate Credit and Tax lines so the dataset sums to the invoice <code>total</code>.</p>
+<p><strong>ChargePeriodStart and ChargePeriodEnd:</strong> Emit per line, splitting lines at resizes and at day boundaries.</p>
+<p><strong>RegionId and RegionName:</strong> Put region on each line and normalize to one slug scheme. Using the native cloud region ID (<code>us-east-1</code>), as the price catalog already does, makes cross-provider joins easiest.</p>
+<p><strong>SkuMeter:</strong> Publish the <code>metric_name</code> enumeration and keep it stable.</p>
+<p><strong>ServiceName, ServiceCategory, ChargeCategory, ChargeFrequency, PricingCategory, BillingCurrency, BillingAccountType, SubAccountType:</strong> Derive as shown in the table.</p>
+<p><strong>Already right:</strong> Organization, database, and resource identifiers; invoice ID and billing period; line descriptions; and the per-line Cloudflare billing flag.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is in release candidate with ratification scheduled for December 3, 2026; its SKU Price dataset (a preview, not evaluated for conformance) is a natural fit for the <code>planetscale_prices</code> catalog PlanetScale already publishes. The v1.4 Invoice Detail dataset maps onto the existing invoices endpoint.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no tags, commitments, reservations, alternate currencies, or per-line zones) and the database-as-SubAccount mapping.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of line items for a test organization with resizes, a coupon, and Postgres egress overage. Hand-build a FOCUS file from line items, the Database API, and the price catalog; run it through the Validator; and record which columns cannot be filled.</p>
+<p><strong>Phase 1: Enrich the line item.</strong> Add <code>quantity</code>, <code>unit</code>, <code>unit_price</code>, <code>sku</code>, <code>region</code>, <code>branch_id</code>, <code>branch_name</code>, <code>resource_type</code>, <code>charge_period_start</code>, <code>charge_period_end</code>, and <code>currency</code>. Document <code>metric_name</code> values. Split lines at resizes.</p>
+<p><strong>Phase 2: Close Mandatory gaps.</strong> Emit coupon, proration-discount, credit, and tax lines; allocate them for BilledCost and EffectiveCost; compute ListCost from the catalog for Enterprise rates; publish a FOCUS v1.2 CSV and API response from the same pipeline.</p>
+<p><strong>Phase 3: Fill Conditional and Recommended.</strong> Add SkuPriceId and SkuPriceDetails from the catalog, ServiceSubcategory, and daily grain. Consider provider-defined tags (branch role <code>production</code> or <code>development</code>, <code>kind</code>, architecture) and, if requested, user-defined database or branch labels.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add recency and completeness metadata (v1.3) and the Invoice Detail dataset (v1.4); expose the catalog as a v1.5 SKU Price dataset; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Today:</strong> Monthly spend by organization, database, and resource from line items; invoice tracking; budget alerts at the organization level.</li>
+<li><strong>After Phase 1:</strong> Unit cost per cluster SKU and per GB, resize impact analysis, regional cost comparison, and development versus production branch spend.</li>
+<li><strong>After Phase 2:</strong> Invoice reconciliation, database-level showback and chargeback at net cost, and actuals-based budgeting and forecasting.</li>
+<li><strong>After Phase 3:</strong> Daily anomaly detection, cross-provider managed database comparison (PlanetScale vs. RDS, Aurora, Cloud SQL, Neon), and attribute-based allocation via provider tags.</li>
+<li><strong>Out of scope:</strong> Commitment utilization, capacity reservation management, availability zone analysis, and multi-currency reporting.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the PlanetScale contact from KubeCon NA 2026 to identify the owner of billing and the invoices API.</li>
+<li>Ask PlanetScale to document the <code>metric_name</code> enumeration, what <code>resource</code> represents, and whether <code>subtotal</code> is before or after coupons and proration discounts.</li>
+<li>Confirm whether Enterprise contracts include committed or prepaid spend, how AWS Marketplace and Cloudflare-billed usage is invoiced, and how tax is applied.</li>
+<li>Build a v1.2 sample from one month of line items plus the Database API and price catalog, and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Invoice and line-item field names, types, and endpoints, from the PlanetScale API reference and CLI docs.</li>
+<li><strong>High:</strong> Billing model (per-branch clusters, monthly SKU rates prorated to the millisecond, storage, egress, development branch, and SSO charges), from PlanetScale plans and pricing docs.</li>
+<li><strong>High:</strong> No currency, quantity, unit, SKU, region, charge period, discount, or tax field on invoice line items, and no FOCUS or warehouse export.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; spot-checked against the live spec on November 17, 2026 (ServiceSubcategory and ChargeFrequency Recommended, PricingQuantity Mandatory, Tags Conditional), and v1.4 remains the latest ratified version.</li>
+<li><strong>High:</strong> &ldquo;PlanetScale, Inc.&rdquo; as InvoiceIssuerName for direct billing, from the Terms of Service and site terms.</li>
+<li><strong>Moderate:</strong> <code>resource</code> represents the branch. The API describes it only as a generic object with timestamps.</li>
+<li><strong>Moderate:</strong> No commitment program. None is published, but Enterprise terms are by contract; if they include committed spend, the seven CommitmentDiscount columns become applicable.</li>
+<li><strong>Moderate:</strong> Database as SubAccount. Defensible because plans apply per database, but PlanetScale could reasonably model the database as the resource and the branch as a child.</li>
+<li><strong>Low:</strong> Whether <code>subtotal</code> is pre- or post-coupon and pre- or post-proration discount, the <code>metric_name</code> values, tax handling, and AWS Marketplace and Stripe Projects billing routes. None is documented.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>PlanetScale API: <a href="https://planetscale.com/docs/api/reference/list_invoices">List invoices</a> · <a href="https://planetscale.com/docs/api/reference/get_invoice">Get invoice</a> · <a href="https://planetscale.com/docs/api/reference/get_invoice_line_items">Get invoice line items</a> · <a href="https://planetscale.com/docs/api/reference/get_database">Get database</a></li>
+<li>PlanetScale CLI billing: <a href="https://planetscale.com/docs/cli/billing">planetscale.com/docs/cli/billing</a></li>
+<li>PlanetScale Billing: <a href="https://planetscale.com/docs/concepts/billing">planetscale.com/docs/concepts/billing</a></li>
+<li>PlanetScale Plans: <a href="https://planetscale.com/docs/planetscale-plans">planetscale.com/docs/planetscale-plans</a></li>
+<li>PlanetScale Pricing: <a href="https://planetscale.com/pricing">planetscale.com/pricing</a> · <a href="https://planetscale.com/docs/postgres/pricing">Postgres pricing</a> · <a href="https://planetscale.com/docs/vitess/pricing">Vitess pricing</a></li>
+<li>PlanetScale Regions: <a href="https://planetscale.com/docs/plans/regions">planetscale.com/docs/plans/regions</a></li>
+<li>PlanetScale with Cloudflare: <a href="https://planetscale.com/docs/connect/cloudflare">planetscale.com/docs/connect/cloudflare</a></li>
+<li>PlanetScale Terms of Service: <a href="https://planetscale.com/legal/agreement">planetscale.com/legal/agreement</a></li>
+<li>PlanetScale on AWS Marketplace: <a href="https://aws.amazon.com/marketplace/pp/prodview-luy3krhkpjne4">aws.amazon.com/marketplace</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

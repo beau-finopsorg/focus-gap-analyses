@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heroku &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Heroku-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="heroku-focus-data-generator-gap-analysis">Heroku &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Heroku (a Salesforce company)<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Heroku Platform API (Team and Enterprise Account Daily/Monthly Usage, Account and Team Invoices); Enterprise Account usage dashboard and CSV download; Heroku Dev Center billing and Enterprise docs; Heroku pricing page<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 15 Present, 15 Deviation, 4 Missing Mandatory, 14 Missing Conditional, 1 Missing Recommended, 8 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Heroku is Salesforce&rsquo;s platform as a service. Customers run apps on dynos (Eco, Basic, Standard, Performance, and Private and Shield dynos in Private Spaces, plus the Kubernetes-based Fir generation), attach first-party data add-ons (Heroku Postgres, Key-Value Store, Apache Kafka on Heroku, Managed Inference and Agents) and third-party Elements Marketplace add-ons, and buy Heroku Connect and Private or Shield Spaces. Self-serve usage is prorated to the second against a monthly cap and billed in arrears. Enterprise customers prepay a contract denominated in dyno units and add-on credits, and Salesforce invoices the whole contract as a single line item.</p>
+<p>Heroku exposes more structured usage data than most PaaS vendors. The Platform API returns daily and monthly usage per team and per app, and the Enterprise Account dashboard breaks the same data down by team and app with CSV download. The problem is the unit of measure: every usage figure is in dyno units or credits, not dollars, and no surface emits a priced line item. Fifteen of 57 FOCUS v1.2 columns map directly and 17 of 21 Mandatory columns have a source, but the four missing Mandatory columns are the cost columns.</p>
+<p>Two of the four are substantive. <strong>BilledCost</strong> exists only as invoice totals (<code>charges_total</code>, <code>credits_total</code>, and category totals on team invoices), never at the app-by-day grain of the usage data, and for Enterprise customers the Salesforce invoice is one line. <strong>EffectiveCost</strong> requires amortizing the prepaid Enterprise contract across the dyno units and credits it funds. <strong>ListCost</strong> and <strong>ContractedCost</strong> are price-table joins Heroku can do internally, provided usage is first exported at dyno-size and add-on-plan grain rather than as normalized units.</p>
+<p>Allocation is better than average but not complete. Apps and teams give real ResourceName and SubAccount dimensions, but the usage API returns <code>app_name</code> only (no app UUID), rolls every add-on into four credit buckets, omits region, and Heroku has no tags.</p>
+<p><strong>Recommendation:</strong> Publish a daily FOCUS export per Team and per Enterprise Account with one row per app × SKU (dyno size, add-on plan, Space, Connect) × day, carrying the app UUID, region, and priced ListCost, ContractedCost, BilledCost, and EffectiveCost. Model the Enterprise contract as commitment discounts (dyno units and add-on credits) with Purchase rows and Used/Unused draw-down, and emit Tax and Credit rows so BilledCost reconciles to the invoice. Deliver it through the Platform API alongside the existing usage endpoints.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<ul>
+<li><strong>Team Daily and Monthly Usage</strong> (<code>GET /teams/{id}/usage/daily</code>, <code>/usage/monthly</code>): Per-day or per-month values for <code>dynos</code> (dyno units), <code>addons</code>, <code>data</code> (first-party add-on credits), <code>partner</code> (third-party add-on credits), <code>space</code> (Space credits), and, monthly only, <code>connect</code> (average Connect rows synced). An <code>apps</code> array repeats these per <code>app_name</code>.</li>
+<li><strong>Enterprise Account Daily and Monthly Usage</strong> (<code>GET /enterprise-accounts/{id}/usage/daily</code>, <code>/usage/monthly</code>): The same measures with a <code>teams</code> array in place of <code>apps</code>.</li>
+<li><strong>Account and Team Invoices</strong> (<code>GET /account/invoices</code>, <code>GET /teams/{id}/invoices</code>): <code>number</code>, <code>period_start</code>, <code>period_end</code>, <code>charges_total</code>, <code>credits_total</code>, <code>total</code>, <code>state</code>; team invoices add <code>platform_total</code>, <code>addons_total</code>, <code>database_total</code>, <code>dyno_units</code>, <code>weighted_dyno_hours</code>, and <code>payment_status</code>. No line items.</li>
+<li><strong>Enterprise Account usage dashboard:</strong> Monthly usage for the past 12 months and daily usage for up to 31-day windows within the past 6 months, by team and app, with &ldquo;Download as CSV&rdquo; and <code>heroku enterprise:usage:daily|monthly --csv</code>. Heroku labels daily figures as estimates.</li>
+<li><strong>Self-serve Billing tab:</strong> Current usage updated nightly, accurate through 00:00 UTC of the prior day. No documented line-item export.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Dynos:</strong> Prorated to the second on wall-clock time with a monthly maximum. Eco is $5 for 1,000 shared hours; Basic $7; Standard-1X $25 and Standard-2X $50; Performance-M through Performance-2XL $250 to $1,500; Private-S through Private-2XL $125 to $1,500; Shield-S through Shield-2XL $150 to $1,800; Fir sizes from <code>dyno-1c-0.5gb</code> ($25) to <code>dyno-32c-64gb</code> ($2,400) per month.</li>
+<li><strong>Dyno units:</strong> One unit equals one Standard-1X running for a month (Standard-2X is 2 units, Performance-L is 16). The usage API reports dynos in these units, which normalizes away the dyno size.</li>
+<li><strong>Add-on credits:</strong> One credit equals $1, in three pools: General, Heroku Data, and Partner. Overage draws General credits in a fixed order (third-party add-ons, Heroku Data, Private Spaces, Shield Spaces); dyno and Connect overage is billed directly.</li>
+<li><strong>Data and AI add-ons:</strong> Postgres, Key-Value Store, and Kafka are priced per plan per month; Managed Inference and Agents is priced per million input and output tokens. All land in the <code>data</code> credit bucket.</li>
+<li><strong>Hierarchy:</strong> Personal account, Team, and Enterprise Account (containing Teams), then apps and add-ons. Apps and add-ons have UUIDs in the Platform API.</li>
+<li><strong>Regions:</strong> Common Runtime <code>us</code> and <code>eu</code>; Private Spaces in <code>dublin</code>, <code>frankfurt</code>, <code>london</code>, <code>montreal</code>, <code>mumbai</code>, <code>oregon</code>, <code>singapore</code>, <code>sydney</code>, <code>tokyo</code>, and <code>virginia</code>. No billing surface carries region.</li>
+<li><strong>No tags:</strong> Heroku has no app or add-on labels.</li>
+<li><strong>Invoicing:</strong> Self-serve accounts are invoiced by Heroku and pay by card. Enterprise charges appear as one line item on a Salesforce invoice; itemized detail exists only in the usage downloads.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Heroku&rsquo;s Enterprise contract prepays dyno units and add-on credits at a contracted rate for a term and draws them down with usage, so this analysis treats the CommitmentDiscount family as applicable. Heroku deploys into named regions, so RegionId and RegionName apply. Heroku has no capacity reservations, availability zones, alternate pricing currencies, or tags; those columns are N/A and should exist as null. Feature levels below follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Heroku source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Not at row grain: only invoice totals (<code>charges_total</code>, <code>platform_total</code>, <code>addons_total</code>, <code>database_total</code>); Enterprise invoice is one Salesforce line</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs amortization of the prepaid Enterprise contract across dyno units and credits consumed</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not in usage data; join public price list × usage at dyno-size and add-on-plan grain</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not in usage data; = ListCost for self-serve, Enterprise order-form rate per dyno unit and credit otherwise</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Team <code>id</code> or Enterprise Account <code>id</code> (UUID); personal account ID for self-serve individuals</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Team or Enterprise Account <code>name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo; (no currency field; all prices are USD)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice <code>period_start</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice <code>period_end</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Daily usage <code>date</code> or monthly usage <code>month</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td><code>date</code> + 1 day, or end of <code>month</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Not emitted; derive from app, usage measure, and SKU (e.g., &ldquo;Standard-2X dynos · my-app&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for metered dynos, add-ons, Spaces, Connect; &ldquo;Purchase&rdquo; for Enterprise contract; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; from invoice</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Heroku&rdquo; for self-serve; &ldquo;Salesforce, Inc.&rdquo; for Enterprise</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Heroku&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Heroku&rdquo; for first-party; Elements partner name for third-party add-ons, which the <code>partner</code> bucket does not identify</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Usage buckets (<code>dynos</code>, <code>data</code>, <code>partner</code>, <code>space</code>, <code>connect</code>); split into &ldquo;Heroku Dynos&rdquo;, &ldquo;Heroku Postgres&rdquo;, &ldquo;Heroku Key-Value Store&rdquo;, &ldquo;Apache Kafka on Heroku&rdquo;, &ldquo;Heroku Managed Inference and Agents&rdquo;, &ldquo;Heroku Private Spaces&rdquo;, &ldquo;Heroku Connect&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Compute&rdquo; for dynos; &ldquo;Databases&rdquo; for Postgres and Key-Value Store; &ldquo;Integration&rdquo; for Kafka and Connect; &ldquo;AI and Machine Learning&rdquo; for Managed Inference and Agents; &ldquo;Networking&rdquo; for Spaces</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td><code>dynos</code> (dyno units) and credit values; must become quantity in each SKU&rsquo;s rate basis</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Not emitted; normalize to &ldquo;Dyno-Months&rdquo; or &ldquo;Hours&rdquo; per dyno size, &ldquo;Months&rdquo; per add-on plan, &ldquo;1M Tokens&rdquo; for inference</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td><code>dynos</code> and credit values (normalized, not physical consumption)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Implied &ldquo;dyno units&rdquo; and &ldquo;credits&rdquo;; emit explicit FOCUS-format units</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not in data; public pricing page per dyno size and add-on plan</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not in data; Enterprise order form</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; for self-serve and overage; &ldquo;Committed&rdquo; for usage drawn from prepaid dyno units and credits</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from endpoint: &ldquo;Personal&rdquo;, &ldquo;Team&rdquo;, or &ldquo;Enterprise Account&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Enterprise usage <code>teams</code> entries (team ID)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Team name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not emitted; constant &ldquo;Team&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td><code>app_name</code> only; join to app UUID via <code>GET /apps</code> (names can be renamed and reused)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td><code>app_name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not emitted; &ldquo;App&rdquo; at current grain, add-on and dyno formation types if grain improves</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not in usage data; dyno size and add-on plan IDs exist in the Platform API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: no app or add-on tags</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced and billed in USD only</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Usage buckets act as coarse meters (<code>dynos</code>, <code>data</code>, <code>partner</code>, <code>space</code>, <code>connect</code>); need per-SKU meters</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for dyno size, plan tier, and token direction</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Not in usage data; app <code>region</code> and Space region exist in the Platform API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Not in usage data</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Enterprise contract or credit pool ID; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Dyno Units&rdquo;, &ldquo;Add-on Credits&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Usage&rdquo; for dyno units; &ldquo;Spend&rdquo; for $1 add-on credits; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo;/&rdquo;Unused&rdquo; against the contract balance; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Dyno units or credits drawn</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;Dyno Units&rdquo; or &ldquo;Credits&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice <code>number</code> (self-serve and Team); Salesforce invoice number for Enterprise</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; for metered usage; &ldquo;Recurring&rdquo; or &ldquo;One-Time&rdquo; for the Enterprise contract per its payment schedule</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not emitted; map each service to an allowed v1.2 value</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: zones are not exposed to customers</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 15 Present, 15 Deviation, 4 Missing Mandatory, 14 Missing Conditional, 1 Missing Recommended, 8 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Billing account and sub-account (Team, Enterprise Account), billing and charge periods at daily grain, app-level usage, invoice numbers, and a programmatic API. Heroku already has the delivery path most vendors lack.</p>
+<p><strong>Substantive (2 of 4 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>BilledCost.</strong> Invoices carry only totals, and Enterprise invoices are a single Salesforce line. Producing row-level BilledCost means pricing each app-by-SKU-by-day row and reconciling it, plus Tax and Credit rows, to the invoice total.</li>
+<li><strong>EffectiveCost.</strong> Enterprise customers prepay dyno units and add-on credits for a contract term. EffectiveCost requires amortizing that prepayment onto the usage it funds and billing overage at its own rate.</li>
+</ul>
+<p><strong>Trivial (2 of 4 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Heroku owns the public price list. Join it by dyno size and add-on plan, then multiply by PricingQuantity. This depends on exporting usage at SKU grain first (see below).</li>
+<li><strong>ContractedCost.</strong> Equals ListCost for self-serve. For Enterprise, join the order-form rate per dyno unit and per credit.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>Normalized units.</strong> Dyno units and credits collapse dyno size and add-on plan. A Performance-L day and sixteen Standard-1X days look identical, so no downstream pricing, rightsizing, or SKU analysis is possible from the current data.</li>
+<li><strong>Add-on opacity.</strong> Postgres, Key-Value Store, Kafka, and Managed Inference and Agents share one <code>data</code> bucket; every Elements partner shares one <code>partner</code> bucket. Customers cannot see which add-on drove spend or which partner published it.</li>
+<li><strong>App identity.</strong> The usage API keys on <code>app_name</code>, which can be renamed or reused after deletion. ResourceId needs the app UUID.</li>
+<li><strong>Daily accuracy.</strong> Heroku labels daily Enterprise figures as estimates, and self-serve usage lags a day. A FOCUS export should state recency and completeness (v1.3 adds columns for this).</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>PricingQuantity, PricingUnit, ConsumedQuantity, ConsumedUnit:</strong> Replace dyno units and credits with quantities in each SKU&rsquo;s rate basis: dyno time per dyno size (for example &ldquo;Hours&rdquo; against an hourly rate derived from the monthly cap), plan-months per add-on plan, and &ldquo;1M Tokens&rdquo; per direction for Managed Inference and Agents. Keep dyno units as an <code>x_DynoUnits</code> custom column for Enterprise reconciliation.</p>
+<p><strong>ServiceName, ServiceCategory, PublisherName:</strong> Split the <code>data</code> and <code>partner</code> buckets into named services. Use &ldquo;Compute&rdquo; for dynos, &ldquo;Databases&rdquo; for Postgres and Key-Value Store, &ldquo;AI and Machine Learning&rdquo; for Managed Inference and Agents, &ldquo;Integration&rdquo; for Kafka and Connect, and &ldquo;Networking&rdquo; for Spaces. Emit the Elements partner as PublisherName for third-party add-ons.</p>
+<p><strong>ResourceId and ResourceType:</strong> Emit the app UUID; add add-on UUIDs as their own resources when grain improves.</p>
+<p><strong>ChargeCategory, ChargeFrequency, PricingCategory, ChargeDescription, SubAccountType, SkuMeter:</strong> Derive as shown in the table.</p>
+<p><strong>Already right:</strong> Team and Enterprise IDs, daily and monthly periods, app names, invoice numbers and periods, and USD-only pricing map cleanly.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is in release candidate with ratification scheduled for December 3, 2026. The Contract Commitment dataset (v1.3) fits Heroku&rsquo;s Enterprise contract, and the Invoice Detail dataset (v1.4) fits the Salesforce single-line invoice.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no tags, zones, reservations, or alternate currencies) and the decision on modeling dyno units and add-on credits as commitment discounts. Salesforce, as Heroku&rsquo;s parent and invoice issuer for Enterprise, should be part of the conversation.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of Team and Enterprise Account daily usage plus the matching invoices. Hand-build a FOCUS file, run it through the Validator, and decide the commitment model for dyno units and credits.</p>
+<p><strong>Phase 1: SKU grain.</strong> Re-cut usage by app UUID × dyno size or add-on plan × region × day. This is the prerequisite for every cost column.</p>
+<p><strong>Phase 2: Close Mandatory gaps.</strong> Join the price list for ListCost and ListUnitPrice, the order form for ContractedCost and ContractedUnitPrice, and price each row for BilledCost. Add Tax and Credit rows so BilledCost reconciles to the invoice. Amortize the Enterprise prepayment for EffectiveCost.</p>
+<p><strong>Phase 3: Fix deviations and fill Conditional columns.</strong> Derive ChargeCategory, ServiceCategory, ChargeFrequency, and PricingCategory; split ServiceName and PublisherName; emit RegionId, RegionName, SkuId, SkuPriceId, SkuPriceDetails, the CommitmentDiscount family, and ServiceSubcategory. Expose the export through the Platform API and the Enterprise CSV.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Contract Commitment and Invoice Detail datasets; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Today, from the current API:</strong> Usage trending and anomaly detection by app and team in dyno units and credits (not dollars).</li>
+<li><strong>After Phase 1:</strong> Dyno rightsizing, add-on inventory by plan, and regional footprint analysis.</li>
+<li><strong>After Phase 2:</strong> Invoice reconciliation, chargeback and showback by team and app in dollars, actuals-based budgeting and forecasting, and Enterprise contract burn-down.</li>
+<li><strong>After Phase 3:</strong> Cross-provider spend by service category, unit economics for Managed Inference and Agents tokens, and commitment utilization.</li>
+<li><strong>Out of scope:</strong> Tag-based allocation (unless Heroku adds labels), availability zone analysis, and capacity reservation management.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Heroku contact from KubeCon NA 2026 to identify the owner of the usage API and Enterprise billing.</li>
+<li>Confirm whether Heroku&rsquo;s internal metering already records usage by dyno size, add-on plan, and region (it must, to bill self-serve accounts by the second).</li>
+<li>Confirm the invoicing entity for self-serve accounts and whether any non-USD billing exists.</li>
+<li>Build a v1.2 sample from one month of Team usage and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Usage endpoints and field names (Team and Enterprise Account daily and monthly usage, Account and Team invoices), taken from Heroku&rsquo;s published API schema.</li>
+<li><strong>High:</strong> Dyno-unit definition, add-on credit pools, per-second proration, and the single-line Salesforce Enterprise invoice, from Heroku Dev Center and Help.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> Heroku has no tags. No tagging feature appears in any Heroku doc reviewed; third-party add-ons offer workarounds only.</li>
+<li><strong>Moderate:</strong> Treating Enterprise dyno units and add-on credits as commitment discounts. If Heroku models the contract as a plain prepayment with no rate benefit, the seven CommitmentDiscount columns become N/A and the contract moves to the Contract Commitment dataset only.</li>
+<li><strong>Moderate:</strong> SubAccountId from the Enterprise usage <code>teams</code> array. The array carries a per-team breakdown; the exact identifier fields were not confirmed.</li>
+<li><strong>Moderate:</strong> USD as the only billing currency. Prices are published in USD and no currency field exists, but no doc rules out non-USD Enterprise contracts.</li>
+<li><strong>Low:</strong> InvoiceIssuerName for self-serve accounts. Docs say Heroku invoices them but do not name the legal entity.</li>
+<li><strong>Low:</strong> Monetary units on Team invoice fields (whole dollars vs. cents) and the Fir dyno-unit conversion, neither of which is documented.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Heroku Platform API Reference: <a href="https://devcenter.heroku.com/articles/platform-api-reference">devcenter.heroku.com/articles/platform-api-reference</a></li>
+<li>Heroku API schema (heroku-go mirror): <a href="https://github.com/heroku/heroku-go/blob/master/v5/schema.json">github.com/heroku/heroku-go</a></li>
+<li>Usage and Billing: <a href="https://devcenter.heroku.com/articles/usage-and-billing">devcenter.heroku.com/articles/usage-and-billing</a></li>
+<li>Enterprise Account Usage: <a href="https://devcenter.heroku.com/articles/enterprise-account-usage">devcenter.heroku.com/articles/enterprise-account-usage</a></li>
+<li>Heroku Enterprise (dyno units and credits): <a href="https://devcenter.heroku.com/articles/heroku-enterprise">devcenter.heroku.com/articles/heroku-enterprise</a></li>
+<li>Heroku Regions: <a href="https://devcenter.heroku.com/articles/regions">devcenter.heroku.com/articles/regions</a></li>
+<li>Enterprise invoices via Salesforce: <a href="https://help.heroku.com/SVYFZ1C8/how-do-i-view-invoices-for-my-enterprise-team">help.heroku.com/SVYFZ1C8</a></li>
+<li>Heroku Pricing: <a href="https://www.heroku.com/pricing">heroku.com/pricing</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

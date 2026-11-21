@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redpanda &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Redpanda-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="redpanda-focus-data-generator-gap-analysis">Redpanda &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Redpanda Data, Inc.<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Public Redpanda documentation only: Redpanda Cloud billing docs (Billing and Support, View Billing Activity, payment methods, billing notifications, AWS/GCP/Azure Marketplace commit and pay-as-you-go pages); Dedicated tiers reference; BYOC on GCP cluster docs; Cloud Control Plane API reference; Agentic Data Plane cost and usage, cost-allocation tags, budgets, and provider configuration docs; redpanda.com pricing and price-estimator pages<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 19 Present, 8 Deviation, 2 Missing Mandatory, 18 Missing Conditional, 3 Missing Recommended, 7 N/A</p>
+<blockquote>
+<p><strong>Public billing docs are thin.</strong> Redpanda documents its billing meters and units, and a Billing activity page with a monthly per-resource CSV export. It does not publish per-unit prices, the CSV&rsquo;s column list, a sample export, an invoice format, or any billing, usage, or invoice API. Much of the column table below is therefore inferred from how the Billing activity UI is described, not from a documented schema. Treat the &ldquo;Present&rdquo; statuses as provisional until Redpanda shares a sample CSV.</p>
+</blockquote>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Redpanda sells Kafka-compatible data streaming as Redpanda Cloud (Serverless, Dedicated, and BYOC clusters), plus Redpanda Connect pipelines, Redpanda SQL, the Agentic Data Plane (ADP), support plans, and a self-managed Enterprise Edition. Cloud usage is metered in USD, accrues hourly in UTC (partial hours bill as full hours), and is charged to the default card on the first of each month after any credit balance is applied. Customers can also buy through AWS, GCP, or Azure Marketplace, either pay-as-you-go or by private offer with a monthly or annual minimum spend.</p>
+<p>This analysis covers the two directions in which Redpanda touches FOCUS:</p>
+<ol>
+<li><strong>Redpanda as a data generator for its own charges.</strong> This is a usable start with large holes. The Billing activity page breaks charges down per resource and per meter (Compute, Ingress, Egress, Storage, Uptime, Partitions) with quantity, unit price, and amount, and exports a monthly per-resource CSV. Of the 21 Mandatory columns, 19 have a likely source and 2 are missing. One gap is substantive: <strong>EffectiveCost</strong>, because prepaid credits, promotional credits, commit rollovers, and private-offer discounts all exist, and the Billing activity amounts are shown &ldquo;before any discounts are applied.&rdquo; <strong>ContractedCost</strong> is a rate-card join. BilledCost needs rework for the same reason.</li>
+<li><strong>Redpanda as an allocation layer for third-party LLM spend.</strong> ADP already tracks estimated model spend by agent, model, provider, user, and tag, with an API (<code>SpendingService</code>) and CSV export. It does not emit FOCUS and does not mention it.</li>
+</ol>
+<p>The structural gap sits outside the column table: there is no billing API. The Cloud Control Plane API has 18 endpoint groups and none covers billing, usage, cost, or invoices. A FinOps tool can only get Redpanda charges by a person downloading a CSV each month.</p>
+<p><strong>Recommendation:</strong> Publish a FOCUS export per organization, delivered through a new Control Plane API endpoint and optionally pushed to object storage: one Usage row per resource × meter × day (Redpanda already accrues hourly, so daily is cheap), with BilledCost after discounts, separate Credit rows for credit draw-down, a Purchase row for the support plan, and commit tracking in the CommitmentDiscount columns. Carry resource group into SubAccountId, cluster region into RegionId, and the cluster ID into ResourceId.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>Redpanda&rsquo;s own billing data (the subject of the column table):</p>
+<ul>
+<li><strong>Billing activity page</strong> (Billing → Billing activity, Admin role): Select the current or a previous month. Usage totals are subtotaled by resource type and &ldquo;shown before any discounts are applied.&rdquo; The Resources breakdown filters by resource type (All, Dedicated, Serverless, Redpanda Connect pipeline, Support), resource group, and resource name, with a toggle for deleted resources. Expanding a resource shows meter rows &ldquo;with quantity, unit price, and amount.&rdquo;</li>
+<li><strong>CSV export:</strong> &ldquo;a CSV summary of your monthly charges per resource.&rdquo; The columns are not documented and no sample is published.</li>
+<li><strong>Billing meters and units</strong> (Billing and Support page; no prices published):</li>
+<li>Serverless: Uptime (hours, not charged when partitions and storage are both 0), Ingress (GB), Egress (GB), Partitions (per hour), Storage (GB in object storage per hour). Rates vary by region.</li>
+<li>Dedicated: Uptime (hours, by region and tier), Ingress (GB, by region), Egress (GB, by AZ count), Storage (GB-hours, each byte counted once despite replication factor 3).</li>
+<li>BYOC: Compute in RPU-hours (1 RPU = 2 vCPU + 8 GB memory), Ingress (GB), Ingress to Iceberg topics (GB, charged on top of standard ingress), Egress (GB, by AZ count), Storage (GB-hours). &ldquo;The rate decreases as usage increases.&rdquo;</li>
+<li>Redpanda SQL: RPU-hours at a different rate from BYOC.</li>
+<li>Redpanda Connect: compute units per hour per pipeline (1 compute unit = 0.1 CPU + 400 MB memory), by cloud and region.</li>
+<li>Support plans: Basic, Enterprise, and Premium, billed as a resource. Premium is required for BYOVPC/BYOVNet clusters.</li>
+<li><strong>Pricing pages:</strong> redpanda.com lists Serverless (pay-as-you-go or annual commit), BYOC (annual commitment), and Enterprise Edition (30-day trial). The price estimator is a contact-sales form. No per-unit prices are published there.</li>
+<li><strong>Cloud Control Plane API</strong> (<code>https://api.redpanda.com</code>, v1): Clusters, Networks, Resource Groups, Regions, Organization, users, roles, and service accounts. No billing, usage, cost, or invoice endpoints.</li>
+</ul>
+<p>Redpanda&rsquo;s spend data for third-party LLMs (assessed separately in 1.4):</p>
+<ul>
+<li><strong>ADP Cost and usage:</strong> USD, &ldquo;model costs only,&rdquo; estimated from a default per-model price table with per-provider overrides (input, output, cache read, and cache write rates in dollars per million tokens). Stored in USD microcents.</li>
+<li><strong>Dimensions:</strong> provider, model, user, agent, provider type, and tag. Each spending event snapshots the agent&rsquo;s key/value tags at call time.</li>
+<li><strong>API:</strong> <code>redpanda.api.adp.v1alpha1.SpendingService</code> (<code>GetSpendingBreakdown</code>, <code>GetSpendingSummary</code>, <code>GetSpendingTimeSeries</code>, <code>GetSpendingTimeSeriesByDimension</code>, <code>GetSpendingTagKeys</code>), hourly or daily. CSV exports exist; their columns are not documented. No FOCUS output.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Hierarchy:</strong> Organization → resource groups → clusters, networks, and pipelines. One payment method covers all billable resources in the organization. Signing up through a marketplace creates a separate organization limited to that cloud.</li>
+<li><strong>Credits and commits:</strong> Prepaid credits are &ldquo;drawn down by usage.&rdquo; Commits are &ldquo;a minimum spend over a contract period.&rdquo; Trials may carry promotional credits. Unused monthly marketplace commitment rolls over until the end of the term; overage is charged.</li>
+<li><strong>Regions:</strong> Dedicated runs in 12 GCP, 12 AWS, and 5 Azure regions; single-AZ and multi-AZ clusters are supported. Prices vary by region, but how region appears in billing data is not documented.</li>
+<li><strong>Labels:</strong> BYOC on GCP accepts up to 16 <code>cloud_provider_tags</code> &ldquo;for cost allocation,&rdquo; but these are applied to resources in the customer&rsquo;s own GCP project. Nothing documents labels on Serverless or Dedicated clusters, or labels in Redpanda&rsquo;s billing data.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Redpanda deploys clusters in cloud regions, groups resources into resource groups, runs separate direct and marketplace organizations, and sells minimum-spend commits with discounts, so RegionId, RegionName, SubAccountId, SubAccountName, BillingAccountType, and the CommitmentDiscount family apply. Redpanda prices and bills in USD only and sells no capacity reservations; those columns are N/A and should exist as null. Resource groups are the only sub-account type, so SubAccountType is N/A. Feature levels follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Redpanda source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Billing activity amount per resource and meter, but shown before discounts; credit draw-down not itemized</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs private-offer discounts, prepaid and promotional credit allocation, and commit amortization and rollover</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Billing activity amount (quantity × unit price, before discounts)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not exposed; equals ListCost on pay-as-you-go, private-offer rate × PricingQuantity otherwise</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Redpanda organization ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>First day of the calendar month (UTC)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>First day of the following month (exclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Month start (CSV is a monthly summary; accrual is hourly)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Month end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Resource name plus meter row (e.g., &ldquo;orders-prod: Ingress&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for metered rows; &ldquo;Purchase&rdquo; for support plans and commit fees; &ldquo;Credit&rdquo; for credit draw-down; &ldquo;Tax&rdquo; if applicable</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Redpanda Data, Inc.&rdquo; for direct; &ldquo;Amazon Web Services&rdquo;, &ldquo;Google&rdquo;, or &ldquo;Microsoft&rdquo; for marketplace organizations</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Redpanda&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Redpanda&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Resource type: &ldquo;Redpanda Serverless&rdquo;, &ldquo;Redpanda Dedicated&rdquo;, &ldquo;Redpanda BYOC&rdquo;, &ldquo;Redpanda Connect&rdquo;, &ldquo;Redpanda SQL&rdquo;, &ldquo;Support&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Analytics&rdquo; for streaming clusters and SQL; &ldquo;Integration&rdquo; for Connect; &ldquo;Other&rdquo; for support plans</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Meter quantity; BYOC rates decline with volume (tiered), so compute against the rate basis</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize: &ldquo;Hours&rdquo;, &ldquo;GB&rdquo;, &ldquo;GB-Hours&rdquo;, &ldquo;Partition-Hours&rdquo;, &ldquo;RPU-Hours&rdquo;, &ldquo;Compute Unit-Hours&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Meter quantity</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Implicit per meter; normalize to FOCUS unit format</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Unit price shown per meter row</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed; private-offer rates</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; for pay-as-you-go; &ldquo;Committed&rdquo; for usage drawn against a commit</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Not exposed; direct vs. AWS, GCP, or Azure Marketplace organization</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Resource group exists as a Billing activity filter; not documented in the CSV</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Resource group name; same as above</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A: resource group is the only sub-account type</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Cluster, network, and pipeline IDs exist in the Control Plane API; not documented in billing</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Resource name in the per-resource breakdown</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>&ldquo;Serverless Cluster&rdquo;, &ldquo;Dedicated Cluster&rdquo;, &ldquo;BYOC Cluster&rdquo;, &ldquo;Connect Pipeline&rdquo;, &ldquo;Support Plan&rdquo; from the resource type filter</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; Dedicated and BYOC tiers and Serverless plan are candidates</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Not in billing; BYOC GCP <code>cloud_provider_tags</code> land in the customer&rsquo;s GCP bill, not Redpanda&rsquo;s</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced and billed in USD only</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Meter rows: Compute, Ingress, Egress, Storage, Uptime, Partitions</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for region, tier, AZ count, and BYOC volume tiers</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Not in billing; cluster cloud region (e.g., &ldquo;us-east-1&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Not in billing</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Commit or private-offer ID; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Annual Commit&rdquo;, &ldquo;Monthly Commit&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Spend&rdquo;; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo;/&rdquo;Unused&rdquo; against the minimum spend</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>USD drawn against the commit</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;USD&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Not in Billing activity; card charges and marketplace bills carry their own IDs</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; for meters; &ldquo;Recurring&rdquo; for support plans and commit fees</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map to an allowed v1.2 value (e.g., &ldquo;Streaming Analytics&rdquo; for clusters)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Not in billing; populate for single-AZ clusters, null for multi-AZ</td>
+<td>Missing: Recommended</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 19 Present, 8 Deviation, 2 Missing Mandatory, 18 Missing Conditional, 3 Missing Recommended, 7 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Organization identity, USD-only billing, calendar-month periods, per-resource and per-meter breakdown, list unit prices and pre-discount amounts, and resource names and types. Meters are clean and well defined, which is the hardest part of a FOCUS mapping and the part Redpanda has already done.</p>
+<p><strong>Substantive (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Prepaid credits, promotional credits, minimum-spend commits with monthly rollover, and private-offer discounts all exist, and none of them appear in Billing activity amounts. Producing EffectiveCost means applying the negotiated discount per line and amortizing commit and credit effects back to the usage they cover. On a pay-as-you-go card account with no credits, EffectiveCost equals ListCost; on the BYOC accounts that matter most, it does not.</li>
+</ul>
+<p><strong>Trivial (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ContractedCost.</strong> Equal to ListCost on pay-as-you-go. For private offers, Redpanda already holds the contract rates; expose them per meter.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No billing API.</strong> The Control Plane API covers clusters, networks, and identity but no billing. A monthly CSV downloaded by an Admin is the only programmatic-adjacent path.</li>
+<li><strong>Monthly grain.</strong> Redpanda accrues hourly but exports a monthly summary per resource. Daily anomaly detection and mid-month forecasting are impossible from the export.</li>
+<li><strong>No region or tags in billing.</strong> Prices vary by region, AZ count, and tier, but none of those are documented in the export, and there is no first-party cost-allocation label on clusters.</li>
+<li><strong>Marketplace split.</strong> Marketplace organizations see Redpanda bills &ldquo;directly in the marketplace,&rdquo; where Redpanda typically appears as one subscription line in the hyperscaler&rsquo;s FOCUS data. A Redpanda export with InvoiceIssuerName set to the marketplace is the only way to break that line down.</li>
+</ul>
+<p><strong>Redpanda as an allocation layer for third-party LLM spend:</strong></p>
+<p>ADP&rsquo;s spend tracking is close to FOCUS in substance: hourly or daily cost by provider, model, agent, user, and tag, with tags snapshotted at call time. Two points stand out:</p>
+<ul>
+<li><strong>It is an estimate, not a bill.</strong> Costs come from a price table that customers can override, and subscription-covered calls record $0. Like Kong AI Cost Management, Redpanda is not the invoice issuer for this spend, so exporting it as FOCUS cost columns risks double-counting against the model provider&rsquo;s own FOCUS data.</li>
+<li><strong>The tag model is the asset.</strong> ADP already does what Redpanda&rsquo;s own billing does not: key/value cost-allocation tags, preserved as of the charge. Redpanda should bring the same model to clusters and pipelines.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost:</strong> Emit post-discount amounts per resource and meter, plus Credit rows for credit draw-down and Purchase rows for support and commit fees, so that BilledCost summed per billing period equals the card charge or marketplace bill.</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Usage&rdquo; for metered rows; &ldquo;Purchase&rdquo; for support plans and commit fees; &ldquo;Credit&rdquo; for prepaid and promotional credit draw-down; &ldquo;Tax&rdquo; where tax is charged.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Analytics&rdquo; for Serverless, Dedicated, and BYOC clusters and Redpanda SQL; &ldquo;Integration&rdquo; for Redpanda Connect; &ldquo;Other&rdquo; for support plans.</p>
+<p><strong>PricingQuantity and PricingUnit:</strong> Uptime, partitions, storage, and Connect compute are flat per region and tier, so PricingQuantity equals consumption there. BYOC rates decrease with volume, so those meters are tiered: compute PricingQuantity against the rate basis and express tiers in SkuPriceDetails. Normalize units to &ldquo;Hours&rdquo;, &ldquo;GB&rdquo;, &ldquo;GB-Hours&rdquo;, &ldquo;Partition-Hours&rdquo;, &ldquo;RPU-Hours&rdquo;, and &ldquo;Compute Unit-Hours&rdquo;.</p>
+<p><strong>ConsumedUnit, PricingCategory, ChargeFrequency:</strong> Derive from meter type and plan as shown in the table.</p>
+<p><strong>Already right:</strong> USD-only billing, calendar-month periods, explicit list unit prices, and a per-resource, per-meter row structure map cleanly.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is a candidate release scheduled for ratification on December 3, 2026; its scope is on the FOCUS site. The v1.3 Contract Commitment dataset fits Redpanda&rsquo;s minimum-spend commits and rollover better than per-row CommitmentDiscount columns alone, and the v1.4 Invoice Detail dataset addresses the missing invoice linkage.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (USD only, no capacity reservations, one sub-account type) and the decision on modeling minimum-spend commits as spend-based commitment discounts. Certification would cover the Redpanda Cloud billing export, not ADP&rsquo;s LLM spend estimates.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month&rsquo;s Billing activity CSV for a pay-as-you-go organization and a BYOC private-offer organization, with the matching charges. Hand-build a v1.2 file and run it through the Validator. Decide the commit model.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Apply private-offer rates for ContractedCost and ContractedUnitPrice. Apply discounts and allocate credits and commit effects for EffectiveCost. Emit post-discount BilledCost with Credit and Purchase rows so it reconciles to the charge.</p>
+<p><strong>Phase 2: Fix deviations and add a feed.</strong> Derive ChargeCategory, ServiceCategory, ChargeFrequency, and PricingCategory; normalize PricingUnit and ConsumedUnit; compute PricingQuantity against BYOC tiers. Move to daily rows and expose the export through a Control Plane API billing endpoint.</p>
+<p><strong>Phase 3: Allocation and Conditional columns.</strong> Add ResourceId, SubAccountId and SubAccountName from resource groups, RegionId, RegionName, and AvailabilityZone from the cluster, BillingAccountType for marketplace organizations, SkuId, SkuPriceId, and SkuPriceDetails, the CommitmentDiscount family, InvoiceId, and ServiceSubcategory. Add first-party key/value labels on clusters and pipelines and carry them into Tags, reusing ADP&rsquo;s tag model.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Invoice Detail and Contract Commitment datasets; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, actuals-based budgeting, and amortized spend reporting for Redpanda Cloud.</li>
+<li><strong>After Phase 2:</strong> Daily anomaly detection on ingress, egress, and storage; spend by service category across providers; automated ingestion into FinOps tools.</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback by resource group, cluster, region, or label; unit economics per GB streamed; and commit burn-down tracking.</li>
+<li><strong>Already available (ADP):</strong> Allocation of estimated LLM spend by agent, model, user, and tag, with budgets.</li>
+<li><strong>Out of scope:</strong> Capacity reservation management and multi-currency analysis.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Redpanda contact from KubeCon NA 2026 to reach the owner of Redpanda Cloud billing and the ADP cost team.</li>
+<li>Request a sample Billing activity CSV and confirm its columns (resource ID, resource group, region, tier, discounts, credits).</li>
+<li>Confirm whether a billing or usage API exists internally or is planned, and whether BYOC private-offer discounts are per-unit rates or a percentage off total.</li>
+<li>Build a v1.2 sample from one billing month and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code> and discuss FinOps Foundation membership.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Meter names, units, hourly UTC accrual with full-hour rounding, USD-only pricing, first-of-month card charges after credits, and the Billing activity filters and monthly CSV export come from Redpanda&rsquo;s billing docs.</li>
+<li><strong>High:</strong> The Cloud Control Plane API has no billing, usage, cost, or invoice endpoint group.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> Present status for ResourceName, ResourceType, ListUnitPrice, ListCost, SkuMeter, and ChargeDescription. These rest on the Billing activity UI description; the CSV&rsquo;s columns are undocumented and may not carry all of them.</li>
+<li><strong>Moderate:</strong> ListCost and ListUnitPrice as list prices. Docs say amounts are &ldquo;before any discounts,&rdquo; but private-offer accounts may show contract rates in the unit price column.</li>
+<li><strong>Moderate:</strong> Treating minimum-spend commits as spend-based commitment discounts. If Redpanda models them as flat prepayments with no rate benefit, the seven CommitmentDiscount columns become N/A.</li>
+<li><strong>Moderate:</strong> ServiceCategory &ldquo;Analytics&rdquo; with ServiceSubcategory &ldquo;Streaming Analytics&rdquo; for streaming clusters; confirm against the v1.2 allowed-value tables.</li>
+<li><strong>Low:</strong> InvoiceIssuerName as &ldquo;Redpanda Data, Inc.&rdquo; No public invoice names the issuing entity.</li>
+<li><strong>Low:</strong> Current per-unit prices. Redpanda publishes none; third-party and older figures were not used.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Redpanda Cloud Billing and Support: <a href="https://docs.redpanda.com/redpanda-cloud/billing/billing/">docs.redpanda.com/redpanda-cloud/billing/billing/</a></li>
+<li>View Billing Activity: <a href="https://docs.redpanda.com/redpanda-cloud/billing/view-billing-activity/">docs.redpanda.com/redpanda-cloud/billing/view-billing-activity/</a></li>
+<li>Manage Billing (index, payment methods, notifications, marketplace commit and pay-as-you-go): <a href="https://docs.redpanda.com/redpanda-cloud/billing/">docs.redpanda.com/redpanda-cloud/billing/</a></li>
+<li>Dedicated Tiers: <a href="https://docs.redpanda.com/cloud-data-platform/reference/tiers/dedicated-tiers/">docs.redpanda.com/cloud-data-platform/reference/tiers/dedicated-tiers/</a></li>
+<li>Create a BYOC Cluster on GCP: <a href="https://docs.redpanda.com/cloud-data-platform/get-started/cluster-types/byoc/gcp/create-byoc-cluster-gcp/">docs.redpanda.com/cloud-data-platform/get-started/cluster-types/byoc/gcp/create-byoc-cluster-gcp/</a></li>
+<li>Cloud Control Plane API: <a href="https://docs.redpanda.com/api/cloud-controlplane-api">docs.redpanda.com/api/cloud-controlplane-api</a></li>
+<li>ADP Cost and Usage: <a href="https://docs.redpanda.com/agentic-data-plane/control/cost-usage/">docs.redpanda.com/agentic-data-plane/control/cost-usage/</a></li>
+<li>ADP Cost-Allocation Tags: <a href="https://docs.redpanda.com/agentic-data-plane/control/cost-allocation-tags/">docs.redpanda.com/agentic-data-plane/control/cost-allocation-tags/</a></li>
+<li>ADP Budgets: <a href="https://docs.redpanda.com/agentic-data-plane/control/budgets/">docs.redpanda.com/agentic-data-plane/control/budgets/</a></li>
+<li>Redpanda Pricing: <a href="https://www.redpanda.com/pricing">redpanda.com/pricing</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

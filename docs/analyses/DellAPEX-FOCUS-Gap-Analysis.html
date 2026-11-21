@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dell APEX &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/DellAPEX-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="dell-apex-focus-data-generator-gap-analysis">Dell APEX &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: July 6, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Dell Technologies (Dell APEX)<br>
+<strong>Prepared:</strong> July 6, 2026<br>
+<strong>Source:</strong> Dell APEX Console / Dell Premier (Software &amp; Subscriptions &gt; Usage &amp; Reporting, Subscription Invoices); public Dell APEX subscription documentation<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Status:</strong> Not a listed FOCUS data provider on focus.finops.org/get-started. This is a readiness assessment, not a conformance result.<br>
+<strong>Tally:</strong> 17 Present, 12 Deviation, 3 Missing Mandatory, 7 Missing Conditional, 2 Missing Recommended, 16 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Dell APEX is Dell Technologies&rsquo; as-a-service infrastructure portfolio: customers commit a base capacity (typically priced on a $/GB basis), Dell deploys the hardware on-premises or in a colocation site with a buffer above the baseline, meters actual consumption at roughly five-minute intervals, and bills monthly for base plus on-demand usage above the commitment. The billing surface is the APEX Console within Dell Premier, which exposes Usage &amp; Reporting views (Schedule Summary, Daily Schedule History, Monthly Schedule History, Product Summary) and Subscription Invoices. This gives Dell APEX the structural bones of a metered dataset: a measured quantity per schedule (TotalGiB, CommitGiB, ConsumedGiB), a client and product hierarchy, daily consumption history, and a clean monthly invoice.</p>
+<p>The gap to FOCUS is that the exposed data is a capacity-utilization report, not a cost-and-usage ledger with FOCUS column IDs. Three Mandatory columns are substantive gaps: ListCost and ContractedCost require the enterprise-negotiated rate card, which the console does not expose, and EffectiveCost requires reconciling committed-tier and on-demand charges from that rate. The remaining Mandatory columns have source data and are Deviations (derivation or reshaping) rather than absences. Sixteen columns are N/A: the entire CommitmentDiscount family (APEX&rsquo;s base commitment is a pricing tier, not a per-resource discount), CapacityReservation, AvailabilityZone, and the pricing-currency sub-family that follows from the missing unit prices. Granularity is mixed: daily consumption exists in the console, but the billed record is monthly.</p>
+<p><strong>Recommendation:</strong> Treat the APEX Console Daily Schedule History export as the source event stream and build a metered-consumption transform first, mapping the GiB meters to PricingQuantity and PricingUnit, the client and product hierarchy to BillingAccount and SubAccount, and the invoice to the cost columns. Add the negotiated rate card as a supplementary data step to populate ListCost, ContractedCost, and EffectiveCost. Structural conformance is reachable; the binding constraint is programmatic access to pricing and a stable resource identity.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>Dell APEX exposes billing and usage through two console surfaces inside Dell Premier, reached at Account &gt; Software &amp; Subscriptions:</p>
+<p><strong>Usage &amp; Reporting.</strong> Four views:
+- <strong>Schedule Summary</strong> (default): Client name, Billing Period, Product, Device, Schedule, Commit %, Consumed %, TotalGiB, ConsumedGiB.
+- <strong>Daily Schedule History</strong>: per-schedule daily TotalGiB, CommitGiB, ConsumedGiB, with 60 days of history and a 30-day forecast. The data table is exportable (More Options &gt; Export Data).
+- <strong>Monthly Schedule History</strong>: the same meters rolled to the month, six months back and three months forward.
+- <strong>Product Summary</strong>: consumed capacity by product across correlated schedules.</p>
+<p><strong>Subscription Invoices.</strong> Monthly invoices and, for APEX Flex On Demand, a pre-invoice usage report that the customer has 15 days to review. Invoices, credit memos, and pre-invoice usage reports are downloadable as PDF documents. Billing information is tied to the Bill To Entity; channel-partner purchases route billing through the partner.</p>
+<p>Key characteristics for FOCUS:
+- <strong>Metered capacity model:</strong> APEX meters storage or memory capacity (GiB) on average every five minutes, averages per day, and bills monthly. The consumption meter maps to PricingQuantity and PricingUnit.
+- <strong>Commitment as a pricing tier:</strong> the customer commits a base capacity at a $/GB rate. The same rate applies to base and to on-demand usage above the commitment. Billing is capped at 85% of total installed capacity. This is a tier, not a per-resource commitment discount.
+- <strong>Enterprise-negotiated pricing:</strong> the $/GB rate is contract-specific and is not exposed as a machine-readable rate card in the console. List and contracted unit prices require supplementary data.
+- <strong>Account hierarchy:</strong> the Bill To Entity is the billing account anchor; Client, Product, Device, and Schedule provide a sub-account and resource hierarchy.
+- <strong>Physical deployment:</strong> APEX systems are installed at customer data centers or Dell-managed colocation sites, which map to Region rather than cloud Region/AvailabilityZone.
+- <strong>No native tagging or FOCUS-shaped export:</strong> the console offers a tabular data export, not a cost-and-usage feed under FOCUS column IDs, and no customer-facing tag construct is documented.</p>
+<p>The billing docs are thin on record-level field definitions. Field names below are drawn from the documented console views; anything not directly attested is marked provisional in the Confidence Summary.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. Each column carries a feature level: Mandatory (must exist and be populated where applicable), Conditional (must exist; populated when the provider&rsquo;s model triggers the condition, otherwise null), or Recommended. A conformant dataset presents the full column set under FOCUS column IDs, populates every Mandatory column, satisfies Conditional columns where applicable, and uses the correct types and allowed values. Feature levels below were verified against the FOCUS v1.2 specification, not recalled from memory.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Dell APEX source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Monthly invoice amount per schedule / line item</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Requires committed-tier plus on-demand reconciliation from the negotiated $/GB rate; not directly exposed</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>List (MSRP) $/GB rate not exposed in the console; requires rate card</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Negotiated $/GB rate not exposed in the console; requires rate card</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Bill To Entity identifier</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Client / Bill To Entity name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Invoice currency (contract currency)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Billing Period (monthly) start</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Billing Period (monthly) end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Daily Schedule History date (day-level) or billing period start</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Daily Schedule History date + 1 day, or billing period end</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Product + Schedule label (e.g., &ldquo;APEX Data Storage Services - Block&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for metered consumption; &ldquo;Credit&rdquo; for credit memos; &ldquo;Adjustment&rdquo; for corrections</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for correction / credit-memo lines</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Dell Technologies&rdquo; (or channel partner for partner-billed subscriptions)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Dell APEX&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Dell Technologies&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>APEX product name (e.g., &ldquo;APEX Data Storage Services&rdquo;, &ldquo;APEX Compute&rdquo;, &ldquo;APEX Flex On Demand&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Map APEX product to FOCUS enum: storage products -&gt; &ldquo;Storage&rdquo;; compute -&gt; &ldquo;Compute&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>ConsumedGiB per schedule per day</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>&ldquo;GiB&rdquo; (or &ldquo;GiB-Month&rdquo; / &ldquo;GiB-Day&rdquo; once normalized to the rate basis)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>ConsumedGiB (measured consumption)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>&ldquo;GiB&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>List $/GB rate; not exposed in the console</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Negotiated $/GB rate; not exposed in the console</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Committed&rdquo; for usage within the base commitment; &ldquo;Standard&rdquo; for on-demand usage above it</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>&ldquo;Usage-Based&rdquo; for metered consumption; &ldquo;Recurring&rdquo; for flat subscription fees</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from the Bill To Entity agreement type (e.g., &ldquo;Enterprise&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Client / Product / Schedule identifier below the Bill To Entity</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Client or Product name</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Schedule&rdquo; or &ldquo;Product&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Device or Schedule identifier</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Device name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>APEX system / device type</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>APEX product SKU or offer code</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>No native customer tag construct documented in the console</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>= BillingCurrency (contract currency)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Follows ListUnitPrice; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Follows ContractedUnitPrice; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Follows EffectiveCost; requires rate reconciliation</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Meter concept exists (GiB) but no FOCUS SkuMeter display value</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Rate-card price identifier not exposed</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Tiered / committed-vs-overage pricing detail not exposed</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Deployment site / data-center location code</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Site display name (customer site or Dell colocation)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: base commitment is a pricing tier, not a per-resource commitment discount</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: on-premises installed capacity is not a FOCUS capacity reservation</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number from Subscription Invoices</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>No native field; requires mapping from APEX product to subcategory</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: on-premises / colocation deployment has no cloud availability zone</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 17 Present, 12 Deviation, 3 Missing Mandatory, 7 Missing Conditional, 2 Missing Recommended, 16 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved</strong></p>
+<p>The metered model gives Dell APEX a measured quantity for every schedule: ConsumedGiB feeds ConsumedQuantity and PricingQuantity, and the unit is a clean GiB. The Bill To Entity anchors the billing account, and the Client / Product / Device / Schedule hierarchy supplies sub-account and resource identity. The monthly invoice supplies InvoiceId and the billing period. Daily Schedule History provides day-level consumption, which supports a sub-monthly ChargePeriod. InvoiceIssuerName, ServiceName, ChargeClass, and the consumed-quantity family have direct source data.</p>
+<p><strong>Remaining (substantive)</strong></p>
+<p>Three Mandatory columns are genuine data gaps rather than reshaping work. ListCost and ContractedCost depend on the enterprise-negotiated $/GB rate card, which the console does not expose, so both require a supplementary pricing data source. EffectiveCost is not a copy of any exposed field: APEX bills base plus on-demand at a contract rate with an 85% cap, so producing an amortized effective cost per usage line means reconciling the invoice total back to the metered consumption using that rate. These three drive the cost family and the pricing-currency sub-family that follows from them.</p>
+<p><strong>Remaining (trivial)</strong></p>
+<p>Most Mandatory columns marked Deviation are reshaping, not missing data: BilledCost from the invoice line, ChargePeriod from the daily date, ChargeCategory and ServiceCategory from lookup mappings, PricingQuantity and PricingUnit from ConsumedGiB. These are plumbing once the rate reconciliation is in place. The list-cost trap applies here: because credit memos and enterprise-negotiated rates exist and are applied at invoice time, the cost columns are treated as substantive, not as a trivial copy of a single list figure.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost</strong><br>
+Present as the monthly invoice amount but not published under a FOCUS column ID at the usage-line grain. Allocate the invoiced amount to schedule / day lines.</p>
+<p><strong>ChargePeriodStart and ChargePeriodEnd</strong><br>
+Daily Schedule History carries day-level dates; emit inclusive-start, exclusive-end 24-hour periods. For invoice-only lines, use the monthly billing period.</p>
+<p><strong>ChargeCategory and ServiceCategory</strong><br>
+Derive ChargeCategory from line type (metered -&gt; &ldquo;Usage&rdquo;, credit memo -&gt; &ldquo;Credit&rdquo;, correction -&gt; &ldquo;Adjustment&rdquo;). Map APEX products to the ServiceCategory enum (storage -&gt; &ldquo;Storage&rdquo;, compute -&gt; &ldquo;Compute&rdquo;).</p>
+<p><strong>PricingQuantity and PricingUnit</strong><br>
+Use ConsumedGiB and a GiB-based unit normalized to the rate basis (for example GiB-Month if the $/GB rate is monthly). Confirm the rate basis so the quantity matches the priced unit rather than the raw meter.</p>
+<p><strong>SubAccount and Resource families</strong><br>
+Assign the Client / Product / Schedule hierarchy to SubAccountId/Name/Type and the Device / Schedule identifier to ResourceId. Define a stable identifier convention, since the console surfaces display names more consistently than durable IDs.</p>
+<p><strong>RegionId and RegionName</strong><br>
+Map the deployment site (customer data center or Dell colocation) to Region. There is no availability-zone concept.</p>
+<p><strong>BillingCurrency and PricingCurrency</strong><br>
+Emit the contract currency as an ISO 4217 code.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); baseline the analysis at v1.2, the current certification version. ProviderName and PublisherName are deprecated in v1.3 and removed in v1.4, so treat them as transitional. Because the APEX cost columns depend on reconciliation, the v1.4 Invoice Detail and billing-period datasets are a natural fit and worth designing toward.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Dell APEX is not currently a listed FOCUS data provider, so this is a readiness assessment. To pursue conformance, contact <code>member-cert@finops.org</code> for the RFI. Certification deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis seeds it). Membership is required for certification, though contributing to the spec is open and free. The open-source tooling applies: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (native to FOCUS), and the FOCUS Requirements Model.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0:</strong> Confirm the source of record. Decide whether the FOCUS dataset is generated from the Daily Schedule History export or from an upstream billing system, and pull a sample month across storage and compute schedules. Validate field availability for schedule IDs, device IDs, and dates.</p>
+<p><strong>Phase 1: Core metered consumption transform.</strong> Map BillingAccount (Bill To Entity), SubAccount (Client / Product / Schedule), Resource (Device), Region (site), ServiceName, ChargePeriod (daily), PricingQuantity/Unit and ConsumedQuantity/Unit (ConsumedGiB), InvoiceId, InvoiceIssuerName, ChargeClass. Derive ChargeCategory, ServiceCategory, ChargeFrequency, PricingCategory. Delivers conformant structure for the present and reshaping columns.</p>
+<p><strong>Phase 2: Cost enrichment.</strong> Integrate the negotiated $/GB rate card for ListCost, ContractedCost, ListUnitPrice, and ContractedUnitPrice. Reconcile the invoice total to metered lines to produce EffectiveCost and BilledCost at the usage grain, honoring the base-vs-on-demand tier and the 85% cap. Populate the pricing-currency sub-family.</p>
+<p><strong>Phase 3: Round out Conditional and Recommended.</strong> Add SkuId and SkuMeter from the APEX product catalog, ServiceSubcategory mapping, and a tag mechanism if APEX introduces customer tagging.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName (v1.4), adopt the Invoice Detail dataset for reconciliation, validate with the FOCUS Validator, and open the RFI.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<p><strong>After Phase 1:</strong> Analyze service costs by service name; Analyze service costs by subaccount (by Client / Product); Analyze service costs by region (by deployment site); Analyze tag coverage (once tagging exists); resource-level consumption reporting from ConsumedGiB.</p>
+<p><strong>After Phase 2:</strong> Compare billed cost per subaccount to budget; Calculate unit economics ($/GiB); list-vs-contracted-vs-billed comparison to verify the negotiated rate; committed-vs-on-demand consumption cost via PricingCategory; invoice reconciliation and Analyze credit memos.</p>
+<p><strong>Out of scope:</strong> the CommitmentDiscount use cases (APEX&rsquo;s base commitment is a pricing tier, not a FOCUS commitment discount); capacity-reservation analysis; availability-zone cost distribution.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Decide the source of record for the FOCUS dataset: the APEX Console Daily Schedule History export or an upstream billing system. Pull one sample month across storage and compute schedules.</li>
+<li>Obtain the negotiated $/GB rate card in machine-readable form and design the pricing join for ListCost, ContractedCost, and the unit-price columns.</li>
+<li>Specify the EffectiveCost reconciliation: allocate the monthly invoice total to metered daily lines using the base-vs-on-demand rate and the 85% cap.</li>
+<li>Build the ChargeCategory, ServiceCategory, and ServiceSubcategory mapping tables from the APEX product catalog, and define stable SubAccount and Resource identifiers.</li>
+<li>Run a Phase 1 sample through the FOCUS Validator and, if pursuing conformance, open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Dell APEX is a metered as-a-service model with a base commitment, buffer, ~5-minute metering, and monthly billing, exposed through the APEX Console Usage &amp; Reporting views and Subscription Invoices. Documented console fields (TotalGiB, CommitGiB, ConsumedGiB, Client, Product, Device, Schedule, Billing Period) are attested by Dell&rsquo;s public subscription documentation.</li>
+<li><strong>High:</strong> The cost columns (ListCost, ContractedCost, EffectiveCost) are substantive gaps. The negotiated $/GB rate is not exposed in the console, and effective cost requires reconciling the invoice to metered lines.</li>
+<li><strong>Moderate:</strong> SubAccount and Resource mapping. The Client / Product / Device / Schedule hierarchy is documented, but which level is the durable identifier versus a display name is not fully specified in public docs.</li>
+<li><strong>Moderate:</strong> ServiceCategory coverage across the full APEX portfolio (Data Storage Services, Compute, Flex On Demand, Cloud Platforms). A complete mapping needs the current product catalog.</li>
+<li><strong>Low / provisional:</strong> Record-level field names and types for a machine-readable export. The console documents tabular exports and PDF invoices, not a FOCUS-style feed or a public billing API, so exact field names and the presence of a stable resource ID and tag construct are provisional and should be confirmed against an actual export.</li>
+<li><strong>Note:</strong> Feature levels were verified against the live FOCUS specification via the FOCUS MCP on July 6, 2026; the bundled v1.2 table matched (57 columns, Provider/Publisher deprecated v1.3 and removed v1.4). Dell APEX is not a listed FOCUS data provider; this is a readiness assessment, not a conformance result.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Dell APEX Subscriptions, Usage and Reporting: <a href="https://www.dell.com/support/manuals/en-us/apex-custom-solutions/apex_subscript_user_guide_pub/usage-and-reporting?guid=guid-acf5306c-d1b5-4e39-a8ce-20dd20078f7d&amp;lang=en-us">dell.com/support</a></li>
+<li>Dell APEX Subscriptions, Subscription Invoices: <a href="https://www.dell.com/support/manuals/en-us/apex-custom-solutions/apex_subscript_user_guide_pub/subscription-invoices?guid=guid-2c67bda8-8ae2-4e16-829c-e5d032353aa4&amp;lang=en-us">dell.com/support</a></li>
+<li>Dell APEX Infrastructure / Subscriptions overview: <a href="https://www.dell.com/en-us/dt/apex/subscriptions.htm">dell.com/en-us/dt/apex/subscriptions.htm</a></li>
+<li>Dell APEX Flex On Demand (metered pay-per-use): <a href="https://www.dell.com/en-us/dt/payment-solutions/flexible-consumption/flex-on-demand.htm">dell.com</a></li>
+<li>Dell APEX subscription solution brief (PDF): <a href="https://www.delltechnologies.com/asset/en-th/solutions/apex/briefs-summaries/dell-apex-subscription-solution-brief.pdf">delltechnologies.com</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org/focus-specification/v1-2/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

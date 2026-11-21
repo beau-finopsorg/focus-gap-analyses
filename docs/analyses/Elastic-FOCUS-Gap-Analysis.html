@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elastic &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Elastic-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="elastic-focus-data-generator-gap-analysis">Elastic &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Elastic N.V. (Elastic Cloud: Hosted deployments and Serverless projects)<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Public Elastic documentation only: Elastic Cloud Billing API v2 (OpenAPI spec); deprecated v1 billing costs endpoints; Billing History API; Elastic Cloud billing docs (ECU, billing models, billing dimensions, FAQ, Usage page); Elastic Cloud pricing pages; <code>ess_billing</code> integration field reference; deployment tags and Serverless project settings docs<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 20 Present, 12 Deviation, 2 Missing Mandatory, 14 Missing Conditional, 2 Missing Recommended, 7 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Elastic sells Elastic Cloud in two forms: Hosted deployments (dedicated Elasticsearch, Kibana, APM, and Integrations Server clusters on AWS, Google Cloud, or Azure) and Serverless projects (Elasticsearch, Observability, and Security). All usage is metered hourly and priced in Elastic Consumption Units (ECU), where 1 ECU equals $1.00 at list. Customers pay monthly by credit card, through a cloud marketplace, or by buying prepaid ECU credits up front at a negotiated discount and in a choice of currencies.</p>
+<p>Elastic is closer to FOCUS than most SaaS vendors. The v2 Cloud Billing API returns per-instance, per-SKU line items with a unit, quantity, list rate, ECU total, and a tier breakdown, as JSON or CSV, over any date range. Of the 21 Mandatory columns, 19 have a source and 2 are missing. <strong>ContractedCost</strong> is trivial. <strong>EffectiveCost</strong> is substantive.</p>
+<p>The problem is that every number in the API is list-price ECU. Elastic&rsquo;s own docs say the Usage page &ldquo;is an estimate, and does not include prepaid credits, free allowances or any discounts.&rdquo; Prepaid customers, who are the large accounts FinOps teams care about, buy ECU at a discount and in non-USD currencies, and none of that reaches the cost API. For them, BilledCost and EffectiveCost cannot be produced from public data.</p>
+<p><strong>Public billing documentation is thin where FOCUS needs it most.</strong> The v2 schema is published but has no example responses, types <code>total_ecu</code> and <code>rate.value</code> as integers while Elastic&rsquo;s own integration emits decimals, and declares Billing Accounts, Prices, Line Items, and marketplace API groups with no paths. The console CSV export has no documented column list. Credits, discounts, taxes, and invoice linkage have no public API fields.</p>
+<p><strong>Recommendation:</strong> Add a FOCUS export to the v2 Billing API (<code>Accept: text/focus+csv</code> or a new <code>/focus</code> path) that emits one Usage row per instance × SKU × day, with BillingCurrency set to the contract currency and PricingCurrency set to <code>ECU</code>. Model prepaid consumption as a spend-based commitment discount: one Purchase row per order line and Usage rows drawing down against it, so EffectiveCost reflects the negotiated discount. Join deployment and project tags into Tags and parse region from the SKU into RegionId.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>Elastic Cloud Billing API v2</strong> (<code>https://cloud.elastic.co</code>, <code>Authorization: ApiKey</code>):</p>
+<ul>
+<li><strong><code>GET /api/v2/billing/organizations/{org}/costs/instances</code>:</strong> Costs per Hosted deployment or Serverless project. Returns <code>total_ecu</code> and <code>instances[]{id, name, type, total_ecu, product_line_items[]}</code>. <code>from</code> and <code>to</code> are required; <code>include_names</code> adds instance names. JSON or <code>text/csv</code>.</li>
+<li><strong><code>.../costs/instances/{instance_id}/items</code>:</strong> Itemized line items for one instance.</li>
+<li><strong><code>.../costs/items</code>:</strong> Organization-wide items by product, with <code>serverless_group_by=product|product_family</code>.</li>
+<li><strong>Line item shape (<code>ProductLineItem</code>):</strong> <code>name</code>, <code>type</code>, <code>sku</code>, <code>unit</code>, <code>quantity{value, formatted_value}</code>, <code>display_quantity{value, formatted_value, type}</code>, <code>rate{value, formatted_value}</code>, <code>total_ecu</code>, optional <code>kind</code>, and <code>quantities[]{from, to, total_ecu, rate, quantity, tiers[]{min, max, total_ecu, quantity, rate}}</code>. The <code>quantities</code> array segments usage by price range and tier.</li>
+<li><strong><code>.../charts</code>:</strong> Daily or monthly cost buckets, organization-wide or per instance.</li>
+<li><strong><code>GET /api/v1/billing/organization/{org}/history</code>:</strong> Invoice and statement headers: invoice <code>number</code>, <code>issue_date</code>, period start and end, <code>status</code>, <code>type</code>, <code>invoiced_amount_in_cents</code>, PDF links, and <code>payment_metadata{amount, currency, external_invoice_id}</code>. Statements add <code>ecu_total</code>, <code>currency</code>, and a <code>reseller</code> flag. No line items.</li>
+<li><strong>Budgets API:</strong> Create, list, update, and delete organization budgets.</li>
+</ul>
+<p><strong>Deprecated v1 costs endpoints</strong> (<code>/api/v1/billing/costs/{organization_id}/...</code>): overview, deployments, items, and charts. The v1 overview exposed the prepaid <code>balance</code> with ECU <code>line_items[]{ecu_quantity, ecu_balance, start, end}</code>. v2 does not.</p>
+<p><strong><code>ess_billing</code> integration:</strong> Elastic&rsquo;s own Fleet integration pulls billing and credits data daily (one year of history on first run). Its fields are the best public picture of a real line item: <code>deployment_id</code>, <code>deployment_name</code>, <code>deployment_tags</code>, <code>deployment_type</code>, <code>cloud.machine.type</code>, <code>kind</code>, <code>name</code>, <code>sku</code>, <code>type</code> (<code>capacity</code> or <code>usage</code>), <code>unit</code> (<code>hour</code>, <code>GB</code>), <code>quantity</code>, <code>rate</code>, <code>total_ecu</code>, <code>ram_per_zone</code>, <code>zone_count</code>, and <code>from</code>/<code>to</code>. Its credits stream (<code>ecu_balance</code>, <code>ecu_quantity</code>, <code>start</code>, <code>end</code>, <code>active</code>, <code>type</code> such as <code>prepaid_consumption</code>) works only for annual direct contracts and reads from an endpoint that is not in the public v2 spec.</p>
+<p><strong>Console Billing &gt; Usage page:</strong> Usage grouped by product or resource, daily or monthly, with CSV download. Elastic labels it an estimate that excludes prepaid credits, free allowances, and discounts. The CSV columns are not documented.</p>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>ECU pricing:</strong> 1 ECU = $1.00. Monthly usage is charged in USD only. Prepaid ECU credits are bought &ldquo;at a discount, and in different currencies,&rdquo; consumed first-expiring-first, and forfeited at contract end. Overage beyond prepaid credits is invoiced in arrears at list.</li>
+<li><strong>Billing models:</strong> Monthly direct (credit card), monthly through AWS, Google Cloud, or Azure Marketplace (usage reported hourly and shown as one line on the hyperscaler bill), and prepaid consumption (annual, bank transfer allowed).</li>
+<li><strong>Invoicing entities:</strong> Elasticsearch Inc. for US customers (with US sales tax); Elasticsearch B.V. (Netherlands) for non-US customers (with VAT where applicable).</li>
+<li><strong>Hosted dimensions:</strong> Capacity per instance-hour (sized by GB RAM per zone and zone count), data out and inter-node transfer (100 GB per month free combined), snapshot storage (100 GB free), snapshot API requests per 1,000 (100,000 free), plus Synthetics, inference tokens, and workflow executions.</li>
+<li><strong>Serverless dimensions:</strong> Elasticsearch projects bill ingest, search, and ML VCU-hours plus GB retained and egress. Observability and Security projects bill GB ingested and GB retained with monthly volume tiers. Paid support on Serverless is a percentage of ECU consumption (5%, 10%, or 15% for Gold, Platinum, Enterprise).</li>
+<li><strong>Hierarchy:</strong> One organization owns all deployments and projects. No billing sub-accounts.</li>
+<li><strong>Tags:</strong> Hosted deployments take up to 64 key-value tags; Serverless projects take up to 64 <code>metadata.tags</code>. Neither appears in the v2 cost schema.</li>
+<li><strong>Region:</strong> Not a field anywhere in the cost API. It is embedded in SKU strings (e.g., <code>gcp.es.ml.n2.68x32x45_gcp-europe-west1_8192_1</code>).</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Elastic deploys into cloud regions, supports user-defined key-value tags, prices in a virtual unit (ECU) distinct from the billing currency, and sells prepaid ECU at a discount with forfeiture of unused balance. So RegionId, RegionName, Tags, the PricingCurrency family, and the CommitmentDiscount family all apply. Elastic has one billing account type (the organization), no billing sub-accounts, no capacity reservations, and no customer-visible per-zone billing; those columns are N/A and should exist as null. Feature levels follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Elastic source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td><code>total_ecu</code> per line item; correct only for monthly direct accounts with no credits or discounts. Prepaid drawdown and overage are not distinguished, and Tax and Credit rows do not exist</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs the prepaid discount amortized onto usage and credits allocated; the API is list-price only</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td><code>total_ecu</code> (list rate × quantity, after free allowances and tiers)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not exposed; equals ListCost, because consumption draws down ECU at list and the negotiated discount sits on the prepaid purchase</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Organization ID (path parameter)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization name (Organizations API)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Implicit: &ldquo;ECU&rdquo; is not ISO 4217. Emit &ldquo;USD&rdquo; for monthly accounts and the contract currency for prepaid (<code>payment_metadata.currency</code> on invoices)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice <code>period_start_date</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice <code>period_end_date</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td><code>quantities[].from</code>, or the requested day when pulled per day</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td><code>quantities[].to</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Line item <code>name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Native <code>type</code> is <code>capacity</code> or <code>usage</code>, not FOCUS values. Derive &ldquo;Usage&rdquo; for consumption, &ldquo;Purchase&rdquo; for prepaid order lines, plus &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; rows</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for restated periods</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Not emitted. Derive &ldquo;Elasticsearch Inc.&rdquo; (US), &ldquo;Elasticsearch B.V.&rdquo; (non-US), or the marketplace for marketplace billing</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Elastic&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Elastic&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Instance and product <code>type</code> (e.g., &ldquo;Elastic Cloud Hosted&rdquo;, &ldquo;Elasticsearch Serverless&rdquo;, &ldquo;Elastic Observability Serverless&rdquo;, &ldquo;Elastic Security Serverless&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Analytics&rdquo; for Elasticsearch, &ldquo;Management and Governance&rdquo; for Observability, &ldquo;Security&rdquo; for Security, &ldquo;Networking&rdquo; for data transfer</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td><code>quantity.value</code>, with per-tier quantities in <code>quantities[].tiers[]</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td><code>unit</code> (<code>hour</code>, <code>GB</code>); normalize to FOCUS unit format (&ldquo;Hours&rdquo;, &ldquo;GB&rdquo;, &ldquo;GB-Months&rdquo;, &ldquo;VCU-Hours&rdquo;, &ldquo;1000 Requests&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td><code>display_quantity.value</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Implicit in <code>unit</code> and <code>display_quantity.type</code>; normalize</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td><code>rate.value</code> in ECU; equals USD only when BillingCurrency is USD</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed; equals ListUnitPrice in ECU</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Not emitted; derive &ldquo;Committed&rdquo; for prepaid drawdown, &ldquo;Standard&rdquo; for monthly and overage</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>N/A: one account type (organization)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>N/A: no billing sub-accounts; deployments and projects are resources</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Instance <code>id</code> (deployment ID or project ID)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Instance <code>name</code> (<code>include_names=true</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Instance <code>type</code> (deployment or project) plus line item <code>kind</code> (elasticsearch, kibana, apm, integrations_server)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td><code>sku</code> encodes cloud, instance config, region, and size; strip region and size for a stable product SKU</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Deployment tags and project <code>metadata.tags</code> (key-value, up to 64) exist but are not in the cost API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>Not emitted; &ldquo;ECU&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td><code>rate.value</code> (ECU)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed; equals <code>rate.value</code></td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Not exposed; needs prepaid discount and credits</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Line item <code>name</code> / dimension (capacity, data out, inter-node, snapshot storage, VCU type, GB ingested)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td><code>sku</code> (region- and size-specific price point)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td><code>quantities[].tiers[]{min, max, rate}</code>; reformat as FOCUS key-value JSON</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Embedded in the <code>sku</code> string only; parse</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Not exposed; map from the parsed region</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Prepaid order line ID; console only, not in the public API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Prepaid Consumption&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Spend&rdquo;; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo;/&rdquo;Unused&rdquo; against the prepaid balance; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>ECU drawn against the order line; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;ECU&rdquo;; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice <code>number</code> exists in the History API, but line items carry no invoice reference; join by billing period</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Not emitted; derive &ldquo;Usage-Based&rdquo; for consumption, &ldquo;One-Time&rdquo; for prepaid purchases</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not emitted; map each product to an allowed v1.2 value (e.g., &ldquo;Search&rdquo;, &ldquo;Observability&rdquo;)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: customers choose a zone count (<code>zone_count</code>), not named zones, and cost is not split by zone</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 20 Present, 12 Deviation, 2 Missing Mandatory, 14 Missing Conditional, 2 Missing Recommended, 7 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Organization identity, invoice periods, per-instance and per-SKU line items, resource IDs and names, list rates, quantities, tier breakdowns, and a CSV output option. Most of the FOCUS row structure already exists in the v2 Billing API; this is a mapping and enrichment job for monthly direct accounts, not a rebuild.</p>
+<p><strong>Substantive (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Prepaid customers buy ECU at a negotiated discount, sometimes in EUR or another currency, and consume it at list. Producing EffectiveCost means applying the order line&rsquo;s effective ECU price (amount paid ÷ ECU purchased) to each usage row and allocating promotional and trial credits. Elastic holds this in the order lines it shows in the console (list unit price, discount, paid amount, start and expiry), but no public API returns it.</li>
+</ul>
+<p><strong>Trivial (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ContractedCost.</strong> Consumption draws down at list ECU rates, so ContractedCost equals ListCost in ECU, converted to BillingCurrency.</li>
+</ul>
+<p><strong>Substantive deviation on a present column:</strong></p>
+<ul>
+<li><strong>BilledCost.</strong> For monthly direct accounts, <code>total_ecu</code> in USD is a fair BilledCost. For prepaid accounts it is wrong: usage covered by prepaid credit should carry BilledCost of 0 (the money moved on the Purchase row), and only overage should carry billed amounts. The API cannot distinguish drawdown from overage, and it emits no Tax or Credit rows. BilledCost summed per invoice will not reconcile to <code>invoiced_amount_in_cents</code> without those.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>Thin public documentation.</strong> No example responses for the v2 cost endpoints; <code>total_ecu</code> and <code>rate.value</code> are typed <code>integer</code> in the OpenAPI spec while Elastic&rsquo;s integration emits decimals (e.g., <code>8.4672</code>); the console CSV schema is undocumented; and the spec declares Billing Accounts, Prices, Line Items, and marketplace groups with no published paths. Any FOCUS mapping built today rests partly on inference from the integration.</li>
+<li><strong>Allocation.</strong> Tags exist on deployments and projects but are absent from cost line items, so every consumer (Elastic&rsquo;s own integration, Vantage, CloudZero, Datadog) joins them separately or falls back to virtual tags.</li>
+<li><strong>Marketplace split.</strong> Marketplace buyers see Elastic as one line on the AWS, Google Cloud, or Azure bill. An Elastic export with InvoiceIssuerName set to the marketplace is the only way to break that line down by deployment.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost:</strong> Separate prepaid drawdown (BilledCost 0, EffectiveCost at the discounted ECU rate) from overage (BilledCost at list), and emit Purchase, Tax, and Credit rows so BilledCost summed per InvoiceId equals the invoice.</p>
+<p><strong>BillingCurrency, ListUnitPrice, and the PricingCurrency family:</strong> ECU is a pricing unit, not a billing currency. Set PricingCurrency to &ldquo;ECU&rdquo;, keep ECU rates in the PricingCurrency columns, and convert to the contract&rsquo;s ISO 4217 currency for BillingCurrency, ListUnitPrice, and the cost columns. This is the case FOCUS v1.2 added the pricing-currency columns for.</p>
+<p><strong>ChargeCategory:</strong> Map <code>capacity</code> and <code>usage</code> both to &ldquo;Usage&rdquo;; add &ldquo;Purchase&rdquo; for prepaid order lines; add &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; rows.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Analytics&rdquo; for Elasticsearch (Hosted and Serverless), &ldquo;Management and Governance&rdquo; for Observability, &ldquo;Security&rdquo; for Security, &ldquo;Networking&rdquo; for data transfer lines.</p>
+<p><strong>PricingUnit and ConsumedUnit:</strong> Normalize <code>hour</code> to &ldquo;Hours&rdquo;, GB-retained to &ldquo;GB-Months&rdquo;, VCUs to &ldquo;VCU-Hours&rdquo;, snapshot requests to &ldquo;1000 Requests&rdquo;. Serverless ingest and retention are volume-tiered, so PricingQuantity must follow the tier basis in <code>quantities[].tiers[]</code>, not total consumption.</p>
+<p><strong>SkuId and RegionId:</strong> Split the composite <code>sku</code> into a stable product SKU (SkuId), the full price point (SkuPriceId, already present), and the region (RegionId).</p>
+<p><strong>SkuPriceDetails:</strong> Serialize tier <code>min</code>, <code>max</code>, and <code>rate</code> as FOCUS key-value JSON.</p>
+<p><strong>InvoiceId:</strong> Stamp the invoice <code>number</code> onto each line item once the period is invoiced.</p>
+<p><strong>Already right:</strong> Instance-level resource IDs and names, SKU-level rates and quantities, tier breakdowns, arbitrary date ranges, and CSV output.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is a candidate release; its scope is on the FOCUS site. The v1.3 Contract Commitment dataset is a natural home for prepaid ECU order lines (quantity, paid amount, term, and expiry), and the v1.4 Invoice Detail dataset addresses the missing invoice linkage.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (single account type, no sub-accounts, no capacity reservations, no per-zone billing) and the decision to model prepaid consumption as a spend-based commitment discount.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month from <code>costs/instances</code> and <code>costs/instances/{id}/items</code> for a monthly direct organization and a prepaid one. Hand-build a v1.2 file and run it through the Validator. Correct the OpenAPI types for <code>total_ecu</code> and <code>rate.value</code> and publish example responses.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Emit BillingCurrency as ISO 4217 and PricingCurrency as &ldquo;ECU&rdquo;. Set ContractedCost to ListCost. Apply each prepaid order line&rsquo;s effective ECU price for EffectiveCost. Split drawdown from overage in BilledCost and add Purchase, Tax, and Credit rows so the dataset reconciles to the invoice.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Map ChargeCategory, ServiceCategory, and PricingUnit; derive InvoiceIssuerName from entity and billing model; parse SkuId and RegionId out of the composite SKU; serialize SkuPriceDetails; stamp InvoiceId.</p>
+<p><strong>Phase 3: Allocation and Conditional columns.</strong> Join deployment and project tags into Tags; add RegionName, PricingCategory, ChargeFrequency, ServiceSubcategory, and the CommitmentDiscount family keyed to prepaid order lines. Expose the order lines and credit balance in the public API, and offer scheduled delivery to S3, GCS, or Azure Blob.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Contract Commitment and Invoice Detail datasets; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Available now (monthly direct accounts):</strong> Spend by deployment or project, SKU-level unit cost, and daily trend and anomaly detection at list price.</li>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, actuals-based budgeting and forecasting, and amortized spend reporting for prepaid customers.</li>
+<li><strong>After Phase 2:</strong> Spend by service category and region across providers.</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback by tag; prepaid commitment utilization and forfeiture risk; unit economics per GB ingested or VCU-hour.</li>
+<li><strong>Out of scope:</strong> Capacity reservation management and per-zone cost analysis.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Elastic contact from KubeCon NA 2026 to identify the owner of the Cloud Billing API and the <code>ess_billing</code> integration.</li>
+<li>Ask Elastic to publish example v2 responses, the console CSV column list, and the credits endpoint the integration uses.</li>
+<li>Confirm how prepaid order lines, discounts, and non-USD contracts appear on invoices and statements.</li>
+<li>Build a v1.2 sample from one billing month and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> The v2 Billing API endpoints, parameters, and line item schema, taken from Elastic&rsquo;s published OpenAPI spec. The v1 costs endpoints are marked deprecated.</li>
+<li><strong>High:</strong> ECU = $1.00, USD-only monthly billing, discounted multi-currency prepaid credits with forfeiture, overage at list, and the Usage page&rsquo;s exclusion of credits, allowances, and discounts, all from Elastic&rsquo;s billing docs.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; ChargeFrequency, ServiceSubcategory, PricingQuantity, and InvoiceId were spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version. The FOCUS MCP was unavailable for this run, so the check used the public spec pages.</li>
+<li><strong>Moderate:</strong> Present status for ChargePeriodStart/End and SkuMeter rests on the <code>quantities[]</code> schema and integration fields, since no v2 example payload is published.</li>
+<li><strong>Moderate:</strong> Modeling prepaid consumption as a spend-based commitment discount. If Elastic treats prepaid ECU as a currency purchase rather than a discount instrument, the CommitmentDiscount columns become N/A and the discount moves entirely into the PricingCurrency exchange rate.</li>
+<li><strong>Moderate:</strong> &ldquo;ECU&rdquo; as a valid PricingCurrency value. Confirm the v1.2 Currency Format attribute&rsquo;s treatment of virtual currencies against the Requirements Model.</li>
+<li><strong>Moderate:</strong> ServiceCategory and ServiceSubcategory mappings (&ldquo;Analytics&rdquo;/&rdquo;Search&rdquo;, &ldquo;Management and Governance&rdquo;/&rdquo;Observability&rdquo;); confirm against the v1.2 allowed-value tables.</li>
+<li><strong>Moderate:</strong> Absence of any Elastic FOCUS export or announcement. Searches of elastic.co and the web found none, but absence is hard to prove.</li>
+<li><strong>Low:</strong> The console CSV schema. It probably mirrors the v2 <code>text/csv</code> response, but Elastic does not document it.</li>
+<li><strong>Unknown:</strong> Whether <code>total_ecu</code> and <code>rate.value</code> are integers (as typed in the spec) or decimals (as emitted by the integration).</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Elastic Cloud Billing API v2: <a href="https://www.elastic.co/docs/api/doc/cloud-billing">elastic.co/docs/api/doc/cloud-billing</a></li>
+<li>Elastic Cloud API, Billing Costs Analysis (v1, deprecated): <a href="https://www.elastic.co/docs/api/doc/cloud/group/endpoint-billingcostsanalysis">elastic.co/docs/api/doc/cloud/group/endpoint-billingcostsanalysis</a></li>
+<li>Elastic Cloud Billing overview: <a href="https://www.elastic.co/docs/deploy-manage/cloud-organization/billing">elastic.co/docs/deploy-manage/cloud-organization/billing</a></li>
+<li>Elastic Consumption Units: <a href="https://www.elastic.co/docs/deploy-manage/cloud-organization/billing/ecu">elastic.co/docs/deploy-manage/cloud-organization/billing/ecu</a></li>
+<li>Billing Models: <a href="https://www.elastic.co/docs/deploy-manage/cloud-organization/billing/billing-models">elastic.co/docs/deploy-manage/cloud-organization/billing/billing-models</a></li>
+<li>Billing FAQ: <a href="https://www.elastic.co/docs/deploy-manage/cloud-organization/billing/billing-faq">elastic.co/docs/deploy-manage/cloud-organization/billing/billing-faq</a></li>
+<li>Monitor and Analyze Usage: <a href="https://www.elastic.co/docs/deploy-manage/cloud-organization/billing/monitor-analyze-usage">elastic.co/docs/deploy-manage/cloud-organization/billing/monitor-analyze-usage</a></li>
+<li>Hosted Deployment Billing Dimensions: <a href="https://www.elastic.co/docs/deploy-manage/cloud-organization/billing/cloud-hosted-deployment-billing-dimensions">elastic.co/docs/deploy-manage/cloud-organization/billing/cloud-hosted-deployment-billing-dimensions</a></li>
+<li>Serverless Billing Dimensions: <a href="https://www.elastic.co/docs/deploy-manage/cloud-organization/billing/elasticsearch-billing-dimensions">Elasticsearch</a>, <a href="https://www.elastic.co/docs/deploy-manage/cloud-organization/billing/elastic-observability-billing-dimensions">Observability</a>, <a href="https://www.elastic.co/docs/deploy-manage/cloud-organization/billing/security-billing-dimensions">Security</a></li>
+<li>Elastic Pricing: <a href="https://www.elastic.co/pricing/serverless-search">elastic.co/pricing/serverless-search</a>, <a href="https://www.elastic.co/pricing/faq">elastic.co/pricing/faq</a></li>
+<li>Elasticsearch Service Billing integration: <a href="https://www.elastic.co/docs/reference/integrations/ess_billing">elastic.co/docs/reference/integrations/ess_billing</a></li>
+<li>Deployment Tags API: <a href="https://www.elastic.co/docs/api/doc/cloud/operation/operation-set-deployment-tags">elastic.co/docs/api/doc/cloud/operation/operation-set-deployment-tags</a></li>
+<li>Serverless Project Settings: <a href="https://www.elastic.co/docs/deploy-manage/deploy/elastic-cloud/project-settings">elastic.co/docs/deploy-manage/deploy/elastic-cloud/project-settings</a></li>
+<li>Elastic Blog, Elastic Cloud Spend Insights (October 2023): <a href="https://www.elastic.co/blog/elastic-cloud-spend-data-driven-insights">elastic.co/blog/elastic-cloud-spend-data-driven-insights</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

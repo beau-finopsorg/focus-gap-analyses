@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PerfectScale &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/PerfectScale-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="perfectscale-focus-data-generator-gap-analysis">PerfectScale &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> PerfectScale by DoiT<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> PerfectScale pricing page; DoiT help center (PerfectScale service description, vCPU measurement, DoiT pricing, cloud billing integration); AWS Marketplace listing<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 16 Present, 10 Deviation, 2 Missing Mandatory, 18 Missing Conditional, 1 Missing Recommended, 10 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>PerfectScale, now sold as &ldquo;PerfectScale by DoiT,&rdquo; is a Kubernetes optimization and governance platform for EKS, AKS, GKE, and self-hosted clusters. It charges per monthly vCPU: Community is free up to 300 vCPUs per month, Advanced is $2.00 and Expert $4.00 per monthly vCPU on AWS Marketplace, and Enterprise bundles Expert with DoiT Cloud Intelligence (DCI) Enterprise. The billed unit is allocated node capacity (sum of node CPU capacity × hours), metered hourly in vCPU-hours. Direct customers buy capacity on an Order Form with a DoiT-run true-up above it; Marketplace buyers sign 1- or 12-month contracts with usage-based overage.</p>
+<p>PerfectScale is closer to FOCUS than most SaaS vendors because its billing unit is already a metered, hourly, per-cluster quantity, and it shows customers a monthly vCPU consumption trend in-app. What it lacks is any machine-readable output of its own charges: no billing API, invoice API, or usage export is documented, and the Public API (Expert only) covers optimization data, not PerfectScale fees.</p>
+<p>Mapped against invoice, order-form, and public price content, 16 of 57 FOCUS v1.2 columns map directly and 19 of 21 Mandatory columns have a source. <strong>EffectiveCost</strong> is the substantive Mandatory gap: prepaid contract capacity and true-ups must be amortized over hourly consumption. <strong>ListCost</strong> is trivial, since list rates are public. The rest of the work is delivery, per-cluster allocation, and a commitment-discount model for contracted capacity priced below overage.</p>
+<p>PerfectScale also <strong>consumes</strong> cloud billing data (AWS CUR via a Legacy CUR export, Azure Cost Management, GCP Cloud Billing, and DoiT pricing for EKS and GKE) to price and allocate Kubernetes costs. None of its documentation mentions FOCUS.</p>
+<p><strong>Recommendation:</strong> Publish a FOCUS export per customer from the existing hourly metering: one Usage row per cluster per day with ConsumedQuantity in vCPU-hours, ResourceId set to the cluster, SubAccountId set to the hosting cloud account, and cluster labels as Tags; one Purchase row per contract; and true-up, Tax, and Credit rows so the dataset reconciles to the invoice. Expose it through the Public API and the &ldquo;Subscription Details&rdquo; page.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>PerfectScale publishes no billing data interface for its own charges. The material available for a FOCUS mapping:</p>
+<ul>
+<li><strong>Pricing page:</strong> Plans and units (&ldquo;Free up to 300 vCPU/month&rdquo;; Advanced and Expert &ldquo;per vCPU&rdquo; with &ldquo;Get a quote&rdquo;). Payment by card, wire, direct debit, or bill.com. No dollar amounts.</li>
+<li><strong>AWS Marketplace:</strong> &ldquo;PerfectScale by DoiT - Kubernetes Optimization and Governance Platform,&rdquo; a SaaS contract with usage-based overage, sold by PerfectScale and paid &ldquo;through your AWS bill.&rdquo; Advanced is &ldquo;equivalent to $2.00 per monthly vCPU, with usage metered hourly and billed in 1 vCPU-hour increments&rdquo;; Expert is equivalent to $4.00. Overage unit rates exceed contracted unit rates. Terms are 1 or 12 months, paid upfront or in installments, with no refunds.</li>
+<li><strong>Service description (direct contracts):</strong> Capacity is set in the Order Form. &ldquo;Above this capacity, a True-Up process will be initiated by a DoiT employee to collect the delta capacity,&rdquo; with notice in the platform UI and from the customer success manager.</li>
+<li><strong>In-app subscription view:</strong> &ldquo;Subscription Details&rdquo; and a &ldquo;View over-time vCPU consumption report&rdquo; showing normalized monthly vCPU consumption. Display only; no export is documented.</li>
+<li><strong>Measurement:</strong> Customers verify usage by summing <code>kube_node_status_capacity{resource="cpu"}</code> across nodes and multiplying by hours (e.g., <code>90*24*30 = 64800</code>). The unit is allocated capacity, not utilization or peak.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Unit:</strong> vCPU-hours of node capacity, normalized to monthly vCPUs.</li>
+<li><strong>Plans:</strong> Community (free), Advanced, Expert, Enterprise (Expert plus DCI Enterprise); self-hosted is Expert only.</li>
+<li><strong>Commitment:</strong> Order-form capacity with true-up (direct); 1- or 12-month contracts with overage at a higher unit rate (Marketplace).</li>
+<li><strong>Hierarchy:</strong> Customer organization billed once; clusters connected across AWS, Azure, GCP, and self-hosted environments.</li>
+<li><strong>No regions, zones, or capacity reservations</strong> in PerfectScale&rsquo;s own pricing.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Two modeling decisions drive this analysis:</p>
+<ul>
+<li><strong>Contracted capacity is a commitment discount.</strong> FOCUS defines a commitment discount as reduced rates in exchange for a usage or spend commitment. On Marketplace, contracted vCPU-hours are priced below overage, so the commitment buys a lower rate. The seven CommitmentDiscount columns are therefore Missing: Conditional, PricingCategory is &ldquo;Committed&rdquo; for drawn-down usage and &ldquo;Standard&rdquo; for overage, and EffectiveCost must amortize the upfront payment. From v1.3 the Contract Commitment dataset is the right home for the contract itself.</li>
+<li><strong>Clusters and their cloud accounts are applicable allocation keys.</strong> Charges accrue per node vCPU-hour in a specific cluster, so the cluster is the resource behind each charge and the hosting AWS account, Azure subscription, or GCP project is the grouping that owns it. The Resource, SubAccount, and Tags columns are Missing, not N/A.</li>
+</ul>
+<p>PerfectScale has no regions, zones, capacity reservations, alternate pricing currencies, or multiple billing-account types; those columns are N/A and should exist as null. Feature levels follow the bundled FOCUS v1.2 Content Constraints table.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>PerfectScale source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice line amount (direct) or AWS Marketplace charge</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs upfront contract and true-up amortized over hourly vCPU consumption, plus credit allocation</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not emitted; public list rate × PricingQuantity</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Contracted rate × capacity from the Order Form or Marketplace contract</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>PerfectScale organization or tenant ID on the invoice</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Customer organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>&ldquo;USD&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice service period start</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice service period end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Contract term only; usage rows need hourly or daily periods from existing metering</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Contract term only; same fix</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Invoice line description (plan, capacity, true-up)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for contracts; &ldquo;Usage&rdquo; for consumption, overage, and true-up; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; from the invoice</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>DoiT or PerfectScale entity for direct contracts; &ldquo;Amazon Web Services&rdquo; for Marketplace</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;PerfectScale&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;PerfectScale&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>&ldquo;PerfectScale&rdquo; (plan in SkuId)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Management and Governance&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Contract capacity only; usage rows need metered vCPU-hours</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize &ldquo;monthly vCPU&rdquo; and &ldquo;vCPU-hour&rdquo; to one FOCUS unit (e.g., &ldquo;vCPU-Hours&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Shown in-app as normalized monthly vCPUs per organization; needs vCPU-hours per cluster per period</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Same: &ldquo;vCPU-Hours&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Public: $2.00 (Advanced) and $4.00 (Expert) per monthly vCPU</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Contracted rate on the Order Form or Marketplace contract</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Committed&rdquo; for drawn-down usage; &ldquo;Standard&rdquo; for overage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>N/A: one billing-account type</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Not exposed: AWS account, Azure subscription, or GCP project hosting each cluster</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;AWS Account&rdquo;, &ldquo;Azure Subscription&rdquo;, &ldquo;GCP Project&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not exposed: cluster ID</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not exposed: cluster name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Kubernetes Cluster&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; plan code or Marketplace dimension (Community, Advanced, Expert)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Not exposed: PerfectScale holds cluster and cloud labels but emits none with charges</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced and billed in USD only</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Not exposed: &ldquo;Node vCPU capacity&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed to state the capacity-based measurement and monthly normalization</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: no region-based pricing</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Not exposed: contract or Order Form ID</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed: provider-defined (e.g., &ldquo;Capacity Contract&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>Not exposed: &ldquo;Usage&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>Not exposed: &ldquo;Used&rdquo; or &ldquo;Unused&rdquo; per period</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Not exposed: contracted vCPU-hours drawn per period</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>Not exposed: &ldquo;vCPU-Hours&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;One-Time&rdquo; or &ldquo;Recurring&rdquo; for contracts by payment schedule; &ldquo;Usage-Based&rdquo; for consumption and overage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map to &ldquo;Cost Management&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: no zones</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 16 Present, 10 Deviation, 2 Missing Mandatory, 18 Missing Conditional, 1 Missing Recommended, 10 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Billing account, currency, service periods, invoiced and contracted amounts, public list and contracted rates, line descriptions, invoice numbers, and an hourly metered quantity that maps cleanly to ConsumedQuantity.</p>
+<p><strong>Substantive (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Marketplace contracts are paid upfront or in installments, and direct true-ups collect capacity after the fact. EffectiveCost means amortizing both across the vCPU-hours consumed in each period and allocating credits back to the charges they offset.</li>
+</ul>
+<p><strong>Trivial (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> List rates are public. Multiply ListUnitPrice by PricingQuantity on every row.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No delivery path.</strong> No billing API, invoice API, or usage export is documented, and the Public API is Expert only. A FOCUS dataset needs an API endpoint or scheduled object-storage drop on every paid plan.</li>
+<li><strong>Per-cluster consumption.</strong> The metering is hourly, but customers see only an organization-level monthly trend. Emitting vCPU-hours per cluster per day is the step that turns an existing meter into allocatable data.</li>
+<li><strong>Commitment modeling.</strong> Contracted capacity priced below overage needs the CommitmentDiscount columns, used and unused rows per period, and Contract Commitment records in v1.3 and later.</li>
+<li><strong>Two channels.</strong> Marketplace buyers see PerfectScale charges in AWS billing data, invoiced by AWS; direct customers deal with DoiT. A PerfectScale FOCUS export should cover consumption for both, with InvoiceIssuerName set per channel so neither double-counts the contract.</li>
+</ul>
+<p><strong>On the consumer side.</strong> PerfectScale&rsquo;s AWS integration asks customers to create a Legacy CUR export, and it reads Azure Cost Management and GCP Cloud Billing through separate connectors. Accepting FOCUS exports from all three, which they each now produce, would replace three provider-specific parsers with one and align PerfectScale with the format its parent&rsquo;s customers increasingly use.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>ChargePeriodStart and ChargePeriodEnd:</strong> Emit Usage rows per hour or day from existing metering. Keep Purchase rows on the contract term.</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Purchase&rdquo; for contracts; &ldquo;Usage&rdquo; for consumption, overage, and true-up; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; from the invoice, so that BilledCost summed per InvoiceId equals the invoice total.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Management and Governance.&rdquo;</p>
+<p><strong>PricingQuantity and PricingUnit:</strong> Pick one unit. The meter counts vCPU-hours, while the price list quotes monthly vCPUs; use &ldquo;vCPU-Hours&rdquo; and document the monthly normalization in SkuPriceDetails. Populate PricingQuantity on every Usage row.</p>
+<p><strong>ConsumedQuantity and ConsumedUnit:</strong> Move the in-app normalized monthly figure to vCPU-hours per cluster per period.</p>
+<p><strong>ChargeFrequency and PricingCategory:</strong> Contract rows by payment schedule; &ldquo;Usage-Based&rdquo; for consumption; &ldquo;Committed&rdquo; for drawn-down usage and &ldquo;Standard&rdquo; for overage.</p>
+<p><strong>Already right:</strong> USD-only billing, a single billing entity per customer, public list rates, hourly metering, and a capacity-based unit that customers can reproduce from Kubernetes metrics.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is in release candidate with ratification scheduled for December 3, 2026. The Contract Commitment dataset (v1.3) fits PerfectScale&rsquo;s capacity contracts, and the Invoice Detail dataset (v1.4) fits invoice reconciliation.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale and the commitment-discount model for contracted capacity.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of hourly vCPU metering for a direct customer and a Marketplace customer. Hand-build a FOCUS file from it plus the invoice and run it through the Validator. Settle the PricingUnit.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Emit ListCost from public rates. Emit per-cluster Usage rows and amortize contracts and true-ups across them for EffectiveCost. Add Tax and Credit rows so BilledCost reconciles to the invoice.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Derive ChargeCategory, ServiceCategory, ChargeFrequency, and PricingCategory; normalize PricingUnit and ConsumedUnit; populate per-period charge periods and quantities on every Usage row.</p>
+<p><strong>Phase 3: Allocation, commitments, and delivery.</strong> Add ResourceId, ResourceName, and ResourceType per cluster; SubAccountId, SubAccountName, and SubAccountType for the hosting cloud account; Tags from cluster labels; the seven CommitmentDiscount columns; SkuId, SkuMeter, SkuPriceId, and SkuPriceDetails; ServiceSubcategory. Ship the export through the Public API on all paid plans and as a download from &ldquo;Subscription Details.&rdquo;</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Contract Commitment and Invoice Detail datasets; certify at v1.2 and re-certify as the program advances. In parallel, accept FOCUS exports from AWS, Azure, and GCP in place of Legacy CUR and native billing connectors.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, amortized spend reporting, and actuals-based budgeting for the PerfectScale line item.</li>
+<li><strong>After Phase 2:</strong> Spend by service category across providers, and contract burn-down and overage forecasting.</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback of PerfectScale fees by cluster and cloud account, commitment utilization, unit economics (PerfectScale cost per vCPU-hour against savings delivered), and anomaly detection on node-capacity growth.</li>
+<li><strong>Out of scope:</strong> Region-based analysis and capacity reservation management.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the PerfectScale contact from KubeCon NA 2026 to identify the owner of billing and vCPU metering at DoiT.</li>
+<li>Confirm the invoicing legal entity for direct contracts, the true-up rate, and how Marketplace contract and overage units relate.</li>
+<li>Build a v1.2 sample from one month of metering plus the invoice and run it through the FOCUS Validator.</li>
+<li>Agree on the commitment model and the Marketplace versus direct row design.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> PerfectScale bills per monthly vCPU of allocated node capacity, metered hourly, with a free tier up to 300 vCPUs and Marketplace rates equivalent to $2.00 (Advanced) and $4.00 (Expert). Its public docs describe no billing API, invoice API, or usage export for its own charges.</li>
+<li><strong>High:</strong> Customers can view a monthly vCPU consumption trend in &ldquo;Subscription Details&rdquo;; direct overage is collected by a DoiT-run true-up.</li>
+<li><strong>High:</strong> Feature levels match the bundled, verified FOCUS v1.2 Content Constraints table. A live spec spot-check was not run for this report.</li>
+<li><strong>Moderate:</strong> Treating contracted capacity as a commitment discount. It rests on Marketplace overage unit rates exceeding contracted unit rates; if the direct true-up uses the contracted rate and Marketplace units differ, a prepaid-purchase model with the CommitmentDiscount columns N/A also fits.</li>
+<li><strong>Moderate:</strong> Present status for invoice-sourced columns. The invoice layout is not public, so these follow standard SaaS invoice content.</li>
+<li><strong>Moderate:</strong> PerfectScale&rsquo;s AWS ingestion uses a Legacy CUR export, and no documentation mentions FOCUS ingestion.</li>
+<li><strong>Moderate:</strong> &ldquo;Cost Management&rdquo; as the ServiceSubcategory value. Confirm it against the v1.2 allowed values before mapping.</li>
+<li><strong>Low:</strong> The invoicing entity for direct contracts (DoiT or a PerfectScale subsidiary). No public page names it.</li>
+<li><strong>Low:</strong> The Marketplace Community dimension states &ldquo;300k vCPU hours per month,&rdquo; which does not match &ldquo;300 vCPU/month&rdquo; (about 219,000 vCPU-hours) on the pricing page.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>PerfectScale Pricing: <a href="https://www.perfectscale.io/pricing">perfectscale.io/pricing</a></li>
+<li>PerfectScale Service Description: <a href="https://help.doit.com/docs/perfectscale-service-description">help.doit.com/docs/perfectscale-service-description</a></li>
+<li>How to Find Your Allocated vCPU: <a href="https://help.doit.com/ja/docs/perfectscale-for-kubernetes/saas/perfectscale-trial/perfectscale-trial/how-to-find-your-allocated-vcpu">help.doit.com/&hellip;/how-to-find-your-allocated-vcpu</a></li>
+<li>DoiT Pricing Integration: <a href="https://help.doit.com/docs/perfectscale-for-kubernetes/saas/cloud-billing-integration/doit-pricing">help.doit.com/&hellip;/doit-pricing</a></li>
+<li>About Cloud Billing Integration: <a href="https://help.doit.com/docs/perfectscale-for-kubernetes/saas/cloud-billing-integration/about-cloud-billing-integration">help.doit.com/&hellip;/about-cloud-billing-integration</a></li>
+<li>Connecting AWS CUR: <a href="https://docs.perfectscale.io/cloud-billing-integration/connecting-aws-cur">docs.perfectscale.io/cloud-billing-integration/connecting-aws-cur</a></li>
+<li>PerfectScale on AWS Marketplace: <a href="https://aws.amazon.com/marketplace/pp/prodview-pdvno3f3xmkek">aws.amazon.com/marketplace/pp/prodview-pdvno3f3xmkek</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

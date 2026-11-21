@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DigitalOcean and FOCUS: Compliance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/DigitalOcean-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="digitalocean-and-focus-compliance-gap-and-adoption-roadmap">DigitalOcean and FOCUS: Compliance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: June 30, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Provider and product in scope:</strong> DigitalOcean (cloud infrastructure and GPU Droplets), billing and usage data.
+<strong>Prepared:</strong> 2026-06-30.
+<strong>Source analyzed:</strong> DigitalOcean Billing API (<code>/v2/customers/my/balance</code>, <code>/v2/customers/my/invoices</code>, <code>/v2/customers/my/billing_history</code>, billing insights), the downloadable invoice CSV, and the project spend CSV (beta).
+<strong>FOCUS baseline:</strong> v1.2 (current certification baseline). <strong>Build target:</strong> v1.4 (latest ratified, 2026-06-04).</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>DigitalOcean already produces the spine of a FOCUS dataset: a resource-level invoice CSV with per-resource cost, a usage duration and unit, ISO 8601 start and end times, product and service category, and a project name for allocation. The Billing Insights API adds day-over-day usage detail by SKU, region, and description. This is a meaningfully better starting point than a monthly-aggregate-only provider.</p>
+<p>The dataset&rsquo;s defining limitation is its single cost figure. DigitalOcean publishes one <code>amount</code> per line, denominated in USD, and applies credits, promo codes, prepayment commitments, and taxes at the invoice level rather than against usage lines. FOCUS requires four distinct cost columns (<code>BilledCost</code>, <code>EffectiveCost</code>, <code>ListCost</code>, <code>ContractedCost</code>). Whether these are a trivial copy or a substantive reconciliation depends on whether discounts and credits exist, and for DigitalOcean they do exist but live at invoice time, so the split is substantive, not cosmetic.</p>
+<p>A 4-stat read: 57 FOCUS columns at v1.2; 22 are present or present-with-a-deviation today (16 clean, 6 deviations). Of the 21 Mandatory columns, 9 are missing, and all 9 are trivial plumbing: identity, currency, charge-metadata, and pricing-quantity fields derivable from data or constants already in the source. The substantive work is not in the missing column count: it sits in 2 of the cost deviations (<code>BilledCost</code> and <code>EffectiveCost</code>), which need invoice-level credits and commitments reconciled back to usage lines.</p>
+<p><strong>Readiness (data source reviewed, not a certification result):</strong></p>
+<ul>
+<li>Cost: Partial</li>
+<li>Granularity: Strong</li>
+<li>Allocation: Partial</li>
+<li>Coverage: Partial</li>
+<li>FOCUS shape: Gap</li>
+<li>Overall band: Not yet aligned (per public docs)</li>
+</ul>
+<p><strong>Recommendation:</strong> Treat this as a transform-and-enrich project, not a from-scratch build. Standardize the invoice CSV and Insights feed into FOCUS column IDs, derive the trivial Mandatory fields, and concentrate real engineering on reconciling invoice-level credits and commitments back to usage lines so <code>BilledCost</code> and <code>EffectiveCost</code> are correct at the row level.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>DigitalOcean exposes billing and usage through several surfaces:</p>
+<ul>
+<li><strong>Invoice CSV (downloadable):</strong> the most detailed source. Each line carries the resource ID and UUID where applicable, product name, description, group description, amount charged in USD, usage duration, duration unit (such as hours), the invoice-period start and end times in ISO 8601, the project name the resource belongs to, and a category (such as <code>iaas</code>). This is resource-level and the strongest input for FOCUS.</li>
+<li><strong>Billing API:</strong> <code>balance</code> returns account balance; <code>invoices</code> lists invoices (generated on the first of each month, with a daily-updated <code>preview</code>); <code>billing_history</code> returns billing events (amount, date, description, and <code>invoice_id</code> where applicable, covering payments, invoices issued, and credits granted); billing insights returns day-over-day usage by total amount, region, SKU, and description for a date range.</li>
+<li><strong>Project spend CSV (beta):</strong> estimates team spend by project (project, product, description, USD), with bandwidth charges apportioned across projects.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Granularity:</strong> daily. The Insights API and the daily-updated invoice preview provide sub-monthly, day-level usage; the invoice CSV is resource-level with usage duration and explicit start and end times.</li>
+<li><strong>Currency:</strong> USD only. DigitalOcean bills exclusively in USD and does not invoice in local currency.</li>
+<li><strong>Allocation:</strong> projects group resources, and the CSV records the project name per line. Organizations consolidate related teams for billing. Resource UUIDs identify individual resources. Droplet-level user tags exist in the platform but are not confirmed as a billing CSV field.</li>
+<li><strong>Discounts and commitments:</strong> DigitalOcean uses flat published pricing with no formal reserved-instance tiers. Prepayment commitments (annual or 6-month) and negotiated GPU committed-use contracts exist, along with credits and promo codes. These are applied at the balance and invoice level, not as discount lines against usage.</li>
+<li><strong>Charge model:</strong> Droplets and GPU Droplets bill per second with a minimum charge, surfaced as a usage duration on the invoice line.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory, Conditional, Recommended, or Optional. Conformance is judged column by column. Mandatory columns must be present and populated (some allow null). Conditional columns are required only when the provider&rsquo;s business model triggers the condition; when the model does not, the column should exist and be null. Recommended columns are encouraged but do not block conformance.</p>
+<p>Feature levels for this analysis were verified against the FOCUS v1.2 Content Constraints tables and cross-checked live against the FOCUS column library on 2026-06-30. The bundled reference matched the live spec (all 57 v1.2 columns confirmed, with <code>ProviderName</code> and <code>PublisherName</code> carrying their v1.3 deprecation and v1.4 removal).</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Status legend: Present (emitted and aligned); Present, deviation to fix (emitted, wrong format or invalid value); Missing: Mandatory (required and absent, blocks conformance); Missing: Recommended (encouraged, absent); Missing: Conditional (required when the model triggers it, absent); N/A: null valid (Conditional or Recommended, does not apply to this model, should exist and be null).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>No (regions only, no zones)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td>Partial (single USD <code>amount</code>, invoice-level credits not reconciled to lines)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Yes (account / team URN)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>Yes (team name)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>Derivable (team / organization)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>Implied (USD, not emitted as a column)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>Yes (invoice period end)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>Yes (invoice period start)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>No (not classified Usage/Purchase/Tax/Credit/Adjustment)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>No (corrections not flagged)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>Yes (<code>description</code> / <code>group_description</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>Derivable (usage-based vs recurring)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>Yes (<code>end_time</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>Yes (<code>start_time</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>Commitments exist (prepay, GPU contracts) but not on usage lines</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>Not on usage lines</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>Not on usage lines</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>Not on usage lines</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>Not on usage lines</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>Not on usage lines</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>Not on usage lines</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Yes (<code>duration</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>Yes (<code>duration_unit</code>, such as hours)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td>Partial (no contracted rate on lines)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>Partial (credits and prepay applied at invoice, not amortized to lines)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>Yes (<code>invoice_id</code> in billing history)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>Derivable (constant: DigitalOcean)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td>Partial (single <code>amount</code>; list rate not separated)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>Derivable (published per-hour rates)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td>Derivable (On-Demand for most)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>Implied (USD)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>Derivable (from <code>duration</code>, flat-rate SKUs)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td>Derivable (from <code>duration_unit</code>)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M (removed v1.4)</td>
+<td>Derivable (constant: DigitalOcean)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M (removed v1.4)</td>
+<td>Derivable (constant: DigitalOcean)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td>Yes (region in Insights; slug on resources)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td>Yes (region)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td>Yes (<code>resource_uuid</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td>Partial (description, not a clean name field)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td>Derivable (<code>product</code> / <code>category</code>)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>Derivable (<code>category</code> such as <code>iaas</code> maps to Compute/Storage/Networking)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td>Yes (<code>product</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>Derivable (product family)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>Partial (Insights <code>SKU</code>)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>Yes (project ID)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>Yes (project name)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>Derivable (project)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td>Partial (Droplet tags exist in platform, not confirmed in billing CSV)</td>
+<td>Missing: Conditional</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tally: of 57 v1.2 columns, 16 are Present, 6 are Present with a deviation to fix, 9 are Missing: Mandatory, 2 are Missing: Recommended, 18 are Missing: Conditional, and 6 are N/A: null valid (16 + 6 + 9 + 2 + 18 + 6 = 57). Of the 21 Mandatory columns, 12 are covered (present or present-with-deviation) and 9 are missing; all 9 missing Mandatory columns are trivial plumbing, derivable from data or constants already present. The substantive cost issue sits inside the deviation bucket, in <code>BilledCost</code> and <code>EffectiveCost</code>.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p><strong>Solved or nearly so.</strong> The temporal and identity backbone is in place: <code>BillingPeriodStart</code>/<code>End</code>, <code>ChargePeriodStart</code>/<code>End</code>, <code>BillingAccountId</code>/<code>Name</code>, <code>ResourceId</code>, <code>ServiceName</code>, <code>ChargeDescription</code>, <code>ConsumedQuantity</code>, <code>ConsumedUnit</code>, <code>RegionId</code>/<code>Name</code>, <code>SubAccountId</code>/<code>Name</code> (projects), and <code>InvoiceId</code>. Day-level granularity is genuinely present through the Insights API and daily invoice preview, which is a real strength.</p>
+<p><strong>Trivial Mandatory adds (plumbing).</strong> All nine missing Mandatory columns are derivable from data already present or from constants:</p>
+<ul>
+<li><code>BillingCurrency</code> and (Conditional) <code>PricingCurrency</code>: constant USD.</li>
+<li><code>InvoiceIssuerName</code>, <code>ProviderName</code>, <code>PublisherName</code>: constant DigitalOcean.</li>
+<li><code>PricingQuantity</code> and <code>PricingUnit</code>: derivable from <code>duration</code> and <code>duration_unit</code> for flat-rate per-second or per-hour SKUs. For any tiered or blended SKU (some bandwidth tiers), <code>PricingQuantity</code> must be computed against the rate basis, not copied from consumption.</li>
+<li><code>ServiceCategory</code>: derivable by mapping <code>product</code>/<code>category</code> (such as <code>iaas</code>) to the FOCUS enum.</li>
+<li><code>ChargeCategory</code> and <code>ChargeClass</code>: classification fields, populated by mapping line types to the FOCUS enums (Usage, Purchase, Tax, Credit, Adjustment) and flagging corrections.</li>
+</ul>
+<p><strong>Substantive gaps (in the deviation bucket).</strong> The cost columns are the real work, and they appear as deviations rather than missing columns because the source does carry a cost figure: it just carries one figure where FOCUS needs four. DigitalOcean emits one <code>amount</code> per line and applies credits, promo codes, prepayment commitments, and taxes at the balance and invoice level. Because those discounts and credits exist but are not attached to usage lines, <code>BilledCost</code> and <code>EffectiveCost</code> cannot be produced by copying <code>amount</code>. They require reconciling invoice-level adjustments back to the lines they relate to. This is the list-cost trap: the single cost figure is closest to a list or gross usage amount, and the billed and effective figures must be derived by allocating credits and commitments down to the row. <code>ListCost</code> and <code>ContractedCost</code> are flagged as deviations because the single <code>amount</code> must be split out into the four-cost model.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<ul>
+<li><strong>Single cost figure:</strong> <code>amount</code> must be decomposed into <code>ListCost</code>, <code>ContractedCost</code>, <code>BilledCost</code>, and <code>EffectiveCost</code>. With no discounts on a line, all four equal <code>amount</code>; where credits, promos, or prepay commitments apply, <code>BilledCost</code> and <code>EffectiveCost</code> diverge and must be reconciled from invoice-level adjustments.</li>
+<li><strong>Currency not emitted:</strong> USD is implied throughout but is not a column. Add <code>BillingCurrency</code> (and <code>PricingCurrency</code>) as a literal ISO 4217 <code>USD</code>.</li>
+<li><strong>No FOCUS column IDs:</strong> every field uses DigitalOcean-native names (<code>product</code>, <code>group_description</code>, <code>resource_uuid</code>, <code>duration</code>). A rename and reshape into PascalCase FOCUS column IDs is required.</li>
+<li><strong>ResourceName:</strong> the source leans on <code>description</code> rather than a dedicated resource name. Populate a clean <code>ResourceName</code> distinct from <code>ChargeDescription</code>.</li>
+<li><strong>SkuId:</strong> the Insights <code>SKU</code> value is present but not aligned to a stable FOCUS <code>SkuId</code>/<code>SkuPriceId</code> pairing; reconcile SKU identity across Insights and invoice lines.</li>
+<li><strong>Tags:</strong> if billing-line tags are added, they must be key-value pairs, not an array of bare strings.</li>
+</ul>
+<p>Done right already: ISO 8601 timestamps with explicit start and end, resource-level identity, project-based allocation, and day-level usage detail.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Baseline the build against <strong>v1.2</strong>, the current certification baseline (&ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;), and design toward <strong>v1.4</strong> (ratified 2026-06-04). Targeting v1.4 means not investing in <code>ProviderName</code>/<code>PublisherName</code>, which v1.4 removes, beyond the v1.2 certification need. The v1.4 Invoice Detail and billing-period datasets align well with DigitalOcean&rsquo;s monthly invoice model and are worth designing for. Validator support for v1.4 is expected later in Q3 2026; v1.3 is supported today.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Membership is required for certification, though contributing to the spec is open and free. To start the RFI, contact <code>member-cert@finops.org</code>. Open-source tooling to use along the way: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST/SHOULD/MAY rules).</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate what exists.</strong> Pull a real invoice CSV plus an Insights extract, map the native fields, and run a representative sample through the FOCUS Validator to establish a concrete baseline. Confirm scope (cloud and GPU Droplets) and target version.</p>
+<p><strong>Phase 1: Close the Mandatory gaps.</strong> Reshape into FOCUS column IDs. Add the trivial constants and derivations (<code>BillingCurrency</code>, <code>InvoiceIssuerName</code>, <code>ProviderName</code>/<code>PublisherName</code>, <code>PricingQuantity</code>/<code>PricingUnit</code>, <code>ServiceCategory</code>, <code>ChargeCategory</code>, <code>ChargeClass</code>). Then do the substantive work: reconcile invoice-level credits, promos, prepayment commitments, and taxes back to usage lines so <code>BilledCost</code> and <code>EffectiveCost</code> are correct per row, and split <code>amount</code> into the four-cost model.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Decompose the single cost figure cleanly across all SKU types (handle tiered bandwidth), separate <code>ResourceName</code> from <code>ChargeDescription</code>, stabilize <code>SkuId</code>/<code>SkuPriceId</code>, and emit <code>Tags</code> as key-value pairs if billing-line tags are added.</p>
+<p><strong>Phase 3: Round out Conditional and Recommended.</strong> Populate <code>BillingAccountType</code>, <code>SubAccountType</code>, <code>ResourceType</code>, <code>PricingCategory</code>, <code>ListUnitPrice</code>, <code>ServiceSubcategory</code>, and <code>ChargeFrequency</code> from existing product and project metadata. Add the commitment-discount family for prepay and GPU committed-use contracts so committed spend is visible on the lines it offsets.</p>
+<p><strong>Phase 4: Mature to v1.4.</strong> Adopt the Invoice Detail and billing-period datasets, drop <code>ProviderName</code>/<code>PublisherName</code>, and pursue certification once the Validator supports v1.4.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<p>Unlocked as soon as the reshape and trivial adds land (Phase 1), because day-level, resource-level, project-level data already exists:</p>
+<ul>
+<li>Analyze costs by service name (by ServiceName / product).</li>
+<li>Analyze service costs by subaccount (by project).</li>
+<li>Analyze cost per compute service for a subaccount (GPU and CPU Droplets per project).</li>
+<li>Analyze service costs by region.</li>
+<li>Identify anomalous daily spending by subaccount, region, and service.</li>
+<li>Analyze tag coverage (once billing-line tags are emitted).</li>
+<li>Report application cost month over month.</li>
+</ul>
+<p>Unlocked once the cost columns are reconciled (Phase 1 substantive work):</p>
+<ul>
+<li>Compare billed cost per subaccount to budget.</li>
+<li>Determine Effective Savings Rate (and by service), once prepay and committed-use savings reach the lines.</li>
+<li>Forecast amortized costs and cashflow month over month.</li>
+</ul>
+<p>Out of scope for DigitalOcean&rsquo;s model:</p>
+<ul>
+<li>Capacity-reservation use cases (no capacity reservations).</li>
+<li>Availability-zone use cases (regions, no zones).</li>
+<li>Some commitment-discount reporting applies only in the narrow prepay and GPU-contract cases, not the broad reserved-instance sense.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Pull a real invoice CSV and an Insights extract, and assemble the native-to-FOCUS field mapping from the column table above.</li>
+<li>Run a representative sample through the FOCUS Validator to convert this manual pass into objective findings.</li>
+<li>Decide v1.2 certification timing versus building straight to v1.4, and confirm the target representation against the FOCUS Requirements Model.</li>
+<li>Scope the cost-reconciliation work: how credits, promo codes, prepayment commitments, and taxes can be allocated from invoice level back to usage lines.</li>
+<li>Confirm whether resource (Droplet) tags can be surfaced on billing lines, and in key-value form.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li><strong>High confidence:</strong> the invoice CSV field set (amount, description, group_description, product, resource_uuid, duration, duration_unit, start_time, end_time, project, category), the Billing API surfaces, USD-only billing, monthly invoicing with daily preview, and day-level Insights. These are documented in DigitalOcean&rsquo;s official docs.</li>
+<li><strong>High confidence:</strong> the FOCUS v1.2 feature levels. The bundled reference was cross-checked live against the FOCUS column library on 2026-06-30 and matched (all 57 columns, deprecations intact). No refresh was needed.</li>
+<li><strong>Medium confidence:</strong> that credits, promo codes, prepayment commitments, and taxes are applied at invoice or balance level and not attached to usage lines. Documentation describes credits and purchase orders at the invoice level and states invoices do not reflect prepayments, which supports treating the cost split as substantive; a real CSV plus invoice would confirm the exact reconciliation needed.</li>
+<li><strong>Medium confidence:</strong> that resource (Droplet) tags are not present on billing lines. Tags exist in the platform; their presence in the billing CSV is unconfirmed and is flagged for verification.</li>
+<li><strong>Provisional:</strong> the precise mapping of DigitalOcean <code>category</code> values (such as <code>iaas</code>) and <code>product</code> names to FOCUS <code>ServiceCategory</code> and <code>ServiceName</code>, pending a real CSV sample.</li>
+<li>This score reflects the data source reviewed, not a formal FOCUS certification result.</li>
+</ul>
+<p>Overall data quality of this analysis: solid on the documented data surfaces, provisional on invoice-level reconciliation specifics.</p>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>DigitalOcean Billing documentation: https://docs.digitalocean.com/platform/billing/</li>
+<li>DigitalOcean Invoices (CSV and project spend CSV): https://docs.digitalocean.com/platform/billing/invoices/</li>
+<li>DigitalOcean Billing API and CLI reference: https://docs.digitalocean.com/platform/billing/reference/</li>
+<li>DigitalOcean API reference (Billing): https://docs.digitalocean.com/reference/api/reference/billing/</li>
+<li>DigitalOcean GPU Droplets pricing: https://www.digitalocean.com/pricing/gpu-droplets</li>
+<li>FOCUS Specification: https://focus.finops.org/focus-specification/</li>
+<li>FOCUS column library: https://focus.finops.org/</li>
+<li>FOCUS Validator, Converter, and Requirements Model: https://focus.finops.org/</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

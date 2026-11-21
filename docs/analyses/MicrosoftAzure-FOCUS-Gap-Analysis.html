@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microsoft Azure and FOCUS: Conformance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/MicrosoftAzure-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="microsoft-azure-and-focus-conformance-gap-and-adoption-roadmap">Microsoft Azure and FOCUS: Conformance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Provider and product in scope:</strong> Microsoft Azure, via Microsoft Cost Management FOCUS exports (Cost Management &ldquo;Exports&rdquo; using the FOCUS template, delivered to Azure Storage).
+<strong>Prepared:</strong> 2026-07-01
+<strong>Source analyzed:</strong> Microsoft Cost Management FOCUS dataset schema, Microsoft&rsquo;s published FOCUS Conformance Summary and full Conformance Report, and the FOCUS get-started page for Microsoft Azure.
+<strong>FOCUS baseline for scoring:</strong> v1.2 (current certification baseline). <strong>Version shipped by the provider:</strong> v1.2 (Microsoft labels the current dataset &ldquo;FOCUS 1.2-preview&rdquo;).</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Microsoft Azure is an official FOCUS data generator listed on focus.finops.org/get-started. It does not have a conformance gap in the usual sense: Cost Management already emits a native FOCUS dataset, selectable as an export template, delivered daily to storage, with up to seven years of history available in FOCUS shape. The question is not whether a FOCUS export exists but which version it targets and how complete that export is.</p>
+<p>The get-started page states Microsoft supports <strong>v1.2</strong> of the specification. Microsoft&rsquo;s own conformance documentation labels the current dataset &ldquo;FOCUS 1.2-preview&rdquo; and self-reports a <strong>94% conformance score</strong> against the FOCUS 1.2 Requirements Model. The dataset carries the FOCUS column IDs directly, uses key-value JSON tags, ISO 8601 exclusive-end dates, the billing currency for all cost columns, and human-readable display names. This is a substantially complete, FOCUS-shaped export today, not a mapping exercise.</p>
+<p>The residual gaps are narrow and mostly conditional. They cluster in three areas: certain cost columns (<code>ListCost</code>, <code>ContractedCost</code> and their unit prices) return 0 for specific record types (EA/MCA Marketplace charges and reservation usage) and require a price-sheet join to populate; five conditional columns across three families are not emitted in the dataset (<code>CapacityReservationId</code>/<code>Status</code>, <code>CommitmentDiscountQuantity</code>/<code>Unit</code>, <code>SkuPriceDetails</code>), plus the Recommended <code>AvailabilityZone</code>, each with a documented workaround; and a set of value/format nuances (<code>ProviderName</code>/<code>ServiceName</code>/<code>ChargeDescription</code> nulls for edge record types, tags not <code>x_</code>-prefixed, <code>ResourceId</code> casing). None of these reflect data that does not exist. They reflect either data that lives in an adjacent dataset (the price sheet) or fields Microsoft has not yet surfaced in the FOCUS export.</p>
+<ul>
+<li><strong>Total FOCUS v1.2 columns:</strong> 57</li>
+<li><strong>Present and conformant (all or most record types):</strong> 42</li>
+<li><strong>Substantive Mandatory gaps:</strong> 0 of 21 (no Mandatory column is entirely absent or unproducible; the Mandatory cost columns are populated, with edge-case zeros on specific record types)</li>
+<li><strong>Deviations and partial-population issues to fix:</strong> 9</li>
+<li><strong>Conditional columns not yet emitted:</strong> 5 (each with a documented workaround); plus 1 Recommended column (<code>AvailabilityZone</code>)</li>
+</ul>
+<p><strong>RAG readiness:</strong> Cost: Strong. Granularity: Strong. Allocation: Strong. Coverage: Strong. FOCUS shape: Strong. <strong>Overall band: Aligned.</strong></p>
+<p><strong>Recommendation:</strong> Treat Azure as a shipping FOCUS v1.2 data generator. For practitioners, adopt the export as-is and apply Microsoft&rsquo;s documented workarounds (price-sheet joins for <code>ListCost</code>/<code>ContractedCost</code> on Marketplace and reservation records; null-handling for <code>PublisherName</code> and <code>ServiceName</code> edge cases). For Microsoft, the path forward is closing the 6% residual: surfacing the three not-yet-emitted conditional column families in the export, populating the cost columns for all record types without a price-sheet join, and advancing from &ldquo;1.2-preview&rdquo; to a GA v1.2 dataset, then tracking v1.3/v1.4.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<p>FOCUS (the FinOps Open Cost and Usage Specification) defines a common billing schema so cost and usage data is comparable across providers. Each column carries a feature level (Mandatory, Conditional, Recommended, Optional) that governs whether a conformant dataset must include and populate it. Conformance is judged column by column. For a provider that already ships a FOCUS export, the analysis measures how completely each column is populated and whether values and formats are valid, rather than whether a mapping exists.</p>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Microsoft Cost Management exposes FOCUS as a first-class export.</p>
+<ul>
+<li><strong>Delivery:</strong> Cost Management &ldquo;Exports&rdquo; using the FOCUS dataset template, written to an Azure Storage account. Exports run on a schedule (daily) and support one-time historical backfills.</li>
+<li><strong>Granularity:</strong> daily charge-period records, well below monthly aggregation. <code>ChargePeriodStart</code>/<code>ChargePeriodEnd</code> are ISO 8601 with exclusive end dates.</li>
+<li><strong>History:</strong> up to seven years of data available in FOCUS format via exports.</li>
+<li><strong>Cost model:</strong> FOCUS combines actual (billed) and amortized (effective) cost into a single dataset, which Microsoft notes yields roughly 49% fewer rows than maintaining separate actual and amortized datasets.</li>
+<li><strong>Account model:</strong> supports Enterprise Agreement (EA) and Microsoft Customer Agreement (MCA). <code>BillingAccountId</code>/<code>Name</code> map to the billing profile for MCA; <code>SubAccountId</code>/<code>Name</code> map to the subscription. Some columns behave differently across EA and MCA (noted below).</li>
+<li><strong>Extensions:</strong> Microsoft carries all native-schema detail not in FOCUS as <code>x_</code>-prefixed extended columns (for example <code>x_SkuDetails</code>, <code>x_SkuMeterCategory</code>), which is the FOCUS-sanctioned mechanism.</li>
+<li><strong>Key limitations:</strong> several cost columns return 0 for specific record types and need a price-sheet join; three conditional column families are not yet emitted in the export; <code>InvoiceId</code> is not populated for EA accounts.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>Feature levels for this analysis were taken from the verified reference table (FOCUS v1.2, 57 columns) and validated against the live FOCUS specification via the FOCUS MCP on 2026-07-01: the v1.2 column set returns 57 columns, <code>Provider</code>/<code>Publisher</code> show as deprecated in v1.3 (still present and Mandatory in v1.2), and the v1.2 additions (<code>BillingAccountType</code>, <code>SubAccountType</code>, <code>InvoiceId</code>, the pricing-currency columns) are present. The bundled cache was current; no refresh was required.</p>
+<p>v1.2 feature-level distribution: 21 Mandatory, 32 Conditional, 4 Recommended (<code>AvailabilityZone</code>, <code>ChargeFrequency</code>, <code>InvoiceId</code>, <code>ServiceSubcategory</code>), 0 Optional.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Feature levels verified against the FOCUS v1.2 specification. Status reflects population in Microsoft&rsquo;s current FOCUS 1.2-preview dataset per Microsoft&rsquo;s schema and conformance documentation.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Not emitted (join resource details)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Yes (billing profile for MCA)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Yes (exclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>Not emitted (copy from x_SkuDetails)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>Not emitted (derive)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Yes (null for some edge records)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Yes (exclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Not emitted (derive)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>Not emitted (derive)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Yes (0 for Marketplace, some reservation usage)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Yes (0 for Marketplace, some reservation usage)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Yes for MCA, not for EA</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Yes (0 for Marketplace, reservation usage)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Yes (0 for Marketplace, reservation usage)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory</td>
+<td>Yes (null for reservation/savings-plan-unused)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Yes (cleansed to ARM)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Yes (lowercased)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Yes (casing may vary)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Yes (custom mapping, incomplete)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Yes (empty for some edge records)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Yes (null when no price-sheet match)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not emitted (use x_SkuDetails)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Yes (null when no price-sheet match)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Yes (subscription)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Yes (JSON key-value; not x_-prefixed)</td>
+<td>Present</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Reading the tally:</strong> 42 of 57 columns are present and broadly conformant. 9 are present with a deviation or partial-population issue to fix. 5 conditional columns are not currently emitted in the export (each with a documented workaround). 1 Recommended column (<code>AvailabilityZone</code>) is not emitted. Zero Mandatory columns are entirely absent. The counts total 57.</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What is solved, and what remains</h3>
+<p><strong>Solved (the bulk of the schema):</strong> every Mandatory column is present and populated for the common case, including the four cost columns (<code>BilledCost</code>, <code>EffectiveCost</code>, <code>ListCost</code>, <code>ContractedCost</code>), the date/period columns, account and sub-account identity, service classification, pricing quantity/unit, and provider/publisher/invoice-issuer identity. The dataset combines billed and effective cost in one row, carries the full commitment-discount family for applied discounts, and includes the v1.2 pricing-currency columns. Tags are emitted as JSON key-value pairs. This is a mature FOCUS export.</p>
+<p><strong>Remaining, and none of it is a &ldquo;data does not exist&rdquo; gap:</strong></p>
+<ul>
+<li><strong>Cost columns zeroed on specific record types (partial-population, not absence):</strong> <code>ListCost</code>/<code>ListUnitPrice</code> and <code>ContractedCost</code>/<code>ContractedUnitPrice</code> return 0 for EA/MCA Marketplace charges and certain reservation usage. The data exists in the price sheet; Microsoft&rsquo;s documented workaround is a price-sheet join. This is the single most material item, but it is scoped to specific record types, not the whole dataset, and the values are reconcilable rather than missing.</li>
+<li><strong>Conditional columns not yet emitted (plumbing, with workarounds):</strong> <code>CapacityReservationId</code>/<code>Status</code>, <code>CommitmentDiscountQuantity</code>/<code>Unit</code>, and <code>SkuPriceDetails</code> are not in the FOCUS 1.2-preview export. Each has a documented derivation from <code>x_SkuDetails</code> or existing quantities. <code>AvailabilityZone</code> (Recommended) is not emitted and can be joined from resource details.</li>
+<li><strong>Edge-case nulls on Mandatory columns:</strong> <code>ServiceName</code> is empty for a handful of record types (EA Marketplace purchases, MCA reservation/savings-plan purchases, rounding adjustments, MACC shortfall, Azure credits); <code>ChargeDescription</code> is null for savings-plan-unused and non-SKU charges; <code>PublisherName</code> is null for reservation/savings-plan-unused records. All have documented substitute values.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<ul>
+<li><strong>Cost zeros on Marketplace and reservation records:</strong> populate <code>ListCost</code>, <code>ListUnitPrice</code>, <code>ContractedCost</code>, <code>ContractedUnitPrice</code> for all record types so no price-sheet join is required.</li>
+<li><strong><code>PublisherName</code> nulls:</strong> default to &ldquo;Microsoft&rdquo; for reservation, reservation purchase, and savings-plan-unused records.</li>
+<li><strong><code>ServiceName</code> empties:</strong> fill from <code>PublisherName</code> or <code>x_SkuMeterSubcategory</code> for the affected record types.</li>
+<li><strong><code>ChargeDescription</code> nulls:</strong> provide a computed description for savings-plan-unused and non-SKU charges.</li>
+<li><strong><code>InvoiceId</code> on EA:</strong> not populated for Enterprise Agreement accounts (Recommended column; present for MCA).</li>
+<li><strong><code>ResourceName</code> casing:</strong> may not match original case; lowercase for consistent grouping.</li>
+<li><strong>Tags not <code>x_</code>-prefixed:</strong> provider-specified tags are emitted without the <code>x_</code> prefix that FOCUS expects for provider-defined tag keys.</li>
+<li><strong><code>SkuPriceId</code> non-uniqueness:</strong> does not always identify a single price and has no direct price-sheet equivalent; documented join keys are provided.</li>
+</ul>
+<p><strong>Already done right:</strong> FOCUS column IDs used natively, JSON key-value tags, ISO 8601 exclusive-end dates, billing currency for all costs, ARM-consistent region names, <code>x_</code>-prefixed extension columns, actual and amortized cost combined in a single dataset.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Microsoft ships v1.2 today (labeled &ldquo;1.2-preview&rdquo;). The current certification baseline is v1.2, so the shipped version matches the baseline. The build target for maturation is v1.3 (ratified 2025-12-05, which deprecates <code>Provider</code>/<code>Publisher</code> and adds the Contract Commitment dataset and split-cost allocation) and v1.4 (ratified 2026-06-04, which removes <code>Provider</code>/<code>Publisher</code> and adds Invoice Detail and billing-period datasets). Microsoft should first move the v1.2 dataset from preview to GA, then track v1.3/v1.4.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The current badge is &ldquo;FinOps Certified FOCUS v1.2 Conformant.&rdquo; The get-started page lists Microsoft Azure as a data generator and links to Microsoft&rsquo;s own conformance summary and full report; it does not, on that page, assert a formal FinOps certification designation, so none is claimed here. The deliverables for the program are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report. Microsoft already publishes the mapping-equivalent (the FOCUS dataset schema and convert/mapping guides) and its own Conformance Summary and full Conformance Report, which is exactly the seed artifact the program expects. Contact for the RFI is member-cert@finops.org; membership is required for certification, though contributing to the spec is open and free. Tooling: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter, and the machine-readable FOCUS Requirements Model.</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate what exists.</strong> Run a representative export (spanning EA and MCA, usage plus reservation plus savings-plan plus Marketplace records) through the FOCUS Validator against the v1.2 Requirements Model to confirm Microsoft&rsquo;s self-reported 94% and catch anything the manual pass missed.</p>
+<p><strong>Phase 1: Close the cost-column zeros.</strong> Populate <code>ListCost</code>/<code>ListUnitPrice</code> and <code>ContractedCost</code>/<code>ContractedUnitPrice</code> directly in the FOCUS export for Marketplace and reservation records so consumers do not need a price-sheet join. This is the highest-value residual item.</p>
+<p><strong>Phase 2: Emit the not-yet-included conditional columns.</strong> Add <code>CapacityReservationId</code>/<code>Status</code>, <code>CommitmentDiscountQuantity</code>/<code>Unit</code>, and <code>SkuPriceDetails</code> to the export, sourced from the same <code>x_SkuDetails</code> data the documented workarounds already use.</p>
+<p><strong>Phase 3: Fix value and format deviations.</strong> Backfill <code>PublisherName</code>, <code>ServiceName</code>, and <code>ChargeDescription</code> for the edge record types; add <code>x_</code> prefixing to provider tags; populate <code>InvoiceId</code> for EA where feasible; normalize <code>ResourceName</code> casing.</p>
+<p><strong>Phase 4: Mature the version and certify.</strong> Move v1.2 from preview to GA, submit for the FinOps Certified FOCUS v1.2 Conformant program, then track v1.3 (drop <code>Provider</code>/<code>Publisher</code>, add Contract Commitment and split allocation) and v1.4.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<p>Because Azure already emits day-level, resource- and tag-attributed FOCUS data with the full cost family, most FOCUS Use Cases work today: cost allocation by tag, subscription, and service; anomaly detection; commitment-discount utilization and coverage (via the commitment family and <code>CommitmentDiscountStatus</code>); effective-vs-billed reconciliation; and multi-currency reporting (via the pricing-currency columns). Use cases needing the not-yet-emitted columns wait on Phase 2: capacity-reservation utilization (needs <code>CapacityReservationId</code>/<code>Status</code>) and commitment-discount normalized-quantity analysis (needs <code>CommitmentDiscountQuantity</code>/<code>Unit</code>). List-price savings analysis on Marketplace and reservation records is fully clean only after Phase 1.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Adopt the export as-is: create a Cost Management export using the FOCUS template to Azure Storage; it is a shipping v1.2 dataset.</li>
+<li>Apply Microsoft&rsquo;s documented workarounds for the known gaps (price-sheet joins for zeroed cost columns; null substitutions for <code>PublisherName</code>/<code>ServiceName</code>/<code>ChargeDescription</code>).</li>
+<li>Run a representative sample through the FOCUS Validator to confirm the 94% conformance figure in your own tenant.</li>
+<li>For Microsoft: prioritize populating the cost columns for all record types and emitting the three not-yet-included conditional column families, then move v1.2 from preview to GA.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li><strong>Version shipped (v1.2):</strong> high confidence. The get-started page states &ldquo;Version Supported: v1.2&rdquo; and Microsoft&rsquo;s conformance documentation is written against the FOCUS 1.2 specification.</li>
+<li><strong>&ldquo;1.2-preview&rdquo; label and 94% self-reported conformance:</strong> high confidence, quoted directly from Microsoft&rsquo;s FOCUS Conformance Summary (last updated 2026-02-11).</li>
+<li><strong>Column-by-column population statuses:</strong> high confidence for the columns named in Microsoft&rsquo;s conformance summary; medium confidence for columns marked simply &ldquo;Present,&rdquo; which are inferred from the FOCUS dataset schema and the What-is-FOCUS overview rather than a row-level validation run.</li>
+<li><strong>Feature levels:</strong> high confidence. Verified against the live FOCUS v1.2 column set via the FOCUS MCP on 2026-07-01; bundled cache (stamp 2026-06-23) was current, no refresh required.</li>
+<li><strong>No formal certification asserted:</strong> the get-started page does not state a FinOps Certified FOCUS designation for Azure, so none is claimed. The &ldquo;Conformant&rdquo; readiness band reflects the shipping FOCUS export reviewed, not a formal certification result.</li>
+<li><strong>Overall verdict (Conformant band):</strong> high confidence that Azure ships a substantially complete FOCUS v1.2 export today; the residual gaps are narrow, mostly conditional, and each is documented with a workaround.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>FOCUS get-started page for Microsoft Azure: https://focus.finops.org/get-started/microsoft/</li>
+<li>Microsoft, &ldquo;What is FOCUS?&rdquo; overview: https://learn.microsoft.com/en-us/cloud-computing/finops/focus/what-is-focus</li>
+<li>Microsoft FOCUS Conformance Summary (94% score, 1.2-preview): https://learn.microsoft.com/en-us/cloud-computing/finops/focus/conformance-summary</li>
+<li>Microsoft FOCUS full Conformance Report: https://learn.microsoft.com/en-us/cloud-computing/finops/focus/conformance-full-report</li>
+<li>Microsoft Cost Management FOCUS dataset schema: https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-focus</li>
+<li>Cost Management exports tutorial (FOCUS template): https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-improved-exports</li>
+<li>FOCUS Specification (column set and feature levels, v1.2): https://focus.finops.org/focus-specification/v1-2/</li>
+<li>FOCUS Column Library via FOCUS MCP (verified 2026-07-01)</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

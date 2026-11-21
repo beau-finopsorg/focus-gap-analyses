@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huawei Cloud and FOCUS: Conformance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/HuaweiCloud-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="huawei-cloud-and-focus-conformance-gap-and-adoption-roadmap">Huawei Cloud and FOCUS: Conformance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Provider in scope:</strong> Huawei Cloud (Cost Center &ldquo;Cost details (FOCUS 1.0)&rdquo; export to OBS)
+<strong>Prepared:</strong> July 1, 2026
+<strong>Source analyzed:</strong> Huawei Cloud Cost Center User Guide, &ldquo;FOCUS 1.0 Field Description&rdquo; (updated 2026-05-22), the companion &ldquo;Export to OBS&rdquo; and &ldquo;Creating an OBS Export Task&rdquo; pages, plus the FOCUS get-started listing for Huawei Cloud.
+<strong>FOCUS baseline for scoring:</strong> v1.2 (the current certification baseline). <strong>Version shipped by the provider:</strong> v1.0.</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Huawei Cloud ships a real FOCUS export today. Its Cost Center produces a &ldquo;Cost details (FOCUS 1.0)&rdquo; dataset, delivered to an Object Storage Service (OBS) bucket through a scheduled export task, with FOCUS column IDs and the core cost columns already mapped from Huawei&rsquo;s native cost detail fields. The get-started page lists the supported version as v1.0, and Huawei publishes a full field-mapping dictionary showing how each FOCUS field is populated.</p>
+<p>The gap is therefore about version and completeness, not existence. Measured against the v1.2 certification baseline, two things stand out. First, the export targets v1.0, so the columns added in v1.1 and v1.2 (ServiceSubcategory, the capacity-reservation family, SkuMeter, SkuPriceDetails, CommitmentDiscountQuantity/Unit, BillingAccountType, SubAccountType, InvoiceId, and the pricing-currency family) are out of scope for the current build. Second, within the v1.0 columns it does emit, Huawei&rsquo;s own documentation shows a set of columns that are left empty for every line item: ChargeClass, ChargeDescription (placeholder &ldquo;No description&rdquo;), ContractedUnitPrice, InvoiceIssuerName, ListUnitPrice, PricingCategory, PricingQuantity, PricingUnit, PublisherName, and SkuPriceId.</p>
+<p>The strongest finding is the cost picture. All four cost columns map to real native fields: BilledCost (Original Cost), ListCost (List Price), EffectiveCost (Current Month Amortized), and ContractedCost (Original Cost). EffectiveCost drawing from an amortized field is the harder half of the cost model, and Huawei populates it. The most consequential gaps are the two Mandatory columns emitted empty: InvoiceIssuerName (Mandatory, non-nullable in v1.2) and PricingQuantity / PricingUnit (Mandatory in v1.2). PricingQuantity and PricingUnit are derivable from the ConsumedQuantity and ConsumedUnit that Huawei already emits, so they are plumbing rather than a data gap; InvoiceIssuerName is a constant the provider can populate. The one clear format deviation is Tags, emitted as a concatenated string (&ldquo;Department:pc;Env:beta&rdquo;) rather than as key-value pairs.</p>
+<p><strong>Stat strip:</strong> 57 FOCUS columns (v1.2 baseline); 27 present and conformant; 1 of 5 Mandatory gaps is substantive; 2 deviations to fix.</p>
+<p><strong>Recommendation:</strong> Treat this as a solid v1.0 export that is strong on cost coverage and attribution but leaves several emitted columns empty and sits one baseline behind the certification target. Prioritize populating InvoiceIssuerName and PublisherName (constants), derive PricingQuantity/PricingUnit from consumed quantity, populate ChargeDescription, reshape Tags to key-value, then move the build target from v1.0 to v1.2.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Huawei Cloud exposes FOCUS data through the Cost Center console under Cost Insights &gt; Cost Details Export &gt; Export to OBS. A user creates an export task, sets Content Type to &ldquo;Cost details (FOCUS 1.0),&rdquo; and points the task at an OBS bucket. The export is a mapping layer over Huawei&rsquo;s native cost detail fields (Original Cost, List Price, Current Month Amortized, Bill Type, Billing Mode, Service Type, Resource ID, and so on), each converted to a FOCUS column per a published conversion table.</p>
+<p>Characteristics relevant to conformance:</p>
+<ul>
+<li>Granularity: the export carries charge-period columns (ChargePeriodStart, ChargePeriodEnd) drawn from native Start Time and End Time fields, so line items resolve to daily (24-hour) blocks below the monthly billing period. Amortized costs for yearly/monthly subscriptions are attributed to the amortization day. This supports charge-level and daily analysis.</li>
+<li>Timestamps: native GMT+08:00 values are converted to UTC with a trailing <code>Z</code> (for example, native <code>2025-03-20 00:00:00 GMT+08:00</code> becomes <code>2025-03-19T16:00:00Z</code>). This is correct FOCUS behavior, so no timestamp deviation applies.</li>
+<li>Currency: BillingCurrency defaults to USD.</li>
+<li>Attribution: the export carries SubAccountId/SubAccountName (from Linked Account) for consolidated-billing sub-accounts, and Huawei&rsquo;s enterprise-project construct is surfaced through the custom columns x_EnterpriseId and x_EnterpriseName. Cost categories are surfaced through x_CostUnit, and split-billing items through x_SplitItem.</li>
+<li>Custom columns: Huawei appends provider columns with an <code>x_</code> prefix (x_CostUnit, x_EnterpriseId, x_EnterpriseName, x_SplitItem), which is the correct FOCUS convention for custom columns.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory (must be present and populated per its rules), Conditional (required when the provider&rsquo;s business model triggers the condition), Recommended (encouraged), or Optional. Conformance is judged column by column against the Requirements Model, which encodes the MUST, SHOULD, and MAY rules. A dataset conforms to a version when every Mandatory column is present and correctly populated and every applicable Conditional column is present.</p>
+<p>Feature levels in this report are taken from the verified v1.2 reference and were spot-checked against the live FOCUS specification. v1.2 defines 57 columns: 21 Mandatory, 32 Conditional, and 4 Recommended (AvailabilityZone, ChargeFrequency, InvoiceId, ServiceSubcategory).</p>
+<p>Because Huawei ships a v1.0 export, some v1.2 Mandatory and Conditional columns did not exist in the version it built to. Those are marked as version-scope gaps in the table below, distinct from columns Huawei emits but leaves empty.</p>
+<h3 id="13-column-by-column-status-v12-baseline">1.3 Column-by-column status (v1.2 baseline)</h3>
+<p>Status legend: Present (emitted and aligned); Present, deviation (emitted, wrong format or value); Missing: Mandatory (required, absent or empty); Missing: Recommended; Missing: Conditional (applies but absent); N/A: null valid (Conditional/Recommended that does not apply, should exist and be null).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.1</td>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>Yes (from AZ)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>BilledCost</td>
+<td>M</td>
+<td>Yes (Original Cost)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Yes (derived from PayerAccount)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>Yes (PayerAccount Name)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.6</td>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>Yes (default USD)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.7</td>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>Yes (from Month, UTC)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.8</td>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>Yes (from Month, UTC)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.9</td>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>3.10</td>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>3.11</td>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>Yes (from Bill Type)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.12</td>
+<td>ChargeClass</td>
+<td>M</td>
+<td>Emitted empty (nullable)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.13</td>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>Emitted with placeholder &ldquo;No description&rdquo;</td>
+<td>Present, deviation</td>
+</tr>
+<tr>
+<td>3.14</td>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>Yes (from Billing Mode)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.15</td>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>Yes (End Time, UTC)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.16</td>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>Yes (Start Time, UTC)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.17</td>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>Yes (from Billing Mode)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.18</td>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>Yes (RI/SP/package ID)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.19</td>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>Yes (RI/SP/package name)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.20</td>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.21</td>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>Yes (Used/Unused from Bill Type)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.22</td>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>Yes (from Billing Mode)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.23</td>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.24</td>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Yes (Usage)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.25</td>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>Yes (Usage Unit)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.26</td>
+<td>ContractedCost</td>
+<td>M</td>
+<td>Yes (Original Cost)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.27</td>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>Emitted empty</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.28</td>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>Yes (Current Month Amortized)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.29</td>
+<td>InvoiceId</td>
+<td>R</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>3.30</td>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>Emitted empty</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>3.31</td>
+<td>ListCost</td>
+<td>M</td>
+<td>Yes (List Price)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.32</td>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>Emitted empty</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.33</td>
+<td>PricingCategory</td>
+<td>C</td>
+<td>Emitted empty</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.34</td>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.35</td>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.36</td>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.37</td>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.38</td>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>Emitted empty</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>3.39</td>
+<td>PricingUnit</td>
+<td>M</td>
+<td>Emitted empty</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>3.40</td>
+<td>ProviderName</td>
+<td>M</td>
+<td>Yes (&ldquo;Huawei Cloud&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.41</td>
+<td>PublisherName</td>
+<td>M</td>
+<td>Emitted empty</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>3.42</td>
+<td>RegionId</td>
+<td>C</td>
+<td>Yes (Region Code)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.43</td>
+<td>RegionName</td>
+<td>C</td>
+<td>Yes (Region)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.44</td>
+<td>ResourceId</td>
+<td>C</td>
+<td>Yes (Resource ID)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.45</td>
+<td>ResourceName</td>
+<td>C</td>
+<td>Yes (Resource Name)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.46</td>
+<td>ResourceType</td>
+<td>C</td>
+<td>Yes (Resource Type)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.47</td>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>Yes (from Service Type)</td>
+<td>Present, deviation</td>
+</tr>
+<tr>
+<td>3.48</td>
+<td>ServiceName</td>
+<td>M</td>
+<td>Yes (Service Type)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.49</td>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>No (added in v1.1)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>3.50</td>
+<td>SkuId</td>
+<td>C</td>
+<td>Yes (Specification Code)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.51</td>
+<td>SkuMeter</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.52</td>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>No (added in v1.1)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.53</td>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>Emitted empty</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.54</td>
+<td>SubAccountId</td>
+<td>C</td>
+<td>Yes (from Linked Account)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.55</td>
+<td>SubAccountName</td>
+<td>C</td>
+<td>Yes (Linked Account)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>3.56</td>
+<td>SubAccountType</td>
+<td>C</td>
+<td>No (added in v1.2)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.57</td>
+<td>Tags</td>
+<td>C</td>
+<td>Yes, but concatenated string</td>
+<td>Present, deviation</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Reading the tally:</strong> 27 columns Present and conformant. Five Mandatory columns fall short of the v1.2 rules. Four are emitted empty (InvoiceIssuerName, PricingQuantity, PricingUnit, PublisherName), and one carries a placeholder value (ChargeDescription = &ldquo;No description,&rdquo; counted as a deviation rather than a hard Mandatory gap). Of these, only InvoiceIssuerName plus PricingQuantity/PricingUnit are absent Mandatory data, and of those, PricingQuantity/PricingUnit are derivable from consumed quantity, so just one Mandatory gap (InvoiceIssuerName, a constant) is genuinely absent and non-derivable. The Conditional gaps split into columns Huawei emits but leaves empty (ContractedUnitPrice, ListUnitPrice, PricingCategory, SkuPriceId) and columns that did not exist in v1.0 (CommitmentDiscountQuantity/Unit, SkuMeter, SkuPriceDetails, the pricing-currency family, BillingAccountType, SubAccountType). Two Conditional columns are correctly N/A (the capacity-reservation family, which Huawei&rsquo;s model does not surface and which postdates v1.0).</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What is solved, and what remains</h3>
+<p><strong>Solved (the hard parts):</strong></p>
+<ul>
+<li>All four cost columns map to real native fields: BilledCost (Original Cost), ListCost (List Price), EffectiveCost (Current Month Amortized), and ContractedCost (Original Cost). Populating EffectiveCost from an amortized field is the difficult half of the cost model, and Huawei does it.</li>
+<li>Account and attribution identity is in place: BillingAccountId/Name, SubAccountId/Name (linked accounts), ResourceId/Name/Type, RegionId/Name, and AvailabilityZone. Enterprise projects and cost categories are surfaced through <code>x_</code> custom columns. This is a strong allocation foundation.</li>
+<li>The commitment-discount family is populated (Category, Id, Name, Status, Type) from Huawei&rsquo;s RI, savings-plan, and resource-package model, including Used/Unused status. That is more commitment coverage than many v1.0 exports carry.</li>
+<li>Service classification (ServiceCategory, ServiceName), charge classification (ChargeCategory, ChargeFrequency), consumed quantity/unit, and SkuId are present.</li>
+<li>Timestamps are correctly converted to UTC, and custom columns use the <code>x_</code> prefix.</li>
+</ul>
+<p><strong>Substantive gaps (real data not currently in the export):</strong></p>
+<ul>
+<li>InvoiceIssuerName (Mandatory, non-nullable): emitted empty. This is the one genuinely absent Mandatory value that is not derivable from another column, though it is a constant (the Huawei Cloud selling entity) rather than per-line data.</li>
+</ul>
+<p><strong>Trivial or version-scope gaps (plumbing, not a data problem):</strong></p>
+<ul>
+<li>PricingQuantity and PricingUnit (Mandatory): emitted empty, but derivable from ConsumedQuantity and ConsumedUnit for flat-rate usage. For tiered or blended pricing, PricingQuantity must be computed against the rate basis rather than copied from consumption, so those SKUs need proper computation rather than a straight copy.</li>
+<li>PublisherName (Mandatory): emitted empty, populated with a constant (for first-party Huawei services, the same value as ProviderName; for Marketplace items, the seller).</li>
+<li>ChargeDescription (Mandatory): a static placeholder &ldquo;No description&rdquo; today. Huawei can populate it from existing service and specification text.</li>
+<li>ContractedUnitPrice, ListUnitPrice, PricingCategory, SkuPriceId (Conditional): emitted empty; derivable from Huawei&rsquo;s existing price and specification data.</li>
+<li>The v1.1 and v1.2 columns absent from this v1.0 build (ServiceSubcategory, capacity-reservation family, SkuMeter, SkuPriceDetails, CommitmentDiscountQuantity/Unit, BillingAccountType, SubAccountType, InvoiceId, pricing-currency family) are version-scope, addressed by moving the build target to v1.2.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<ul>
+<li>Tags format: Huawei emits Tags as a single concatenated string (&ldquo;Department:pc;Env:beta&rdquo;) combining cost tags and resource tags. FOCUS represents Tags as key-value pairs (a JSON object), not a delimited string. This is the primary format deviation.</li>
+<li>ChargeDescription value: a constant placeholder &ldquo;No description&rdquo; is emitted for all rows. The column is present but does not carry a meaningful description, so it should be populated from Huawei&rsquo;s service and specification text.</li>
+<li>ServiceCategory values: the conversion maps Huawei&rsquo;s Service Type to FOCUS categories, but the documentation&rsquo;s example maps ECS to &ldquo;Computing.&rdquo; The FOCUS v1.2 allowed value is &ldquo;Compute.&rdquo; The mapping should be validated against the FOCUS ServiceCategory enum so emitted values are valid members.</li>
+</ul>
+<p>Done right already: timestamps are converted to UTC with a <code>Z</code> suffix, custom columns use the <code>x_</code> prefix, currency uses a standard code (USD), and the commitment-discount enums (Used/Unused, Spend/Usage) follow FOCUS values.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Huawei ships v1.0 today. The certification baseline is v1.2, and the latest ratified version is v1.4. The pragmatic path is to close the v1.0 population and deviation gaps first (they apply regardless of version), then advance the build target to v1.2 to align with the certification baseline, picking up the v1.1 and v1.2 columns along the way. Designing toward v1.2 now avoids reworking the schema twice.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The current program is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;; the RFI contact is member-cert@finops.org. Membership is required for certification, though contributing to the spec is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is a seed for that). Open tooling supports the work: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the machine-readable FOCUS Requirements Model. The get-started listing describes Huawei Cloud as a Supported provider at v1.0; it does not assert a formal FinOps Certified FOCUS Conformant designation.</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate what exists.</strong> Run a sample export through the FOCUS Validator against v1.0 to establish a baseline, and confirm which columns are empty-for-all versus conditionally empty. Confirm scope with stakeholders.</p>
+<p><strong>Phase 1: Close the Mandatory data gaps.</strong> Populate InvoiceIssuerName and PublisherName (constants). Derive PricingQuantity and PricingUnit from ConsumedQuantity/ConsumedUnit for flat-rate SKUs, and compute them against the rate basis for tiered/blended SKUs. Populate ChargeDescription from existing service and specification text. This clears the Mandatory column set for v1.0.</p>
+<p><strong>Phase 2: Fix the deviations.</strong> Reshape Tags from the concatenated string into FOCUS key-value pairs. Validate the ServiceCategory mapping against the FOCUS enum (for example, &ldquo;Compute&rdquo; not &ldquo;Computing&rdquo;).</p>
+<p><strong>Phase 3: Round out Conditional columns within v1.0 scope.</strong> Populate ContractedUnitPrice, ListUnitPrice, PricingCategory, and SkuPriceId from Huawei&rsquo;s existing price and specification data.</p>
+<p><strong>Phase 4: Advance the build target to v1.2 and certify.</strong> Add the v1.1 and v1.2 columns (ServiceSubcategory, capacity-reservation family where applicable, SkuMeter, SkuPriceDetails, CommitmentDiscountQuantity/Unit, BillingAccountType, SubAccountType, InvoiceId, pricing-currency family), re-validate against v1.2, and pursue the FinOps Certified FOCUS v1.2 Conformant program.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<ul>
+<li>Available now (resource-, region-, sub-account-, and charge-period data plus all four cost columns and populated commitment discounts exist): cost allocation by sub-account and enterprise project, service and region spend breakdowns, effective-cost and amortized-cost trending, commitment-discount coverage and utilization reporting, and cross-provider normalization for multi-cloud reporting.</li>
+<li>Unlocked by Phase 1: pricing-rate and unit-economics analysis (needs PricingQuantity/PricingUnit) and invoice-issuer attribution.</li>
+<li>Unlocked by Phase 2: tag-based allocation at scale (needs key-value Tags) and reliable service-category rollups (needs valid enum values).</li>
+<li>Out of scope until Phase 4 or by model: capacity-reservation reporting and SKU Meter / SKU Price Details analysis (not in the v1.0 build). Pricing-currency reporting depends on the v1.2 pricing-currency family.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Run a current sample export through the FOCUS Validator (v1.0) to confirm the empty-for-all column set and establish a measured baseline.</li>
+<li>Populate the Mandatory constants (InvoiceIssuerName, PublisherName) and derive PricingQuantity/PricingUnit from consumed quantity.</li>
+<li>Reshape Tags into FOCUS key-value pairs and validate the ServiceCategory mapping against the FOCUS enum.</li>
+<li>Populate ChargeDescription from existing service/specification text.</li>
+<li>Decide the target version (recommend v1.2) and map the v1.1/v1.2 additions to Huawei&rsquo;s native billing model, then engage member-cert@finops.org on the v1.2 conformance RFI.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>Version shipped (v1.0) and Supported status: high confidence. The get-started page lists v1.0, and Huawei&rsquo;s own documentation titles the feature &ldquo;FOCUS 1.0 Field Description&rdquo; and &ldquo;Cost details (FOCUS 1.0).&rdquo;</li>
+<li>Delivery mechanism (OBS export task from Cost Center) and daily charge-period granularity: high confidence, taken directly from Huawei&rsquo;s export guide.</li>
+<li>The empty-for-all set (ChargeClass, ChargeDescription placeholder, ContractedUnitPrice, InvoiceIssuerName, ListUnitPrice, PricingCategory, PricingQuantity, PricingUnit, PublisherName, SkuPriceId): high confidence, taken directly from Huawei&rsquo;s published field-conversion table, which states each is &ldquo;Displayed as empty&rdquo; or a fixed placeholder.</li>
+<li>The Tags concatenated-string deviation and the ServiceCategory &ldquo;Computing&rdquo; example: high confidence, quoted from the field table.</li>
+<li>Present classifications for populated columns (cost columns, attribution identity, commitment-discount family): solid confidence, based on the documented conversion logic rather than an inspected sample file. A Validator run on a live sample is the objective arbiter.</li>
+<li>Feature levels: verified against the bundled v1.2 reference (stamp 2026-06-23) and spot-checked against the live spec on this date. No cache refresh required.</li>
+<li>Substantive-versus-trivial calls and the RAG score reflect the documented data source, not a Validator run on a live sample.</li>
+<li>Overall data quality for this analysis: solid. Huawei publishes a complete field-by-field conversion dictionary, which is unusually clear source material.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>FOCUS get-started listing, Huawei Cloud: https://focus.finops.org/get-started/</li>
+<li>Huawei Cloud Cost Center, &ldquo;FOCUS 1.0 Field Description&rdquo;: https://support.huaweicloud.com/intl/en-us/usermanual-cost/costcenter_000002_03_07.html</li>
+<li>Huawei Cloud Cost Center, &ldquo;Export to OBS&rdquo;: https://support.huaweicloud.com/intl/en-us/usermanual-cost/costcenter_000002_0302.html</li>
+<li>Huawei Cloud Cost Center, &ldquo;Creating an OBS Export Task&rdquo;: https://support.huaweicloud.com/intl/en-us/usermanual-cost/costcenter_000002_03_04.html</li>
+<li>FOCUS Specification: https://focus.finops.org/focus-specification/</li>
+<li>FinOps Certified FOCUS Conformant program: https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

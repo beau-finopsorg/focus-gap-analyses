@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akamai &amp; FOCUS: Data Generator Gap Analysis (Linode) | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Linode-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="akamai-focus-data-generator-gap-analysis-linode">Akamai &amp; FOCUS: Data Generator Gap Analysis (Linode)</h1>
+<p><em>Analysis run: September 24, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Akamai Technologies (Linode)<br>
+<strong>Prepared:</strong> September 24, 2026 (Rev. 3)<br>
+<strong>Source:</strong> Akamai Billing API v1, <code>Get daily compute usage</code> (documentation re-shared September 14, 2026)<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 23 Present, 2 Deviation, 6 Missing Mandatory, 14 Missing Conditional, 2 Missing Recommended, 10 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Akamai has already built a FOCUS-aligned daily compute usage API. It emits per-instance, daily, tagged records and self-declares FOCUS alignment. The <code>Get daily compute usage</code> operation returns daily, per-instance, list-cost records carrying <code>ResourceId</code>, <code>ResourceName</code>, <code>Tags</code>, <code>RegionId</code>, and a FinOps service taxonomy, available as CSV, JSON, and Parquet. The structural problems flagged in the earlier self-service analysis (granularity, resource identity, and tags) are already solved. This revision re-verifies the analysis against the documentation Akamai re-shared on September 14, 2026: the schema, gaps, and deviations are unchanged. What is new is Akamai naming FOCUS v1.4 certification as the goal, and a billing SME (Saurabh Khare) joining the effort.</p>
+<p>The remaining gap is concentrated. The dataset is list-price only: by design it excludes discounts, credits, and network-transfer pooling, which Akamai applies at final invoice. So the Mandatory cost columns <code>BilledCost</code>, <code>EffectiveCost</code>, and <code>ContractedCost</code> are absent. Three other Mandatory columns are missing but trivial: <code>PricingQuantity</code> and <code>PricingUnit</code> are derivable from the <code>ConsumedQuantity</code> and <code>ConsumedUnit</code> already emitted, and <code>ChargeClass</code> is Mandatory-but-nullable (populated only for corrections). Two present columns need format work: <code>Tags</code> is emitted as an array of bare strings rather than key-value pairs, and the example <code>ChargeCategory</code> value is not a valid FOCUS enum member.</p>
+<p><strong>Recommendation:</strong> Treat this as a near-conformant dataset to finish, not a greenfield build. Close the Mandatory gaps (chiefly the three cost columns, reconciling list cost to <code>BilledCost</code> and <code>EffectiveCost</code>, plus three trivial ones), fix the two format deviations, validate against the FOCUS Validator, and pursue FinOps Certified FOCUS v1.2 Conformant first. Build toward v1.4, whose Invoice Detail dataset is the natural home for the discount and credit data the cost columns need. v1.4 is not yet a certifiable target (Section 2.2).</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>Akamai Billing API v1</strong> (<code>GET /billing/v1/contracts/{contractId}/compute-customers/{computeCustomerId}/usage/daily-summary/{date}</code>): A purpose-built operation whose documentation states it &ldquo;follows the FOCUS standard specification.&rdquo; The earlier revision analyzed the self-service Linode v4 Account Invoices endpoints, which was the wrong source.</p>
+<p>Key characteristics:
+- <strong>Daily granularity:</strong> 24-hour blocks aligned to Eastern Time billing days.
+- <strong>Per-instance:</strong> Each record carries <code>ResourceId</code> and <code>ResourceName</code>.
+- <strong>Tagged:</strong> User-defined <code>Tags</code> on Linodes (including LKE nodes), Block Storage, NodeBalancers, and images flow into the dataset (format aside, see Section 1.5).
+- <strong>Region, service taxonomy, SKU, consumed quantity and unit:</strong> All present.
+- <strong>Formats:</strong> CSV, JSON, and Parquet. Pagination up to 5,000 records per page.
+- <strong>List-cost basis:</strong> Values reflect list price and exclude discounts, credits, and network-transfer pooling, which are applied at final invoice. This is the crux of the remaining gap.
+- <strong>Limited Availability:</strong> The operation is marked Limited Availability, and for compute the Billing API retains data for the current month only. Confirm the general-availability timeline, the historical-retention plan, and whether the dataset is offered to all contract customers or a subset.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. Mandatory columns must exist and be populated where applicable; Conditional columns must exist and are populated when the provider&rsquo;s model creates the condition, otherwise null; Recommended columns are encouraged. Conformance is checked against the FOCUS Requirements Model (the machine-readable MUST/SHOULD/MAY rules), which the FOCUS Validator uses. Provider-specific columns are permitted when prefixed <code>x_</code>, and Akamai already does this correctly with <code>x_MTDConsumedQuantity</code>. Feature levels were verified column by column against the FOCUS v1.2 Content Constraints.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Linode source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>No (list cost only)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>No (list cost only)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td><code>ListCost</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>No (list cost only)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Yes, but the example value (&ldquo;Compute&rdquo;) is not a valid enum member</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>No (corrections only)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Yes (enum)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>No (derivable from ConsumedQuantity)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>No (derivable from ConsumedUnit)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Yes (enum)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional (1.2)</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional (1.2)</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Yes, but an array of strings, not key-value pairs</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional (1.2)</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional (1.2)</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional (1.2)</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional (1.2)</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional (1.1+)</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional (1.1+)</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: no commitments sold</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional (1.1+)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional (1.1+)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional (1.1+)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional (1.1+)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: region only</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 23 Present, 2 Deviation, 6 Missing Mandatory, 14 Missing Conditional, 2 Missing Recommended, 10 N/A</p>
+<p>Re-verified against FOCUS v1.4: every Mandatory column in this table was re-checked against the live v1.4 Cost and Usage dataset. All levels hold unchanged from v1.2 to v1.4 for the columns this API touches. The one structural change is that <code>ProviderName</code> and <code>PublisherName</code> are removed in v1.4 (deprecated in v1.3), so the API&rsquo;s current emission of both is a v1.2/v1.3 bridge, not a v1.4 end state.</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Granularity (daily, ET-aligned), resource identity (<code>ResourceId</code>, <code>ResourceName</code>), and tags (present, pending a format fix). A FinOps-grade service taxonomy and region detail are present too.</p>
+<p><strong>Substantive (3 of 6 Mandatory gaps):</strong> <code>BilledCost</code> (cash basis), <code>EffectiveCost</code> (amortized), and <code>ContractedCost</code>. The dataset is list-price only, so until these exist it supports list-cost reporting and allocation but not invoice reconciliation, budgeting on actuals, or effective-cost unit economics. Closing this means joining invoice-level adjustments (discounts, credits, network-transfer pooling) back to the daily usage lines. Once a monthly cap is reached, <code>ListCost</code> for the remaining days is 0, and list values are rounded to one cent; both matter when reconciling daily list cost against the final invoice.</p>
+<p><strong>Trivial (3 of 6 Mandatory gaps):</strong> <code>PricingQuantity</code> and <code>PricingUnit</code> are derivable from the <code>ConsumedQuantity</code> and <code>ConsumedUnit</code> already present (in the example, <code>ListUnitPrice</code> 0.52 × 24 = <code>ListCost</code> 12.48), which holds for flat-rate usage. <code>ChargeClass</code> is Mandatory-but-nullable, so a column that is null except on corrections satisfies it.</p>
+<p><strong>Secondary (Conditional and Recommended):</strong> <code>PricingCategory</code>, <code>ContractedUnitPrice</code>, <code>SubAccountId</code>/<code>SubAccountName</code>/<code>SubAccountType</code>, and <code>ResourceType</code> are Conditional and absent. <code>ServiceSubcategory</code> and <code>InvoiceId</code> are Recommended and would round out the dataset.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>Tags:</strong> The example emits an array of bare strings (<code>["infra pin_netv4", "test_tag"]</code>). FOCUS expects <code>Tags</code> as a structured set of key-value pairs. Emit key-value tags and decide how to represent untagged or value-less tags. Confirm the target representation against the Requirements Model.</p>
+<p><strong>ChargeCategory:</strong> The schema correctly defines the enum (<code>Usage</code>, <code>Purchase</code>, <code>Tax</code>, <code>Credit</code>, <code>Adjustment</code>), but the example record shows <code>"ChargeCategory": "Compute"</code>, which is a <code>ServiceCategory</code> value. Confirm production data emits only valid enum members.</p>
+<p><strong>Already right:</strong> <code>ChargeFrequency</code> and <code>ServiceCategory</code> use valid FOCUS enums, timestamps are ISO 8601, and the month-to-date field is correctly namespaced as <code>x_MTDConsumedQuantity</code>.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Live versions: v1.1 (Nov 7, 2024), v1.2 (May 29, 2025, the current certification baseline), v1.3 (Dec 5, 2025), and v1.4 (June 4, 2026, latest, adding an Invoice Detail dataset and a billing-period dataset built for reconciliation). As of September 24, 2026, the FOCUS Validator supports v1.2 and v1.3 conformance checks; v1.4 support is not yet available.</p>
+<p><strong>Build target: FOCUS v1.4.</strong> The cost gap is an invoice-reconciliation problem, which the v1.4 Invoice Detail dataset addresses. Pairing the daily usage dataset (list cost, resource-level) with a v1.4 invoice dataset (discounts, credits, pooling, billed and effective cost) is the cleanest route to the missing cost columns. v1.4 removes <code>ProviderName</code> and <code>PublisherName</code>, which the API currently emits.</p>
+<p><strong>Certification target: FOCUS v1.2 first.</strong> The FinOps Certified FOCUS Conformant program still validates against v1.2 only, and each future version gets its own certification window once the Foundation opens it (certification does not roll forward automatically). Certify at v1.2 to get Linode listed now, keep building toward v1.4, and re-certify the moment that track opens.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>As of September 24, 2026, certification requires: FinOps Foundation and Linux Foundation membership; 2 to 10 Akamai staff (scaled to company size) holding the FinOps Certified FOCUS Analyst credential; support for every Mandatory column, including <code>BilledCost</code>, <code>EffectiveCost</code>, and <code>BillingCurrency</code>; anonymized sample data covering at least one complete billing cycle; publicly accessible conformance-gap and native-to-FOCUS mapping documentation (this report is the seed); and self-attestation to the semantic validation criteria, with deviations disclosed. There is no separate certification fee for members. Contact <code>member-cert@finops.org</code> for the RFI and to ask when a v1.3 or v1.4 track will open.</p>
+<p>Tooling: the FOCUS Requirements Model (machine-readable conformance rules), the FOCUS Validator (run the daily usage CSV/JSON through it now; it will flag the missing Mandatory columns and the <code>Tags</code> and <code>ChargeCategory</code> issues), and the FOCUS Converter (less central for a provider that already emits FOCUS shape, but a path to contribute a Linode profile back).</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate and scope.</strong> Pull a sample from <code>Get daily compute usage</code> and run it through the FOCUS Validator against v1.2/v1.3. Confirm membership, the GA and retention plan for the Limited Availability endpoint, and the v1.4-build / v1.2-certify decision. Open the RFI with <code>member-cert@finops.org</code>.</p>
+<p><strong>Phase 1: Close the Mandatory gap.</strong> Add <code>BilledCost</code>, <code>EffectiveCost</code>, and <code>ContractedCost</code> by reconciling invoice-level discounts, credits, and network-transfer pooling back to the daily list-cost lines (accounting for monthly caps). Add the three trivial Mandatory columns: <code>PricingQuantity</code>, <code>PricingUnit</code>, and a nullable <code>ChargeClass</code>.</p>
+<p><strong>Phase 2: Quick fixes.</strong> Emit <code>Tags</code> as key-value pairs, and confirm <code>ChargeCategory</code> only carries valid enum values in production. Re-run the Validator to a clean pass on the present columns.</p>
+<p><strong>Phase 3: Conditional and Recommended columns.</strong> Add <code>PricingCategory</code>, <code>ContractedUnitPrice</code>, account hierarchy (<code>SubAccountId</code>, <code>SubAccountName</code>, <code>SubAccountType</code>) for multi-account customers, <code>SkuPriceId</code>, <code>ResourceType</code>, <code>ServiceSubcategory</code>, and <code>InvoiceId</code> (which aids reconciliation).</p>
+<p><strong>Phase 4: Mature to v1.4 and certify.</strong> Adopt the v1.4 Invoice Detail and billing-period datasets, drop <code>ProviderName</code> and <code>PublisherName</code>, move the endpoint out of Limited Availability with a defined retention window, and re-certify at the highest version the program supports.</p>
+<p>After Phases 1 and 2, Akamai has a v1.2-conformant Linode dataset with daily, resource-, and tag-level detail and reconciled cost.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Achievable now (list-cost basis):</strong> Analyze costs of components of a resource; analyze cost per compute service; compare resource usage month over month; identify anomalous daily spending by region and service; analyze costs by service name and by service category; analyze resource costs by SKU.</li>
+<li><strong>After the cost columns are added (actuals basis):</strong> Verify accuracy of service provider invoices (needs <code>BilledCost</code>); update budgets with billed costs; forecast cashflow month over month by service; calculate unit economics (on effective cost); analyze credit memos (needs credit data).</li>
+<li><strong>Out of scope:</strong> Commitment-discount, capacity-reservation, virtual-currency, availability-zone, and marketplace third-party SaaS use cases depend on mechanics Linode does not have. The related columns are legitimately null.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Akamai runs a <code>Get daily compute usage</code> sample through the FOCUS Validator (v1.2/v1.3) and shares the result.</li>
+<li>Hold a joint working session on the cost-column approach with Saurabh Khare (Akamai&rsquo;s billing SME) and the FinOps Foundation team: how invoice-level discounts, credits, and pooling will be reconciled back to daily lines to produce <code>BilledCost</code> and <code>EffectiveCost</code>.</li>
+<li>Akamai confirms FinOps Foundation and Linux Foundation membership, starts the required staff FinOps Certified FOCUS Analyst credentials, and emails <code>member-cert@finops.org</code> to request the RFI and ask when a v1.3 or v1.4 track opens.</li>
+<li>Fix the <code>Tags</code> format, confirm <code>ChargeCategory</code> emits valid enum values, and add the trivial Mandatory columns (<code>PricingQuantity</code>, <code>PricingUnit</code>, nullable <code>ChargeClass</code>).</li>
+<li>Confirm the Limited Availability GA timeline and historical-retention plan (currently current-month-only for compute).</li>
+<li>Finalize the native-to-FOCUS mapping and Conformance Gap Report; submit for v1.2 certification; publish sample data; request listing on the FOCUS supported-provider page.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> The daily compute usage API exists, self-declares FOCUS alignment, and provides daily, per-resource, tagged, list-cost records (per the documentation Akamai supplied and re-shared September 14, 2026; no fields, types, or examples changed).</li>
+<li><strong>High:</strong> 23 Present and 2 Deviation (25 of 57 columns emitted); six Mandatory missing, of which only the three cost columns are substantive. Cost is the dominant gap because the dataset is list-price only.</li>
+<li><strong>High:</strong> Feature levels were verified column by column against the FOCUS v1.2 spec, and re-verified September 24, 2026 against v1.4: every Mandatory column analyzed carries the same level in both, and <code>ProviderName</code> and <code>PublisherName</code> are removed in v1.4.</li>
+<li><strong>High:</strong> <code>Tags</code> as an array of strings is a format deviation from FOCUS key-value tags.</li>
+<li><strong>High:</strong> As of September 24, 2026, the certification program certifies against v1.2 only and the Validator checks v1.2 and v1.3, so Akamai&rsquo;s stated goal of &ldquo;v1.4 certification&rdquo; is not yet an available track.</li>
+<li><strong>Moderate:</strong> The <code>ChargeCategory: "Compute"</code> example is likely a documentation error; confirm production values.</li>
+<li><strong>Moderate:</strong> Exact target representation for <code>Tags</code> and a few feature-level edge cases; confirm against the Requirements Model and a live Validator run.</li>
+<li><strong>Moderate:</strong> GA timeline, retention beyond the current month, and customer coverage of the Limited Availability endpoint; pending Akamai confirmation.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Akamai Billing API v1, Get daily compute usage: <a href="https://techdocs.akamai.com/billing-app/reference/get-daily-compute-usage">techdocs.akamai.com/billing-app/reference/get-daily-compute-usage</a></li>
+<li>FinOps Certified FOCUS Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+<li>Introducing FOCUS 1.4: <a href="https://www.finops.org/insights/introducing-focus-1-4/">finops.org/insights/introducing-focus-1-4</a></li>
+<li>Introducing FOCUS 1.3: <a href="https://www.finops.org/insights/introducing-focus-1-3/">finops.org/insights/introducing-focus-1-3</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS Specification v1.4: <a href="https://focus.finops.org/docs/specification/v1-4/">focus.finops.org</a></li>
+<li>FOCUS Validator: <a href="https://focus.finops.org/focus-validator/">focus.finops.org/focus-validator</a></li>
+<li>FOCUS Converter: <a href="https://github.com/finopsfoundation/focus_converters">github.com/finopsfoundation/focus_converters</a></li>
+<li>FOCUS Requirements Model: <a href="https://github.com/FinOps-Open-Cost-and-Usage-Spec/FOCUS_Spec">github.com/FinOps-Open-Cost-and-Usage-Spec/FOCUS_Spec</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

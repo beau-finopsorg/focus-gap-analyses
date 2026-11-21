@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OVHcloud &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/OVHcloud-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="ovhcloud-focus-data-generator-gap-analysis">OVHcloud &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: June 30, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> OVHcloud<br>
+<strong>Prepared:</strong> June 30, 2026<br>
+<strong>Source:</strong> OVHcloud v1 API (<code>/me/bill</code>, <code>/me/bill/{billId}/details</code>, <code>/me/consumption/usage/*</code>, <code>/cloud/project/{serviceName}/usage/*</code>); OVHcloud Labs Finops FOCUS export; OVHcloud Control Panel<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 27 Present, 24 Deviation, 0 Missing Mandatory, 2 Missing Conditional, 1 Missing Recommended, 3 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>OVHcloud is a European cloud and hosting provider (Public Cloud, Bare Metal, Hosted Private Cloud, Web/domains) billing Public Cloud compute hourly and storage per GB-hour, with one consolidated invoice per project on the first of the following month. The data needed for FOCUS conformance is split across two surfaces: the monthly invoice (<code>billing.Bill</code> plus <code>billing.BillDetail</code> line items) carries billed amounts, invoice ID, and currency, while the hourly usage tree (<code>cloud.usage.*</code> and <code>me.consumption.Transaction</code>) carries region, plan codes, resource IDs, and per-hour quantities. All 21 Mandatory columns have a source once the two surfaces are joined. OVHcloud already publishes a FOCUS 1.0 export through OVHcloud Labs, which is a strong starting point but is best-effort, Public-Cloud-only, and one specification generation behind.</p>
+<p>Three columns are N/A under OVHcloud&rsquo;s model: Public Cloud exposes no resource tags in usage or billing data, and there is no CapacityReservation construct (two columns). OVHcloud does sell Savings Plans (its commitment-discount mechanic), so the CommitmentDiscount family applies and is not N/A. The single most important substantive question is how Savings Plan discounts are represented in the line items: discounts are described as applied directly to the bill, so reconciling ListCost against BilledCost and EffectiveCost at the resource line, rather than treating them as equal, is the real work.</p>
+<p><strong>Recommendation:</strong> Build one FOCUS row per Public Cloud resource per charge period, joining <code>cloud.usage</code>/<code>me.consumption</code> (region, planCode, resource ID, hourly quantity) to <code>billing.Bill</code>/<code>BillDetail</code> (invoice ID, currency, billed amounts). ResourceId from instanceId/volumeId, SubAccountId from the Public Cloud project (serviceName), BillingAccountId from the NIC handle, RegionId from the OVHcloud region trigram, AvailabilityZone derived from the region string where a 3-AZ region applies.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>OVHcloud&rsquo;s billing and usage data lives in the OVH v1 REST API across two surfaces.</p>
+<p><strong>Monthly invoice surface:</strong>
+- <code>GET /me/bill</code> returns bill IDs; <code>GET /me/bill/{billId}</code> returns a <code>billing.Bill</code> with <code>billId</code>, <code>date</code>, <code>orderId</code>, <code>pdfUrl</code>, and three Price objects (<code>priceWithTax</code>, <code>priceWithoutTax</code>, <code>tax</code>). Each Price carries <code>currencyCode</code>, <code>value</code>, and a display <code>text</code>.
+- <code>GET /me/bill/{billId}/details/{billDetailId}</code> returns a <code>billing.BillDetail</code> with <code>description</code>, <code>domain</code>, <code>quantity</code> (typed as string), <code>unitPrice</code>, <code>totalPrice</code>, <code>periodStart</code>, and <code>periodEnd</code>. There is no planCode, region, serviceName, or tag at this layer: <code>domain</code> plus <code>description</code> are the only resource identifiers.</p>
+<p><strong>Hourly usage surface:</strong>
+- <code>GET /cloud/project/{serviceName}/usage/current</code> and <code>/usage/history</code> return <code>cloud.usage</code> records with a <code>period</code> (<code>from</code>/<code>to</code>), <code>hourlyUsage</code>, and <code>monthlyUsage</code>. Hourly resources break into <code>instance[]</code>, <code>volume[]</code>, <code>storage[]</code>, <code>snapshot[]</code>, and bandwidth arrays. Each line carries <code>region</code>, a <code>Quantity</code> (<code>unit</code> of Hour, GiB, or GiBh, plus <code>value</code>), and <code>totalPrice</code>; leaf detail objects carry <code>instanceId</code> and <code>volumeId</code>.
+- <code>GET /me/consumption/usage/current|forecast|history</code> returns <code>me.consumption.Transaction</code> records with <code>beginDate</code>, <code>endDate</code>, <code>serviceId</code>, a Price (<code>valueInUcents</code>, <code>currencyCode</code>), and elements carrying <code>planFamily</code>, <code>planCode</code>, and <code>quantity</code>.</p>
+<p>Key characteristics:
+- <strong>Hourly compute:</strong> Public Cloud instances billed per commenced hour from ACTIVE to deletion; usage updates every hour. Resource-level and hourly data are available through the usage and consumption endpoints.
+- <strong>Storage:</strong> Object and block storage billed per GB-hour, with <code>region</code> and <code>totalPrice</code> per line.
+- <strong>Monthly invoice aggregation:</strong> the formal <code>billing.Bill</code> is generated on the first of the following month, one per Public Cloud project, with <code>BillDetail</code> line items.
+- <strong>Projects as sub-accounts:</strong> the NIC handle (nichandle) is the billing entity; Public Cloud projects (serviceName) provide isolation and dedicated billing. Project maps to SubAccountId, NIC to BillingAccountId.
+- <strong>Savings Plans:</strong> OVHcloud&rsquo;s commitment-discount mechanic, a 1 to 36 month commitment on eligible instance families, billed monthly in advance, with discounts applied directly to the bill. Monthly-rate instances offer a further commitment-style reduction over hourly rate.
+- <strong>Currency:</strong> prices carry an ISO <code>currencyCode</code> (EUR, USD, GBP, PLN, CAD, and others by subsidiary). Currency is bound to the account subsidiary, effectively one billing currency per account.
+- <strong>Regions and zones:</strong> <code>region</code> is present on every Public Cloud usage line. OVHcloud offers 3-AZ regions, 1-AZ regions, and Local Zones; region codes are location trigrams (GRA, RBX, SBG, BHS).</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is judged column by column against the feature level each column carries. Feature levels for this analysis were verified against the FOCUS v1.2 specification Content Constraints tables, not recalled from memory. OVHcloud has no CapacityReservation construct, so both CapacityReservation columns are N/A. Public Cloud exposes no resource tags in billing or usage data, so Tags is N/A. OVHcloud does sell Savings Plans, so the seven CommitmentDiscount columns apply and are classified as deviations or gaps to build, not N/A.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<p>Feature levels verified against the FOCUS Specification v1.2.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>OVHcloud source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>BillDetail totalPrice (net of Savings Plan discount applied to the bill)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Derive: amortize Savings Plan prepay across covered hours; else = BilledCost</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Derive: public hourly/GB-hour rate × quantity, pre-discount</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Derive: = BilledCost for on-demand; reflect committed rate under Savings Plan</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>NIC handle (nichandle)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Account holder name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Price.currencyCode (EUR, USD, GBP, PLN, CAD)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>First day of the invoiced month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>First day of the following month (exclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Usage period from (hourly) or BillDetail periodStart</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Usage period to (hourly) or BillDetail periodEnd</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>BillDetail description; enrich with planCode for usage lines</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for metered lines; &ldquo;Purchase&rdquo; for Savings Plan prepay; &ldquo;Tax&rdquo; for tax</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for corrections</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>OVHcloud billing entity (e.g., &ldquo;OVH SAS&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;OVHcloud&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;OVHcloud&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Derive from planFamily/planCode (e.g., &ldquo;Public Cloud Compute&rdquo;, &ldquo;Object Storage&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Compute&rdquo; for instances; &ldquo;Storage&rdquo; for volume/object; &ldquo;Networking&rdquo; for bandwidth</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Usage Quantity.value (Hour, GiB, GiBh)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize Quantity.unit to FOCUS unit string (&ldquo;Hours&rdquo;, &ldquo;GiB&rdquo;, &ldquo;GiB-Hours&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>= usage Quantity.value</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>= normalized Quantity.unit</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Public per-unit rate from OVHcloud pricing</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice on-demand; committed rate under Savings Plan</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; on-demand; &ldquo;Committed&rdquo; under Savings Plan</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; hourly; &ldquo;Recurring&rdquo; for monthly-rate and Savings Plan</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Billing Account&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Public Cloud project ID (serviceName)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Project description/name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Public Cloud Project&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>instanceId / volumeId from usage detail leaves</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Instance/volume name where set; else reference</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Derive from planCode/usage array (e.g., &ldquo;Instance b3-8&rdquo;, &ldquo;Block Storage&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>planCode</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: Public Cloud exposes no resource tags in usage or billing data</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>= Price.currencyCode</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice in pricing currency</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ContractedUnitPrice in pricing currency</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>= EffectiveCost in pricing currency</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>planFamily + Quantity.unit (e.g., &ldquo;Instance b3-8 Hours&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not in usage or billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not in usage or billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>OVHcloud region trigram (GRA, RBX, SBG, BHS)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Region display name (e.g., &ldquo;Gravelines, France&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Savings Plan identifier (from Savings Plan API)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Savings Plan name</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Spend&rdquo; or &ldquo;Usage&rdquo; commitment</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Committed Use&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Used&rdquo; / &ldquo;Unused&rdquo; against covered hours</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Committed quantity (instances/months)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>Commitment unit (e.g., &ldquo;Instance-Months&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservation construct</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>billId</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Map from planFamily (e.g., &ldquo;Virtual Machines&rdquo;, &ldquo;Object Storage&rdquo;)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Derive from region string where a 3-AZ region applies; else null</td>
+<td>Deviation</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 27 Present, 24 Deviation, 0 Missing Mandatory, 2 Missing Conditional, 1 Missing Recommended, 3 N/A. The 3 N/A are Tags plus the two CapacityReservation columns. The CommitmentDiscount family is not N/A because OVHcloud sells Savings Plans; those seven columns are classified as deviations to build from the Savings Plan API.</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> All 21 Mandatory columns have a source once the hourly usage surface and the monthly invoice surface are joined. Resource IDs, regions, plan codes, projects, hourly quantities, invoice IDs, and currency are all natively available. The OVHcloud Labs FOCUS export already demonstrates a working transform for Public Cloud.</p>
+<p><strong>Substantive gaps (real data work, not plumbing):</strong>
+- <strong>Cost reconciliation under Savings Plans.</strong> ListCost, EffectiveCost, and ContractedCost are not a trivial copy of the billed amount. Savings Plan discounts are applied directly to the bill and Savings Plans are billed monthly in advance, so producing EffectiveCost requires amortizing prepaid commitment across covered hours and ListCost requires reconstructing the pre-discount public rate. For pure on-demand usage with no commitment, the four cost columns collapse to the billed amount and the work is trivial; under a Savings Plan they do not.
+- <strong>Joining two surfaces.</strong> The invoice line items carry billed amounts but no planCode, region, or resource ID; the usage tree carries those but its prices are usage estimates. A conformant per-resource row requires joining them, which is real engineering rather than a field rename.</p>
+<p><strong>Trivial gaps (derivable from data present):</strong> PricingQuantity and PricingUnit from the usage Quantity for flat-rate hourly and GB-hour SKUs; ChargeCategory, ServiceCategory, ServiceName, and ResourceType from planFamily/planCode; SubAccountType and BillingAccountType as constants.</p>
+<p><strong>Remaining Conditional/Recommended:</strong> SkuPriceId and SkuPriceDetails are absent from both surfaces. ServiceSubcategory is not emitted and would be mapped from planFamily.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>Tags:</strong> Public Cloud has no tag exposure in usage or billing data. This is the largest single attribution gap. Until OVHcloud ships resource tagging, allocation depends on project (SubAccountId) and resource ID, and Tags stays null.</p>
+<p><strong>Cost columns:</strong> populate ListCost from public rates, EffectiveCost from amortized Savings Plan economics, and ContractedCost from the committed rate. Do not set all three equal to BilledCost when a Savings Plan is in force.</p>
+<p><strong>PricingUnit / ConsumedUnit:</strong> normalize OVHcloud Quantity units (Hour, GiB, GiBh) to FOCUS unit strings (&ldquo;Hours&rdquo;, &ldquo;GiB&rdquo;, &ldquo;GiB-Hours&rdquo;).</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Usage&rdquo; for metered lines, &ldquo;Purchase&rdquo; for Savings Plan prepay, &ldquo;Tax&rdquo; for the tax line, &ldquo;Credit&rdquo; for credits and vouchers.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Compute&rdquo; for instances, &ldquo;Storage&rdquo; for block and object storage, &ldquo;Networking&rdquo; for bandwidth.</p>
+<p><strong>CommitmentDiscount family:</strong> populate from the Savings Plan API and join to covered usage lines. Confirm against a real Savings Plan invoice whether the discount appears as a discrete line item or as an adjusted price.</p>
+<p><strong>AvailabilityZone:</strong> derive from the region string where a 3-AZ region applies; leave null for 1-AZ regions and Local Zones.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2, the current certification baseline. OVHcloud&rsquo;s existing Labs export targets FOCUS 1.0 and should be advanced two minor versions, dropping ProviderName and PublisherName for v1.4.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>The program is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;; contact <code>member-cert@finops.org</code> for the RFI. Membership is required for certification, though contributing to the specification is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Document Tags and CapacityReservation as not applicable to the Public Cloud model, and document the Savings Plan mapping for the CommitmentDiscount family. Validate with the FOCUS Validator and convert with the FOCUS Converter against the FOCUS Requirements Model.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0:</strong> Validate the existing OVHcloud Labs FOCUS 1.0 export against the FOCUS Validator. Confirm scope (Public Cloud first) and pull one month of <code>cloud.usage</code>/<code>me.consumption</code> plus the matching <code>billing.Bill</code>/<code>BillDetail</code>.</p>
+<p><strong>Phase 1: Join and Mandatory close.</strong> Join the hourly usage surface to the monthly invoice. Populate the four cost columns including Savings Plan reconciliation, the trivial Mandatory derivations (PricingQuantity, PricingUnit, ChargeCategory, ServiceCategory, ServiceName), and core identity (ResourceId, SubAccountId, BillingAccountId, RegionId).</p>
+<p><strong>Phase 2: Deviations.</strong> Normalize units, enums, currency-pair columns, and ChargeFrequency. Derive AvailabilityZone for 3-AZ regions.</p>
+<p><strong>Phase 3: Conditional and Recommended.</strong> Populate the CommitmentDiscount family from the Savings Plan API; add ServiceSubcategory. Document SkuPriceId/SkuPriceDetails as not exposed.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Advance from v1.0 to v1.2 for certification and v1.4 for build target. Drop ProviderName and PublisherName. Extend coverage beyond Public Cloud (Bare Metal, Hosted Private Cloud). Validate and certify.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>As soon as Phase 1 lands (resource, project, region, day):</strong> cost reporting by project and region, resource-level cost visibility, and chargeback by project.</li>
+<li><strong>After Phase 2/3 (cost reconciliation, commitment data):</strong> Savings Plan coverage and utilization analysis, effective-cost trending, and actuals-based budgeting.</li>
+<li><strong>Out of scope for this model:</strong> tag-based allocation (no Public Cloud tags) and capacity reservation analysis (no reservation construct).</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Run the existing OVHcloud Labs FOCUS 1.0 export through the FOCUS Validator to baseline conformance.</li>
+<li>Pull one month of <code>cloud.usage</code>/<code>me.consumption</code> and the matching <code>billing.Bill</code>/<code>BillDetail</code> for a project that uses a Savings Plan.</li>
+<li>Confirm at the line level how Savings Plan discounts appear, then implement the Phase 1 join and cost reconciliation.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> OVHcloud exposes hourly, resource-level usage (region, planCode, instanceId, quantity) and monthly invoice line items (billId, currency, billed amounts). All 21 Mandatory columns have a source. Source field names are grounded in the OVH v1 API schema.</li>
+<li><strong>High:</strong> Public Cloud project maps to SubAccountId and NIC handle to BillingAccountId. Region is native; the existing OVHcloud Labs FOCUS 1.0 export confirms a working Public Cloud transform.</li>
+<li><strong>Moderate:</strong> EffectiveCost, ListCost, and ContractedCost under Savings Plans require reconciliation; the precise line-level representation of the discount (discrete line item versus adjusted price) should be confirmed against a real Savings Plan invoice.</li>
+<li><strong>Moderate:</strong> AvailabilityZone derivation depends on whether the usage <code>region</code> string carries the AZ suffix; the schema shows a flat region string, so derivation may be required.</li>
+<li><strong>Low:</strong> Currency immutability per account is inferred from the subsidiary binding rather than an explicit statement. Coverage beyond Public Cloud (Bare Metal, Hosted Private Cloud, Web) was not field-confirmed and is treated as provisional.</li>
+</ul>
+<p>This analysis reflects the data sources reviewed, not a formal certification result. OVHcloud does not hold the FinOps Certified FOCUS designation; the readiness band below is an assessment of the reviewed data, not a certification.</p>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>OVHcloud v1 API schema (<code>/me</code>, <code>/cloud</code>): <a href="https://api.ovh.com/console/">api.ovh.com/console</a></li>
+<li>OVHcloud Public Cloud billing guide: <a href="https://help.ovhcloud.com/csm/en-public-cloud-compute-billing">help.ovhcloud.com</a></li>
+<li>OVHcloud Savings Plan: <a href="https://us.ovhcloud.com/public-cloud/savings-plan/">us.ovhcloud.com/public-cloud/savings-plan</a></li>
+<li>OVHcloud Labs Finops FOCUS export: <a href="https://labs.ovhcloud.com/en/finops-focus/">labs.ovhcloud.com/en/finops-focus</a></li>
+<li>OVHcloud multi-AZ regions: <a href="https://www.ovhcloud.com/en/about-us/global-infrastructure/multi-az/">ovhcloud.com/en/about-us/global-infrastructure/multi-az</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS Specification v1.4: <a href="https://www.finops.org/insights/introducing-focus-1-4/">finops.org/insights/introducing-focus-1-4</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salesforce &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Salesforce-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="salesforce-focus-data-generator-gap-analysis">Salesforce &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: June 25, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Salesforce<br>
+<strong>Prepared:</strong> June 25, 2026<br>
+<strong>Source:</strong> Salesforce invoices; Salesforce licensing and usage reports<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 22 Present, 11 Deviation, 0 Missing Mandatory, 5 Missing Conditional, 1 Missing Recommended, 18 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Salesforce operates two billing models within a single invoice: seat-based subscriptions (Sales Cloud, Service Cloud, Platform licenses) and metered usage (Marketing Cloud email sends, data storage overages, API calls). Each requires distinct FOCUS row logic. All 21 Mandatory columns have source data. The 11 Deviations cover ListCost and ContractedCost enrichment, EffectiveCost amortization for multi-year contracts, ChargeCategory and ServiceCategory derivation, and SubAccount mapping for multi-org customers. Eighteen columns are N/A because Salesforce SaaS billing has no per-resource IDs, no regional billing, and no commitment discount constructs.</p>
+<p><strong>Recommendation:</strong> Implement subscription rows first (seat counts, annual billing) using the same pattern as Workday. Add metered usage rows (email sends, storage overages) in Phase 2 with appropriate PricingUnit per usage type. The two row types share the same FOCUS schema.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>Salesforce Invoices and Usage Reports</strong>: Salesforce provides invoices through its customer billing portal. Subscription line items show product name, user count, unit price, and period. Metered usage reports are available through the Salesforce Setup menu (storage, API calls) and Marketing Cloud dashboards (email sends, contacts).</p>
+<p>Key characteristics for FOCUS:</p>
+<ul>
+<li><strong>Mixed billing model:</strong> Subscription (per user per year for CRM, Platform) and metered usage (per email send for Marketing Cloud, per GB overage for storage, per API call for some integrations).</li>
+<li><strong>Multi-org customers:</strong> Large enterprises may have multiple Salesforce orgs (instances). Each org represents a potential SubAccount; org IDs are available in licensing records.</li>
+<li><strong>Enterprise pricing:</strong> Salesforce does not publish list prices publicly for most products (excluding some standard editions). Both ListCost and ContractedCost require supplementary pricing data.</li>
+<li><strong>Agentforce / Einstein:</strong> Newer AI features (Agentforce conversations, Einstein Copilot) are metered per conversation or per query, adding a third usage dimension.</li>
+<li><strong>AppExchange add-ons:</strong> Third-party AppExchange products billed through Salesforce invoices have distinct product names and pricing.</li>
+<li><strong>No resource IDs:</strong> Salesforce SaaS billing has no per-resource instance IDs.</li>
+<li><strong>No regional billing:</strong> Salesforce is a global SaaS platform; regional instances do not produce separate billing line items.</li>
+<li><strong>No commitment discounts:</strong> Salesforce subscriptions are term licenses, not FOCUS CommitmentDiscount constructs.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. For mixed billing models, columns that apply to some row types but not others are Conditional. Columns that never apply to any Salesforce billing row type are N/A.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Salesforce source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice line item total</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Annual: = BilledCost; multi-year upfront: amortize across subscription term</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Salesforce does not publish list prices for most products; requires supplementary pricing data</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Enterprise-negotiated rate × quantity; not accessible via billing system</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Salesforce account ID from invoice</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Customer company name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Invoice currency (USD or regional)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice period start</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice period end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Subscription or usage period start</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Subscription or usage period end</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Product name + quantity or usage type (e.g., &ldquo;Sales Cloud Enterprise · 100 Users&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for subscription; &ldquo;Usage&rdquo; for metered email sends, storage, API calls</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for corrections</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Salesforce, Inc.&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Salesforce&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Salesforce&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Salesforce product name: &ldquo;Sales Cloud&rdquo;, &ldquo;Service Cloud&rdquo;, &ldquo;Marketing Cloud&rdquo;, &ldquo;Salesforce Platform&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Management and Governance&rdquo; for CRM/Platform; &ldquo;AI and Machine Learning&rdquo; for Einstein/Agentforce; &ldquo;Developer Tools&rdquo; for Heroku</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>User count for subscriptions; email sends, GB, or API calls for metered usage</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>&ldquo;Named Users&rdquo; for subscriptions; &ldquo;Email Sends&rdquo;, &ldquo;GB&rdquo;, &ldquo;API Calls&rdquo; for metered usage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>= PricingQuantity for metered usage rows; null for subscription rows</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>= PricingUnit for metered usage rows; null for subscription rows</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Salesforce list price per user or per usage unit; not published for most products</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Enterprise-negotiated rate per user or per usage unit; not in billing system</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Committed&rdquo; for subscription; &ldquo;Standard&rdquo; for metered usage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Conditional</td>
+<td>&ldquo;Recurring&rdquo; for annual invoicing; &ldquo;Usage-Based&rdquo; for metered usage rows</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from Salesforce contract tier (e.g., &ldquo;Enterprise&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Salesforce org ID for multi-org customers; null for single-org customers</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Org display name for multi-org customers</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Org&rdquo; for multi-org customers</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>N/A: Salesforce SaaS billing has no per-resource instance IDs</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Salesforce product code or SKU from invoice line item</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: Salesforce billing does not include resource-level tags</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>= BillingCurrency</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Missing because ListUnitPrice requires supplementary data</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Missing because enterprise pricing requires supplementary data</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>= EffectiveCost; Deviation because multi-year amortization required</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Named Users&rdquo; for subscription; &ldquo;Email Sends&rdquo;, &ldquo;GB&rdquo;, &ldquo;API Calls&rdquo; for metered</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not in billing system</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not applicable for flat per-unit pricing</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: global SaaS, billing is not region-specific</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: Salesforce subscriptions are term licenses, not FOCUS CommitmentDiscount</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Salesforce invoice number</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Map from product: &ldquo;CRM&rdquo;, &ldquo;Marketing Automation&rdquo;, &ldquo;AI&rdquo;, &ldquo;Developer Tools&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: global SaaS with no availability zone billing</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 22 Present, 11 Deviation, 0 Missing Mandatory, 5 Missing Conditional, 1 Missing Recommended, 18 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Invoice framework is complete. Salesforce invoices expose product names, user counts, usage quantities (for metered products), billing period, and invoice numbers. All 21 Mandatory columns have source data.</p>
+<p><strong>Remaining:</strong> ListCost and ContractedCost require supplementary pricing data. Multi-org SubAccount mapping requires org ID lookup. EffectiveCost amortization for multi-year contracts requires contract term data.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>ChargeCategory:</strong> Subscription products → &ldquo;Purchase&rdquo;; metered usage (email sends, storage, API calls) → &ldquo;Usage&rdquo;; promotional credits → &ldquo;Credit&rdquo;.</p>
+<p><strong>SubAccount for multi-org customers:</strong> Map Salesforce org ID → SubAccountId and org name → SubAccountName. Single-org customers: SubAccount = null.</p>
+<p><strong>PricingUnit and ConsumedQuantity:</strong> Subscription rows: PricingUnit = &ldquo;Named Users&rdquo;, ConsumedQuantity = null. Metered usage rows: PricingUnit = usage unit (&ldquo;Email Sends&rdquo;, &ldquo;GB&rdquo;, etc.), ConsumedQuantity = PricingQuantity.</p>
+<p><strong>ServiceCategory:</strong> CRM, Service Cloud, Platform → &ldquo;Management and Governance&rdquo;; Einstein, Agentforce → &ldquo;AI and Machine Learning&rdquo;; Heroku → &ldquo;Developer Tools&rdquo;.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. The mixed billing model (subscription + metered usage) must be documented in the conformance gap report.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0:</strong> Confirm invoice and usage report access. Pull sample data for subscription and metered usage rows.</p>
+<p><strong>Phase 1: Subscription rows.</strong> Map seat-based products. Derive ChargeCategory = &ldquo;Purchase&rdquo;, ServiceCategory per product, PricingUnit = &ldquo;Named Users&rdquo;.</p>
+<p><strong>Phase 2: Metered usage rows.</strong> Add Marketing Cloud, storage, API call rows with appropriate PricingUnit. Implement ConsumedQuantity for usage rows. Add multi-org SubAccount mapping.</p>
+<p><strong>Phase 3: Certify.</strong> Integrate supplementary pricing data for ListCost. Add ServiceSubcategory. Validate and certify.</p>
+<h3 id="24-focus-use-cases-salesforce-customers-unlock">2.4 FOCUS Use Cases Salesforce Customers Unlock</h3>
+<p><strong>After Phase 1:</strong> Cost by Salesforce product family. Subscription term tracking. Invoice reconciliation.</p>
+<p><strong>After Phase 2:</strong> Subscription vs. metered usage cost comparison. Marketing Cloud send volume cost analysis. Multi-org cost allocation via SubAccount.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Confirm invoice and usage report access via Salesforce billing portal.</li>
+<li>Identify all active Salesforce products: subscriptions and metered usage types.</li>
+<li>Implement Phase 1 subscription transform. Run through FOCUS Validator.</li>
+<li>Design multi-org SubAccount mapping logic (org ID lookup).</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Salesforce invoices expose product names, user counts, and billing period. Subscription columns are well-sourced.</li>
+<li><strong>Moderate:</strong> Metered usage row mapping. Marketing Cloud send volumes and storage overages require separate usage report integration.</li>
+<li><strong>Moderate:</strong> SubAccount (org) mapping for multi-org customers. Requires org ID enrichment from Salesforce licensing records.</li>
+<li><strong>Low:</strong> ListCost and ContractedCost. Salesforce does not publish list prices for most products.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Salesforce Billing Documentation: <a href="https://help.salesforce.com">help.salesforce.com</a></li>
+<li>Salesforce Marketing Cloud: <a href="https://help.salesforce.com">help.salesforce.com/articleView?id=mc</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

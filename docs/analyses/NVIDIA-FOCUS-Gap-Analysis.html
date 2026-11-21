@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NVIDIA &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/NVIDIA-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="nvidia-focus-data-generator-gap-analysis">NVIDIA &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> NVIDIA<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Context:</strong> KubeCon + CloudNativeCon North America 2026 booth outreach<br>
+<strong>Source:</strong> Public NVIDIA documentation only: NVIDIA Air (DSX Air) Billing Records API (<code>GET /api/v3/billing-records/</code>, <code>/summary/</code>, <code>POST /csv-report/</code>); NVIDIA Run:ai Reports API (<code>/api/v1/org-unit/reports</code>); DGX Cloud, DGX Cloud Lepton, and NVIDIA AI Enterprise product, licensing, and pricing pages<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 11 Present, 16 Deviation, 5 Missing Mandatory, 6 Missing Conditional, 2 Missing Recommended, 17 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>NVIDIA sells cloud and software through four routes, and only one of them has a public, machine-readable billing feed. <strong>DGX Cloud</strong> is sold through private offers on the AWS, Google Cloud, Azure, and OCI marketplaces, so the hyperscaler invoices it and it already lands in those providers&rsquo; FOCUS exports. <strong>NVIDIA AI Enterprise</strong> is licensed per GPU (term subscriptions at $4,500 per GPU per year partner list price, perpetual licenses, or $1 per GPU-hour pay-as-you-go on cloud marketplaces) and is sold through partners and marketplaces, which again puts the invoice with someone else. <strong>DGX Cloud Lepton</strong> and <strong>NVIDIA Run:ai</strong> have no public billing or cost documentation: Lepton&rsquo;s legacy billing guide now returns 404, and Run:ai&rsquo;s Consumption Report exposes GPU, CPU, and memory allocation by organizational unit with no monetary field. <strong>NVIDIA Air</strong> (the DSX Air data center simulation service) is the exception: it has a documented Billing Records API with per-simulation-run records, org identifiers, timestamps, and compute-hour quantities.</p>
+<p>This analysis therefore maps the NVIDIA Air Billing Records API column by column against FOCUS v1.2 and treats the rest of the portfolio as scope context. The verdict: the usage half of FOCUS is in good shape, and the cost half does not exist. Air records carry resource IDs, org hierarchy, start and end timestamps, and a quantity, but no price, no cost, and no currency. Of 21 Mandatory columns, 5 are missing, and 4 of those are substantive (BilledCost, EffectiveCost, ListCost, ContractedCost). Compute hours are sold as prepaid grants through NVIDIA sales with no published rate, so producing the cost columns requires joining contract pricing and amortizing grants, not multiplying by a rate card.</p>
+<p><strong>Recommendation:</strong> Add a price and currency to Air billing records (or publish a compute-hour rate card keyed to the NCA contract), emit grant purchases as Purchase rows, and amortize them into EffectiveCost on usage rows. In parallel, decide which products NVIDIA invoices directly through the NVIDIA Cloud Account (NCA): Lepton and direct AI Enterprise subscriptions are the higher-value FOCUS targets, and Run:ai&rsquo;s per-project allocation data is a natural source for FOCUS v1.3 split cost allocation inside Kubernetes clusters.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>NVIDIA Air Billing Records API</strong> (<code>GET https://api.dsx-air.nvidia.com/api/v3/billing-records/</code>): Read-only records, one per simulation billing interval, filterable by <code>period_start</code>/<code>period_end</code>. Requires the Air Org Administrator role and a user bearer token. A summary endpoint returns totals, and <code>POST /api/v3/billing-records/csv-report/</code> produces a CSV export (presigned, time-limited link) with a caller-selected column list.</p>
+<p>Record fields: <code>id</code>, <code>created</code>, <code>modified</code>, <code>org_id</code>, <code>org_display_name</code>, <code>org_nca_id</code>, <code>ngc_org_name</code>, <code>org_is_banned</code>, <code>simulation_uuid</code>, <code>sim_name</code>, <code>sim_creator</code>, <code>sim_owner</code>, <code>run_id</code>, <code>fleet_id</code>, <code>fleet_name</code>, <code>sim_cpu</code>, <code>sim_memory</code> (MiB), <code>sim_storage</code> (GB), <code>sim_compute_hours_rate</code>, <code>sim_compute_hours_consumed</code>, <code>sim_compute_hours_consumed_for_period</code>, <code>billing_started_at</code>, <code>billing_ended_at</code>.</p>
+<p>Key characteristics:
+- <strong>Billable unit:</strong> the compute hour, metered to the minute. One compute hour is 1 vCPU for 1 hour or 8 GB of memory for 1 hour, billed independently.
+- <strong>Prepaid grants:</strong> compute hours are granted to an NGC org (free trial: 10,000 hours over 90 days); paid grants are bought through NVIDIA sales. The Organization model reports <code>total_compute_hours</code> and <code>remaining_compute_hours</code>, but grants are not billing records.
+- <strong>No money anywhere:</strong> no price, cost, or currency field, and no public price list.
+- <strong>Hierarchy:</strong> NVIDIA Cloud Account (NCA) contains NGC orgs; usage is attributed to simulation, run, creator/owner, and fleet.
+- <strong>No regions or tags:</strong> fleets are the only placement concept; node labels exist in the topology but not in billing data.
+- <strong>Period clipping built in:</strong> <code>sim_compute_hours_consumed_for_period</code> returns the overlap between a run and the query window, so daily or monthly rows are straightforward.</p>
+<p><strong>Portfolio context (not scored column by column):</strong>
+- <strong>DGX Cloud:</strong> hyperscaler marketplace private offers; billed by AWS, Google Cloud, Azure, or OCI. NVIDIA spend appears in those providers&rsquo; FOCUS exports as marketplace charges.
+- <strong>NVIDIA AI Enterprise:</strong> per-GPU licensing; term, perpetual, or marketplace pay-as-you-go. The NVIDIA License System reports license usage for capacity planning, with no documented fields, export, or API.
+- <strong>DGX Cloud Lepton:</strong> Organization and Workspace hierarchy tied to an NCA; three node group types (BYOC, BYOK, Lepton Managed). Python SDK resources include no billing, usage, or cost resource. Observability export sends logs and custom metrics to Datadog only.
+- <strong>NVIDIA Run:ai:</strong> Consumption Reports (CSV) grouped by Nodepool, Project, Department, or Cluster over a date range. Column schema is not documented and there is no cost or price setting.
+- <strong>build.nvidia.com:</strong> free inference trial; no documented credits, pricing, or usage API.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and populated, Conditional columns must be present when the provider&rsquo;s model triggers them, and values must match FOCUS formats and allowed values. Air has no commitment-discount or capacity-reservation construct, no regions or zones, and no cost tags on simulations, so those column families are N/A. Feature levels were taken from the bundled v1.2 table and spot-checked against the live specification on focus.finops.org.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>NVIDIA Air source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>No cost field; compute hours drawn from prepaid grants priced off-system</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Requires amortizing grant purchase price across hours consumed</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>No published compute-hour rate</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Contract rate held by NVIDIA sales, not in records</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td><code>org_nca_id</code> (NVIDIA Cloud Account)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>NCA name not emitted; join from NCA or fall back to <code>org_display_name</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>No currency field</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>No invoice period; derive from <code>period_start</code> query aligned to calendar month</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Derive from <code>period_end</code> query aligned to calendar month</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Derive: later of <code>billing_started_at</code> and window start</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Derive: earlier of <code>billing_ended_at</code> (or now) and window end</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Derive from <code>sim_name</code> + <code>fleet_name</code> (e.g., &ldquo;NVIDIA Air simulation · spine-leaf-lab · fleet-a&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for runs; &ldquo;Purchase&rdquo; for grants; &ldquo;Credit&rdquo; for trial grants</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; no correction mechanism documented</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Not emitted; &ldquo;NVIDIA Corporation&rdquo; when sold direct, partner name when resold</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;NVIDIA&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;NVIDIA&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>&ldquo;NVIDIA Air&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Compute&rdquo; (billed on vCPU and memory)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td><code>sim_compute_hours_consumed_for_period</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Unit implied by docs, not a field; set &ldquo;Compute Hours&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td><code>sim_compute_hours_consumed_for_period</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Set &ldquo;Compute Hours&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>No published rate</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Contract rate not in records</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Depends on undisclosed grant terms</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; for runs; &ldquo;One-Time&rdquo; for grants</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from org type (Individual or Enterprise)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td><code>org_id</code> (NGC org)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td><code>ngc_org_name</code> / <code>org_display_name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Set &ldquo;NGC Organization&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td><code>simulation_uuid</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td><code>sim_name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Set &ldquo;Simulation&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>No SKU identifier</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: no user-defined tags on simulations; node labels are topology metadata</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: no separate pricing currency documented</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Derive &ldquo;Compute Hours&rdquo; (vCPU-hours + memory-8GB-hours)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>No price identifier</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td><code>sim_compute_hours_rate</code> is a consumption rate, not a price; no price details</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: fleets only, no regions</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: prepaid grants are not discount instruments</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>No invoice reference in records</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not emitted; &ldquo;Virtual Machines&rdquo; fits (Air nodes are VMs)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: no zones</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 11 Present, 16 Deviation, 5 Missing Mandatory, 6 Missing Conditional, 2 Missing Recommended, 17 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Resource-level grain (<code>simulation_uuid</code>, <code>run_id</code>), a two-level account hierarchy (NCA to NGC org), precise start and end timestamps, period-clipped quantities, owner and fleet attribution, and a self-service CSV export. This is better usage plumbing than most providers rated Nascent.</p>
+<p><strong>Substantive (4 of 5 Mandatory gaps):</strong> BilledCost, EffectiveCost, ListCost, and ContractedCost. No cost exists in the dataset, compute hours are bought as prepaid grants at contract prices, and grants expire. Producing these columns means joining each org&rsquo;s grant price, amortizing it across consumed hours, and handling expired or voided hours. That is a billing-system change, not a transform.</p>
+<p><strong>Trivial (1 of 5):</strong> BillingCurrency is a constant once a cost exists.</p>
+<p><strong>Out of scope here but material:</strong> DGX Cloud, AI Enterprise, Lepton, and Run:ai have no public billing feed. For DGX Cloud and marketplace AI Enterprise, the hyperscaler&rsquo;s FOCUS export is the customer&rsquo;s source of truth today.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>ChargePeriodStart / ChargePeriodEnd:</strong> Records span a whole run. Clip each run to daily windows using <code>period_start</code>/<code>period_end</code> and <code>sim_compute_hours_consumed_for_period</code> so each FOCUS row covers one day.</p>
+<p><strong>PricingUnit / ConsumedUnit / SkuMeter:</strong> The compute hour is a composite of vCPU-hours and 8 GB memory-hours. Emit &ldquo;Compute Hours&rdquo; consistently, and consider splitting vCPU and memory into separate meters so consumption is auditable.</p>
+<p><strong>ChargeCategory / ChargeFrequency:</strong> Emit grant purchases as &ldquo;Purchase&rdquo; / &ldquo;One-Time&rdquo;, trial grants as &ldquo;Credit&rdquo;, and runs as &ldquo;Usage&rdquo; / &ldquo;Usage-Based&rdquo;. Grants are currently invisible in billing records.</p>
+<p><strong>BillingAccountName / InvoiceIssuerName:</strong> Both depend on the commercial relationship (NCA, direct vs. partner) and are not in the record.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Compute&rdquo; is the closest allowed value; Air is billed on vCPU and memory.</p>
+<p><strong>Already right:</strong> Stable resource IDs, ISO 8601 timestamps, nullable end time for running sims, and the CSV report endpoint.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2. FOCUS v1.5 is a candidate release with ratification scheduled for December 3, 2026; its consumption currency for provider credits and its SKU Price dataset preview fit Air&rsquo;s compute-hour grants and are worth designing toward.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report. Use the FOCUS Validator against a sample export and document the N/A families (no regions, no commitment discounts, no capacity reservations, no cost tags).</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Scope.</strong> Confirm which NVIDIA products are invoiced directly through the NCA (Air, Lepton, direct AI Enterprise subscriptions) versus through hyperscalers and partners. Pull one month of Air billing records via the CSV report endpoint and run it through the FOCUS Validator to baseline.</p>
+<p><strong>Phase 1: Cost columns for Air.</strong> Attach a contract price and currency to each org&rsquo;s compute-hour grants; emit grants as Purchase rows; compute BilledCost, ListCost, ContractedCost, and EffectiveCost on daily usage rows.</p>
+<p><strong>Phase 2: Deviations.</strong> Daily charge periods, unit normalization, ChargeCategory/ChargeFrequency, BillingAccountName, InvoiceIssuerName, ServiceCategory, ServiceSubcategory, InvoiceId.</p>
+<p><strong>Phase 3: Extend to directly billed products.</strong> Apply the same schema to DGX Cloud Lepton (node-group GPU-hours, workspace as sub-account) and direct AI Enterprise subscriptions (Purchase / Recurring rows per GPU).</p>
+<p><strong>Phase 4: Allocation and certification.</strong> Map Run:ai Consumption Report allocation (cluster, department, project, node pool) to FOCUS v1.3 split cost allocation columns. Drop ProviderName and PublisherName for v1.4. Validate and certify.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Identify the NVIDIA owner for NCA billing and confirm which products NVIDIA invoices directly.</li>
+<li>Generate one month of Air billing records via <code>POST /api/v3/billing-records/csv-report/</code> and validate a FOCUS-shaped transform.</li>
+<li>Decide where compute-hour pricing lives (rate card or per-contract) and expose it with currency on billing records.</li>
+<li>Publish the Run:ai Consumption Report column schema; it is the KubeCon audience&rsquo;s most likely FOCUS touchpoint.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> NVIDIA Air Billing Records API fields, endpoints, and the absence of any price, cost, or currency field (read from the API reference).</li>
+<li><strong>High:</strong> DGX Cloud is sold through hyperscaler marketplace private offers, and AI Enterprise is licensed per GPU through partners and marketplaces (product and licensing pages).</li>
+<li><strong>High:</strong> No public billing, usage, or cost API exists for DGX Cloud Lepton, Run:ai, or build.nvidia.com as of this date. Gated customer portals may hold more.</li>
+<li><strong>Moderate:</strong> NCA as BillingAccountId and NGC org as SubAccountId. The docs tie Air billing to NGC orgs within an NCA but do not describe invoicing.</li>
+<li><strong>Moderate:</strong> Prepaid compute-hour grants are not commitment discounts. If grants are sold at a discount to a list rate, the CommitmentDiscount family would apply.</li>
+<li><strong>Moderate:</strong> ServiceCategory &ldquo;Compute&rdquo; and ServiceSubcategory &ldquo;Virtual Machines&rdquo; for a simulation service.</li>
+<li><strong>Low:</strong> Whether NVIDIA or a partner is the InvoiceIssuerName for Air, Lepton, and AI Enterprise in a given deal.</li>
+<li><strong>Spec verification:</strong> The FOCUS MCP server was unavailable. Feature levels came from the bundled v1.2 table (dated June 23, 2026), with ServiceSubcategory, ChargeFrequency, PricingUnit, Tags, and InvoiceId spot-checked against focus.finops.org; all matched. No version newer than v1.4 is ratified.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>NVIDIA Air Billing Records API: <a href="https://docs.nvidia.com/dsx-air/api-reference/billing/api-v-3-billing-records-list.md">list</a>, <a href="https://docs.nvidia.com/dsx-air/api-reference/billing/api-v-3-billing-records-summary-retrieve.md">summary</a>, <a href="https://docs.nvidia.com/dsx-air/api-reference/billing/api-v-3-billing-records-csv-report-create.md">CSV report</a></li>
+<li>NVIDIA Air account setup: <a href="https://docs.nvidia.com/dsx-air/account-setup.md">docs.nvidia.com/dsx-air/account-setup</a></li>
+<li>NVIDIA Run:ai Reports: <a href="https://run-ai-docs.nvidia.com/saas/platform-management/monitor-performance/reports">run-ai-docs.nvidia.com</a>, <a href="https://run-ai-docs.nvidia.com/api/organizations/reports">Reports API</a></li>
+<li>DGX Cloud Lepton: <a href="https://docs.nvidia.com/dgx-cloud/lepton/reference/api">Python SDK reference</a>, <a href="https://docs.nvidia.com/dgx-cloud/lepton/features/utilities/observability/export/">observability export</a>, <a href="https://www.nvidia.com/en-us/data-center/dgx-cloud-lepton/">product page</a></li>
+<li>DGX Cloud: <a href="https://www.nvidia.com/en-us/data-center/dgx-cloud/">nvidia.com/dgx-cloud</a></li>
+<li>NVIDIA AI Enterprise licensing and pricing: <a href="https://docs.nvidia.com/ai-enterprise/planning-resource/licensing-guide/latest/pricing.html">licensing guide</a>, <a href="https://docs.nvidia.com/ai-enterprise/planning-resource/licensing-guide/latest/license-system.html">License System</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a>; FOCUS 1.5 release scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

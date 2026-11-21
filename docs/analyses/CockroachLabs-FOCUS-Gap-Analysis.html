@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cockroach Labs &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/CockroachLabs-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="cockroach-labs-focus-data-generator-gap-analysis">Cockroach Labs &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Cockroach Labs, Inc.<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Public Cockroach Labs documentation only: CockroachDB Cloud API billing endpoints (<code>GET /api/v1/invoices</code>, <code>GET /api/v1/invoices/{invoice_id}</code>, OpenAPI spec versions 2023-04-10 through 2026-09-15); Billing Management, Understand Costs, Folders, Labels, and Request Unit metrics docs; <code>ccloud</code> CLI reference; Cockroach Continuum pricing page and Editions and Add-ons docs; Cloud Terms and Conditions<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 20 Present, 17 Deviation, 2 Missing Mandatory, 13 Missing Conditional, 1 Missing Recommended, 4 N/A</p>
+<blockquote>
+<p><strong>Public billing docs: richer than most, with specific holes.</strong> Cockroach Labs publishes a typed, versioned invoice API with per-cluster line items, quantity units, unit costs, adjustments, folders, and labels, which is more than most database vendors offer. The holes matter for FOCUS: the Console CSV exports (the only source of daily rows and per-locality charges) have no published column list; public list prices cover only AWS us-east-1 compute, with storage, data transfer, other regions, and BYOC unpublished; and the billing docs still describe the legacy Basic/Standard/Advanced plans two months after the September 15, 2026 Continuum pricing change. Statuses that rest on the CSV are provisional until Cockroach Labs shares a sample export.</p>
+</blockquote>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Cockroach Labs sells CockroachDB, a distributed SQL database, as CockroachDB Cloud on AWS, Google Cloud, and Azure, and as self-hosted Enterprise licenses. On September 15, 2026, new Cloud organizations moved to Cockroach Continuum pricing: two editions (Standard and Mission Critical) billed per vCPU-hour, metered by the minute, plus usage-based storage, data transfer, and add-ons (Data Sync, Data Replication, Cluster Virtualization, Advanced Compliance) that appear as separate line items. Existing organizations stay on the legacy Basic (Request Units), Standard (provisioned vCPU-hours), and Advanced (per-node-hour) plans unless they opt in. Annual and committed-use contracts are paid as prepaid CockroachDB Cloud Credits with volume discounts, drawn down at the end of each billing period.</p>
+<p>The invoice API is a strong base. Every line item sits under a full cluster object (ID, name, plan or edition, cloud provider, regions, folder, labels), and the invoice carries an ID, a status (<code>DRAFT</code> or <code>FINALIZED</code>), and inclusive-start, exclusive-end period bounds that already match FOCUS semantics. Of the 21 Mandatory columns, 19 have a source and 2 are missing. One gap is substantive: <strong>EffectiveCost</strong>, because prepaid credits, contract volume discounts, free monthly usage, trial credit, and invoice-level adjustments all exist, and adjustments are &ldquo;not tied to a particular cluster.&rdquo; <strong>ListCost</strong> is a rate-card join.</p>
+<p>The deepest structural issue is currency. Contract organizations see totals denominated in <code>CRDB_CLOUD_CREDITS</code> or <code>COCKROACH_CREDITS</code>, which the API lists as currencies beside <code>USD</code>. FOCUS requires an ISO 4217 BillingCurrency, but since v1.2 it models virtual currencies through the PricingCurrency columns. Cockroach Labs&rsquo; credits are a textbook fit for that design, and remodeling them is most of the work.</p>
+<p><strong>Recommendation:</strong> Publish a FOCUS export per organization through a new Cloud API endpoint (and <code>ccloud billing</code>), built from the same data as the Daily CSV: one Usage row per cluster × line item × locality × day, with BillingCurrency in USD, credits in PricingCurrency, adjustments as Credit or Purchase rows, and the credit purchase as a commitment. Carry the cluster ID into ResourceId, the folder into SubAccountId, cluster labels into Tags, and locality into RegionId.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<ul>
+<li><strong>Cloud API invoices</strong> (<code>https://cockroachlabs.cloud/api/v1/invoices</code>, roles <code>BILLING_COORDINATOR</code> or <code>CLUSTER_ADMIN</code>; not marked preview): list filterable by <code>status</code>, <code>start_time</code>, and <code>end_time</code>, plus a single-invoice endpoint. Fields:</li>
+<li>Invoice: <code>invoice_id</code>, <code>status</code> (<code>FINALIZED</code> | <code>DRAFT</code>), <code>period_start</code> (inclusive), <code>period_end</code> (exclusive), <code>totals[]</code> and <code>balances[]</code> as per-currency amounts.</li>
+<li><code>invoice_items[]</code> sorted by cluster name: the full <code>cluster</code> object and per-cluster <code>totals[]</code>.</li>
+<li><code>line_items[]</code> (&ldquo;from the Metronome invoice&rdquo;): <code>description</code> (e.g., &ldquo;t3 micro&rdquo;), <code>quantity</code>, <code>quantity_unit</code> (<code>HOURS</code> | <code>REQUEST_UNITS</code> | <code>GIB</code> | <code>GIB_HOURS</code> | <code>VCPU_HOURS</code>), <code>unit_cost</code>, <code>total</code>.</li>
+<li><code>adjustments[]</code>: <code>name</code> and <code>amount</code>, for &ldquo;credits or costs that adjust the value of the invoice (e.g. a Serverless Free Credit or Premium Support adjustment).&rdquo; Not tied to a cluster.</li>
+<li><code>folder_resources[]</code> (Preview): <code>resource_id</code>, <code>resource_type</code> (<code>FOLDER</code> | <code>CLUSTER</code>), <code>parent_id</code>, <code>organization_id</code>, <code>name</code>, <code>path[]</code>, <code>labels</code>.</li>
+<li>Currency enum: <code>USD</code>, <code>CRDB_CLOUD_CREDITS</code>, <code>COCKROACH_CREDITS</code> (Continuum organizations get the latter). Amounts are tracked as arbitrary-precision decimals but serialized as 64-bit floats.</li>
+<li><strong>Cluster object</strong> (embedded per invoice item): <code>id</code>, <code>name</code>, <code>cloud_provider</code> (<code>GCP</code> | <code>AWS</code> | <code>AZURE</code>), <code>regions[]</code> (<code>name</code>, <code>node_count</code>, <code>primary</code>, <code>machine_type</code>, <code>num_virtual_cpus</code>), <code>plan</code> (<code>BASIC</code> | <code>STANDARD</code> | <code>ADVANCED</code>) or <code>edition</code> (<code>STANDARD</code> | <code>MISSION_CRITICAL</code>), <code>labels</code>, <code>parent_id</code> (Preview), <code>config</code>.</li>
+<li><strong>Console Billing page</strong> (Billing Coordinator or Billing Viewer):</li>
+<li><strong>Export Monthly CSV:</strong> one row per line item for all clusters. Adjustments are &ldquo;appended as additional rows at the end of the file, with no cluster-specific details.&rdquo; Adds &ldquo;Cluster path&rdquo; when folders are used.</li>
+<li><strong>Export Daily CSV:</strong> the same rows broken down by day, adding &ldquo;Usage date&rdquo; and &ldquo;Locality (for multi-region charge breakdowns).&rdquo; Only for invoices posted in 2026 or later.</li>
+<li><strong>Export Invoice PDF.</strong> No published CSV column list or sample.</li>
+<li><strong><code>ccloud billing invoice list|get</code></strong> wraps the API. The Terraform provider has no billing data source.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Plans and meters:</strong> Legacy Basic bills Request Units ($0.20 per million) and storage ($0.50 per GiB-month) with $15 of free monthly usage. Legacy Standard bills provisioned vCPU-hours at the most expensive region&rsquo;s rate, plus storage GiB-hours. Legacy Advanced bills per node-hour by vCPU, cloud, and region, plus provisioned storage and AWS IOPS. Data transfer (same-region, cross-region, public internet), managed backups (tiered by GiB-month), and changefeeds (tiered) are separate.</li>
+<li><strong>Continuum:</strong> Standard from $0.057 per vCPU-hour ($0.092 in AWS us-east-1); Mission Critical $0.162 in AWS us-east-1. Add-ons are priced as vCPU-hour multipliers (Data Sync $0.006 on Standard, $0.023 on Mission Critical). A 30-day trial carries $400 of credit.</li>
+<li><strong>Credits and contracts:</strong> Annual and committed-use contracts buy CockroachDB Cloud Credits with undisclosed volume discounts. &ldquo;At the end of each billing period, invoice payments are deducted from your organization&rsquo;s Credits.&rdquo;</li>
+<li><strong>Hierarchy:</strong> Organization → folders (up to four levels, 65 per organization) → clusters. &ldquo;Clusters are billed to their residing folder at billing period end.&rdquo;</li>
+<li><strong>Labels:</strong> Key/value, up to 50 per cluster or folder, lowercase keys and values. Present in the invoice cluster object.</li>
+<li><strong>Marketplaces:</strong> AWS and Google Cloud Marketplace subscriptions are documented in billing docs; the pricing page also lists Azure Marketplace.</li>
+<li><strong>Out of scope:</strong> Self-hosted Enterprise licenses. They carry no published usage or invoice data.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. CockroachDB Cloud deploys clusters in cloud regions, groups them into folders, supports key/value labels, sells through marketplaces as well as directly, and prices contracts in a virtual currency (credits) bought at a discount. RegionId, RegionName, SubAccountId, SubAccountName, Tags, BillingAccountType, the PricingCurrency family, and the CommitmentDiscount family therefore apply. Cockroach Labs sells no capacity reservations, folders are the only sub-account type, and zones are not billed separately, so CapacityReservationId, CapacityReservationStatus, SubAccountType, and AvailabilityZone are N/A and should exist as null. Feature levels follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Cockroach Labs source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Line item <code>total</code>; denominated in credits for contract organizations, adjustments unallocated, float serialization</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs USD value of credits drawn, contract discount, and allocation of free usage, trial credit, and adjustments to clusters</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not exposed; <code>unit_cost</code> may be the contract rate; join list rate card × PricingQuantity</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Line item <code>total</code> (<code>unit_cost</code> × <code>quantity</code>); needs USD conversion for credit organizations</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Organization ID (API is organization-scoped; <code>organization_id</code> in <code>folder_resources</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td><code>currency</code> on <code>totals</code>; <code>CRDB_CLOUD_CREDITS</code> and <code>COCKROACH_CREDITS</code> are not ISO 4217</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td><code>period_start</code> (inclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td><code>period_end</code> (exclusive)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Daily CSV &ldquo;Usage date&rdquo;; API offers only the invoice period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Usage date + 1 day</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Line item <code>description</code>; adjustment <code>name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for line items; &ldquo;Credit&rdquo; for free-usage and trial adjustments; &ldquo;Purchase&rdquo; for Premium Support and credit purchases</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Cockroach Labs, Inc.&rdquo; for direct; &ldquo;Amazon Web Services&rdquo;, &ldquo;Google&rdquo;, or &ldquo;Microsoft&rdquo; for marketplace</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Cockroach Labs&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Cockroach Labs&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Cluster <code>plan</code> or <code>edition</code> (e.g., &ldquo;CockroachDB Cloud Standard&rdquo;, &ldquo;CockroachDB Cloud Mission Critical&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Databases&rdquo; for clusters, storage, backups, and add-ons; &ldquo;Networking&rdquo; for data transfer</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td><code>quantity</code>; backups and changefeeds are tiered and Basic has a free allowance, so compute against the rate basis</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize <code>quantity_unit</code>: &ldquo;Hours&rdquo;, &ldquo;1M Request Units&rdquo;, &ldquo;GiB&rdquo;, &ldquo;GiB-Hours&rdquo;, &ldquo;vCPU-Hours&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td><code>quantity</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td><code>quantity_unit</code> enum; normalize to FOCUS unit format</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td><code>unit_cost</code> on pay-as-you-go; contract organizations need the list rate card</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td><code>unit_cost</code>; in credits for contract organizations</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; for pay-as-you-go; &ldquo;Committed&rdquo; for credit-funded usage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Not exposed; direct vs. AWS, Google Cloud, or Azure Marketplace organization</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Cluster <code>parent_id</code> (Preview) and <code>folder_resources[].resource_id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td><code>folder_resources[].name</code>; <code>path[]</code> gives the full folder path</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A: folder is the only sub-account type</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Cluster <code>id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Cluster <code>name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Cluster <code>config</code> and <code>plan</code>/<code>edition</code> (e.g., &ldquo;Serverless Cluster&rdquo;, &ldquo;Dedicated Cluster&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; meaning sits in free-text <code>description</code></td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Cluster <code>labels</code> (key/value map, up to 50); folder labels in <code>folder_resources</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>Credits currency exists but is reported as the billing currency; remodel as &ldquo;CockroachDB Cloud Credits&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td><code>unit_cost</code> in credits for contract organizations</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Not available; credits drawn after allocation of adjustments</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Derive from <code>quantity_unit</code> and <code>description</code> (e.g., &ldquo;Compute&rdquo;, &ldquo;Storage&rdquo;, &ldquo;Request Units&rdquo;, &ldquo;Data Transfer&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for region, backup and changefeed tiers, free allowance, and add-on multipliers</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Daily CSV &ldquo;Locality&rdquo;; API has cluster <code>regions[].name</code> but no per-line region</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Map from cloud-native region code</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Contract or credit grant ID; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Annual Credit Commitment&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Spend&rdquo;; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo;/&rdquo;Unused&rdquo; against the credit balance</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Credits drawn; <code>balances[]</code> gives the remaining balance only</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;Credits&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td><code>invoice_id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; for metered lines; &ldquo;Recurring&rdquo; for support and contract fees</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map to &ldquo;Relational Databases&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: clusters span zones within a region; zones are not billed</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 20 Present, 17 Deviation, 2 Missing Mandatory, 13 Missing Conditional, 1 Missing Recommended, 4 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Organization identity, FOCUS-shaped billing period bounds, invoice IDs and status, per-cluster line items with quantity and unit cost, cluster ID, name, and type, folder hierarchy, and key/value labels inside billing data. Allocation, usually the weakest area for a database vendor, is the strongest here.</p>
+<p><strong>Substantive (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Discounts and credits exist in four forms: prepaid credits bought at a volume discount, free monthly usage on Basic, trial credit, and invoice-level adjustments with &ldquo;no cluster-specific details.&rdquo; Producing EffectiveCost means pricing each line in USD at the contract&rsquo;s effective credit rate and allocating free-usage and support adjustments back to clusters. On a pay-as-you-go organization with no adjustments, EffectiveCost equals the line total; on contract organizations it does not.</li>
+</ul>
+<p><strong>Trivial (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Cockroach Labs holds the full list rate card; expose it per line. Public prices are not enough to reconstruct it, since only AWS us-east-1 compute is published.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>Credits as a currency.</strong> The API reports credits as a peer of USD. FOCUS keeps BillingCurrency in ISO 4217 and expresses virtual currencies through PricingCurrency, PricingCurrencyContractedUnitPrice, and PricingCurrencyEffectiveCost. Cockroach Labs needs the USD value of a credit per contract to fill BilledCost and EffectiveCost.</li>
+<li><strong>Daily and regional data are Console-only.</strong> The API stops at the monthly invoice. Day-level rows and per-locality splits for multi-region clusters exist only in a manually downloaded CSV, and only for invoices from 2026 onward.</li>
+<li><strong>No SKU or meter identity.</strong> Line meaning lives in free-text <code>description</code>, so any mapping to SkuId, SkuMeter, ServiceCategory, or ChargeCategory is string parsing until Cockroach Labs exposes a meter or product code. Metronome, the billing engine behind the line items, already holds these codes.</li>
+<li><strong>Two pricing models at once.</strong> Legacy and Continuum organizations differ in plans, units, and credit currency names. A FOCUS export has to cover both.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost and BillingCurrency:</strong> Report BillingCurrency as &ldquo;USD.&rdquo; For pay-as-you-go, BilledCost is the line total. For credit-funded usage, emit BilledCost of 0 on usage rows and a Purchase row for the credit purchase, and move the credit amount to the PricingCurrency columns. Serialize amounts as decimals, not 64-bit floats.</p>
+<p><strong>ContractedCost and ContractedUnitPrice:</strong> Convert <code>unit_cost</code> and <code>total</code> from credits to USD at the contract rate.</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Usage&rdquo; for line items; &ldquo;Credit&rdquo; for Serverless Free Credit and trial adjustments; &ldquo;Purchase&rdquo; for Premium Support and credit purchases; &ldquo;Tax&rdquo; if tax is ever invoiced.</p>
+<p><strong>ServiceCategory:</strong> &ldquo;Databases&rdquo; for compute, storage, backups, and add-ons; &ldquo;Networking&rdquo; for data transfer lines.</p>
+<p><strong>PricingQuantity and PricingUnit:</strong> Compute and storage are flat per region, so PricingQuantity equals consumption there. Managed backups and changefeeds are tiered by GiB-month, and Basic has a free allowance; compute PricingQuantity against the rate basis and express tiers in SkuPriceDetails. Normalize <code>REQUEST_UNITS</code> to &ldquo;1M Request Units&rdquo; to match the price basis, and <code>GIB_HOURS</code> and <code>VCPU_HOURS</code> to &ldquo;GiB-Hours&rdquo; and &ldquo;vCPU-Hours.&rdquo;</p>
+<p><strong>RegionId and RegionName:</strong> Carry the Daily CSV &ldquo;Locality&rdquo; into the API line item and map cloud-native codes to names.</p>
+<p><strong>ConsumedUnit, PricingCategory, SkuMeter, ChargeFrequency:</strong> Derive as shown in the table.</p>
+<p><strong>Already right:</strong> Inclusive-start, exclusive-end periods, a stable invoice ID with draft/final status, cluster identity on every line, and key/value labels match FOCUS without transformation.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is a candidate release scheduled for ratification on December 3, 2026; its scope is on the FOCUS site. The v1.3 Contract Commitment dataset fits prepaid credit contracts better than per-row CommitmentDiscount columns alone, and the v1.4 Invoice Detail dataset maps to the existing invoice object and its <code>DRAFT</code>/<code>FINALIZED</code> status.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no capacity reservations, one sub-account type, zones not billed) and the decisions on modeling credits as a pricing currency and contracts as spend-based commitment discounts. Certification would cover CockroachDB Cloud, not self-hosted licenses.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month&rsquo;s Daily CSV and API invoice for a pay-as-you-go organization and a credit-contract organization, on both legacy and Continuum pricing. Hand-build a v1.2 file and run it through the Validator. Decide the credit and commitment model.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Expose list rates for ListCost. Value credits in USD and allocate adjustments to clusters for EffectiveCost. Move credits to PricingCurrency and emit USD BilledCost with Purchase and Credit rows so it reconciles to the invoice.</p>
+<p><strong>Phase 2: Fix deviations and add a feed.</strong> Derive ChargeCategory, ServiceCategory, ChargeFrequency, and PricingCategory; normalize units; compute PricingQuantity against backup and changefeed tiers. Add usage date and locality to the API line item, or ship a FOCUS export endpoint, so daily data no longer requires a Console download.</p>
+<p><strong>Phase 3: Conditional columns.</strong> Expose Metronome product codes as SkuId, SkuPriceId, and SkuMeter, with tiers and region in SkuPriceDetails. Add BillingAccountType for marketplace organizations, the CommitmentDiscount family, and ServiceSubcategory. Snapshot labels at billing time and promote <code>parent_id</code> out of preview.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Invoice Detail and Contract Commitment datasets; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Available now (from API and CSV with transformation):</strong> Showback and chargeback by cluster, folder, and label; spend by plan or edition; month-over-month cost trends.</li>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, actuals-based budgeting, and amortized spend reporting for contract organizations.</li>
+<li><strong>After Phase 2:</strong> Daily anomaly detection, per-region cost for multi-region clusters, and automated ingestion into FinOps tools without Console downloads.</li>
+<li><strong>After Phase 3:</strong> Unit economics per vCPU-hour or per million Request Units across editions, credit burn-down tracking, and marketplace-versus-direct comparison.</li>
+<li><strong>Out of scope:</strong> Capacity reservation management and availability-zone analysis.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Cockroach Labs contact from KubeCon NA 2026 to reach the owner of CockroachDB Cloud billing and the Metronome integration.</li>
+<li>Request a sample Daily CSV and confirm its columns, and confirm whether <code>unit_cost</code> is the list or contracted rate for credit organizations.</li>
+<li>Confirm the USD value of a credit per contract, whether invoice labels are snapshots or current values, and how marketplace-billed usage appears in the API.</li>
+<li>Build a v1.2 sample from one billing month and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code> and discuss FinOps Foundation membership.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Invoice API endpoints, fields, enums, and roles come from the published OpenAPI reference (2026-09-15 version).</li>
+<li><strong>High:</strong> Monthly and Daily CSV exports exist; the Daily CSV adds &ldquo;Usage date&rdquo; and &ldquo;Locality&rdquo; and covers 2026-onward invoices only; adjustments carry no cluster details.</li>
+<li><strong>High:</strong> Continuum pricing (editions, per-vCPU-hour rates for AWS us-east-1, per-minute metering, $400 trial credit, September 15, 2026 effective date) comes from the pricing page.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> Present status for ChargePeriodStart and ChargePeriodEnd rests on the Daily CSV, whose columns are not published.</li>
+<li><strong>Moderate:</strong> Tags as Present. Labels are in the invoice cluster object, but the docs do not say whether they are snapshots at billing time or current values.</li>
+<li><strong>Moderate:</strong> Modeling credits as a PricingCurrency and contracts as spend-based commitment discounts. If credits always equal $1, PricingCurrency becomes simpler but the commitment model still applies.</li>
+<li><strong>Moderate:</strong> ServiceSubcategory &ldquo;Relational Databases&rdquo; for distributed SQL; confirm against the v1.2 allowed-value table.</li>
+<li><strong>Low:</strong> Whether <code>unit_cost</code> reflects list or contracted rates for credit organizations. Not documented.</li>
+<li><strong>Low:</strong> InvoiceIssuerName for marketplace and non-US customers. The Cloud Terms name Cockroach Labs, Inc.; no public invoice sample confirms the issuer on all paths.</li>
+<li><strong>Low:</strong> Prices outside AWS us-east-1 compute, including storage, data transfer, and BYOC. Not published.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Cloud API, List Invoices: <a href="https://docs.cockroachlabs.com/docs/api/cloud/v1/billing/list-invoices-for-a-given-organization.md">docs.cockroachlabs.com/docs/api/cloud/v1/billing/list-invoices-for-a-given-organization</a></li>
+<li>Cloud API, Get Invoice: <a href="https://docs.cockroachlabs.com/docs/api/cloud/v1/billing/get-a-specific-invoice-for-an-organization.md">docs.cockroachlabs.com/docs/api/cloud/v1/billing/get-a-specific-invoice-for-an-organization</a></li>
+<li>Billing Management: <a href="https://docs.cockroachlabs.com/docs/cockroachcloud/billing-management.md">docs.cockroachlabs.com/docs/cockroachcloud/billing-management</a></li>
+<li>Understand CockroachDB Cloud Costs: <a href="https://docs.cockroachlabs.com/docs/cockroachcloud/costs.md">docs.cockroachlabs.com/docs/cockroachcloud/costs</a></li>
+<li>Plan a Basic Cluster: <a href="https://docs.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-basic.md">docs.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-basic</a></li>
+<li>Folders: <a href="https://docs.cockroachlabs.com/docs/cockroachcloud/folders.md">docs.cockroachlabs.com/docs/cockroachcloud/folders</a></li>
+<li>Labels: <a href="https://docs.cockroachlabs.com/docs/cockroachcloud/labels.md">docs.cockroachlabs.com/docs/cockroachcloud/labels</a></li>
+<li>Request Unit Metrics: <a href="https://docs.cockroachlabs.com/docs/cockroachcloud/metrics-request-units.md">docs.cockroachlabs.com/docs/cockroachcloud/metrics-request-units</a></li>
+<li><code>ccloud</code> Reference: <a href="https://docs.cockroachlabs.com/docs/cockroachcloud/ccloud-reference.md">docs.cockroachlabs.com/docs/cockroachcloud/ccloud-reference</a></li>
+<li>Editions and Add-ons: <a href="https://docs.cockroachlabs.com/docs/continuum/editions-and-add-ons.md">docs.cockroachlabs.com/docs/continuum/editions-and-add-ons</a></li>
+<li>Cockroach Labs Pricing: <a href="https://www.cockroachlabs.com/pricing">cockroachlabs.com/pricing</a></li>
+<li>Cloud Terms and Conditions: <a href="https://www.cockroachlabs.com/cloud-terms-and-conditions/">cockroachlabs.com/cloud-terms-and-conditions</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

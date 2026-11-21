@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anthropic &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Anthropic-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="anthropic-focus-data-generator-gap-analysis">Anthropic &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: June 25, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Anthropic<br>
+<strong>Prepared:</strong> June 25, 2026<br>
+<strong>Source:</strong> Anthropic Admin API (<code>/v1/usage</code>); Anthropic billing portal<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 27 Present, 11 Deviation, 0 Missing Mandatory, 2 Missing Conditional, 1 Missing Recommended, 16 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Anthropic bills for API access by token count, disaggregated by model and token type: input tokens, output tokens, cache write tokens, and cache read tokens. Each combination is a distinct FOCUS row. All 21 Mandatory columns have source data. The 11 Deviations cover enum derivation (ChargeCategory, ServiceCategory, PricingCategory, ChargeFrequency), unit normalization, and enterprise ContractedCost. Sixteen columns are legitimately N/A: no per-request resource IDs exist in billing aggregates, no regional routing is visible, and no commitment discount or capacity reservation model exists. The missing SkuPriceId and SkuPriceDetails reflect the absence of a pricing catalog ID structure in Anthropic&rsquo;s API.</p>
+<p><strong>Recommendation:</strong> The FOCUS transform for Anthropic is straightforward. The key structural decision is the granularity of each row: one FOCUS row per model × token type × workspace × day. Anthropic&rsquo;s admin usage API provides the workspace, model, and token type breakdown needed to produce this. The public rate card handles ListUnitPrice. Start with on-demand usage and add batch API rows with PricingCategory = &ldquo;Dynamic&rdquo; in a follow-on pass.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>Anthropic Admin API</strong> (<code>GET /v1/usage</code>): Provides usage data at the organization and workspace level, broken down by model, token type, and time period. Fields include input tokens, output tokens, cache creation tokens, cache read tokens, and associated costs. Workspace-level filtering is available for multi-workspace organizations.</p>
+<p><strong>Anthropic Billing Portal</strong>: Provides monthly invoices with line items by model and token type. Invoice numbers and billing currency are available here.</p>
+<p>Key characteristics for FOCUS:</p>
+<ul>
+<li><strong>Token-based billing:</strong> Every charge is a count of tokens consumed, priced per million. Token types differ in price: input, output, cache write, and cache read are each separately metered.</li>
+<li><strong>Model-level SKUs:</strong> Each Claude model is a distinct pricing tier. The model ID (e.g., <code>claude-sonnet-4-6</code>) is the natural SkuId.</li>
+<li><strong>Public rate card:</strong> Anthropic publishes per-model, per-token-type pricing. ListCost and ListUnitPrice are derivable from the public rate card without supplementary data.</li>
+<li><strong>Workspaces:</strong> Anthropic organizations can contain multiple workspaces. The admin API returns usage data per workspace, mapping to FOCUS SubAccountId and SubAccountName.</li>
+<li><strong>Batch API:</strong> Anthropic offers a batch inference API at 50% discount. Batch usage appears as a distinct pricing tier and maps to PricingCategory = &ldquo;Dynamic&rdquo;.</li>
+<li><strong>No regional routing:</strong> Anthropic&rsquo;s API does not expose region assignment to customers. Regional routing is internal to Anthropic&rsquo;s infrastructure.</li>
+<li><strong>No commitment discounts:</strong> Anthropic has no reserved capacity or savings plan model. All usage is on-demand.</li>
+<li><strong>Enterprise negotiated rates:</strong> Large enterprise customers may negotiate custom rates. These are not exposed via the admin API.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. Each column carries a feature level: Mandatory, Conditional, or Recommended. N/A is a valid FOCUS state for columns that the provider&rsquo;s billing model genuinely does not produce.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Anthropic source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice line item amount by model and token type</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>= BilledCost (no prepaid commitment amortization)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Public rate × PricingQuantity from Anthropic rate card</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>= ListCost for standard API customers; enterprise negotiated rates not exposed via API</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Anthropic organization account ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>USD</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>First day of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Last day of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Start of aggregation period (day or month)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>End of aggregation period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Derive: model name + token type (e.g., &ldquo;claude-sonnet-4-6 · Input Tokens&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for all token charges</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for correction charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Anthropic, PBC&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Anthropic&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Anthropic&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Anthropic API&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;AI and Machine Learning&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Token count expressed in millions (usage ÷ 1,000,000)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize: &ldquo;1M Input Tokens&rdquo;, &ldquo;1M Output Tokens&rdquo;, &ldquo;1M Cache Write Tokens&rdquo;, &ldquo;1M Cache Read Tokens&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>= PricingQuantity</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>= PricingUnit</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Published rate per 1M tokens for the model and token type</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice for standard customers; enterprise rates require supplementary data</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; for on-demand; &ldquo;Dynamic&rdquo; for Batch API</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Usage-Based&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from account tier (e.g., &ldquo;Standard&rdquo;, &ldquo;Enterprise&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Anthropic workspace ID from admin API</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Workspace name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Workspace&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>N/A: API usage billing aggregates have no per-request resource IDs</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Claude model ID (e.g., &ldquo;claude-sonnet-4-6&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: Anthropic billing does not include request-level tags</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>USD</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ContractedUnitPrice; Deviation because enterprise rates require supplementary data</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>= EffectiveCost</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Input Tokens&rdquo;, &ldquo;Output Tokens&rdquo;, &ldquo;Cache Write Tokens&rdquo;, &ldquo;Cache Read Tokens&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>No pricing catalog rate ID exposed in Anthropic billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not applicable (flat per-token pricing by model)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: Anthropic API does not expose regional routing to customers</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: Anthropic has no reserved capacity or savings plan model</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number from Anthropic billing portal</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>No native field; &ldquo;Large Language Models&rdquo; as subcategory</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: global API with no customer-visible zone assignment</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 27 Present, 11 Deviation, 0 Missing Mandatory, 2 Missing Conditional, 1 Missing Recommended, 16 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Token usage quantities, model IDs, workspace hierarchy, billing period, invoice numbers, and public pricing. All 21 Mandatory columns have source data. ListUnitPrice is derivable from the published rate card.</p>
+<p><strong>Remaining:</strong> Enterprise ContractedCost requires supplementary pricing data. SkuPriceId and SkuPriceDetails are absent. The 11 Deviations are all achievable through derivation logic, not structural API changes.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>ChargeCategory:</strong> All API token charges → &ldquo;Usage&rdquo;. Credit adjustments → &ldquo;Credit&rdquo;. Avoid &ldquo;Purchase&rdquo;.</p>
+<p><strong>ServiceName and ServiceCategory:</strong> Derive &ldquo;Anthropic API&rdquo; and &ldquo;AI and Machine Learning&rdquo; as static values.</p>
+<p><strong>PricingUnit:</strong> Normalize to FOCUS format: &ldquo;1M Input Tokens&rdquo;, &ldquo;1M Output Tokens&rdquo;, &ldquo;1M Cache Write Tokens&rdquo;, &ldquo;1M Cache Read Tokens&rdquo; per row.</p>
+<p><strong>PricingCategory:</strong> On-demand: &ldquo;Standard&rdquo;. Batch API rows: &ldquo;Dynamic&rdquo; (50% discount applies variable pricing based on batch scheduling).</p>
+<p><strong>SkuMeter:</strong> Derive from the token type field in the admin API response: input → &ldquo;Input Tokens&rdquo;, output → &ldquo;Output Tokens&rdquo;, cache_creation → &ldquo;Cache Write Tokens&rdquo;, cache_read → &ldquo;Cache Read Tokens&rdquo;.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. The 16 N/A columns must be documented as legitimately not applicable for a stateless API billing model with no regional routing or commitment discount constructs.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0:</strong> Enable admin API access. Pull sample usage data across multiple workspaces and models for one billing month.</p>
+<p><strong>Phase 1: Core token usage transform.</strong> Map on-demand usage rows: BilledCost, ListCost, PricingQuantity/Unit (by token type), SkuId (model ID), SubAccount (workspace), BillingAccount, ChargePeriod, InvoiceId. Derive ChargeCategory, ServiceName, ServiceCategory, PricingCategory, ChargeFrequency, SkuMeter. Delivers conformant output for all Present and Deviation columns.</p>
+<p><strong>Phase 2: Batch API and enterprise.</strong> Add Batch API rows with PricingCategory = &ldquo;Dynamic&rdquo;. Integrate enterprise negotiated rate data for ContractedCost and ContractedUnitPrice.</p>
+<p><strong>Phase 3: Certify.</strong> Add ServiceSubcategory = &ldquo;Large Language Models&rdquo;. Drop ProviderName, PublisherName (v1.4). Validate with FOCUS Validator. Submit for certification.</p>
+<h3 id="24-focus-use-cases-anthropic-customers-unlock">2.4 FOCUS Use Cases Anthropic Customers Unlock</h3>
+<p><strong>After Phase 1:</strong> Per-model cost breakdown. Token type cost analysis (input vs. output vs. cache). Cost allocation by workspace. Billed vs. list rate verification.</p>
+<p><strong>After Phase 2:</strong> On-demand vs. Batch API cost comparison. Enterprise discount verification via ContractedCost vs. ListCost.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Enable Anthropic admin API access and pull one month of workspace-level usage data.</li>
+<li>Build a rate card mapping model × token type → ListUnitPrice from Anthropic&rsquo;s published pricing page.</li>
+<li>Implement the Phase 1 on-demand transform. Run through the FOCUS Validator.</li>
+<li>Design the SkuMeter derivation and PricingUnit normalization logic for all four token types.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code> once Phase 1 data is validator-clean.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Anthropic&rsquo;s token billing is structurally simple. Token count × rate = cost, with a public rate card. The 27 Present columns are grounded in documented API fields and published pricing.</li>
+<li><strong>High:</strong> Workspace hierarchy maps cleanly to FOCUS SubAccountId and SubAccountName.</li>
+<li><strong>High:</strong> The 16 N/A columns correctly reflect Anthropic&rsquo;s stateless API billing model. No regional routing, no resource IDs, and no commitment discount constructs exist in the API billing layer.</li>
+<li><strong>Moderate:</strong> SkuMeter derivation for cache token types. Cache write and read tokens are billed at different rates and must be separated into distinct FOCUS rows.</li>
+<li><strong>Low:</strong> Enterprise ContractedCost. Anthropic does not expose negotiated rates via the admin API.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Anthropic API Documentation: <a href="https://docs.anthropic.com">docs.anthropic.com</a></li>
+<li>Anthropic Admin API Usage Endpoint: <a href="https://docs.anthropic.com">docs.anthropic.com/admin/usage</a></li>
+<li>Anthropic Pricing: <a href="https://www.anthropic.com/pricing">anthropic.com/pricing</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google Cloud and FOCUS: Conformance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/GoogleCloud-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="google-cloud-and-focus-conformance-gap-and-adoption-roadmap">Google Cloud and FOCUS: Conformance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Provider and product in scope:</strong> Google Cloud (Cloud Billing), FOCUS usage cost export to BigQuery.
+<strong>Prepared:</strong> 2026-07-01.
+<strong>Source analyzed:</strong> Google Cloud &ldquo;Structure of FOCUS data export&rdquo; and &ldquo;Set up FOCUS Cloud Billing data export to BigQuery&rdquo; documentation, the FOCUS get-started page for Google Cloud, and the FinOps Foundation FOCUS column library.
+<strong>FOCUS baseline for this analysis:</strong> v1.2 (the current certification baseline).
+<strong>Version Google ships:</strong> a dedicated FOCUS export (Preview) that Google documents against v1.0, v1.1, and v1.2 gaps, plus a FOCUS v1.0 BigQuery view and Looker template.</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Google Cloud is an official FOCUS data generator and one of the specification&rsquo;s founding Steering Committee members. It ships a substantially complete FOCUS export today, so the question is not whether an export exists but how complete it is against the v1.2 baseline. Google delivers a dedicated, Google-managed FOCUS usage cost export to BigQuery (currently in Preview) alongside an established FOCUS v1.0 BigQuery view and Looker template. The dedicated export is normalized to FOCUS and comes with Google&rsquo;s own published conformance-gap register, which is unusually transparent.</p>
+<p>The strongest finding: the full cost family is genuinely present and correctly derived. BilledCost, EffectiveCost, ContractedCost, and ListCost are all populated from real Google billing fields (cost, credits, and cost_at_list), so this is not a list-cost-only dataset. Daily charge periods, resource identity, region, sub-account (project) attribution, SKU identity, and both pricing and billing currency columns are all present. The gaps are concentrated and known: FOCUS Tags is delivered through Google-specific x_Tags and x_Labels columns rather than the standard column, commitment-discount (CUD) information lives in x_Credits rather than the CommitmentDiscount column family, and a handful of Mandatory descriptive columns (ServiceCategory, InvoiceIssuerName, BillingAccountName) are not yet populated.</p>
+<ul>
+<li>Total FOCUS v1.2 columns: 57.</li>
+<li>Present and conformant: 33.</li>
+<li>Present with a deviation to fix: 2 (ChargeCategory and PricingCategory enum coverage).</li>
+<li>Missing Mandatory columns: 3 (BillingAccountName, InvoiceIssuerName, ServiceCategory), all substantive-but-tractable rather than deep data gaps.</li>
+</ul>
+<p><strong>Recommendation:</strong> Treat this as a Conformant-track export that needs targeted finishing, not a rebuild. Close the three Mandatory descriptive columns, promote Tags and commitment-discount data from the x_ columns into the standard FOCUS columns, and complete the ChargeCategory and PricingCategory enum coverage. Run the resulting dataset through the FOCUS Validator against v1.2 to confirm before pursuing formal conformance.</p>
+<p><strong>Readiness (data source reviewed, not a formal certification result):</strong></p>
+<ul>
+<li>Cost: Strong.</li>
+<li>Granularity: Strong.</li>
+<li>Allocation: Strong.</li>
+<li>Coverage: Partial.</li>
+<li>FOCUS shape: Partial.</li>
+<li>Overall band: <strong>Aligned.</strong></li>
+</ul>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<p>Google Cloud already publishes a FOCUS export and its own gap register. This section maps that export against the full FOCUS v1.2 column set and separates the concentrated, tractable gaps from the substantive ones.</p>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Google Cloud exposes FOCUS data two ways:</p>
+<ul>
+<li>A dedicated FOCUS usage cost export to BigQuery (Preview): a Google-managed, immutable linked dataset (<code>gcp_billing_immutable_&lt;account&gt;_&lt;location&gt;</code>) with a FOCUS table (<code>gcp_billing_export_focus_&lt;account&gt;</code>). Google writes the data; the customer is not charged for storage, only for queries. Data loads run on a rolling basis with a multi-region backfill for the current and previous month, and a 2-year time-to-live.</li>
+<li>A FOCUS v1.0 BigQuery view and Looker template, layered on the existing Detailed Billing Export and Price Export. This is the longer-standing path referenced on the FOCUS get-started page.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li>Granularity: daily. ChargePeriodStart and ChargePeriodEnd bound single days; BillingPeriodStart and BillingPeriodEnd map to the invoice month.</li>
+<li>Formats: BigQuery-native types. Timestamps are ISO 8601, numeric costs are NUMERIC, and tag/label structures are REPEATED RECORD (key-value), which is the right shape for FOCUS key-value data.</li>
+<li>Cost derivation: BilledCost and EffectiveCost derive from cost plus credits.amount; ContractedCost maps to cost; ListCost maps to cost_at_list. When no negotiated discount applies, ContractedCost defaults to ListCost.</li>
+<li>Key limitations, per Google&rsquo;s own register: FOCUS Tags, the CommitmentDiscount column family, ServiceCategory, InvoiceIssuerName, BillingAccountName, ResourceType, SubAccountType, InvoiceId, ChargeFrequency, ServiceSubcategory, SkuMeter, SkuPriceDetails, and the capacity-reservation columns are not populated in the standard FOCUS columns. Some of that information is available in the Google-specific x_ columns.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory, Conditional, Recommended, or Optional. A conformant dataset must include and populate every Mandatory column, must populate Conditional columns when the provider&rsquo;s business model triggers the condition, and is encouraged to populate Recommended columns. Conformance is judged column by column against the Requirements Model, so the analysis depends on getting each level right.</p>
+<p>Feature levels in this report were verified against the FOCUS v1.2 specification and the FOCUS column library, not asserted from memory. Google&rsquo;s export documentation labels columns as supported or not but does not annotate feature levels, so the level column below comes from the specification.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Legend: Present (emitted and aligned); Present, deviation to fix (emitted, wrong format or invalid enum value); Missing: Mandatory (required and absent, blocks conformance); Missing: Recommended (encouraged, absent, does not block); Missing: Conditional (required when the model triggers it, absent and the condition applies); N/A: null valid (Conditional or Recommended column that does not apply to the model and may be null).</p>
+<p>Feature levels verified against the FOCUS Specification v1.2.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Yes (zone data)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Yes (cost + credits.amount)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>No (in gap register)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Yes (Google-unique mapping)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Yes (invoice month)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Yes (invoice month)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Yes (Usage, Tax, Adjustment)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory</td>
+<td>Yes (correction flag)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>No (in gap register)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Yes (daily)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Yes (daily)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>No (in x_Credits)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>No (in x_Credits)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>No (in x_Credits)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>No (in x_Credits)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>No (in x_Credits)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Yes (cost)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Yes (price.effective_price)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Yes (cost + credits.amount)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>No (in gap register)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>No (in gap register)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Yes (cost_at_list)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Yes (price.list_price)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Yes (Committed, Standard)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory</td>
+<td>Yes (FOCUS-unique)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>No (in gap register)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>No (in gap register)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>No (in gap register)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Yes</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>No (in gap register)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>No (in gap register)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Yes (sku.id + tier_start)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Yes (project)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Yes (project)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>No (in gap register)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>No (in x_Tags, x_Labels)</td>
+<td>Present, deviation to fix</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reading the tally: of 57 v1.2 columns, 33 are present and conformant, 2 are present with a deviation to fix (ChargeCategory and PricingCategory enum coverage), and 22 are missing. Of the 21 Mandatory columns, 18 are present and 3 are missing (BillingAccountName, InvoiceIssuerName, ServiceCategory). Tags is counted as a deviation rather than fully missing because the key-value data exists in x_Tags and x_Labels and needs promotion into the standard column.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p><strong>Solved (the hard parts):</strong></p>
+<ul>
+<li>The cost family. BilledCost, EffectiveCost, ContractedCost, and ListCost are all derived from real Google billing fields, with credits folded into billed and effective cost and a documented list-price basis. This avoids the common list-cost trap, where a feed carries only list price and the discounted costs are a substantive later reconciliation. Google reconciles credits into the cost columns at export time.</li>
+<li>Daily granularity, resource identity (ResourceId, ResourceName), region (RegionId, RegionName), zone, and project-level sub-account attribution (SubAccountId, SubAccountName).</li>
+<li>Full pricing-currency column family, SKU identity, and unit-price columns.</li>
+</ul>
+<p><strong>Remaining substantive gaps (tractable):</strong></p>
+<ul>
+<li>Three Mandatory descriptive columns are not populated: ServiceCategory (the FOCUS service taxonomy), InvoiceIssuerName, and BillingAccountName. These are real additions, but they are descriptive metadata Google already holds elsewhere (service catalog, billing account record), not measurements that must be reconstructed. They block conformance until populated.</li>
+</ul>
+<p><strong>Remaining shape and coverage gaps:</strong></p>
+<ul>
+<li>Tags: the FOCUS Tags column is not populated; the key-value data lives in x_Tags, x_Labels, x_SystemLabels, and x_ProjectLabels. Promoting or aliasing this into the standard Tags column is a mapping task, not a data-collection task.</li>
+<li>Commitment discounts (CUDs): the entire CommitmentDiscount column family is unpopulated. CUD information is carried in the x_Credits record. Populating CommitmentDiscountId, Name, Category, Type, and Status is a transform from x_Credits; Quantity and Unit are a genuine data gap where Google&rsquo;s register lists no current mitigation.</li>
+<li>Conditional descriptive columns: ResourceType, SubAccountType, SkuMeter, and SkuPriceDetails are unpopulated but applicable, and Recommended columns ChargeFrequency, InvoiceId, and ServiceSubcategory are absent. None block conformance.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<ul>
+<li>ChargeCategory: populated from cost_type with supported values Usage, Tax, and Adjustment. FOCUS v1.2 allows Usage, Purchase, Tax, Credit, and Adjustment. Google&rsquo;s register notes Purchase is not supported and Credit information is redirected to x_Credits. Rows that should carry Purchase or Credit therefore fall outside the standard enum, which a validator will flag. Completing the enum coverage is the fix.</li>
+<li>PricingCategory: populated with Committed and Standard; the Dynamic value is not supported and that information might appear in ChargeDescription instead. Add Dynamic where applicable.</li>
+<li>Tags: present as data but not in the FOCUS Tags column (see 1.4). The x_ columns are correctly shaped as key-value RECORD, so the fix is exposing them under the standard column.</li>
+</ul>
+<p>Already done right: key-value tag structure, ISO 8601 timestamps, ISO 4217 currency codes, daily charge periods, NUMERIC cost types, and correct use of the x_ prefix for all Google-specific columns, which is exactly what FOCUS asks providers to do for non-standard fields.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Build target: FOCUS v1.2, which is the current certification baseline and the version Google&rsquo;s dedicated export already tracks in its gap register. The specification has since progressed to v1.3 (December 2025), which deprecates ProviderName and PublisherName and adds split-cost-allocation columns, and v1.4 (June 2026), which removes ProviderName and PublisherName and adds invoice-detail and billing-period datasets. Google should baseline v1.2 for conformance today and design the same export to carry forward cleanly to v1.3 and v1.4, given the deprecations will affect two columns currently populated.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The current program is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo; (contact member-cert@finops.org for the RFI). Membership is required for certification, though contributing to the specification is open and free. The deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report. Google already publishes a native-to-FOCUS mapping and a conformance-gap table in its documentation, which are effectively the seed of two of those deliverables.</p>
+<p>Open-source tooling supports the work: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST/SHOULD/MAY rules). The FOCUS get-started page for Google Cloud does not assert a formal certification badge, so this report does not claim one.</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate what exists.</strong> Run a sample of the dedicated FOCUS export through the FOCUS Validator against v1.2. Confirm the present-column set validates cleanly and pin the exact gap list to validator output rather than documentation alone.</p>
+<p><strong>Phase 1: Close the three Mandatory descriptive columns.</strong> Populate ServiceCategory (map Google services to the FOCUS service taxonomy), InvoiceIssuerName, and BillingAccountName. These three unblock conformance and draw on metadata Google already holds.</p>
+<p><strong>Phase 2: Fix the enum and shape deviations.</strong> Complete ChargeCategory coverage (add Purchase and Credit) and PricingCategory coverage (add Dynamic). Promote the key-value tag data from x_Tags and x_Labels into the standard FOCUS Tags column.</p>
+<p><strong>Phase 3: Round out applicable Conditional and Recommended columns.</strong> Derive the CommitmentDiscount family from x_Credits (Id, Name, Category, Type, Status), and populate ResourceType, SubAccountType, SkuMeter, SkuPriceDetails, ChargeFrequency, InvoiceId, and ServiceSubcategory. Note CommitmentDiscountQuantity and CommitmentDiscountUnit as a genuine data gap to scope with the billing team.</p>
+<p><strong>Phase 4: Mature toward the latest version and certify.</strong> Move the export off the Preview stage, plan for the v1.3 deprecation and v1.4 removal of ProviderName and PublisherName, and pursue the FinOps Certified FOCUS v1.2 Conformant designation.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<p>Unlocked today by the present columns: multi-cloud cost normalization and comparison, effective-cost and amortized-cost reporting, cost allocation by project and resource, service and region breakdowns, unit-economics analysis on ConsumedQuantity and PricingQuantity, and anomaly detection on daily charge records. The effective-cost columns mean actuals-based budgeting and discount-inclusive showback work now, not after a reconciliation step.</p>
+<p>Unlocked by Phase 1 to 3: allocation and reporting by ServiceCategory and by standardized Tags, commitment-discount coverage and utilization reporting once the CommitmentDiscount family is populated, and invoice-level reconciliation once InvoiceIssuerName and InvoiceId are present.</p>
+<p>Out of scope for now: capacity-reservation use cases, since those columns are not populated. Commitment-discount quantity and utilization-rate use cases are partially out of scope until CommitmentDiscountQuantity and Unit are addressed.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Run a current sample of the dedicated FOCUS export through the FOCUS Validator against v1.2 and record the exact failing columns.</li>
+<li>Populate the three Mandatory descriptive columns: ServiceCategory, InvoiceIssuerName, and BillingAccountName.</li>
+<li>Complete ChargeCategory and PricingCategory enum coverage, and expose the key-value tag data under the standard FOCUS Tags column.</li>
+<li>Derive the CommitmentDiscount column family from x_Credits, and scope CommitmentDiscountQuantity and Unit with the billing team.</li>
+<li>Confirm the target representation against the FOCUS Requirements Model, then engage member-cert@finops.org on the FinOps Certified FOCUS v1.2 Conformant RFI.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>FOCUS v1.2 feature levels: high confidence. Verified against the FOCUS column library and the bundled reference (SPEC_VERSIONS_AS_OF 2026-06-23), with a live spot-check of Tags, ServiceCategory, and ServiceSubcategory against the specification. No refresh of the bundled table was required.</li>
+<li>Present-column classification: high confidence for the cost, pricing, resource, and account families, which Google documents field by field with explicit Google-source mappings.</li>
+<li>Missing-column classification: high confidence, because it draws directly on Google&rsquo;s own published conformance-gap table rather than inference.</li>
+<li>Version shipped: high confidence that the get-started page lists v1.0 (BigQuery view and Looker template) and that the dedicated export is documented against v1.2 gaps in Preview. Moderate confidence on the precise Preview-to-GA status at any given date, since the dedicated export carries a Pre-GA banner that can change.</li>
+<li>Tags treated as a deviation rather than fully missing: moderate-to-high confidence, on the basis that the key-value data demonstrably exists in x_Tags and x_Labels and needs promotion, not collection.</li>
+<li>A live FOCUS Validator run against a real sample is the objective arbiter and is recommended before any formal conformance claim; this analysis is a documentation-based assessment, not a validator result.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Google Cloud, &ldquo;Structure of FOCUS data export&rdquo; (docs.cloud.google.com/billing/docs/how-to/export-data-bigquery-tables/focus-export), including the FOCUS conformance report and conformance-gaps table.</li>
+<li>Google Cloud, &ldquo;Set up FOCUS Cloud Billing data export to BigQuery&rdquo; (docs.cloud.google.com/billing/docs/how-to/export-data-bigquery-focus-setup).</li>
+<li>FOCUS get-started page for Google Cloud (focus.finops.org/get-started/google-cloud/) and the FOCUS provider record.</li>
+<li>Google Cloud Blog, &ldquo;Normalize billing data across clouds with new Looker template and BigQuery views&rdquo; (FOCUS v1.0 GA).</li>
+<li>FOCUS Specification v1.2 and the FOCUS column library (focus.finops.org/focus-specification/, focus.finops.org/focus-columns/).</li>
+<li>FinOps Certified FOCUS Conformant program (finops.org).</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

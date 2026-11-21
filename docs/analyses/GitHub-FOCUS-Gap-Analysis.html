@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub as a FOCUS Data Generator: Compliance Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/GitHub-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="github-as-a-focus-data-generator-compliance-gap-analysis">GitHub as a FOCUS Data Generator: Compliance Gap Analysis</h1>
+<p><em>Analysis run: June 23, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p>Prepared: June 23, 2026
+Subject: GitHub&rsquo;s Enhanced Billing Platform usage report (usage reports and the billing usage REST API)
+Baseline: FOCUS v1.2 (certification baseline). Build target: v1.4 (latest ratified).
+Feature levels verified against the FOCUS v1.2 specification on 2026-06-23.</p>
+<h2 id="executive-summary">Executive summary</h2>
+<p>GitHub is unusually well positioned to become a FOCUS data generator, and the reason is the part most providers get wrong: cost. GitHub&rsquo;s usage report already carries <code>gross_amount</code>, <code>discount_amount</code>, and <code>net_amount</code>, which means list, discount, and billed amounts are all present in the source. The hard, expensive column most providers lack (a true post-discount billed cost) is here on day one.</p>
+<p>The work is therefore not &ldquo;find missing cost data,&rdquo; it is &ldquo;shape existing data into FOCUS form.&rdquo; GitHub&rsquo;s report uses native field names (<code>net_amount</code>, <code>gross_amount</code>, <code>unit_type</code>, <code>cost_center_name</code>), not FOCUS column IDs, and there is no FOCUS-named output today. So every column needs a transform layer, but the underlying data exists for all 21 Mandatory v1.2 columns. There are no missing-Mandatory data gaps. The substantive work is the FOCUS-shaping transform itself, a product-to-<code>ServiceCategory</code> mapping, and one pricing clarification (what <code>applied_cost_per_quantity</code> represents for negotiated accounts).</p>
+<p>Of 57 v1.2 columns: 33 map directly or by trivial derivation, 7 are present but need shaping or clarification, 3 are missing Conditional (the SKU price family), 2 are missing Recommended (<code>InvoiceId</code>, <code>ServiceSubcategory</code>), and 12 are legitimately N/A for GitHub&rsquo;s SaaS model (region, availability zone, commitment discounts, capacity reservations).</p>
+<p>Recommendation: treat this as a transform-and-certify effort, not a data-collection effort. Build the FOCUS-shaping transform over the usage report, settle the list-versus-contracted rate question, publish sample data, validate, and pursue the FinOps Certified FOCUS v1.2 Conformant designation while building toward 1.4.</p>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>GitHub&rsquo;s Enhanced Billing Platform exposes usage two ways: a summarized usage report (available via the billing usage REST API and the web UI) and a detailed usage report (web UI only). Both share a common field set; the detailed report adds <code>username</code> and <code>workflow_path</code>.</p>
+<p>Usage report fields: <code>date</code>, <code>product</code>, <code>sku</code>, <code>quantity</code>, <code>unit_type</code>, <code>applied_cost_per_quantity</code>, <code>gross_amount</code>, <code>discount_amount</code>, <code>net_amount</code>, <code>username</code> (detailed only), <code>organization</code>, <code>repository</code>, <code>workflow_path</code> (detailed only), <code>cost_center_name</code>. A separate premium-requests report adds <code>model</code>, <code>exceeds_quota</code>, and <code>total_monthly_quota</code>.</p>
+<p>Characteristics that matter for FOCUS:</p>
+<ul>
+<li>Daily granularity: usage is logged per <code>date</code> (UTC).</li>
+<li>Full cost trio: <code>gross_amount</code> (pre-discount), <code>discount_amount</code> (included-usage and other reductions), and <code>net_amount</code> (billed, where <code>gross_amount - discount_amount = net_amount</code>).</li>
+<li>Allocation dimensions: <code>organization</code>, <code>repository</code>, <code>cost_center_name</code>, and (detailed only) <code>username</code> and <code>workflow_path</code>.</li>
+<li>SKU-level detail: <code>product</code>, <code>sku</code>, <code>unit_type</code>, <code>quantity</code>, <code>applied_cost_per_quantity</code>.</li>
+<li>Multi-product: Actions, Packages, Codespaces, Copilot, Advanced Security, Git LFS, Models, and licensed seats.</li>
+</ul>
+<p>Two scope notes to confirm with GitHub: the detailed report (with <code>username</code> and <code>workflow_path</code>) is web-only and not available through the REST <code>/usage</code> endpoint, so a fully resource-attributed FOCUS feed may depend on the web CSV rather than the API; and billing currency is assumed USD, though accounts billed through an Azure subscription may settle in another currency.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS conformance is column-driven. Each column carries a feature level: Mandatory (must exist and be populated where applicable), Conditional (must exist; populated when the provider&rsquo;s model triggers the condition, otherwise null), or Recommended. A conformant dataset presents the full column set under FOCUS column IDs, populates every Mandatory column, satisfies Conditional columns where applicable, and uses the correct types and allowed values. These rules live in the FOCUS Requirements Model, which the FOCUS Validator checks against. Provider-specific columns are allowed when prefixed <code>x_</code>.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-column status (all 57 FOCUS v1.2 columns)</h3>
+<p>Because GitHub&rsquo;s report is not yet in FOCUS shape, &ldquo;Present&rdquo; here means the data exists and maps to the column (a rename or trivial derivation), not that a conformant column ships today.</p>
+<p>Status legend: Present (data maps directly or by trivial derivation); Present, deviation to fix (data present but needs shaping, an enum mapping, or a semantic clarification); Missing: Conditional; Missing: Recommended; N/A: null valid (does not apply to GitHub&rsquo;s model).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (1.2)</th>
+<th>GitHub source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td><code>net_amount</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td><code>net_amount</code> (no amortization)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td><code>gross_amount</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td><code>gross_amount</code> at applied rate</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>account / enterprise (context)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>account / enterprise name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>constant USD (verify Azure-billed)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>derive from monthly cycle</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>derive from monthly cycle</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td><code>date</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td><code>date</code> + 1 day</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td><code>product</code> + <code>sku</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>derive (Usage / Purchase)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except corrections</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>constant &ldquo;GitHub, Inc.&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. 1.3)</td>
+<td>constant &ldquo;GitHub&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. 1.3)</td>
+<td>constant &ldquo;GitHub&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td><code>product</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>map <code>product</code> to FOCUS enum</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td><code>quantity</code> (flat-rate SKUs)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td><code>unit_type</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td><code>quantity</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td><code>unit_type</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td><code>applied_cost_per_quantity</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td><code>applied_cost_per_quantity</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>constant &ldquo;Standard&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional (1.2)</td>
+<td>derive</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td><code>organization</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td><code>organization</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional (1.2)</td>
+<td>derive</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td><code>repository</code> (or <code>username</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td><code>repository</code> (or <code>username</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>derive (Repository / User / Org)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td><code>sku</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>shape <code>cost_center_name</code> as key-value</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional (1.2)</td>
+<td>= BillingCurrency</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional (1.2)</td>
+<td>= ListUnitPrice</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional (1.2)</td>
+<td>= ContractedUnitPrice</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional (1.2)</td>
+<td>= EffectiveCost</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional (1.1+)</td>
+<td>not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional (1.1+)</td>
+<td>not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>not in usage report</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>map <code>product</code> / <code>sku</code></td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>global SaaS, no zone</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>global SaaS, no region</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>global SaaS, no region</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>no commitment discounts sold</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional (1.1+)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional (1.1+)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional (1.1+)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional (1.1+)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tally: 33 Present, 7 Deviation, 3 Missing Conditional, 2 Missing Recommended, 12 N/A. All 21 Mandatory columns have a source: 17 map directly or by trivial derivation, and 4 need shaping or clarification (<code>ChargeCategory</code>, <code>ServiceCategory</code>, <code>ListCost</code>, <code>ContractedCost</code>). There are zero missing-Mandatory data gaps.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p>Solved, and notable: the cost trio. <code>gross_amount</code>, <code>discount_amount</code>, and <code>net_amount</code> give <code>ListCost</code>, the discount, and <code>BilledCost</code>. Because GitHub has no prepaid commitments to amortize, <code>EffectiveCost</code> equals <code>net_amount</code>, so it is solved too. The list-cost trap (where a list-only feed hides the billed cost behind invoice-time discounts) does not bite here, because GitHub already exposes the discount and the net.</p>
+<p>Solved: daily granularity, SKU detail, and rich allocation (organization, repository, cost center, and user in the detailed report).</p>
+<p>The remaining work is shaping, not collection:</p>
+<ul>
+<li>The FOCUS-shaping transform. GitHub&rsquo;s report is not in FOCUS form. Producing a conformant dataset means emitting FOCUS column IDs, one charge record per <code>date</code> x <code>sku</code> x <code>organization</code> x <code>repository</code> x <code>cost_center_name</code>, deriving the period and constant columns, and serializing tags as key-value. This is the core engineering task.</li>
+<li>Service categorization. There is no native <code>ServiceCategory</code> field. GitHub must map each <code>product</code> (Actions, Packages, Codespaces, Copilot, Advanced Security, Git LFS, Models, licenses) to a FOCUS <code>ServiceCategory</code> allowed value, and ideally a <code>ServiceSubcategory</code>.</li>
+<li>The list-versus-contracted clarification (see 1.5).</li>
+</ul>
+<h3 id="15-deviations-and-clarifications-to-fix">1.5 Deviations and clarifications to fix</h3>
+<ul>
+<li>ListCost and ContractedCost (and their unit prices). <code>gross_amount</code> is computed at <code>applied_cost_per_quantity</code>. For accounts on public pricing, that rate is the public list price, so <code>gross_amount</code> is <code>ListCost</code>. For accounts on negotiated or Enterprise Agreement pricing, the applied rate is the contracted rate, so <code>gross_amount</code> is <code>ContractedCost</code> and the true public <code>ListCost</code> is not in the data. GitHub should confirm what <code>applied_cost_per_quantity</code> represents per account type and populate <code>ListCost</code> versus <code>ContractedCost</code> accordingly, rather than mapping both to <code>gross_amount</code> unconditionally.</li>
+<li>ChargeCategory. Must be a FOCUS enum value (Usage, Purchase, Tax, Credit, Adjustment). Metered products map to Usage; licensed seats map to Purchase. Derive from <code>product</code> / <code>sku</code> and validate against the enum.</li>
+<li>ServiceCategory. Must be a FOCUS enum value. Build and maintain a <code>product</code> to category map.</li>
+<li>Tags. FOCUS expects key-value pairs. <code>cost_center_name</code> is the natural allocation tag and should be serialized as a key-value (for example <code>{"cost_center": "..."}</code>), or carried as <code>SubAccount</code> if GitHub prefers to model cost centers as the sub-account. Decide one representation and apply it consistently.</li>
+<li>PricingQuantity for tiered SKUs. <code>PricingQuantity</code> equals <code>quantity</code> for flat per-unit SKUs (the common GitHub case). For any tiered or multiplier-based SKU (for example Actions minutes with runner multipliers), compute <code>PricingQuantity</code> against the rate basis rather than copying <code>quantity</code>.</li>
+</ul>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Live versions: 1.1 (Nov 7, 2024), 1.2 (May 29, 2025, the current certification baseline), 1.3 (Dec 5, 2025), and 1.4 (June 4, 2026, the latest, adding Invoice Detail and billing-period datasets). The FOCUS Validator supports v1.3 conformance today; v1.4 support is expected later in Q3 2026.</p>
+<p>Build the transform to the 1.4 column set (it removes <code>ProviderName</code> and <code>PublisherName</code>, which GitHub would otherwise carry as constants), and certify at v1.2, which is the offered badge. Re-certify upward as the program expands.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>Certification for data generators runs through the FinOps Foundation. Contact <code>member-cert@finops.org</code> for the RFI. Deliverables: a structurally conformant dataset under FOCUS column IDs, public sample data that passes the FOCUS Validator, a documented native-to-FOCUS mapping, and a Conformance Gap Report (this document is its seed). Membership is required for certification, though contributing to the spec is open and free.</p>
+<p>Tooling: the FOCUS Validator (run a sample of the transform output through it to get an objective pass or fail), the FOCUS Converter (its AWS, Azure, GCP, and OCI provider patterns are a useful reference, and a GitHub profile could be contributed back), and the FOCUS Requirements Model (the authoritative machine-readable requirements).</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p>Phase 0, validate and scope. Build a small sample of the FOCUS-shaping transform and run it through the FOCUS Validator. Confirm the source of record (summarized REST API versus detailed web CSV), the billing currency for Azure-billed accounts, and the 1.4-build / 1.2-certify decision. Open the RFI.</p>
+<p>Phase 1, build the transform and settle pricing. Emit FOCUS column IDs, one charge record per date and SKU and allocation key. Map the cost trio (<code>net_amount</code> to <code>BilledCost</code> and <code>EffectiveCost</code>, <code>gross_amount</code> to <code>ListCost</code> or <code>ContractedCost</code> per the clarification), derive period and constant columns, derive <code>ChargeCategory</code> and <code>ChargeFrequency</code>, and populate <code>PricingQuantity</code> and <code>PricingUnit</code>. Stand up the <code>product</code> to <code>ServiceCategory</code> mapping.</p>
+<p>Phase 2, fix deviations. Serialize Tags from <code>cost_center_name</code> as key-value, validate <code>ChargeCategory</code> and <code>ServiceCategory</code> against the enums, and confirm the list-versus-contracted handling per account type.</p>
+<p>Phase 3, round out conditionals. Add the SKU price family (<code>SkuPriceId</code>, <code>SkuMeter</code>, <code>SkuPriceDetails</code>) if the data exists, <code>ResourceType</code>, the pricing-currency columns, and the Recommended <code>ServiceSubcategory</code> and <code>InvoiceId</code>.</p>
+<p>Phase 4, mature to 1.4 and certify. Adopt the 1.4 column set, drop <code>ProviderName</code> and <code>PublisherName</code>, decide how to represent Marketplace apps and Sponsors (third-party publishers) conformantly, validate, and certify.</p>
+<h3 id="24-focus-use-cases-github-customers-unlock">2.4 FOCUS Use Cases GitHub customers unlock</h3>
+<p>Achievable as soon as the transform ships (daily, allocation-rich, full cost trio): allocate and charge back by cost center and repository, report cost by service (product) and by organization, identify anomalous daily spending, budget and forecast on billed cost, and reconcile against the invoice (since <code>net_amount</code> is the billed amount). Calculate unit economics on effective cost.</p>
+<p>Out of scope for GitHub&rsquo;s model: commitment-discount use cases, capacity-reservation use cases, availability-zone analysis, and multi-currency analysis (unless Azure-billed accounts introduce a second currency).</p>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Confirm the source of record: whether the conformant feed is built from the summarized billing usage REST API or the detailed web CSV (the latter carries <code>username</code> and <code>workflow_path</code> for fuller resource attribution).</li>
+<li>Settle the pricing question: what <code>applied_cost_per_quantity</code> represents for public versus negotiated accounts, so <code>ListCost</code> and <code>ContractedCost</code> are populated correctly.</li>
+<li>Decide the cost-center representation: FOCUS <code>Tags</code> (key-value) versus <code>SubAccount</code>.</li>
+<li>Build a sample FOCUS-shaping transform and run it through the FOCUS Validator; iterate to a clean pass.</li>
+<li>Draft the native-to-FOCUS mapping and finalize this Conformance Gap Report; open the RFI with <code>member-cert@finops.org</code>; publish sample data; request listing as a FOCUS-supporting provider.</li>
+</ol>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>High: GitHub&rsquo;s usage report carries <code>gross_amount</code>, <code>discount_amount</code>, and <code>net_amount</code>, so <code>ListCost</code>, <code>BilledCost</code>, and <code>EffectiveCost</code> are all available; there are no missing-Mandatory data gaps.</li>
+<li>High: feature levels were verified column-by-column against the FOCUS v1.2 spec on 2026-06-23 (21 Mandatory, 32 Conditional, 4 Recommended).</li>
+<li>High: GitHub&rsquo;s report is not yet in FOCUS shape, so a transform layer is required for every column.</li>
+<li>Moderate: billing currency is assumed USD; confirm whether Azure-billed accounts settle in another currency, which would activate the pricing-currency columns in earnest.</li>
+<li>Moderate: whether <code>applied_cost_per_quantity</code> is public list or negotiated rate per account type; this determines correct <code>ListCost</code> versus <code>ContractedCost</code> population.</li>
+<li>Moderate: SKU price family (<code>SkuPriceId</code>, <code>SkuMeter</code>, <code>SkuPriceDetails</code>) availability; treated as missing Conditional pending confirmation.</li>
+<li>Moderate: representation of Marketplace apps and Sponsors (third-party publishers), which may warrant separate handling for <code>PublisherName</code>.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>GitHub Docs, Billing reports reference (usage report fields): https://docs.github.com/en/billing/reference/billing-reports</li>
+<li>GitHub Docs, Billing usage REST API: https://docs.github.com/en/rest/billing/usage</li>
+<li>GitHub Docs, Product and SKU names: https://docs.github.com/en/billing/reference/product-and-sku-names</li>
+<li>GitHub Docs, Cost centers: https://docs.github.com/en/billing/concepts/cost-centers</li>
+<li>GitHub Changelog, API access to billing usage reports now generally available (2026-06-04): https://github.blog/changelog/2026-06-04-api-access-to-billing-usage-reports-now-generally-available/</li>
+<li>FOCUS Specification v1.2: https://focus.finops.org/focus-specification/v1-2/</li>
+<li>FinOps Certified FOCUS v1.2 Conformant: https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

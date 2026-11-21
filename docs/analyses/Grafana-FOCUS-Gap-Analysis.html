@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grafana and FOCUS: Conformance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Grafana-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="grafana-and-focus-conformance-gap-and-adoption-roadmap">Grafana and FOCUS: Conformance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Provider:</strong> Grafana Labs
+<strong>Product in scope:</strong> Grafana Cloud Cost Management and Billing, FOCUS export of Grafana Cloud&rsquo;s own usage and cost data
+<strong>Prepared:</strong> 2026-07-01
+<strong>Source analyzed:</strong> Grafana Cloud FOCUS documentation (<code>cost-management-and-billing/focus/</code>, API and in-app download child pages), the FOCUS supporter listing at focus.finops.org/get-started/grafana, and Grafana Cloud billing and pricing documentation
+<strong>FOCUS baseline version:</strong> v1.2 (the version Grafana names for its export)
+<strong>Certification baseline:</strong> FinOps Certified FOCUS v1.2 Conformant</p>
+<hr>
+<h2 id="a-note-on-grafanas-dual-role">A note on Grafana&rsquo;s dual role</h2>
+<p>Grafana occupies two positions in the FOCUS ecosystem, and it is worth separating them before the analysis begins.</p>
+<ol>
+<li>
+<p><strong>FOCUS data consumer (visualization and analysis layer).</strong> Grafana is, first and foremost, a dashboarding and observability platform. Through its Cloud Cost Management capability and FOCUS-aware dashboards, Grafana ingests and visualizes FOCUS-formatted billing data generated by other providers (cloud, SaaS, and internal sources). In this role Grafana is a reader of the specification, not a producer of a conformant dataset. A generator-style gap analysis does not apply to this role: the relevant question there is how faithfully the tool renders and queries FOCUS data, not whether it emits it.</p>
+</li>
+<li>
+<p><strong>FOCUS data generator (its own Grafana Cloud billing).</strong> Separately, Grafana Cloud emits its own usage and cost data in FOCUS v1.2 format. This is the basis for the supporter listing on focus.finops.org, which is titled &ldquo;Export FOCUS Datasets from Grafana&rdquo; and marks the version supported as v1.2. This export went generally available on 2026-04-23 after a private preview that opened in June 2025.</p>
+</li>
+</ol>
+<p>This gap analysis assesses only the <strong>generator</strong> role: Grafana Cloud&rsquo;s own billing data expressed as a FOCUS export. The consumer role is noted throughout because it shapes how much of the conformance question is even in scope. Where the analysis says &ldquo;the source,&rdquo; it means the Grafana Cloud FOCUS export of Grafana&rsquo;s own charges, not any third-party data Grafana visualizes.</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Grafana Cloud generates a FOCUS v1.2 export of its own usage and cost data, delivered as a CSV through an authenticated API endpoint (<code>/api/orgs/&lt;ORG_NAME&gt;/focus</code>, gated by the <code>org-billing-focus:read</code> permission) and as an in-app download from the Cost Management and Billing app. The export offers hourly granularity, which is a genuine strength: hour-level charge records comfortably exceed the daily bar FOCUS conformance expects.</p>
+<p>The single most important finding is that Grafana already ships a FOCUS-shaped export at the version the certification program uses, so this is a maturing dataset rather than a from-scratch build. The most important limitation is that the per-column schema is not published in Grafana&rsquo;s public documentation. The docs describe the delivery mechanics (endpoint, permission, CSV response) but do not enumerate which of the 57 FOCUS v1.2 columns are populated, with what values, or in what shape. This analysis therefore reasons from Grafana Cloud&rsquo;s known billing model (usage-based pricing for metrics, logs, traces, profiles, and related products, billed in USD, organized by org and by stack) and treats the column-level verdict as provisional pending a sample export run through the FOCUS Validator.</p>
+<p>Grafana Cloud&rsquo;s business model resolves several conformance questions cleanly. It is a single-publisher SaaS: Grafana is both the provider and the publisher of every line. It sells no third-party marketplace items, so the publisher family is trivial. Its usage-based pricing (active series and data points per minute for metrics; gigabytes for logs, traces, and profiles) maps naturally onto consumed quantity, pricing quantity, and usage-based charge frequency. The org is the billing account; individual stacks act as sub-accounts, which supports allocation. Commitment discounts and capacity reservations exist in enterprise contracts, so those Conditional families are in scope rather than universally null.</p>
+<p>The cost columns are the area to scrutinize. Grafana Cloud enterprise agreements include committed-use discounts and contractual pricing, so <code>EffectiveCost</code> and <code>ContractedCost</code> are not a trivial copy of <code>ListCost</code>. Whether the export reconciles contract-level discounts back to the hourly usage lines determines whether the cost family is Strong or only Partial. Absent a published schema or a validated sample, this is the reconciliation question that most affects the verdict.</p>
+<p><strong>Readiness band: Structured.</strong> The export exists, targets the certification version, and delivers strong granularity, but the column-level conformance cannot be confirmed from published material and the cost-reconciliation question is open.</p>
+<p><strong>Recommendation:</strong> Publish the native-to-FOCUS column mapping, run a representative CSV export through the FOCUS Validator against the v1.2 Requirements Model, and confirm whether <code>EffectiveCost</code> and <code>ContractedCost</code> reflect contract discounts at the line level. These three steps convert a plausible export into a demonstrable one and set up a conformance conversation with the FinOps Foundation.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Grafana Cloud&rsquo;s FOCUS export is a CSV covering the calling organization&rsquo;s Grafana Cloud usage and cost. Retrieval works two ways:</p>
+<ul>
+<li>API: a GET against <code>https://grafana.com/api/orgs/&lt;YOUR_ORG_NAME&gt;/focus</code>, authenticated with a Cloud Access Policy token carrying <code>org-billing-focus:read</code>. The response is <code>text/csv</code> with a <code>filename=&lt;YOUR_ORG_ID&gt;_focus.csv</code> attachment header.</li>
+<li>In-app: a direct download from the Cost Management and Billing app.</li>
+</ul>
+<p>Documented characteristics:</p>
+<ul>
+<li><strong>Granularity:</strong> hourly. Grafana&rsquo;s own release note calls out &ldquo;hourly granularity&rdquo; for cost and usage trends. This clears the FOCUS expectation of daily or finer charge periods.</li>
+<li><strong>Format:</strong> CSV. FOCUS is format-agnostic on serialization, so CSV is acceptable; the column names and value shapes are what matter.</li>
+<li><strong>Version:</strong> FOCUS v1.2, per both the Grafana release note and the FOCUS supporter listing.</li>
+<li><strong>Scope:</strong> the export represents Grafana Cloud&rsquo;s own charges to the customer. This is Grafana as data generator.</li>
+</ul>
+<p>Grafana Cloud&rsquo;s underlying billing model, drawn from its pricing and invoice documentation, sets the semantics the columns must carry:</p>
+<ul>
+<li><strong>Usage-based pricing.</strong> Metrics bill on billable series (a function of active series and data points per minute); logs, traces, and profiles bill on gigabytes received and retained; additional products (k6 performance testing, synthetic monitoring, IRM, and others) have their own usage meters. Billing commonly uses the 95th percentile of usage to smooth spikes.</li>
+<li><strong>Currency:</strong> USD is the standard billing currency.</li>
+<li><strong>Account structure:</strong> the Grafana Cloud organization is the top-level billing entity; individual stacks (and users, per some product lines) act as the attribution units beneath it.</li>
+<li><strong>Contracts:</strong> enterprise agreements carry committed-use discounts and negotiated pricing, so list price and effective price diverge for contracted customers.</li>
+</ul>
+<p>Key limitation: the public documentation does not publish the column-by-column schema of the export. The mechanics are documented; the mapping is not. Every column verdict below that is not directly observable is reasoned from this billing model and marked provisional in the Confidence Summary.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level. Mandatory columns must be present and populated (some may be null in defined cases). Conditional columns are required when the provider&rsquo;s business model triggers the condition and may be legitimately null otherwise. Recommended columns are encouraged but do not block conformance. Optional columns are at the provider&rsquo;s discretion. v1.2 has 57 columns: 21 Mandatory, 32 Conditional, and 4 Recommended.</p>
+<p>Conformance is judged column by column against the FOCUS Requirements Model, the machine-readable set of MUST, SHOULD, and MAY rules that the FOCUS Validator checks a dataset against. Feature levels in this report were verified against the FOCUS v1.2 specification and cross-checked against the FOCUS MCP column library, which returned the full set of 57 v1.2 columns matching the bundled reference. Levels are not stated from memory.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Feature levels verified against the FOCUS Specification v1.2. Status reflects the documented delivery plus reasoning from Grafana Cloud&rsquo;s billing model; column-level population is provisional pending a published mapping or a validated sample.</p>
+<p>Legend: Present (emitted and aligned) / Present, deviation to fix (emitted, wrong format or value) / Missing: Mandatory (required, absent, blocks conformance) / Missing: Recommended (encouraged, absent) / Missing: Conditional (required by the model, absent) / N/A: null valid (Conditional or Recommended, does not apply, should exist and be null).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>Grafana Cloud has no customer-facing zones</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td>Billed amount for the org, per usage</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Grafana Cloud org ID</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>Grafana Cloud org name</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>Org is the billing entity</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>USD</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>Monthly period boundary</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>Monthly period boundary</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No customer-facing capacity reservation product</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No customer-facing capacity reservation product</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>Usage-based charges (and credits)</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>Correction rows on adjustments; else null</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>Human-readable line description</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>Usage-Based for consumption lines</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>Hourly boundary</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>Hourly boundary</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>Enterprise committed-use discounts exist</td>
+<td>Missing: Conditional (verify)</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>Enterprise committed-use discounts exist</td>
+<td>Missing: Conditional (verify)</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>Enterprise committed-use discounts exist</td>
+<td>Missing: Conditional (verify)</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>Enterprise committed-use discounts exist</td>
+<td>Missing: Conditional (verify)</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>Enterprise committed-use discounts exist</td>
+<td>Missing: Conditional (verify)</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>Enterprise committed-use discounts exist</td>
+<td>Missing: Conditional (verify)</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>Enterprise committed-use discounts exist</td>
+<td>Missing: Conditional (verify)</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Active series, DPM, GB, and similar meters</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>series, DPM, GB, and similar units</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td>Contracted price for the usage</td>
+<td>Present, deviation to fix (reconciliation)</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>Negotiated per-unit price</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>Amortized effective cost after discounts</td>
+<td>Present, deviation to fix (reconciliation)</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>Invoice identifier</td>
+<td>Missing: Recommended (verify)</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>Grafana Labs</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td>List price for the usage</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>Published per-unit list price</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td>Standard or committed</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>USD</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>Contracted unit price in pricing currency</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>Effective cost in pricing currency</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>List unit price in pricing currency</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>Billable quantity against the rate basis</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td>Rate-basis unit (per 1,000 series, per GB)</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M</td>
+<td>Grafana Labs</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M</td>
+<td>Grafana Labs (single publisher)</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td>Grafana Cloud stack region</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td>Grafana Cloud stack region</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td>Stack or signal-level identifier</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td>Stack or signal-level name</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td>Signal type (metrics, logs, traces)</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>Management and Governance (observability)</td>
+<td>Present, deviation to fix (enum)</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td>Grafana Cloud Metrics, Logs, Traces, and similar</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>Observability subcategory</td>
+<td>Missing: Recommended (verify)</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>Product or meter SKU</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>Meter identifier</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>Structured price attributes</td>
+<td>Missing: Conditional (verify)</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>Price-point identifier</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>Stack ID</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>Stack name</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>Stack</td>
+<td>Present (expected)</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td>User labels or attribution keys</td>
+<td>Present, deviation to fix (format)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Reading the tally.</strong> Of 57 v1.2 columns, 3 are legitimately N/A and null-valid (AvailabilityZone plus the two capacity-reservation columns; Grafana Cloud has no customer-facing zones or capacity-reservation product). That leaves 54 applicable columns. No Mandatory column is expected to be absent: all 21 Mandatory columns map to data Grafana Cloud demonstrably holds. Four columns are flagged as deviations to fix (<code>ServiceCategory</code> enum, <code>Tags</code> format, and the reconciliation shape of <code>EffectiveCost</code> and <code>ContractedCost</code>). The visible open items are the seven-column commitment-discount family, <code>SkuPriceDetails</code>, and the two Recommended columns (<code>InvoiceId</code>, <code>ServiceSubcategory</code>), all pending confirmation against a real export. Because population is inferred from the billing model rather than observed in a published schema, these counts are the expected shape, not a validated one.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p><strong>Solved (structurally):</strong></p>
+<ul>
+<li><strong>Granularity.</strong> Hourly charge periods are documented. This is stronger than the daily minimum and unlocks the bulk of allocation, trending, and anomaly use cases immediately.</li>
+<li><strong>The publisher and provider identity.</strong> Grafana is a single-publisher SaaS: <code>ProviderName</code>, <code>PublisherName</code>, and <code>InvoiceIssuerName</code> all resolve to Grafana Labs. No marketplace reseller complexity.</li>
+<li><strong>Account and sub-account structure.</strong> Org as billing account and stack as sub-account give a clean, real attribution hierarchy, so <code>BillingAccountId</code>, <code>SubAccountId</code>, and <code>SubAccountName</code> have obvious sources.</li>
+<li><strong>Consumed quantity and units.</strong> Usage-based metering (active series, DPM, GB) is exactly the shape <code>ConsumedQuantity</code>, <code>ConsumedUnit</code>, <code>PricingQuantity</code>, and <code>PricingUnit</code> want.</li>
+<li><strong>The Mandatory set, in principle.</strong> Every one of the 21 Mandatory columns has an unambiguous source in Grafana Cloud&rsquo;s billing data. There is no Mandatory column with no underlying data.</li>
+</ul>
+<p><strong>Remains (substantive):</strong></p>
+<ul>
+<li><strong>Cost-column reconciliation.</strong> This is the one substantive gap. <code>BilledCost</code>, <code>ListCost</code>, <code>EffectiveCost</code>, and <code>ContractedCost</code> must each be populated per hourly line. For a customer on standard on-demand pricing with no discounts, all four converge and the columns are trivial. For an enterprise customer with committed-use discounts and negotiated rates, <code>EffectiveCost</code> and <code>ContractedCost</code> diverge from <code>ListCost</code>, and producing them at the hourly-line level requires reconciling contract-level discounts back down to usage. If Grafana applies discounts only at the invoice or period level and the export carries list-basis costs, then <code>EffectiveCost</code> and <code>ContractedCost</code> are a substantive reconciliation task, not a copy. This is the question that separates a Strong cost rating from a Partial one.</li>
+</ul>
+<p><strong>Remains (trivial or plumbing):</strong></p>
+<ul>
+<li><strong>The commitment-discount family (7 columns).</strong> Where committed-use discounts apply, these need populating; where a customer has none, they are null-valid. This is structured plumbing tied to the same reconciliation work as the cost columns.</li>
+<li><strong><code>SkuPriceDetails</code> and price-point columns.</strong> Structured price metadata is derivable from Grafana&rsquo;s own rate card.</li>
+<li><strong>The two Recommended columns.</strong> <code>InvoiceId</code> and <code>ServiceSubcategory</code> do not block conformance and are quick adds.</li>
+</ul>
+<h3 id="15-deviations-to-fix-and-what-is-already-right">1.5 Deviations to fix, and what is already right</h3>
+<p>Because no sample was inspected, deviations are stated as the shapes to confirm and correct, not as observed defects:</p>
+<ul>
+<li><strong><code>Tags</code> format.</strong> FOCUS represents tags as key-value pairs, not an array of bare strings. Grafana Cloud attribution labels must serialize as key-value structures. Confirm the export does this rather than emitting a flat label list.</li>
+<li><strong><code>ServiceCategory</code> enum.</strong> The value must be a member of the FOCUS allowed set. Observability maps most naturally to &ldquo;Management and Governance.&rdquo; A free-text value like &ldquo;Observability&rdquo; or &ldquo;Monitoring&rdquo; would be an invalid enum member and must map to an allowed value.</li>
+<li><strong><code>ChargeCategory</code> enum.</strong> Values must be drawn from Usage, Purchase, Tax, Credit, Adjustment. Usage-based lines are &ldquo;Usage&rdquo;; any promotional or free-tier offset must be &ldquo;Credit,&rdquo; not a custom label.</li>
+<li><strong>Cost basis of <code>EffectiveCost</code> and <code>ContractedCost</code>.</strong> As above, confirm these carry discount-adjusted amounts at the line level rather than repeating <code>ListCost</code>.</li>
+</ul>
+<p>Already right (structurally): hourly charge periods, ISO-friendly period boundaries expected from a modern API, a single clean publisher identity, USD as an ISO 4217 currency, and a usage metering model that lines up with the pricing-quantity columns without contortion.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Grafana already targets v1.2, which is the current certification baseline (the badge has historically read &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;). That is the right anchor for a conformance conversation today. The build target should look ahead to v1.3 (ratified 2025-12-05) and v1.4 (ratified 2026-06-04). v1.3 deprecates <code>Provider</code> and <code>Publisher</code> and adds split-cost-allocation columns; v1.4 removes <code>Provider</code> and <code>Publisher</code> and adds invoice-detail and billing-period datasets for reconciliation. Since Grafana is a single publisher, the <code>Provider</code> and <code>Publisher</code> deprecation is low-impact. Certify against v1.2, design toward v1.3 or later.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The program is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo; (contact <code>member-cert@finops.org</code> for the RFI). Membership is required for certification, though contributing to the specification is open and free. The deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report, which this analysis seeds. Supporting open-source tooling: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST, SHOULD, and MAY rules).</p>
+<p>Grafana is a FOCUS supporter and ships a FOCUS v1.2 export; that is a public support commitment, not the same thing as holding the certification designation. This report does not assert that Grafana holds any FinOps certification.</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate what exists.</strong> Pull a representative CSV export (ideally one enterprise account with committed-use discounts and one on-demand account) and run it through the FOCUS Validator against the v1.2 Requirements Model. Confirm the column headers, feature-level coverage, enum values, and tag format. This converts every &ldquo;expected&rdquo; in the table above into an observed pass or fail and is the fastest way to replace inference with evidence.</p>
+<p><strong>Phase 1: Close the substantive cost gap.</strong> Confirm and, if needed, build the line-level reconciliation that produces <code>EffectiveCost</code> and <code>ContractedCost</code> after committed-use discounts, alongside <code>BilledCost</code> and <code>ListCost</code>. This is the work that most affects the conformance verdict.</p>
+<p><strong>Phase 2: Fix format and enum deviations.</strong> Ensure <code>Tags</code> are key-value pairs, <code>ServiceCategory</code> uses an allowed enum member, and <code>ChargeCategory</code> and <code>ChargeFrequency</code> values are valid members. These are transforms on data already present.</p>
+<p><strong>Phase 3: Round out Conditional and Recommended columns.</strong> Populate the commitment-discount family where discounts apply, add <code>SkuPriceDetails</code>, and fill the Recommended <code>InvoiceId</code> and <code>ServiceSubcategory</code>.</p>
+<p><strong>Phase 4: Publish and mature.</strong> Publish the native-to-FOCUS mapping in the documentation, then track v1.3 or v1.4 (dropping the deprecated <code>Provider</code> and <code>Publisher</code>, adopting the reconciliation datasets) and pursue formal certification.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<p>Grouped by the phase that unlocks each. Canonical use-case families are named so the source is recognizable.</p>
+<ul>
+<li><strong>Available now (hourly, resource, sub-account data already present):</strong> cost allocation and showback or chargeback by stack, usage trending, anomaly detection on usage spikes, and service-level cost breakdowns. Grafana&rsquo;s own roadmap (cost attribution, spending alerts) leans directly on these.</li>
+<li><strong>Unlocked by Phase 1 (cost reconciliation):</strong> effective-cost reporting, committed-use discount coverage and utilization analysis, and actuals-based budgeting that reflects negotiated pricing rather than list price.</li>
+<li><strong>Unlocked by Phase 3 (commitment family):</strong> commitment-discount savings analysis and unused-commitment detection.</li>
+<li><strong>Out of scope for Grafana&rsquo;s model:</strong> capacity-reservation utilization and availability-zone cost analysis, since Grafana Cloud exposes neither a capacity-reservation product nor customer-facing zones.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Pull a representative FOCUS CSV export (one enterprise, one on-demand account) from the API.</li>
+<li>Run both through the FOCUS Validator against the v1.2 Requirements Model and record pass or fail per column.</li>
+<li>Confirm whether <code>EffectiveCost</code> and <code>ContractedCost</code> are discount-adjusted at the hourly line level or list-basis.</li>
+<li>Verify the <code>Tags</code> serialization is key-value and that <code>ServiceCategory</code> and <code>ChargeCategory</code> use allowed enum members.</li>
+<li>Publish the native-to-FOCUS column mapping in the Grafana Cloud documentation.</li>
+<li>If pursuing the designation, contact <code>member-cert@finops.org</code> for the v1.2 conformance RFI.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li><strong>Role determination (generator vs consumer): high confidence.</strong> The FOCUS supporter page is titled &ldquo;Export FOCUS Datasets from Grafana&rdquo; and Grafana&rsquo;s own GA note describes exporting Grafana Cloud usage and cost data in FOCUS v1.2. Grafana is separately a FOCUS data consumer through its Cloud Cost Management dashboards; this analysis scopes only the generator role, and that dual nature is stated explicitly.</li>
+<li><strong>Version, granularity, and delivery: high confidence.</strong> v1.2, hourly granularity, CSV via API (<code>org-billing-focus:read</code>) and in-app download are all documented by Grafana.</li>
+<li><strong>Column-level population: provisional.</strong> Grafana does not publish the export&rsquo;s column mapping. Every &ldquo;Present (expected)&rdquo; verdict is reasoned from Grafana Cloud&rsquo;s documented billing model, not observed in a schema or sample. A Validator run against a real export is required to confirm.</li>
+<li><strong>Cost-column reconciliation: medium confidence, flagged as the key open question.</strong> Committed-use discounts exist in Grafana enterprise contracts, so <code>EffectiveCost</code> and <code>ContractedCost</code> are treated as a potential substantive gap rather than a trivial copy. Whether discounts are reconciled to hourly lines is the pivotal unverified point.</li>
+<li><strong>Feature levels: high confidence.</strong> Verified against the FOCUS v1.2 specification and cross-checked against the FOCUS MCP column library, which returned all 57 v1.2 columns matching the bundled reference. The bundled feature-level table carries a <code>SPEC_VERSIONS_AS_OF: 2026-06-23</code> stamp; no newer ratified version supersedes v1.2 as the certification baseline as of this report.</li>
+<li><strong>Readiness band (Structured): held with medium confidence.</strong> The band reflects a real FOCUS v1.2 export at the certification version with strong granularity, tempered by an unpublished schema and an open cost-reconciliation question. It reflects the data source reviewed, not a formal certification result. This report does not assert that Grafana holds any FinOps certification.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>FOCUS supporter listing: focus.finops.org/get-started/grafana (&ldquo;Export FOCUS Datasets from Grafana,&rdquo; Version Supported: v1.2)</li>
+<li>Grafana Cloud documentation: Cost Management and Billing, FOCUS overview and API download pages (<code>grafana.com/docs/grafana-cloud/cost-management-and-billing/focus/</code> and child pages)</li>
+<li>Grafana Labs release note: &ldquo;FOCUS: Standardized Cost and Usage Data,&rdquo; GA 2026-04-23</li>
+<li>Grafana Labs blog: &ldquo;Simple cloud cost management: Grafana Labs integrates open standard FOCUS specification for cloud billing data,&rdquo; 2025-06-03</li>
+<li>Grafana Cloud pricing and invoice documentation (metrics billable series, logs, traces, and profiles usage-based pricing)</li>
+<li>FOCUS Specification v1.2 and the FOCUS MCP column library (57-column v1.2 set, feature-level verification)</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

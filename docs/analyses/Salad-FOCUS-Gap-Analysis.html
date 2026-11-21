@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salad (SaladCloud) and FOCUS: Compliance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Salad-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="salad-saladcloud-and-focus-compliance-gap-and-adoption-roadmap">Salad (SaladCloud) and FOCUS: Compliance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Provider and product:</strong> Salad Technologies, SaladCloud (distributed/community GPU cloud). Primary billable product analyzed: Salad Container Engine (SCE), the per-second GPU/CPU container service. References to the Transcription API and AI Gateway are noted where relevant.</p>
+<p><strong>Prepared:</strong> July 1, 2026</p>
+<p><strong>Source analyzed:</strong> SaladCloud public documentation (Billing, Container Engine Billing, Priority Pricing, API Reference and OpenAPI index) and the salad.com pricing page. No billing or cost-and-usage export API, and no sample cost record, is published; the mapping below is inferred from the prepaid-credit model, the per-second pricing structure, and the Portal Billing &amp; Usage surfaces.</p>
+<p><strong>FOCUS baseline:</strong> v1.2 (current certification baseline). <strong>Build target:</strong> v1.4 (latest, ratified June 4, 2026).</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>SaladCloud today has no structured cost-and-usage dataset to map to FOCUS. Billing is a prepaid-credit ledger managed at the organization level: buyers top up credits, usage draws them down per second, and the Portal exposes a current balance, monthly invoices, per-project usage graphs, and a credit purchase history. There is a rich resource API (container groups, instances, projects, organizations) but no billing or usage-record endpoint and no cost export in any machine-readable form. FOCUS conformance is judged against a per-charge-record dataset, so the honest starting point is that the record itself does not yet exist.</p>
+<p>That is a clean-sheet situation, not a broken one. The underlying economic events are unusually well-defined: per-second consumption of a specific GPU class plus vCPU and RAM, at a known priority-level rate, drawn against prepaid credits, scoped to an organization and a project. Those are exactly the fields FOCUS needs. The gap is that Salad has never had to serialize them into a line-item feed, because prepaid credits let the platform bill without one. Building a FOCUS dataset here is a data-engineering exercise over telemetry Salad already has, not a pricing-model redesign.</p>
+<p>Because there is no dataset, every FOCUS column is scored as missing or not-yet-applicable against a hypothetical export. The counts below describe what a first SCE cost feed would need to populate, and separate the columns that are genuinely hard (the four cost columns under a prepaid-discount model) from the columns that are straightforward serializations of data the platform already holds.</p>
+<p><strong>4-stat strip:</strong></p>
+<ul>
+<li>FOCUS columns (v1.2): 57</li>
+<li>Already present in a mappable export: 0</li>
+<li>Substantive Mandatory gaps: 4 of 21 (the cost family, under prepaid volume discounts)</li>
+<li>Deviations to fix on present columns: 0 (no dataset exists yet to deviate)</li>
+</ul>
+<p><strong>RAG readiness:</strong></p>
+<ul>
+<li>Cost: Gap</li>
+<li>Granularity: Partial</li>
+<li>Allocation: Partial</li>
+<li>Coverage: Gap</li>
+<li>FOCUS shape: Gap</li>
+<li>Overall band: <strong>Not yet aligned (per public docs)</strong></li>
+</ul>
+<p><strong>Recommendation:</strong> Treat this as a greenfield build. Stand up a per-charge-record export for Salad Container Engine keyed on organization, project, and container group, emit the per-second consumption already tracked for billing, and resolve prepaid volume discounts down to the usage line so <code>EffectiveCost</code> is real rather than a copy of list. That single dataset unlocks most of the FOCUS Mandatory set at once.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<p>SaladCloud is a distributed GPU cloud: compute runs on a worldwide network of community nodes (personal computers, esports arenas, and similar), which is what lets Salad price GPUs far below hyperscaler rates. That marketplace shape matters for FOCUS in two specific ways, both addressed in the column analysis: the buyer never sees a node identity or a cloud region, and capacity is preemptible by priority level rather than reserved. Neither blocks conformance; both simply null a family of columns that do not apply to the model.</p>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>What SaladCloud exposes today, from the public documentation:</p>
+<ul>
+<li><strong>Prepaid credit ledger, organization-scoped:</strong> Billing, payment methods, and credits are managed per organization. Buyers purchase credits (auto or manual recharge), and usage draws the balance down. Credits expire twelve months from purchase.</li>
+<li><strong>Per-second usage tracking:</strong> SCE bills for the time hardware is dedicated to a container group, tracked per second though displayed as an hourly rate. No charge accrues during allocation, image download, or cold boot.</li>
+<li><strong>Component-based rates:</strong> CPU-only groups are billed as vCPU ($0.004/vCPU/hr) plus RAM ($0.001/GB/hr). GPU groups are billed at a per-GPU-class hourly rate that bundles vCPU and RAM. Rates vary by one of four priority levels (High, Medium, Low, Lowest).</li>
+<li><strong>Portal surfaces:</strong> The Billing &amp; Usage page shows the current credit balance, a Billing Information tab (payment card, contacts, historical payment invoices), an Invoice tab (current and historical invoices), a Usage tab (graphs broken down by project, consumption over time), and a Credits tab (purchase history).</li>
+<li><strong>Volume discounts:</strong> Prepaid purchases from $10,000 to $150,000 earn tiered discounts (2% to 10%); above that is a sales negotiation. These discounts attach to the credit purchase, not to individual usage lines.</li>
+<li><strong>Resource API:</strong> A REST API keyed on organization and project exposes container groups, instances, queues, inference endpoints, logs, quotas, and GPU/CPU availability.</li>
+</ul>
+<p>Key limitations for FOCUS:</p>
+<ul>
+<li><strong>No billing or usage-record API and no cost export.</strong> The OpenAPI index lists no cost, billing, invoice, or usage-line endpoint. Cost data lives only as Portal invoices and per-project graphs, neither of which is a downloadable per-charge dataset.</li>
+<li><strong>Discounts are decoupled from usage.</strong> Volume discounts reduce the price of purchased credits, so the discount is realized at top-up time, not on the usage line. Reconciling an effective per-record rate requires allocating the purchase-time discount across the credits it funded.</li>
+<li><strong>No line-item currency or SKU serialization.</strong> There is no published per-record currency field, SKU identifier, or unit-price field, because the platform has never emitted a usage line.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS defines a common billing-and-usage schema of 57 columns in v1.2. Each column carries a feature level: Mandatory (must be present and populated), Conditional (required when the provider&rsquo;s model triggers the condition), Recommended (encouraged), or Optional. Conformance is judged column by column against a dataset of charge records. Feature levels for this analysis were taken from the verified FOCUS v1.2 reference and spot-checked against the live specification; they were not stated from memory.</p>
+<p>Because SaladCloud publishes no charge-record dataset, the analysis scores each column against the export Salad would need to build. A column is &ldquo;missing&rdquo; when the target export has no field to carry it, and &ldquo;N/A: null valid&rdquo; when the provider&rsquo;s model means the column legitimately does not apply and should exist but be null.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Feature levels verified against the FOCUS Specification v1.2. Status legend: Present (emitted and aligned); Present, deviation to fix (emitted, wrong shape or value); Missing: Mandatory (required, absent, blocks conformance); Missing: Recommended (encouraged, absent); Missing: Conditional (condition applies, absent); N/A: null valid (does not apply to this model, should exist and be null).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Organization (Portal only)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>Organization name (Portal only)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>USD (implicit)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>Monthly invoice period (Portal)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>Monthly invoice period (Portal)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No commitments/reservations</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No commitments/reservations</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>Per-second usage window (internal)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>Per-second usage window (internal)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>No commitment discounts</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>No commitment discounts</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>No commitment discounts</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>No commitment discounts</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>No commitment discounts</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>No commitment discounts</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>No commitment discounts</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Per-second runtime (internal)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>Seconds / GPU-hours (internal)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>Monthly invoice (Portal)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>Salad (implicit)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>Published hourly rate</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td>Standard / priority-based</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>USD (implicit)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>Published hourly rate</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M</td>
+<td>Salad (implicit)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M</td>
+<td>Salad (implicit)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td>Distributed nodes, no region exposed</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td>Distributed nodes, no region exposed</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td>Container group ID (API)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td>Container group name (API)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td>Container group / instance</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td>Salad Container Engine (implicit)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>GPU class + priority (internal)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>Project (Portal/API)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>Project name (Portal/API)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>Project</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td>No user tags on billing</td>
+<td>Missing: Conditional</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Reading the tally:</strong> Of 57 v1.2 columns, 0 are present in a mappable export (none exists), 21 are Mandatory and all 21 are missing, 4 are Recommended and all missing, and 32 are Conditional, of which 9 legitimately null out under Salad&rsquo;s model (capacity reservations, commitment discounts, and cloud regions), leaving 23 Conditional columns that a real export would populate. No deviations are recorded because there is no dataset yet to carry a wrong shape or value.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p>Nothing is solved in the sense of an emitted, conformant column, because no dataset exists. But most of the missing Mandatory columns are trivial once an export exists, and only the cost family is genuinely hard. Separating the two is the point of this section.</p>
+<p><strong>Substantive gaps (real data or real reconciliation, not plumbing):</strong></p>
+<ul>
+<li><strong>BilledCost, EffectiveCost, ListCost, ContractedCost (the cost family).</strong> This is the one substantive block, and it is substantive precisely because of the prepaid volume discounts. <code>ListCost</code> is derivable from the published hourly rate times runtime. But volume discounts (2% to 10%) attach to the credit purchase, not the usage line, so <code>EffectiveCost</code> and <code>BilledCost</code> cannot be a copy of <code>ListCost</code>: producing them means allocating the purchase-time discount across the credits that funded each usage record. This is the classic list-cost trap. Because discounts exist and are applied away from the usage line, the cost columns are a reconciliation problem, not a copy. Where a customer has no volume discount, all four costs converge and the gap collapses to plumbing; where they do, it is real work.</li>
+</ul>
+<p><strong>Trivial gaps (serialize data the platform already holds):</strong></p>
+<ul>
+<li><strong>Identity and service columns:</strong> <code>ProviderName</code> and <code>PublisherName</code> are constants (&ldquo;Salad&rdquo;). <code>ServiceName</code> is &ldquo;Salad Container Engine&rdquo;; <code>ServiceCategory</code> is &ldquo;Compute&rdquo; (or &ldquo;AI and Machine Learning&rdquo; for inference-oriented products). <code>InvoiceIssuerName</code> is &ldquo;Salad&rdquo;.</li>
+<li><strong>Account and period columns:</strong> <code>BillingAccountId</code> / <code>BillingAccountName</code> map to the organization; <code>BillingPeriodStart</code> / <code>BillingPeriodEnd</code> to the monthly invoice window; <code>ChargePeriodStart</code> / <code>ChargePeriodEnd</code> to the per-second usage window the platform already meters. <code>BillingCurrency</code> is USD.</li>
+<li><strong>Charge descriptors:</strong> <code>ChargeCategory</code> is &ldquo;Usage&rdquo; for SCE consumption (with &ldquo;Purchase&rdquo; available for credit top-ups if those are represented); <code>ChargeClass</code> is null except on corrections; <code>ChargeDescription</code> is a generated label.</li>
+<li><strong>Pricing columns:</strong> <code>PricingQuantity</code> and <code>PricingUnit</code> are derivable from the per-second runtime and the rate basis. Because SCE is flat-rate per GPU-class-and-priority (no tiering on the usage line), <code>PricingQuantity</code> equals the consumed quantity, so this is a genuine derivation rather than a computation against tiers.</li>
+</ul>
+<p><strong>Conditional columns a real export would populate (not blocking, but expected):</strong></p>
+<ul>
+<li><strong>Allocation:</strong> <code>ResourceId</code> / <code>ResourceName</code> / <code>ResourceType</code> map to the container group and instance; <code>SubAccountId</code> / <code>SubAccountName</code> / <code>SubAccountType</code> map to the project (Salad&rsquo;s native sub-organization unit, already the axis of the Portal usage graphs).</li>
+<li><strong>SKU and pricing:</strong> <code>SkuId</code> can encode the GPU class plus priority level; <code>ListUnitPrice</code> and the pricing-currency unit prices come from the published rate card; <code>PricingCategory</code> reflects the priority-based standard pricing.</li>
+</ul>
+<p><strong>Conditional columns that null out under Salad&rsquo;s model (N/A: null valid):</strong></p>
+<ul>
+<li><strong>Commitment discounts (7 columns):</strong> Salad sells no reserved or committed-use discounts; prepaid credits are not a commitment discount in the FOCUS sense.</li>
+<li><strong>Capacity reservations (2 columns):</strong> Capacity is preemptible by priority, not reserved.</li>
+<li><strong>Regions (RegionId, RegionName):</strong> The distributed node network exposes no region or zone to the buyer; <code>AvailabilityZone</code> (Recommended) is likewise not applicable.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<p>None. Deviations are wrong-shape or wrong-value data on columns that are actually emitted, and SaladCloud emits no billing dataset yet. The most likely future deviation to watch for, once an export exists, is the <code>Tags</code> column: FOCUS expects key-value pairs, and providers frequently emit bare-string arrays. Salad does not currently attach user tags to billing at all, so <code>Tags</code> is scored Missing: Conditional rather than a deviation, but the key-value shape should be designed in from the start rather than retrofitted.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Build to <strong>v1.4</strong> (latest, ratified June 4, 2026) and validate against the <strong>v1.2</strong> certification baseline, which remains the version anchoring the &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo; badge. Because Salad is building a dataset from scratch, there is no legacy schema to migrate: design directly to v1.4 column IDs and shapes, then confirm conformance against whichever version the certification program requires at submission time. Two v1.4 details help here: <code>ProviderName</code> and <code>PublisherName</code> are removed in v1.4 (deprecated in v1.3), so a greenfield v1.4 build simply omits them rather than emitting and later dropping them. Validator support for v1.4 is expected later in Q3 2026; until then, validate against v1.3, which the Validator supports today.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Membership is required for certification, though contributing to the specification is open and free; contact <code>member-cert@finops.org</code> for the RFI. Open-source tooling supports the build: the FOCUS Validator checks a dataset against the machine-readable Requirements Model, the FOCUS Converter maps provider-native data to FOCUS, and the Requirements Model itself encodes the MUST/SHOULD/MAY rules. The specification is published at https://focus.finops.org and is licensed under CC BY 4.0.</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Scope and confirm.</strong> Decide the grain of the export (per container group per day is the natural fit for a per-second-metered service) and confirm the target version. Model the mapping on paper against a handful of real invoices before building. Establish that projects are the sub-account axis and organizations the billing account.</p>
+<p><strong>Phase 1: Build the charge-record export and close the Mandatory set.</strong> This is the phase that unlocks conformance. Emit a per-charge dataset from the per-second telemetry Salad already meters, populating the trivial Mandatory columns (identity, service, account, period, charge descriptors, pricing quantity/unit) directly. In the same phase, solve the cost family: derive <code>ListCost</code> from rate times runtime, and reconcile prepaid volume discounts down to the usage line to produce real <code>EffectiveCost</code>, <code>BilledCost</code>, and <code>ContractedCost</code>. Where a customer has no discount, all four converge.</p>
+<p><strong>Phase 2: Populate applicable Conditional columns.</strong> Add the allocation columns (resource = container group/instance, sub-account = project), the SKU columns (GPU class plus priority as <code>SkuId</code>, rate card as <code>ListUnitPrice</code>), and <code>PricingCategory</code>. Design <code>Tags</code> as key-value from the outset if user tagging is added to billing.</p>
+<p><strong>Phase 3: Round out Recommended columns and null the N/A families explicitly.</strong> Add <code>ChargeFrequency</code>, <code>ServiceSubcategory</code>, and <code>InvoiceId</code>, and make sure the commitment-discount, capacity-reservation, and region columns exist as explicit nulls rather than being absent.</p>
+<p><strong>Phase 4: Validate and certify.</strong> Run sample data through the FOCUS Validator (v1.3 today, v1.4 when supported), fix what it flags, then pursue the certification RFI. Because the build targets v1.4, no deprecated-column cleanup is needed.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<p>Once the Phase 1 export exists at container-group and project grain, the everyday allocation and reporting use cases work immediately: cost by project, cost by resource, usage trend over time, and chargeback to internal teams (the Portal already graphs usage by project, so the underlying data is present). Anomaly detection and unit-economics reporting (cost per GPU-hour, cost per inference job) follow from the same records.</p>
+<p>Reconciliation and actuals-based budgeting use cases depend on Phase 1&rsquo;s cost reconciliation: they need real <code>EffectiveCost</code> and <code>BilledCost</code>, not list, which is where the prepaid-discount work pays off. Commitment-tracking, reservation-utilization, and region-based use cases are out of scope for Salad&rsquo;s model, since it sells no commitments or reservations and exposes no regions.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Confirm the target grain (per container group per day) and target version (build v1.4, certify against v1.2 baseline) with the team that owns SaladCloud billing telemetry.</li>
+<li>Pull three to five representative monthly invoices and their underlying per-second usage, and map them by hand to FOCUS v1.4 column IDs to validate the field-level mapping before any code.</li>
+<li>Decide how prepaid volume discounts are allocated to usage records, since that decision determines whether <code>EffectiveCost</code> is real or a list-cost copy.</li>
+<li>Draft the native-to-FOCUS mapping document and a synthetic sample dataset, and run it through the FOCUS Validator (v1.3 today).</li>
+<li>If pursuing certification, contact <code>member-cert@finops.org</code> for the RFI and confirm the current certification badge version.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li><strong>No structured cost dataset exists (high confidence).</strong> The public OpenAPI index and billing documentation show a prepaid-credit ledger, Portal invoices, and per-project usage graphs, but no billing, cost, or usage-record API endpoint and no cost export. The column-by-column analysis is therefore scored against a hypothetical future export, not an emitted dataset.</li>
+<li><strong>Provisional field mapping (moderate confidence).</strong> Because Salad publishes no per-record billing schema or sample, the mapping of native concepts (organization, project, container group, GPU class, priority level, per-second runtime) to FOCUS columns is inferred from the pricing model and Portal structure. It should be confirmed against real invoice and usage data before build.</li>
+<li><strong>Cost family is substantive (high confidence).</strong> Prepaid volume discounts are applied at credit-purchase time and are documented (2% to 10% tiers), so <code>EffectiveCost</code> and <code>BilledCost</code> require reconciling those discounts to usage lines. This is the list-cost trap and is not trivial where discounts apply.</li>
+<li><strong>N/A classifications (high confidence).</strong> Commitment discounts, capacity reservations, and cloud regions do not exist in Salad&rsquo;s distributed, preemptible, priority-priced model, so those column families legitimately null out.</li>
+<li><strong>Feature levels (high confidence).</strong> Taken from the verified FOCUS v1.2 reference (stamp 2026-06-23) and consistent with the live specification; v1.2 remains the certification baseline and v1.4 the latest ratified version. Validator support for v1.4 was noted as expected later in Q3 2026 and should be confirmed before a v1.4 Validator run.</li>
+<li><strong>Overall readiness: Nascent.</strong> The score reflects the data source reviewed (no conformant dataset published), not a formal certification result. Salad has not been assessed by the FinOps Foundation and holds no FOCUS certification.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>SaladCloud, Salad Container Engine Billing: https://docs.salad.com/container-engine/explanation/billing-pricing/billing</li>
+<li>SaladCloud, Billing (prepaid credits, volume discounts, payment types): https://docs.salad.com/general/explanation/billing</li>
+<li>SaladCloud, Priority Pricing: https://docs.salad.com/container-engine/explanation/billing-pricing/priority-pricing</li>
+<li>SaladCloud, Using the API: https://docs.salad.com/reference/api-usage</li>
+<li>SaladCloud, documentation and OpenAPI index: https://docs.salad.com/llms.txt</li>
+<li>Salad GPU Cloud pricing: https://salad.com/pricing</li>
+<li>FOCUS Specification: https://focus.finops.org/focus-specification/</li>
+<li>FOCUS Specification v1.2: https://focus.finops.org/focus-specification/v1-2/</li>
+<li>FOCUS Specification v1.4: https://focus.finops.org/focus-specification/</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Twilio &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Twilio-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="twilio-focus-data-generator-gap-analysis">Twilio &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Twilio Inc.<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> FOCUS data generator landscape and readiness list<br>
+<strong>Source:</strong> Public Twilio documentation only: Usage Records API reference; Subaccounts API reference; Messaging Pricing API (v1) and Voice Pricing API (v2); BulkExport docs; call log usage discrepancy guide; Twilio pricing page<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 14 Present, 12 Deviation, 3 Missing Mandatory, 17 Missing Conditional, 2 Missing Recommended, 9 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Twilio sells usage-priced communications APIs: Programmable Voice, Messaging (SMS, MMS, RCS, WhatsApp), phone numbers, Verify, Lookup, Video, Studio, TaskRouter, and roughly 150 other metered usage categories. Pricing is pay-as-you-go with &ldquo;discounts as you scale,&rdquo; and rates vary by destination country, carrier, and sending number type. Usage from up to 1,000 subaccounts rolls up to one main account and one balance.</p>
+<p>Twilio already publishes a priced usage API, which most SaaS vendors do not. The <strong>Usage Records API</strong> returns, per account and per usage category, a daily (or monthly or yearly) record with <code>price</code>, <code>price_unit</code>, <code>usage</code>, <code>usage_unit</code>, <code>count</code>, and <code>description</code>, and it can be called per subaccount. Separately, the <strong>Pricing API</strong> exposes both a <code>base_price</code> (retail) and a <code>current_price</code> that &ldquo;accounts for any volume or custom price discounts,&rdquo; per country, carrier, and number type.</p>
+<p><strong>Public billing documentation is thin where FOCUS needs it most.</strong> No invoice API, invoice field list, or cost export is documented. Twilio does not say whether Usage Records <code>price</code> is list or net of discounts, promotional credits, and contract terms. Its own reference warns that &ldquo;the sum of the <code>Price</code> of all UsageRecords may not be equal to the <code>Price</code> of <code>TotalPrice</code>,&rdquo; so the usage data does not reconcile to the bill by design. Twilio help center billing articles did not render to an automated fetch, and no public page documents committed-spend contracts, tax lines, the invoicing entity, or billing currencies beyond the <code>usd</code>, <code>eur</code>, and <code>jpy</code> examples.</p>
+<p>Of the 21 Mandatory FOCUS columns, 18 have a source and 3 are missing. Two are substantive: <strong>EffectiveCost</strong>, because promotional credits, prepaid balances, and negotiated contracts are not reflected in any documented row-level surface; and <strong>ListCost</strong>, because a usage category such as <code>sms-outbound-longcode</code> aggregates every destination country and carrier at different rates, so no rate can be joined at that grain. <strong>ContractedCost</strong> is plumbing if <code>price</code> already carries the account&rsquo;s discounted rate.</p>
+<p><strong>Recommendation:</strong> Build a monthly FOCUS export per main account from the systems that already feed Usage Records and the Pricing API: one Usage row per subaccount × usage category × destination country × day, with <code>base_price</code> and <code>current_price</code> joined as ListUnitPrice and ContractedUnitPrice, Purchase rows for phone number rentals and registration fees, Tax rows, and Credit rows for promotional credits, so that BilledCost reconciles to the invoice.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<ul>
+<li><strong>Usage Records API:</strong> <code>GET /2010-04-01/Accounts/{AccountSid}/Usage/Records</code>, with subresources <code>Daily</code>, <code>Monthly</code>, <code>Yearly</code>, <code>AllTime</code>, <code>Today</code>, <code>Yesterday</code>, <code>ThisMonth</code>, and <code>LastMonth</code>. Parameters: <code>Category</code>, <code>StartDate</code>, <code>EndDate</code> (GMT <code>YYYY-MM-DD</code> or offsets such as <code>-30days</code>), and <code>IncludeSubaccounts</code> (default <code>true</code>). Fields: <code>account_sid</code>, <code>api_version</code>, <code>as_of</code>, <code>category</code>, <code>count</code>, <code>count_unit</code>, <code>description</code>, <code>start_date</code>, <code>end_date</code> (inclusive), <code>price</code>, <code>price_unit</code>, <code>usage</code>, <code>usage_unit</code>, <code>uri</code>, <code>subresource_uris</code>. Finest grain is daily. Example values: <code>"price": "2192.84855"</code>, <code>"price_unit": "usd"</code>; numeric fields arrive as strings.</li>
+<li><strong>Usage categories:</strong> About 158 categories across Voice, SMS and MMS, RCS, WhatsApp, phone numbers, Lookup, trunking, Sync, TaskRouter, Video, Verify, Studio, and others, plus roll-ups such as <code>calls</code>, <code>sms</code>, and <code>totalprice</code>. Naming is inconsistent (<code>Usage-RCS-Messages</code> in mixed case; a published typo, <code>call-progess-events</code>).</li>
+<li><strong>Pricing API:</strong> Messaging v1 (<code>pricing.twilio.com/v1/Messaging/Countries/{IsoCountry}</code>) returns outbound prices per carrier (MCC/MNC) and number type and inbound prices per number type. Voice v2 returns per-minute prices by origination and destination prefix and inbound by number type. Every price carries <code>base_price</code> (&ldquo;the retail price&rdquo;) and <code>current_price</code> (&ldquo;accounts for any volume or custom price discounts&rdquo;).</li>
+<li><strong>Subaccounts API:</strong> One level of subaccounts under a main account, each with <code>owner_account_sid</code> and a friendly name, up to 1,000 by default. &ldquo;Twilio bills all subaccount usage directly to your main account. You&rsquo;ll have one Twilio balance for all subaccounts.&rdquo;</li>
+<li><strong>BulkExport:</strong> Daily GZIP JSON dumps of Messages, Calls, Conferences, and Participants, deleted after seven days, US1 only. It is an activity log, not a cost export, and &ldquo;Price data may not be present for every Message record.&rdquo;</li>
+<li><strong>Invoices:</strong> Not documented publicly. No invoice API, invoice line schema, or billing export is published.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Pricing:</strong> Pay-as-you-go, per message, per minute, per lookup, per number per month, with volume discounts and custom (negotiated) pricing reflected in <code>current_price</code>. Segment and other enterprise products are sales-quoted.</li>
+<li><strong>Rounding:</strong> The reconciliation guide defines <code>usage</code> for calls as billed minutes per call, rounded under the pricing model&rsquo;s minimums; failed and busy calls are not billed.</li>
+<li><strong>Currency:</strong> <code>price_unit</code> is &ldquo;the currency associated with the account,&rdquo; with <code>usd</code>, <code>eur</code>, and <code>jpy</code> as documented examples.</li>
+<li><strong>Regions:</strong> Twilio operates US1, IE1, and AU1 processing regions; prices vary by destination country and carrier, not by Twilio region.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Subaccounts are a first-class, billable allocation unit, so the SubAccount family applies. Phone numbers, messaging services, and calls carry resource SIDs, so the Resource family applies. Twilio sells in more than one processing region, so RegionId applies. This analysis treats negotiated committed-spend contracts as applicable to the CommitmentDiscount family; that rests on standard enterprise contracting, not on a public Twilio document. Twilio has one billing account type, prices in the account&rsquo;s billing currency, no capacity reservations, no customer-selected zones, and no general resource tagging; those columns are N/A and should exist as null. Feature levels follow the FOCUS v1.2 Content Constraints.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Twilio source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Usage Records <code>price</code> per category per day; not tied to an invoice, sum of categories does not equal <code>totalprice</code>, and treatment of credits is undocumented</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs promotional credits, prepaid balances, and committed-spend contracts amortized onto usage rows</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not exposed; <code>base_price</code> exists in the Pricing API but usage categories aggregate destinations with different rates</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not exposed; <code>current_price</code> × PricingQuantity, or <code>price</code> if it already carries the contracted rate</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Main account SID (<code>AC...</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Main account <code>friendly_name</code> (Accounts API join)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td><code>price_unit</code>, but emitted lowercase (<code>"usd"</code>); normalize to uppercase ISO 4217</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Calendar month (<code>Monthly</code> subresource, <code>start_date</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Calendar month end, made exclusive</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td><code>start_date</code> (GMT) on the <code>Daily</code> subresource</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td><code>end_date</code> is the last included date (inclusive); emit <code>end_date</code> + 1 day as an exclusive timestamp</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td><code>description</code> (e.g., &ldquo;Caller Name Lookups&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Not emitted; derive &ldquo;Usage&rdquo; for metered traffic, &ldquo;Purchase&rdquo; for number rentals and registration fees, &ldquo;Tax&rdquo; for taxes and surcharges, &ldquo;Credit&rdquo; for promotional credits and refunds</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for rebills and adjustments</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Twilio Inc.&rdquo; (or the regional Twilio entity that invoices the account)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Twilio&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Twilio&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Not emitted; derive from the category family: &ldquo;Programmable Voice&rdquo;, &ldquo;Programmable Messaging&rdquo;, &ldquo;Phone Numbers&rdquo;, &ldquo;Verify&rdquo;, &ldquo;Lookup&rdquo;, &ldquo;Video&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Not emitted; derive &ldquo;Business Applications&rdquo; for Voice and Messaging, &ldquo;Security&rdquo; for Verify, &ldquo;Identity&rdquo; for Lookup, &ldquo;Media&rdquo; for Video, &ldquo;Storage&rdquo; for recording storage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td><code>usage</code>, a string; for some categories <code>usage_unit</code> is <code>"usd"</code> (e.g., <code>calleridlookups</code>), so the quantity is a dollar amount</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td><code>usage_unit</code>, free-text lowercase plurals (<code>minutes</code>, <code>messages</code>, <code>usd</code>); normalize to FOCUS unit format</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td><code>usage</code> (billed quantity) or <code>count</code> (events)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td><code>usage_unit</code> / <code>count_unit</code>; normalize as for PricingUnit</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not in usage data; Pricing API <code>base_price</code> per country, carrier, and number type</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not in usage data; Pricing API <code>current_price</code></td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Not emitted; derive &ldquo;Standard&rdquo; for pay-as-you-go, &ldquo;Committed&rdquo; for usage drawn against a contract</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>N/A: one account type (main account)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Subaccount SID (<code>account_sid</code> with <code>IncludeSubaccounts=false</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Subaccount <code>friendly_name</code> (Accounts API join)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not emitted; constant &ldquo;Subaccount&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not in usage data; phone number, messaging service, trunk, or Verify service SID</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not in usage data; phone number or service friendly name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not in usage data; &ldquo;Phone Number&rdquo;, &ldquo;Messaging Service&rdquo;, &ldquo;SIP Trunk&rdquo;, &ldquo;Verify Service&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td><code>category</code> is the closest identifier, but it spans destinations and number types priced differently</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: Twilio has no general resource tagging surfaced in billing; subaccounts are the allocation mechanism</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: prices are quoted in the account&rsquo;s billing currency</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td><code>description</code> per category</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed; would key country × carrier (MCC/MNC) × number type, or origination × destination prefix for Voice</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; destination country, carrier, number type, and volume tier belong here</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Not in usage data; Twilio processing region (US1, IE1, AU1)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Not in usage data</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Committed-spend contract; not documented or exported</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Spend&rdquo;; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo;/&rdquo;Unused&rdquo;; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Not in usage data; invoices are not exposed by API</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Not emitted; derive &ldquo;Usage-Based&rdquo; for traffic, &ldquo;Recurring&rdquo; for number rentals, &ldquo;One-Time&rdquo; for registration fees</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map each product to an allowed v1.2 value</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: zones are not customer-selected or billed</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 14 Present, 12 Deviation, 3 Missing Mandatory, 17 Missing Conditional, 2 Missing Recommended, 9 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Account and subaccount identity, a priced usage record per category per day by API, a documented quantity and unit on every record, and a public Pricing API that already separates retail from discounted rates. Few usage-priced SaaS vendors expose this much.</p>
+<p><strong>Substantive (2 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Twilio accounts run on a prepaid or invoiced balance with promotional credits and, for larger customers, negotiated contracts. None of that appears on a documented row. EffectiveCost requires applying credits and amortizing any committed spend onto usage rows, which Twilio&rsquo;s billing system can do but no public surface does.</li>
+<li><strong>ListCost.</strong> A category such as <code>sms-outbound-longcode</code> covers every destination country and carrier, each with its own <code>base_price</code>. ListCost cannot be computed from Usage Records at their current grain; it needs the destination and number type on each row, which today exist only in per-message and per-call logs.</li>
+</ul>
+<p><strong>Trivial (1 of 3 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ContractedCost.</strong> If <code>price</code> already reflects <code>current_price</code> (the documented &ldquo;volume or custom price discounts&rdquo;), ContractedCost equals <code>price</code> before credits. Twilio should confirm that, then expose it.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No reconciliation to the invoice.</strong> Twilio&rsquo;s own reference says category prices do not sum to <code>totalprice</code>. A FOCUS dataset must reconcile: BilledCost summed per InvoiceId has to equal the invoice. The missing costs (taxes, surcharges, uncategorized fees) need their own rows.</li>
+<li><strong>No resource dimension.</strong> Usage Records are per category and account only. Phone numbers, messaging services, and trunks carry SIDs, but usage cannot be grouped by them. Customers who do not split workloads into subaccounts cannot allocate Twilio spend below the account.</li>
+<li><strong>Daily is the floor.</strong> No hourly grain exists, which limits anomaly detection on traffic spikes such as SMS pumping fraud.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BilledCost:</strong> Emit priced rows that, together with Purchase, Tax, and Credit rows, sum to the invoice total per InvoiceId. Retire the <code>totalprice</code> gap.</p>
+<p><strong>BillingCurrency:</strong> Uppercase ISO 4217 (<code>USD</code>, <code>EUR</code>, <code>JPY</code>). Twilio&rsquo;s own Pricing API sample already returns <code>"USD"</code>.</p>
+<p><strong>ChargePeriodEnd:</strong> Convert the inclusive <code>end_date</code> to an exclusive timestamp (<code>end_date</code> + 1 day, 00:00 UTC).</p>
+<p><strong>ChargeCategory, ChargeFrequency, PricingCategory:</strong> Derive from category family and contract status as shown in the table.</p>
+<p><strong>ServiceName and ServiceCategory:</strong> Group the roughly 158 categories into product-level ServiceName values and map each to a v1.2 ServiceCategory.</p>
+<p><strong>PricingQuantity and PricingUnit:</strong> Emit numeric quantities, not strings. Replace <code>usd</code>-denominated usage with the real billed unit (lookups, minutes, messages). Normalize unit names to FOCUS unit format.</p>
+<p><strong>SkuId:</strong> Split categories by destination country and number type, or emit <code>category</code> as SkuId with the price key in SkuPriceId.</p>
+<p><strong>Already right:</strong> Daily priced records, a clean main-account and subaccount hierarchy that maps directly to BillingAccount and SubAccount, and a Pricing API with retail and discounted rates side by side.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is a candidate release; its scope is on the FOCUS site. The v1.4 Invoice Detail dataset directly addresses Twilio&rsquo;s largest structural gap, the lack of invoice-level data by API.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (single account type, single pricing currency, no reservations, zones, or general tagging) and how committed-spend contracts are modeled.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of <code>Daily</code> Usage Records with <code>IncludeSubaccounts=false</code> for each subaccount, plus the invoice, for a pay-as-you-go account and a contracted account. Hand-build a v1.2 file and run it through the Validator. Quantify the <code>totalprice</code> gap and confirm whether <code>price</code> is list, discounted, or net of credits.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Add destination country and number type to usage rows so <code>base_price</code> can be joined for ListCost. Expose ContractedCost from <code>current_price</code>. Apply credits and contract amortization for EffectiveCost. Add Tax, Credit, and uncategorized-fee rows so BilledCost reconciles to the invoice.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Uppercase currency, exclusive ChargePeriodEnd, numeric quantities, real units in place of <code>usd</code>, and derived ChargeCategory, ChargeFrequency, PricingCategory, ServiceName, and ServiceCategory.</p>
+<p><strong>Phase 3: Allocation and Conditional columns.</strong> Add resource SIDs (phone number, messaging service, trunk, Verify service) and processing region to usage rows; populate SubAccountType, ListUnitPrice, ContractedUnitPrice, SkuPriceId, SkuPriceDetails, the CommitmentDiscount family for contracted accounts, InvoiceId, and ServiceSubcategory. Deliver by API and scheduled push to object storage.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Invoice Detail dataset; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Today, with minor plumbing:</strong> Spend by subaccount (showback for customers who already isolate workloads or end customers by subaccount) and daily spend trending by category.</li>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, actuals-based budgeting and forecasting, and discount and credit realization.</li>
+<li><strong>After Phase 2:</strong> Spend by service category across providers and unit-cost analysis per minute and per message.</li>
+<li><strong>After Phase 3:</strong> Chargeback by phone number or messaging service, destination-country cost analysis, commitment utilization tracking, and anomaly detection on traffic pumping by country.</li>
+<li><strong>Out of scope:</strong> Capacity reservation management, availability zone analysis, and multi-currency analysis.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Reach the owners of Twilio billing and the Usage Records API through the FOCUS landscape outreach channel.</li>
+<li>Confirm whether Usage Records <code>price</code> is list, discounted (<code>current_price</code>), or net of promotional credits, and what makes up the <code>totalprice</code> gap.</li>
+<li>Confirm what invoices contain (line items, per-subaccount detail, tax and surcharge lines) and which Twilio entity issues them by region.</li>
+<li>Confirm whether committed-spend contracts exist and how they are invoiced.</li>
+<li>Ask whether destination country, number type, and resource SID can be added as group-by dimensions on Usage Records.</li>
+<li>Build a v1.2 sample from one billing month and run it through the FOCUS Validator; open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Usage Records fields, subresources, parameters, daily floor, lowercase <code>price_unit</code>, string-typed numerics, and the <code>totalprice</code> caveat come from Twilio&rsquo;s Usage Records reference.</li>
+<li><strong>High:</strong> Subaccounts bill to the main account with one shared balance, per the Subaccounts reference.</li>
+<li><strong>High:</strong> The Pricing API exposes <code>base_price</code> and <code>current_price</code> (&ldquo;accounts for any volume or custom price discounts&rdquo;) per country, carrier, and number type for Messaging, and per prefix for Voice.</li>
+<li><strong>High:</strong> Feature levels match the bundled FOCUS v1.2 Content Constraints table (verified June 23, 2026); v1.4 remains the latest ratified version and v1.5 is a candidate release. A live spot-check through the FOCUS MCP was not run for this analysis.</li>
+<li><strong>Moderate:</strong> EffectiveCost as substantive. If Usage Records <code>price</code> is already net of credits and no account has committed spend, EffectiveCost collapses to <code>price</code> and becomes trivial.</li>
+<li><strong>Moderate:</strong> BillingCurrency as a deviation. ISO 4217 codes are uppercase; whether the FOCUS Validator rejects lowercase should be confirmed in Phase 0.</li>
+<li><strong>Moderate:</strong> ServiceCategory mappings; communications APIs have no exact v1.2 value, and &ldquo;Business Applications&rdquo; is the closest fit.</li>
+<li><strong>Low:</strong> CommitmentDiscount family as applicable. The pricing page promises &ldquo;the freedom to scale up or down without contracts&rdquo; and no public document describes committed spend. If none exists, the seven columns become N/A.</li>
+<li><strong>Low:</strong> Present status for BillingPeriodStart and BillingPeriodEnd as calendar months, and for InvoiceIssuerName as &ldquo;Twilio Inc.&rdquo; Twilio help center billing articles could not be read, and no public invoice sample names the billing cycle or issuing entity.</li>
+<li><strong>Low:</strong> Tags as N/A. A per-message tagging feature, if one exists, would make Tags applicable.</li>
+<li><strong>Low:</strong> RegionId as applicable. Prices do not vary by processing region, so Twilio may argue that region is not a billing dimension.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Twilio Usage Records API: <a href="https://www.twilio.com/docs/usage/api/usage-record">twilio.com/docs/usage/api/usage-record</a></li>
+<li>Twilio Subaccounts API: <a href="https://www.twilio.com/docs/iam/api/subaccounts">twilio.com/docs/iam/api/subaccounts</a></li>
+<li>Twilio Messaging Pricing API: <a href="https://www.twilio.com/docs/messaging/api/pricing">twilio.com/docs/messaging/api/pricing</a></li>
+<li>Twilio Voice Pricing API: <a href="https://www.twilio.com/docs/voice/pricing">twilio.com/docs/voice/pricing</a></li>
+<li>Twilio BulkExport: <a href="https://www.twilio.com/docs/usage/bulkexport">twilio.com/docs/usage/bulkexport</a></li>
+<li>Resolve Call Log Usage Discrepancies: <a href="https://www.twilio.com/docs/voice/resolve-call-log-usage-discrepancies">twilio.com/docs/voice/resolve-call-log-usage-discrepancies</a></li>
+<li>Twilio Pricing: <a href="https://www.twilio.com/en-us/pricing">twilio.com/en-us/pricing</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

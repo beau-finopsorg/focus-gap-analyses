@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redis Cloud and FOCUS: Conformance Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Redis-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="redis-cloud-and-focus-conformance-gap-analysis">Redis Cloud and FOCUS: Conformance Gap Analysis</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Provider:</strong> Redis (Redis Cloud)
+<strong>Product in scope:</strong> Redis Cloud FOCUS cost report (REST API <code>POST /cost-report</code>)
+<strong>Prepared:</strong> 2026-07-01
+<strong>Source analyzed:</strong> Redis Cloud REST API documentation, &ldquo;Generate FOCUS-compliant cost report&rdquo; (field-level schema)
+<strong>FOCUS baseline:</strong> v1.2 (current certification baseline)
+<strong>Status:</strong> Redis is a Supported FOCUS data generator (an export has been provided to the FinOps Foundation). This analysis assesses the completeness of that v1.2 export. Supported is distinct from FinOps Certified FOCUS Conformant, which is earned after submitting a Conformance Gap Report.</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Redis Cloud publishes a FOCUS cost report through its REST API, and it is a genuinely strong export. The full effective-cost family is present: <code>ListCost</code>, <code>ContractedCost</code>, <code>BilledCost</code>, and <code>EffectiveCost</code> are all emitted as distinct values, along with <code>ListUnitPrice</code> and <code>ContractedUnitPrice</code>. That is the hardest part of FOCUS to get right, and Redis Cloud has done it. Tags arrive as a proper key-value map, resources and regions are identified, and the cost columns are shaped with FOCUS column IDs out of the box.</p>
+<p>The remaining gaps are narrow and mostly structural rather than data problems. Three Mandatory columns are not documented in the export (<code>ProviderName</code>, <code>InvoiceIssuerName</code>, <code>ChargeClass</code>), and none of the three is a genuine data gap: two are fixed literals and the third is a nullable correction flag. A handful of enum and format deviations need tightening, chiefly a <code>ChargeCategory</code> set that omits <code>Credit</code> even though coupon credits exist, a <code>ChargeFrequency</code> hardwired to <code>Recurring</code>, and a <code>BillingAccountType</code> populated with the non-enum literal <code>Redis Cloud</code>.</p>
+<p><strong>Stat strip:</strong> 57 FOCUS columns (v1.2). 35 present. 3 of 3 Mandatory gaps are trivial (fixed literals or a nullable flag). 4 deviations to fix.</p>
+<p><strong>Recommendation:</strong> Add the three trivial Mandatory columns, correct the <code>ChargeCategory</code> and <code>ChargeFrequency</code> enums, and confirm charge-record granularity. The export is close to a clean v1.2 conformant dataset and is a sound basis for a Conformance Gap Report submission.</p>
+<h3 id="readiness-rag">Readiness (RAG)</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Rating</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cost</td>
+<td>Strong</td>
+</tr>
+<tr>
+<td>Granularity</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td>Allocation</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td>Coverage</td>
+<td>Strong</td>
+</tr>
+<tr>
+<td>FOCUS shape</td>
+<td>Strong</td>
+</tr>
+<tr>
+<td><strong>Overall band</strong></td>
+<td><strong>Near-ready</strong></td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<p>Redis Cloud already emits a FOCUS-shaped dataset. This section walks what it exposes, how conformance is judged, and where the export sits column by column.</p>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Redis Cloud generates a cost report on demand through three REST API calls: <code>POST /cost-report</code> (with a <code>startDate</code>, <code>endDate</code>, and optional filters), a task poll on <code>GET /tasks/{taskId}</code>, and a download from <code>GET /cost-report/{costReportId}</code>. Output is CSV or JSON. A date range of up to 40 days is supported per report.</p>
+<p>Characteristics relevant to FOCUS:</p>
+<ul>
+<li><strong>FOCUS-native field names:</strong> The report uses FOCUS column IDs directly (<code>BilledCost</code>, <code>EffectiveCost</code>, <code>ServiceCategory</code>, and so on), drawn from the FOCUS column library. No native-to-FOCUS renaming transform is needed.</li>
+<li><strong>Charge periods:</strong> <code>ChargePeriodStart</code> and <code>ChargePeriodEnd</code> can differ from the billing period when a resource is created or deleted mid-period, so the report can carry sub-billing-period records. The report is described as breaking down costs per subscription and database by month, so day-level charge records are not clearly asserted.</li>
+<li><strong>Currency:</strong> Always USD, emitted in both <code>BillingCurrency</code> and <code>PricingCurrency</code>.</li>
+<li><strong>Tags:</strong> User-defined tags emit as a JSON <code>Map&lt;String, String&gt;</code>, the correct FOCUS key-value shape.</li>
+<li><strong>Filters:</strong> The report can be filtered by subscription, database, subscription type, region, and tag, but subscription and database identity appear through <code>ResourceId</code> and <code>ResourceType</code> rather than through the FOCUS SubAccount columns.</li>
+<li><strong>Discounts and credits:</strong> Contractual (negotiated) discounts flow into <code>ContractedCost</code>, and <code>EffectiveCost</code> is described as the true cost after all discounts, credits, and adjustments. Coupon credits exist as a separate account mechanism.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory (must be present and populated), Conditional (required when the provider&rsquo;s business model triggers the condition), Recommended, or Optional. Conformance is judged column by column against the FOCUS Requirements Model. A dataset is conformant when every Mandatory column is present and correctly typed, every applicable Conditional column is populated, and values honor FOCUS allowed-value sets and formats.</p>
+<p>Feature levels in this report were taken from the verified v1.2 reference and spot-checked live against the FOCUS specification (<code>ContractedCost</code> Mandatory, <code>ChargeClass</code> Mandatory-nullable) on 2026-07-01. No newer ratified baseline supersedes v1.2 for the current certification badge.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Legend: Present; Present, deviation to fix; Missing: Mandatory; Missing: Recommended; Missing: Conditional; N/A: null valid.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td><code>BilledCost</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td><code>BillingAccountId</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td><code>BillingAccountName</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td><code>BillingAccountType</code> (<code>Redis Cloud</code>)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td><code>BillingCurrency</code> (USD)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td><code>BillingPeriodEnd</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td><code>BillingPeriodStart</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td><code>ChargeCategory</code> (no <code>Credit</code>)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td><code>ChargeDescription</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td><code>ChargeFrequency</code> (always <code>Recurring</code>)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td><code>ChargePeriodEnd</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td><code>ChargePeriodStart</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td><code>ConsumedQuantity</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td><code>ConsumedUnit</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td><code>ContractedCost</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td><code>ContractedUnitPrice</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td><code>EffectiveCost</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td><code>ListCost</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td><code>ListUnitPrice</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td><code>PricingCategory</code> (<code>Standard</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td><code>PricingCurrency</code> (USD)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td><code>PricingQuantity</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td><code>PricingUnit</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M</td>
+<td><code>PublisherName</code> (<code>redis.io</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td><code>RegionId</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td><code>RegionName</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td><code>ResourceId</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td><code>ResourceName</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td><code>ResourceType</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td><code>ServiceCategory</code> (<code>Databases</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td><code>ServiceName</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td><code>ServiceSubcategory</code> (<code>Caching</code>)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td><code>SkuPriceDetails</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td><code>Tags</code> (key-value map)</td>
+<td>Present</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Reading the tally:</strong> Of 57 v1.2 columns, 35 are Present (4 of them carrying a deviation), 3 Mandatory are missing, 2 Recommended are missing, 6 Conditional are missing where the model plausibly triggers them (SKU identifiers and sub-account attribution), and 11 Conditional or Recommended are legitimately N/A (commitment-discount family, capacity reservations, pricing-currency conversions that collapse because billing and pricing are both USD).</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What is solved, and what remains</h3>
+<p><strong>Solved (the substantive work):</strong> The cost columns are the load-bearing part of any FOCUS dataset, and Redis Cloud emits the full set as distinct values, not copies. <code>ListCost</code> is list price, <code>ContractedCost</code> reflects negotiated discounts, and <code>EffectiveCost</code> is the true cost after all discounts, credits, and adjustments. This is not the common list-cost-only trap: discounts and credits are reconciled into the export rather than deferred to a separate invoice. Resource and region identity, consumed quantity and unit, pricing quantity and unit, tags, and SKU price details are all present and correctly shaped.</p>
+<p><strong>The three Mandatory gaps are trivial, not substantive:</strong></p>
+<ul>
+<li><code>ProviderName</code>: a fixed literal. Redis is both provider and publisher; <code>PublisherName</code> already emits <code>redis.io</code>, so <code>ProviderName</code> is a one-line add.</li>
+<li><code>InvoiceIssuerName</code>: a fixed literal (Redis is the invoice issuer for direct billing; a marketplace reseller where applicable).</li>
+<li><code>ChargeClass</code>: Mandatory but nullable, populated only to flag corrections to a previously invoiced period. Adding the column and leaving it null on normal charges satisfies the requirement.</li>
+</ul>
+<p>No missing Mandatory column represents data that does not exist in the source. This is plumbing.</p>
+<p><strong>Conditional gaps worth closing:</strong> <code>SubAccountId</code> and <code>SubAccountName</code> would let subscription or database roll up as a FOCUS sub-account rather than only as a resource, which improves allocation. <code>SkuId</code>, <code>SkuMeter</code>, and <code>SkuPriceId</code> would round out SKU-level price transparency alongside the <code>SkuPriceDetails</code> already emitted.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<ul>
+<li><code>ChargeCategory</code>: The documented set is <code>Usage</code>, <code>Purchase</code>, <code>Tax</code>, <code>Adjustment</code>. FOCUS also defines <code>Credit</code>, and Redis Cloud has a coupon-credit mechanism. Credit-bearing rows should carry <code>ChargeCategory: Credit</code>, not be folded into <code>Adjustment</code>.</li>
+<li><code>ChargeFrequency</code>: Hardwired to <code>Recurring</code>. FOCUS allows <code>One-Time</code>, <code>Recurring</code>, and <code>Usage-Based</code>. One-time purchases and usage-metered charges (Pro hourly consumption reads as usage-based) should map to the matching value rather than all being labeled recurring.</li>
+<li><code>BillingAccountType</code>: Populated with the literal <code>Redis Cloud</code>. <code>BillingAccountType</code> expects a value describing the account structure; a vendor product name is not a conformant value for this column.</li>
+<li><code>ChargeFrequency</code> and granularity: The report is described as a per-month breakdown by subscription and database. Confirm whether charge records are day-level or monthly, since sub-monthly records materially raise the granularity rating and unlock time-series use cases.</li>
+</ul>
+<p><strong>Already done right:</strong> FOCUS column IDs used natively, tags as a key-value map, ISO 4217 currency, ISO 8601 inclusive-start and exclusive-end periods, the full distinct-value cost family, and a valid <code>ServiceCategory</code> (<code>Databases</code>).</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Baseline the build against v1.2, the current certification badge version. The three trivial Mandatory adds and the enum fixes bring the export to a clean v1.2 dataset. When targeting v1.3+ later, note that <code>Provider</code> and <code>Publisher</code> are deprecated in v1.3 and removed in v1.4, so the <code>ProviderName</code> add should be treated as v1.2-scoped.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. Redis is already listed as a Supported data generator; the Conformant designation is earned by submitting a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Membership is required for certification; contributing to the spec is open and free. Contact <code>member-cert@finops.org</code> for the RFI. Validate output with the open-source FOCUS Validator against the Requirements Model.</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate what exists.</strong> Run a real cost report (CSV and JSON) through the FOCUS Validator to confirm types and turn up any deviations not visible in the documentation. Confirm charge-record granularity.</p>
+<p><strong>Phase 1: Close the trivial Mandatory gaps.</strong> Add <code>ProviderName</code> (<code>redis.io</code>), <code>InvoiceIssuerName</code>, and <code>ChargeClass</code> (nullable). This alone clears the Mandatory column requirement.</p>
+<p><strong>Phase 2: Fix the deviations.</strong> Add <code>Credit</code> to <code>ChargeCategory</code> for coupon-credit rows, map <code>ChargeFrequency</code> to <code>One-Time</code> / <code>Recurring</code> / <code>Usage-Based</code> correctly, and populate <code>BillingAccountType</code> with a conformant value.</p>
+<p><strong>Phase 3: Round out Conditional columns.</strong> Add <code>SubAccountId</code> and <code>SubAccountName</code> for subscription or database attribution, and <code>SkuId</code> / <code>SkuMeter</code> / <code>SkuPriceId</code> for full SKU transparency.</p>
+<p><strong>Phase 4: Mature toward the latest version.</strong> Track v1.3/v1.4, drop <code>Provider</code>/<code>Publisher</code> when moving past v1.2, and pursue the Conformant designation.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<ul>
+<li><strong>Available today:</strong> effective-cost and savings reporting (<code>Determine Effective Savings Rate</code>, <code>Discount Effectiveness by Service</code>), spend-by-service and by-region allocation, tag-based cost allocation, and cash-vs-accrual comparison, all supported by the present cost family and dimensions.</li>
+<li><strong>Unlocked by Phase 3:</strong> sub-account chargeback and showback once <code>SubAccountId</code>/<code>SubAccountName</code> exist.</li>
+<li><strong>Unlocked by Phase 1/2:</strong> corrections reporting (<code>Report corrections for a previously invoiced billing period</code>) once <code>ChargeClass</code> is present, and accurate credit reporting once <code>ChargeCategory: Credit</code> is emitted.</li>
+<li><strong>Out of scope for this model:</strong> commitment-discount and capacity-reservation use cases; Redis Cloud sells neither, so that column family is correctly N/A.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Run a live cost report through the FOCUS Validator and record the deviations it flags.</li>
+<li>Add the three trivial Mandatory columns: <code>ProviderName</code>, <code>InvoiceIssuerName</code>, <code>ChargeClass</code>.</li>
+<li>Correct the <code>ChargeCategory</code> (add <code>Credit</code>) and <code>ChargeFrequency</code> (three valid values) enums.</li>
+<li>Replace the <code>BillingAccountType</code> literal with a conformant value.</li>
+<li>Confirm charge-record granularity, and decide whether to expose <code>SubAccountId</code>/<code>SubAccountName</code>.</li>
+<li>Engage <code>member-cert@finops.org</code> on the Conformant RFI when the dataset validates clean.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li><strong>Data source (high):</strong> The Redis Cloud documentation lists the FOCUS export field by field, so the per-column mapping rests on published schema rather than inference. Data quality for this analysis is solid.</li>
+<li><strong>Cost columns present and distinct (high):</strong> The four cost columns and both unit-price columns are individually documented with distinct definitions.</li>
+<li><strong>Missing Mandatory columns are trivial (high):</strong> <code>ProviderName</code> and <code>InvoiceIssuerName</code> are fixed literals; <code>ChargeClass</code> is nullable. None is a data gap.</li>
+<li><strong>Deviations (high for the documented enums; medium for granularity):</strong> The <code>ChargeCategory</code>, <code>ChargeFrequency</code>, and <code>BillingAccountType</code> deviations are visible in the documentation. Whether charge records are day-level or monthly is not fully resolved in the docs and should be confirmed against a live report.</li>
+<li><strong>Conditional SKU/sub-account gaps (medium):</strong> Classified as missing because the model plausibly supports them; a live report may reveal partial population not shown in the field tables.</li>
+<li><strong>Feature levels (high):</strong> Verified against the bundled v1.2 reference and spot-checked live against the FOCUS specification on 2026-07-01.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Redis Cloud REST API, &ldquo;Generate FOCUS-compliant cost report&rdquo;: https://redis.io/docs/latest/operate/rc/api/examples/generate-cost-report/</li>
+<li>Redis Cloud, &ldquo;Billing &amp; payments&rdquo;: https://redis.io/docs/latest/operate/rc/billing-and-payments/</li>
+<li>FOCUS Specification v1.2: https://focus.finops.org/focus-specification/v1-2/</li>
+<li>FOCUS column library: https://focus.finops.org/focus-columns/</li>
+<li>FOCUS Validator and Requirements Model: https://focus.finops.org/</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

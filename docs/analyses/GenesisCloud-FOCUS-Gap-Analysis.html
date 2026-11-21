@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Genesis Cloud and FOCUS: Compliance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/GenesisCloud-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="genesis-cloud-and-focus-compliance-gap-and-adoption-roadmap">Genesis Cloud and FOCUS: Compliance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: June 30, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p>Prepared: 2026-06-30
+Provider and product in scope: Genesis Cloud GmbH, GPU cloud (Compute API, console billing dashboard)
+Source analyzed: Genesis Cloud Developer documentation (Compute API instance schema and resource endpoints), pricing page, and billing-dashboard references at developers.genesiscloud.com and genesiscloud.com
+FOCUS baseline: v1.2 (current certification baseline)
+FOCUS build target: v1.4 (latest ratified, 2026-06-04)</p>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Genesis Cloud is a European GPU-first cloud built for AI training, inference, and HPC. It exposes a clean resource-management Compute API (instances, volumes, snapshots, regions, instance types, floating IPs) and a credit-based billing model with committed-use discounts. What it does not expose, on the public evidence available, is any structured cost-and-usage record: there is a human-facing billing dashboard, but no documented billing export, cost API, or line-item usage feed. The strongest finding is therefore about shape rather than gaps: Genesis Cloud already holds rich resource identity, region data, instance-type SKUs, and a real discount mechanic, but none of it is published as a FOCUS-style record. The analysis here treats the Compute API and billing model as the available proxy for what a future cost dataset would carry.</p>
+<p>Against FOCUS v1.2 (57 columns), no column is currently emitted in a conformant cost record because no cost record exists. The practical gap is the absence of a billing dataset, not dozens of independent column failures. Once Genesis Cloud produces a per-resource, per-period charge record, the majority of Mandatory columns are straightforward to populate from data the platform already holds (resource identity, instance type, region, timestamps, the credit-denominated rate). The genuinely substantive work concentrates in the cost columns and the discount-aware effective cost, because committed-use discounts and credit pre-funding must be reconciled back to usage lines.</p>
+<p>Four-stat summary:</p>
+<ul>
+<li>FOCUS columns (v1.2): 57</li>
+<li>Already present in a conformant cost record: 0</li>
+<li>Substantive Mandatory gaps: 2 of 21 (the cost family: EffectiveCost reconciled against committed-use discounts and credits; the surrounding cost columns derive once a record exists)</li>
+<li>Deviations to fix: 0 today (no cost record to deviate); resource identity and region data will need FOCUS shaping when the record is built</li>
+</ul>
+<p>Readiness (data source reviewed, not a certification result): Cost Gap, Granularity Gap, Allocation Partial, Coverage Gap, FOCUS shape Gap. Overall band: Not yet aligned (per public docs).</p>
+<p>Recommendation: The first deliverable is not column-level conformance, it is a billing dataset at all. Stand up a per-resource, per-day charge export (CSV or API) that joins the existing resource and instance-type metadata to the credit-denominated rate, then map that export to FOCUS v1.2 and design toward v1.4.</p>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Genesis Cloud publishes a REST Compute API at <code>api.genesiscloud.com/compute/v1</code>. The documented objects carry strong resource identity and configuration, for example the instance schema:</p>
+<ul>
+<li><code>id</code>, <code>name</code>, <code>hostname</code>, <code>dns_name</code>: resource identifiers.</li>
+<li><code>type</code>: the instance type, encoded as a descriptive SKU-like string (for example <code>vcpu-8_memory-48g_nvidia-rtx-3090-2</code>).</li>
+<li><code>region</code>: a region identifier (for example <code>NORD-NO-KRS-1</code>).</li>
+<li><code>placement_option</code>: physical placement within a zone (for example <code>AUTO</code>).</li>
+<li><code>status</code>, <code>is_protected</code>, <code>disk_size</code>, <code>private_ip</code>, <code>public_ip</code>.</li>
+<li><code>created_at</code>, <code>updated_at</code>: ISO 8601 timestamps.</li>
+</ul>
+<p>Parallel endpoints describe volumes, snapshots, filesystems, floating IPs, images, instance types, and regions, so the platform holds the resource, location, and configuration data that allocation and resource-level reporting depend on.</p>
+<p>Billing is handled separately. The documentation directs users to a billing dashboard (<code>console.genesiscloud.com/dashboard/billing</code>) to see billed resources, and states that charges begin when an instance is created and stop when destruction is requested. The pricing model is pay-as-you-go on pre-funded credits, with monthly invoicing available for enterprise customers and committed-use discounts (documented at 20 percent for three months, 30 percent for six months, and up to 50 percent for longer commitments on eligible RTX instances). Genesis Cloud GmbH is a German entity; invoicing is Euro-denominated.</p>
+<p>Key limitations for FOCUS purposes:</p>
+<ul>
+<li>No cost or usage export: there is no documented billing API, cost-and-usage report, or downloadable line-item dataset. The billing dashboard is a viewing surface, not a data feed.</li>
+<li>No tags on resources: the instance schema carries no key-value tag field, so tag-based allocation is not available from the API today.</li>
+<li>No account hierarchy in the API: the public API is scoped by token and exposes no project, organization, or sub-account object, so multi-tenant attribution is not visible in the documented schema.</li>
+<li>Regions without zones: <code>region</code> is published; an availability-zone concept is not, though <code>placement_option</code> hints at sub-region placement.</li>
+</ul>
+<p>The rest of this analysis treats the Compute API plus the billing model as a proxy for the cost record Genesis Cloud would need to produce. Because no cost dataset is published, every conformance judgment about emitted columns is provisional.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns each column a feature level: Mandatory, Conditional, Recommended, or Optional. A conformant dataset must include and populate every Mandatory column, must populate Conditional columns when the provider&rsquo;s model triggers the condition, and is encouraged to populate Recommended columns. Conformance is judged column by column against the spec&rsquo;s Requirements Model, which encodes the MUST, SHOULD, and MAY rules. Feature levels in this report were verified against the FOCUS v1.2 specification using the FOCUS column reference, not asserted from memory.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Feature levels verified against the FOCUS Specification v1.2. Status reflects a conformant cost record: because Genesis Cloud publishes no cost record, no column is Present today. Columns are marked by whether the underlying data already exists in the Compute API or billing model (so the column is readily populated once a record is built) versus genuinely absent.</p>
+<p>Legend: Present (emitted and aligned); Present, deviation to fix; Missing: Mandatory; Missing: Recommended; Missing: Conditional; N/A: null valid.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td>No cost record; credit-denominated rate exists</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Account scoped by token, not exposed as a field</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>EUR implied by GmbH invoicing, not in a record</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>No (monthly invoice cycle exists)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>No (monthly invoice cycle exists)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>No (instance created_at/destroy time exist)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>No (instance created_at exists)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>No (Usage is the dominant case)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>No (nullable; for corrections only)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>No (derivable from type and resource)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td>No (committed-use rate exists in pricing)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>No (discounts and credits applied off-line)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>&ldquo;Genesis Cloud&rdquo; (constant), not in a record</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td>No (on-demand rate exists in pricing)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>No (compute hours derivable for flat-rate SKUs)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td>No (hour/GiB derivable)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M</td>
+<td>&ldquo;Genesis Cloud&rdquo; (constant), not in a record</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M</td>
+<td>&ldquo;Genesis Cloud&rdquo; (constant), not in a record</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>No (Compute for GPU/CPU instances)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td>No (derivable from resource type)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>placement_option hints at zone; not published as a record field</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>No (Usage-Based for on-demand)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>No (invoices exist but no id in a record)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>No (GPU Cloud / Compute subcategory)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>Reserved cluster capacity exists; not exposed in API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>As above</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>Committed-use discounts exist; not in a record</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>As above</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>As above</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>As above</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>As above</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>As above</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>As above</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Compute time exists; not in a record</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>Hours/GiB derivable</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>Committed-use unit rate exists in pricing</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>On-demand unit rate exists in pricing</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td>On-Demand / Committed distinction exists</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>EUR; not in a record</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td>region identifier present (NORD-NO-KRS-1)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td>Derivable from region identifier</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td>instance id present</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td>instance name present</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td>instance type present</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>type string is a SKU-like identifier</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>No project/sub-account object in the API</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>As above</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>As above</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td>No tag field on resources</td>
+<td>Missing: Conditional</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p>Because there is no published cost dataset, nothing is &ldquo;solved&rdquo; in the sense of an emitted, conformant column. The right way to read the table is by how far the underlying data already exists.</p>
+<p>Already held by the platform, so readily populated once a charge record exists (trivial plumbing, not data creation):</p>
+<ul>
+<li>Resource identity: <code>ResourceId</code>, <code>ResourceName</code>, <code>ResourceType</code> from the instance schema.</li>
+<li>Location: <code>RegionId</code> and <code>RegionName</code> from the <code>region</code> identifier.</li>
+<li>SKU identity: <code>SkuId</code> from the <code>type</code> string.</li>
+<li>Constants: <code>ProviderName</code>, <code>PublisherName</code>, <code>InvoiceIssuerName</code> (&ldquo;Genesis Cloud&rdquo;); <code>BillingCurrency</code> and <code>PricingCurrency</code> (EUR); <code>ServiceCategory</code> (Compute); <code>ChargeCategory</code> (Usage for the dominant case); <code>ChargeFrequency</code> (Usage-Based).</li>
+<li>Timestamps: <code>ChargePeriodStart</code> and <code>ChargePeriodEnd</code> from instance create and destroy times; <code>BillingPeriodStart</code> and <code>BillingPeriodEnd</code> from the monthly invoice cycle.</li>
+<li>Pricing: <code>PricingQuantity</code> and <code>PricingUnit</code> derivable as compute hours and hour/GiB for flat-rate instance SKUs (RTX instances are flat-rate on-demand, so the consumed quantity maps to pricing quantity; verify any tiered storage rates separately). <code>ListUnitPrice</code> and <code>ContractedUnitPrice</code> from the published on-demand and committed-use rates.</li>
+</ul>
+<p>Substantive gaps (real data work, not plumbing):</p>
+<ul>
+<li>The cost record itself: there is no per-resource, per-period charge line anywhere in the public surface. This is the single blocking gap. Everything above is moot until a record is generated.</li>
+<li><code>EffectiveCost</code> (and the discount-aware view): Genesis Cloud applies committed-use discounts and runs on pre-funded credits, with monthly invoicing for enterprise. Because discounts and credit drawdown are resolved at invoice time rather than on each usage line, computing <code>EffectiveCost</code> requires reconciling those adjustments back to the usage lines. This is the classic list-cost trap: <code>ListCost</code>, <code>BilledCost</code>, <code>ContractedCost</code>, and <code>EffectiveCost</code> are not a single trivial copy of one rate. They diverge whenever a committed-use discount or credit applies, so the cost family is substantive, not trivial.</li>
+</ul>
+<p>So of 21 Mandatory columns, 2 are substantive (the reconciled cost view: <code>EffectiveCost</code>, and <code>BilledCost</code>/<code>ContractedCost</code> where discounts and credits diverge from list), and the remaining 19 are derivable plumbing once a record exists. The overriding gap is that the record does not exist at all.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<p>No format or enum deviations can be flagged today, because there is no emitted cost record to inspect. The items below are the shaping work that will be needed when the record is built, not deviations in existing output:</p>
+<ul>
+<li><code>RegionId</code> shape: the <code>NORD-NO-KRS-1</code> identifier is provider-native and will need a stable mapping to <code>RegionId</code> plus a human <code>RegionName</code>.</li>
+<li><code>SkuId</code> from <code>type</code>: the <code>type</code> string is descriptive rather than a stable price-bearing SKU id; a durable <code>SkuId</code> and <code>SkuPriceId</code> should be minted so prices can be joined.</li>
+<li>Tags: when a tagging feature is added, it must be emitted as FOCUS key-value pairs, not an array of bare strings.</li>
+<li>Currency: emit ISO 4217 (<code>EUR</code>) in <code>BillingCurrency</code> and <code>PricingCurrency</code>.</li>
+<li>Timestamps: keep ISO 8601, inclusive-start and exclusive-end, which the Compute API already uses for <code>created_at</code>/<code>updated_at</code>.</li>
+</ul>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Baseline the build against v1.2, the current certification baseline, so the work maps cleanly to the conformance program. Design the schema toward v1.4 (latest, ratified 2026-06-04): <code>ProviderName</code> and <code>PublisherName</code> are removed in v1.4, so treat them as transitional and rely on <code>InvoiceIssuerName</code> for issuer identity. v1.4 also adds Invoice Detail and billing-period datasets that suit a credit-and-invoice model like Genesis Cloud&rsquo;s. Validator support today reaches v1.3; v1.4 Validator support is expected later in 2026.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The current badge is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo; (confirm the current badge version on the program page before finalizing). The deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Membership is required for certification, though contributing to the spec is open and free; contact <code>member-cert@finops.org</code> for the RFI. Open-source tooling: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST/SHOULD/MAY rules).</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p>Phase 0: Establish a cost record and validate scope. The precondition for everything else. Decide the grain (per-resource, per-day is the FOCUS-friendly target), confirm the Euro billing currency, and confirm there is no sub-account hierarchy to model. There is no dataset to run through the Validator yet, so Phase 0 is design, not validation.</p>
+<p>Phase 1: Emit the charge record and close Mandatory columns. Generate a per-resource, per-day usage line joining instance, instance-type, and region metadata to the credit-denominated rate. Populate the 19 derivable Mandatory columns directly. Do the substantive cost work here: compute <code>ListCost</code> from on-demand rates, <code>ContractedCost</code> and <code>EffectiveCost</code> by reconciling committed-use discounts and credit drawdown back to the usage lines, and <code>BilledCost</code> to match invoiced amounts. This phase unlocks most usable conformance.</p>
+<p>Phase 2: Shape and validate. Mint stable <code>SkuId</code>/<code>SkuPriceId</code>, map <code>RegionId</code>/<code>RegionName</code>, set valid enums (<code>ChargeCategory</code>, <code>ChargeFrequency</code>, <code>ServiceCategory</code>), and run the output through the FOCUS Validator.</p>
+<p>Phase 3: Round out applicable Conditional and Recommended columns. Add <code>ConsumedQuantity</code>/<code>ConsumedUnit</code>, <code>ListUnitPrice</code>/<code>ContractedUnitPrice</code>, the commitment-discount family (so committed-use savings are visible per line), and capacity-reservation columns for reserved clusters. Add a tagging feature and emit <code>Tags</code> as key-value pairs. Populate the Recommended columns (<code>AvailabilityZone</code> from placement, <code>ServiceSubcategory</code>, <code>InvoiceId</code>).</p>
+<p>Phase 4: Mature to v1.4 and certify. Drop <code>ProviderName</code>/<code>PublisherName</code>, adopt the Invoice Detail and billing-period datasets, re-validate against the v1.4 Requirements Model when Validator support lands, and pursue certification.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<p>Grouped by the phase that first enables them.</p>
+<p>Unlocked by Phase 1 (a per-resource, per-day cost record with identity and region):</p>
+<ul>
+<li>Analyze cost per compute service for a subaccount (read here as &ldquo;by resource,&rdquo; since there is no sub-account).</li>
+<li>Analyze costs of components of a resource.</li>
+<li>Analyze service costs by region.</li>
+<li>Report costs by service category.</li>
+<li>Identify anomalous daily spending (by resource and region; sub-account dimension is not applicable).</li>
+<li>Compare resource usage month over month.</li>
+</ul>
+<p>Unlocked by Phase 3 (commitment-discount and consumption columns):</p>
+<ul>
+<li>Determine Effective Savings Rate, and by service: needs the reconciled <code>EffectiveCost</code> and <code>ListCost</code> from Phase 1 plus commitment context.</li>
+<li>Report commitment discount purchases.</li>
+<li>Identify unused commitments.</li>
+<li>Calculate unit economics.</li>
+</ul>
+<p>Out of scope for the current model:</p>
+<ul>
+<li>Sub-account allocation, chargeback, and showback: no project or sub-account object exists in the API, so <code>SubAccount*</code> columns are null and these use cases do not apply until tenancy is modeled.</li>
+<li>Capacity-reservation analytics: applicable only once reserved-cluster capacity is exposed as data.</li>
+<li>Multi-currency allocation: a single Euro billing currency makes this moot unless billing currency varies.</li>
+</ul>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Confirm scope: Euro billing currency, no sub-account hierarchy, the committed-use discount and credit mechanics, and that no cost export exists today.</li>
+<li>Decide the cost-record grain and source it: a per-resource, per-day charge line joining Compute API resource and instance-type metadata to the credit-denominated rate.</li>
+<li>Map the 19 derivable Mandatory columns from data the platform already holds.</li>
+<li>Solve the cost family: define how committed-use discounts and credit drawdown reconcile to usage lines to produce <code>ContractedCost</code>, <code>EffectiveCost</code>, and <code>BilledCost</code> distinct from <code>ListCost</code>.</li>
+<li>Run a sample through the FOCUS Validator and seed the Conformance Gap Report from this analysis.</li>
+</ol>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>FOCUS v1.2 feature levels and the 57-column set: high confidence. Verified against the FOCUS column reference and spot-checked live via the FOCUS MCP on 2026-06-30; the bundled table was current (stamp 2026-06-23) and required no refresh. v1.4 removal of <code>ProviderName</code>/<code>PublisherName</code> confirmed against the live column list.</li>
+<li>Genesis Cloud has no published cost or usage export: medium-high confidence. Based on the public Developer docs and pricing pages, which document a Compute API and a billing dashboard but no billing/cost API. A private enterprise billing export could exist behind contract; this should be confirmed with Genesis Cloud.</li>
+<li>Resource, region, instance-type, and timestamp data exist in the Compute API: high confidence, taken directly from the documented instance schema.</li>
+<li>Credit-based billing, committed-use discounts (20 to 50 percent), and Euro invoicing: medium-high confidence from the pricing page and billing documentation; exact discount eligibility and credit-to-invoice reconciliation mechanics should be confirmed.</li>
+<li>No tags and no sub-account hierarchy in the public API: medium confidence, based on absence from the documented schema; confirm against the full console and any private API surfaces.</li>
+<li>Overall data quality for this analysis: provisional. The judgments rest on resource-management API docs and pricing pages used as a proxy, not on an actual cost-and-usage dataset.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Genesis Cloud Developer documentation, Compute API and instance schema: https://developers.genesiscloud.com/compute-api/instances</li>
+<li>Genesis Cloud Developer documentation, introduction: https://developers.genesiscloud.com/</li>
+<li>Genesis Cloud pricing: https://www.genesiscloud.com/pricing</li>
+<li>Genesis Cloud billing dashboard reference: https://console.genesiscloud.com/dashboard/billing</li>
+<li>FOCUS Specification v1.2: https://focus.finops.org/focus-specification/v1-2/</li>
+<li>FOCUS column library: https://focus.finops.org/ (verified via FOCUS MCP, 2026-06-30)</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

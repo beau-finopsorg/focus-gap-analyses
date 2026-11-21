@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cudo Compute &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/CudoCompute-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="cudo-compute-focus-data-generator-gap-analysis">Cudo Compute &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> CUDO Ventures (Cudo Compute)
+<strong>Prepared:</strong> July 1, 2026
+<strong>Source:</strong> Cudo Compute REST billing API (docs.cudocompute.com), OpenAPI schema; on-demand platform docs retained for reference
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4
+<strong>Tally:</strong> 17 Present, 11 Deviation, 2 Missing Mandatory, 13 Missing Conditional, 2 Missing Recommended, 12 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Cudo Compute is a distributed GPU cloud that aggregated independently operated data centers into a single API, CLI, and Terraform surface. Its public on-demand platform closed on March 31, 2026, and the company has pivoted to dedicated enterprise AI infrastructure sold under custom contracts. The billing data described here comes from the REST API that served the on-demand platform (docs retained for reference), which is the most concrete published schema and a fair proxy for how Cudo structures cost and usage.</p>
+<p>The billing API exposes two relevant objects. The spend-details report (<code>BillingAccountSpendRow</code>) returns per-project rows with a description, a quantity, a unit (UNIT_HOUR, UNIT_GIB_HOUR), a unit price, and an amount for a requested time window. The invoice object carries period, currency, tax, and totals. Every FOCUS Mandatory column has a plausible source except the two that turn on Cudo&rsquo;s discount and credit mechanics. Commitment purchases (a lower hourly VM rate) and account credit balances both exist, and both land at the account or invoice level rather than on the spend row, so <code>EffectiveCost</code> and <code>ContractedCost</code> are a substantive reconciliation gap, not a copy of list cost.</p>
+<p>Nineteen columns are N/A for the spend-report grain: no per-row resource identity, no tags, no region on the row, and (for the base report) no SKU codes. The nine Deviations are the FOCUS shaping work: native names, epoch and minor-unit numeric formats, unit relabeling, and enum derivation.</p>
+<p><strong>Recommendation:</strong> Treat the spend-details report as the FOCUS charge grain, one row per project per SKU per period, and enrich it. Set ServiceCategory = &ldquo;Compute&rdquo;, derive ChargeCategory (Usage, Purchase for commitments, Credit for credit draws), relabel units (UNIT_HOUR to &ldquo;Hours&rdquo;, UNIT_GIB_HOUR to &ldquo;GiB-Hours&rdquo;), and reconcile commitment and credit effects back to the row to produce EffectiveCost and ContractedCost. Join resource, region, and tag context from the VM, cluster, and project APIs to lift Allocation.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>Cudo Compute REST billing API</strong> (base <code>https://rest.compute.cudo.org/v1/</code>, bearer API-key auth). Relevant endpoints and fields:</p>
+<ul>
+<li><strong>Spend details</strong> (<code>GET /billing-accounts/{id}/spend/details</code>, query <code>startTime</code>/<code>endTime</code>): returns an array of <code>BillingAccountSpendRow</code>. Fields: <code>projectId</code>, <code>description</code>, <code>quantity</code> (float), <code>unit</code> (enum UNIT_UNKNOWN, UNIT_HOUR, UNIT_GIB_HOUR), <code>unitAmount</code> (decimal string), <code>amount</code> (decimal string).</li>
+<li><strong>Invoices</strong> (<code>GET /invoices</code>): <code>Invoice</code> object with <code>id</code>, <code>number</code>, <code>currency</code>, <code>periodStart</code>, <code>periodEnd</code> (Unix epoch seconds), <code>amountDue</code>, <code>amountPaid</code>, <code>amountRemaining</code>, <code>subtotal</code>, <code>subtotalExcludingTax</code>, <code>tax</code>, <code>total</code>, <code>totalExcludingTax</code> (int64 minor-unit strings), <code>status</code>, <code>billingReason</code>, <code>dueDate</code>, <code>paidDate</code>, <code>hostedInvoiceUrl</code>.</li>
+<li><strong>Billing account details</strong> (<code>GET /billing-accounts/{id}/details</code>): <code>displayName</code>, <code>monthlySpend</code>, <code>hourlySpendRate</code>, <code>creditBalance</code>, <code>taxId</code>, <code>invoiceTime</code>, <code>nextInvoiceTotal</code>, <code>stripeRef</code>.</li>
+<li><strong>Projects</strong> (<code>list-billing-account-projects</code>, project APIs): projects are namespaces for resources, billed to one billing account. Multiple projects per billing account.</li>
+<li><strong>Resource context</strong> (VM, cluster, machine, disk, volume, network APIs): resource IDs, names, GPU models, data centers, and metadata live on the resource objects, not on the spend row.</li>
+<li><strong>Commitments</strong> (<code>purchase-a-commitment-for-a-virtual-machine</code>): a VM can be committed to a longer term for a lower hourly rate.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Usage grain:</strong> The spend report is per project per line description over a caller-chosen time window. It is not inherently daily, and it carries no per-row start and end timestamps.</li>
+<li><strong>Projects as sub-accounts:</strong> <code>projectId</code> is the natural <code>SubAccountId</code>, sitting under the billing account. This is real allocation structure.</li>
+<li><strong>Distributed marketplace:</strong> Cudo aggregates independent data centers. Data center identity exists on resources (region and availability-zone analog) but is not on the spend row.</li>
+<li><strong>Discounts and credits exist and land off the row:</strong> Commitment purchases lower the hourly VM rate, and billing accounts carry a credit balance drawn down over time. Neither appears on the spend row, which reports quantity times unitAmount as a gross amount.</li>
+<li><strong>Single currency per account:</strong> The invoice <code>currency</code> is the billing currency. There is no separate pricing currency in the data.</li>
+<li><strong>No FOCUS shaping:</strong> Native field names, epoch timestamps, and minor-unit integer strings throughout.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. Each column carries a feature level (Mandatory, Conditional, Recommended, Optional) verified against the FOCUS v1.2 Content Constraints tables. Mandatory columns must be present and populated; Conditional columns are required when the provider&rsquo;s model triggers the condition and may otherwise be null; Recommended columns are encouraged. Cudo&rsquo;s commitment purchases populate the CommitmentDiscount family (VM commitments = PricingCategory &ldquo;Committed&rdquo; plus a CommitmentDiscount construct). Its credit balance populates ChargeCategory &ldquo;Credit&rdquo; rows. Data-center-only geography means RegionId is applicable but AvailabilityZone maps only where zones are exposed.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Cudo Compute source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Spend row <code>amount</code> (invoiced, gross of credit draw); reconcile to invoice <code>total</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not on row: requires reconciling commitment rate and credit draw back to the line</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td><code>quantity</code> x on-demand <code>unitAmount</code> (list rate)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not on row: committed VMs bill a lower negotiated rate applied off the spend row</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Billing account <code>id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Billing account <code>displayName</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Invoice <code>currency</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice <code>periodStart</code> (epoch to ISO 8601)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice <code>periodEnd</code> (epoch to ISO 8601)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Query <code>startTime</code>, or derive per row from resource run history</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Query <code>endTime</code>, or derive per row from resource run history</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Spend row <code>description</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo;; &ldquo;Purchase&rdquo; for commitments; &ldquo;Credit&rdquo; for credit draws; &ldquo;Tax&rdquo; for tax lines</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except invoice corrections</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;CUDO Ventures&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Cudo Compute&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Cudo Compute&rdquo; (aggregated third-party data centers make this an enrichment target)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Product from <code>description</code> (e.g., &ldquo;Virtual Machine&rdquo;, &ldquo;Bare Metal&rdquo;, &ldquo;Object Storage&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Compute&rdquo; for VM/cluster/bare metal; &ldquo;Storage&rdquo; for disks/volumes/object storage</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Spend row <code>quantity</code> (flat-rate hourly and GiB-hour SKUs)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Relabel <code>unit</code>: UNIT_HOUR to &ldquo;Hours&rdquo;, UNIT_GIB_HOUR to &ldquo;GiB-Hours&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>= <code>quantity</code> for hourly compute; distinct for tiered storage</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Relabel <code>unit</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Spend row <code>unitAmount</code> (on-demand list rate)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Committed hourly rate; not on the spend row</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; on-demand; &ldquo;Committed&rdquo; for commitment-priced VMs</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; for metered rows; &ldquo;One-Time&rdquo; for credit purchases</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;billing account&rdquo; (single tier)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td><code>projectId</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Project display name (join from projects API)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;project&rdquo;</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not on spend row; join VM/cluster/machine <code>id</code> via description or resource API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not on spend row; join resource name</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not on spend row; derive (virtual-machine, cluster, bare-metal, disk, volume, bucket)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Machine-type / GPU-model / volume-price code (join from resource-type APIs)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Metered dimension (GPU-hour, vCPU-hour, GiB-hour)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed as a stable price ID</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>VM metadata (key-value) via update-metadata API; not on the spend row</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>= Invoice <code>currency</code> (single currency)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice (single currency)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ContractedUnitPrice once reconciled</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>= EffectiveCost once reconciled</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Data-center ID (join from resource / list-data-centers)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Data-center name (join from resource)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: data-center granularity, no separate zone layer</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Commitment purchase identifier (VM commitment)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Commitment plan name</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>&ldquo;Committed Use&rdquo; for VM commitments</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Usage&rdquo; (commitment lowers the usage rate)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>Used / Unused</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Committed quantity</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>Commitment unit</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity-reservation construct in the API</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice <code>id</code> / <code>number</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>&ldquo;Virtual Machines&rdquo;, &ldquo;Bare Metal&rdquo;, &ldquo;GPU Cloud&rdquo;, &ldquo;Object Storage&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 17 Present, 11 Deviation, 2 Missing Mandatory, 13 Missing Conditional, 2 Missing Recommended, 12 N/A (57 columns).</p>
+<p>Note on the CommitmentDiscount and Region families: these are marked N/A in the base spend-report grain because that report carries neither commitment context nor a data-center column. They are applicable to Cudo&rsquo;s model and become populated columns once the spend row is joined to the commitment record and the resource&rsquo;s data center. The report should carry these columns and populate them on the relevant rows rather than dropping them.</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Billing account identity, currency, invoice period, project (SubAccountId), charge description, list unit price, consumed quantity, and invoice ID all have direct sources. ListCost is a clean quantity times unit-price product for flat-rate hourly and GiB-hour SKUs.</p>
+<p><strong>Substantive gaps (2 of 2 Missing Mandatory):</strong> <code>EffectiveCost</code> and <code>ContractedCost</code>. Commitment purchases lower the effective VM rate and credit balances draw down actual paid amounts, but both effects are applied at the account or invoice level and are absent from the spend row. Producing these columns requires reconciling commitment terms and credit draws back to individual usage lines. This is real data work, not a copy of ListCost.</p>
+<p><strong>Trivial Mandatory adds:</strong> <code>ChargeClass</code> is null outside corrections. <code>PricingQuantity</code> and <code>PricingUnit</code> derive directly from the row&rsquo;s <code>quantity</code> and <code>unit</code> for the flat-rate hourly and GiB-hour SKUs that dominate the platform.</p>
+<p><strong>Conditional and Recommended remainder:</strong> Resource identity, SKU codes, tags, sub-account type, and service subcategory all require joining the spend row to the resource and project APIs. They lift allocation and reporting value but do not block conformance.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<ul>
+<li><strong>Numeric formats:</strong> Invoice amounts are int64 minor-unit strings and periods are Unix epoch seconds. Convert to decimal currency values and ISO 8601 timestamps.</li>
+<li><strong>PricingUnit / ConsumedUnit:</strong> Relabel the <code>unit</code> enum (UNIT_HOUR to &ldquo;Hours&rdquo;, UNIT_GIB_HOUR to &ldquo;GiB-Hours&rdquo;).</li>
+<li><strong>ChargeCategory:</strong> Derive from row type: &ldquo;Usage&rdquo; for metered consumption, &ldquo;Purchase&rdquo; for commitment purchases, &ldquo;Credit&rdquo; for credit draws, &ldquo;Tax&rdquo; for tax lines. Do not emit &ldquo;Compute&rdquo; (that is a ServiceCategory value).</li>
+<li><strong>ServiceCategory:</strong> Derive &ldquo;Compute&rdquo; or &ldquo;Storage&rdquo; from the product in <code>description</code>.</li>
+<li><strong>BilledCost:</strong> The spend <code>amount</code> is gross; reconcile against invoice totals so BilledCost reflects the invoiced figure after credit application.</li>
+<li><strong>SubAccountName:</strong> Join the project display name rather than emitting only <code>projectId</code>.</li>
+</ul>
+<p>Already done right: single billing currency is consistent, list pricing is transparent (quantity times published unit rate), and <code>projectId</code> provides genuine sub-account structure.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2, the current certification baseline. On v1.4, drop <code>ProviderName</code> and <code>PublisherName</code> (removed) and adopt the Invoice Detail and billing-period datasets, which fit Cudo&rsquo;s invoice-level reconciliation model well.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. Contact <code>member-cert@finops.org</code> for the RFI. Membership is required for certification, though contributing to the spec is open and free. Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Tooling: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST/SHOULD/MAY rules).</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate and scope.</strong> Confirm the target billing surface for the current enterprise-contract model versus the retained on-demand API. Pull a sample spend-details response and invoice, and run them through the FOCUS Validator to baseline.</p>
+<p><strong>Phase 1: Close the substantive Mandatory gaps and trivial adds.</strong> Reconcile commitment rates and credit draws to the spend row to produce EffectiveCost and ContractedCost. Emit ListCost, PricingQuantity, PricingUnit, and ChargeClass. This unlocks the bulk of conformance.</p>
+<p><strong>Phase 2: Fix format and value deviations.</strong> Convert epoch and minor-unit fields, relabel units, derive ChargeCategory and ServiceCategory enums, and reconcile BilledCost to invoice totals.</p>
+<p><strong>Phase 3: Round out Conditional and Recommended columns.</strong> Join resource identity (ResourceId, ResourceName, ResourceType), SKU codes, tags, and data-center region from the resource APIs. Populate the CommitmentDiscount family on committed rows. Add SubAccountType, SubAccountName, ChargeFrequency, and ServiceSubcategory.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Move to v1.4, drop ProviderName and PublisherName, adopt the Invoice Detail dataset, validate, and open the RFI.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>As soon as the transform ships (Phase 1 to 2):</strong> cost reporting by project (Cost by SubAccount), invoice reconciliation (with the reconciled cost columns), and unit-economics reporting on GPU-hours.</li>
+<li><strong>After Phase 3 enrichment:</strong> resource-level allocation (Cost by Resource), tag-based showback and chargeback (Cost by Tag), region reporting (Cost by Region, relabeled to data center), and commitment coverage and utilization (Commitment Discount Analysis).</li>
+<li><strong>Out of scope for the current model:</strong> capacity-reservation use cases (no reservation construct in the API).</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Confirm which billing surface certification should target: the enterprise-contract invoicing model or the retained on-demand REST API.</li>
+<li>Pull a sample spend-details response and a sample invoice, and run both through the FOCUS Validator to baseline conformance.</li>
+<li>Prototype the commitment-and-credit reconciliation that produces EffectiveCost and ContractedCost from the spend row.</li>
+<li>Design the resource-join that lifts ResourceId, ResourceType, Tags, and data-center Region onto the spend row.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>Moderate:</strong> The mapping rests on the retained on-demand REST API and OpenAPI schema. The schema is concrete (field names, types, enums are verified), but the public platform closed on March 31, 2026, and the current enterprise-contract billing surface is not publicly documented. Treat the analysis as provisional pending confirmation of the live billing surface.</li>
+<li><strong>High:</strong> Feature levels were verified against the FOCUS v1.2 reference (bundled table stamped 2026-06-23; v1.2 spec page confirmed live). ServiceSubcategory and ChargeFrequency are Recommended, PricingQuantity and PricingUnit are Mandatory, ChargeClass is Mandatory-nullable.</li>
+<li><strong>High:</strong> <code>projectId</code> is a genuine sub-account, and ListCost is a clean quantity times unit-price product for the flat-rate hourly and GiB-hour SKUs.</li>
+<li><strong>Moderate:</strong> EffectiveCost and ContractedCost are a substantive reconciliation gap. This rests on the documented commitment (lower hourly rate) and credit-balance mechanics; confirm exactly where each is applied in the current billing pipeline.</li>
+<li><strong>Moderate:</strong> The CommitmentDiscount and Region families are N/A only in the base spend-report grain and are applicable once resource and commitment joins are in place. Confirm the commitment record exposes quantity, unit, and status.</li>
+<li><strong>Low:</strong> SkuPriceId and SkuPriceDetails. The API does not expose a stable price ID.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Cudo Compute API reference and billing endpoints: <a href="https://docs.cudocompute.com">docs.cudocompute.com</a></li>
+<li>Cudo Compute OpenAPI schema: <a href="https://docs.cudocompute.com/openapi.json">docs.cudocompute.com/openapi.json</a></li>
+<li>Cudo Compute (company): <a href="https://www.cudocompute.com">cudocompute.com</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

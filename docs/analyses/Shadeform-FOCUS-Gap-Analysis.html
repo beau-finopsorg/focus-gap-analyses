@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shadeform and FOCUS: Compliance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Shadeform-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="shadeform-and-focus-compliance-gap-and-adoption-roadmap">Shadeform and FOCUS: Compliance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: June 30, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p>Prepared: 2026-06-30
+Source analyzed: Shadeform public API reference (instances/clusters/volumes), Core Concepts, FAQ, and billing documentation at docs.shadeform.ai, plus the public marketplace pages.
+FOCUS baseline: v1.2 (current certification baseline). Build target: v1.4 (latest, ratified 2026-06-04).</p>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Shadeform is a GPU cloud marketplace and aggregator: a single API, console, and invoice spanning 15 or more underlying GPU clouds (Lambda, Crusoe, Hyperstack, Nebius, and others). Its instance API exposes a clean, well-structured object with the consumption primitives FOCUS cares about: a resource identity, the underlying cloud, region, GPU SKU, an hourly price, an accrued cost figure, key tags, and minute-level timestamps. Billing is centralized through Stripe into one monthly invoice that itemizes provider cost versus Shadeform charges.</p>
+<p>The data Shadeform publishes today is an operational instance and pricing API, not a FOCUS-shaped billing export. It carries the raw materials for most Mandatory columns but does not yet emit them as a per-charge dataset with FOCUS column IDs, key-value tags, or the full cost family (List, Billed, Effective, Contracted). The aggregator model is the defining feature for FOCUS mapping: the underlying <code>cloud</code> is the true Provider and Publisher, while Shadeform is the Invoice Issuer, and the closest analog to a sub-account is the linked-cloud-account versus Shade Cloud distinction.</p>
+<p>Verdict: a strong consumption substrate with a thin published cost surface. Conformance is reachable but requires building a charge-level dataset and reconciling Stripe invoice totals back to instance-hours.</p>
+<p>Stat strip: 57 FOCUS columns (v1.2). Roughly 14 present or trivially derivable from published fields. 3 of 6 substantive Mandatory gaps sit in the cost family. Multiple deviations to fix (tags, enums, currency shaping).</p>
+<p>RAG readiness: Cost Gap, Granularity Strong, Allocation Partial, Coverage Partial, FOCUS shape Gap. Overall band: Not yet aligned (per public docs).</p>
+<p>Recommendation: Treat Shadeform&rsquo;s instance API plus Stripe invoice as two halves of one dataset. Build a charge-level FOCUS feed keyed on instance and charge period, derive the cost family by reconciling the monthly Stripe total to instance-hours, and set Provider/Publisher to the underlying cloud with Shadeform as Invoice Issuer.</p>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Shadeform exposes a REST API (base <code>https://api.shadeform.ai/v1</code>) and a console. The objects relevant to cost and usage:</p>
+<ul>
+<li>Instance object (<code>/instances</code>, <code>/instances/{id}/info</code>): <code>id</code> (UUID resource identity), <code>cloud</code> (underlying provider, e.g. hyperstack, lambda, crusoe), <code>region</code>, <code>shade_instance_type</code> (Shadeform-standardized type), <code>cloud_instance_type</code> (provider-native SKU string), <code>cloud_assigned_id</code>, <code>shade_cloud</code> (boolean: deployed in Shadeform&rsquo;s pooled accounts or a customer-linked cloud account), <code>name</code>, a <code>configuration</code> block (gpu_type, num_gpus, vram_per_gpu_in_gb, vcpus, memory_in_gb, storage_in_gb, interconnect), <code>cost_estimate</code> (string, cost incurred via Shadeform), <code>hourly_price</code> (integer, cents), <code>tags</code> (array of bare strings), and <code>created_at</code> / <code>active_at</code> / <code>deleted_at</code> (ISO 8601 UTC timestamps).</li>
+<li>Clusters and volumes APIs follow the same shape for multi-node and storage resources.</li>
+</ul>
+<p>Billing and invoicing (from FAQ and public sources):</p>
+<ul>
+<li>Pay-as-you-go by default, charged through Stripe. Larger customers can request monthly invoicing via Stripe Invoicing.</li>
+<li>A single monthly invoice aggregates all usage with a breakdown by GPU type, provider, duration, and cost. Every invoice itemizes provider cost versus Shadeform charges.</li>
+<li>Billing granularity is 1-minute increments (rent 37 minutes, pay for 37 minutes).</li>
+<li>Currency is USD.</li>
+<li>Reservation discounts and cloud credits exist but are arranged through support, not exposed as structured fields in the public API.</li>
+</ul>
+<p>Key limitations for FOCUS: there is no published per-charge billing export. <code>cost_estimate</code> is a single running total per instance, not a time-sliced charge record. There is no documented field carrying list price versus effective price after any reservation discount or credit, and discounts and credits are handled at invoice time outside the API. Tags are bare strings, not key-value pairs.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns each column a feature level: Mandatory (must be present and populated where applicable), Conditional (required when the provider&rsquo;s model triggers the condition), Recommended, or Optional. Conformance is evaluated column by column against the FOCUS Requirements Model. Feature levels in this report were verified against the FOCUS v1.2 specification Content Constraints tables (cache stamp 2026-06-23, spot-checked live on 2026-06-30: ChargeClass Mandatory, ChargeFrequency Recommended, both confirmed).</p>
+<h3 id="13-column-by-column-status-focus-v12-all-57-columns">1.3 Column-by-column status (FOCUS v1.2, all 57 columns)</h3>
+<p>Legend: Present / Present, deviation to fix / Missing: Mandatory / Missing: Recommended / Missing: Conditional / N/A: null valid.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>No (region only)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td>Partial (cost_estimate, not per-charge)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Implicit (Shadeform account)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>Implicit (account)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>Implicit (USD)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>No (monthly invoice cycle)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>No (monthly invoice cycle)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>No (implied Usage)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory (nullable, plumbing)</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>Partial (instance type / GPU)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>No (implied Usage-Based)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>Partial (deleted_at / active_at)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>Partial (active_at / created_at)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Partial (derivable from duration)</td>
+<td>Missing: Conditional (derivable)</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>No (implied hours)</td>
+<td>Missing: Conditional (derivable)</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td>No</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>Partial (hourly_price)</td>
+<td>Missing: Conditional (derivable)</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>Partial (cost_estimate)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>No (Stripe invoice exists)</td>
+<td>Missing: Recommended (derivable)</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>Implicit (Shadeform)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td>Partial (hourly_price x hours)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>Yes (hourly_price, cents)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td>No (on-demand implied)</td>
+<td>Missing: Conditional (derivable)</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>Implicit (USD)</td>
+<td>Missing: Conditional (derivable)</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>Partial (derivable, flat-rate)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td>No (implied hours)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M</td>
+<td>Yes (cloud)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M</td>
+<td>Yes (cloud)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td>Yes (region)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td>Partial (region)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td>Yes (id / cloud_assigned_id)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td>Yes (name)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td>Partial (shade_instance_type)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>No (implied Compute)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td>No (GPU instance implied)</td>
+<td>Missing: Mandatory (derivable)</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>Yes (cloud_instance_type)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>Partial (config block)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>Partial (shade_cloud / cloud account)</td>
+<td>Missing: Conditional (derivable)</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>Partial (cloud account)</td>
+<td>Missing: Conditional (derivable)</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td>Yes (array of strings)</td>
+<td>Present, deviation to fix</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p>Reading the tally: of 57 columns, roughly 6 are present (some with deviations) and another 8 are trivially derivable from fields already published, leaving the cost family as the real work. Excluding the legitimately N/A commitment and capacity columns, coverage of applicable columns sits in the low-to-mid range.</p>
+<p><strong>Substantive gaps (real data not in the source):</strong></p>
+<ol>
+<li><strong>BilledCost and EffectiveCost.</strong> Shadeform publishes <code>cost_estimate</code>, a single running total per instance, plus a monthly Stripe invoice that itemizes provider cost versus Shadeform charges and applies any reservation discounts or credits at invoice time. Producing per-charge BilledCost and EffectiveCost requires reconciling those invoice-level adjustments back to instance-hours. The FAQ states discounts and credits are arranged outside the API, which is the tell: this is reconciliation work, not a copy of <code>cost_estimate</code>. Treat both as substantive.</li>
+<li><strong>ContractedCost.</strong> Reservation discounts exist (arranged via support) but are not exposed per charge. If a customer has a negotiated reservation rate, ContractedCost differs from ListCost and must be sourced from the agreement, not the API.</li>
+</ol>
+<p><strong>Trivial gaps (derivable from data already present, flat-rate compute):</strong></p>
+<ul>
+<li>ListCost = <code>hourly_price</code> x billed hours. <code>hourly_price</code> is a flat per-hour rate, so PricingQuantity equals consumed hours and ListUnitPrice is <code>hourly_price</code> converted from cents to a currency decimal.</li>
+<li>PricingQuantity, PricingUnit (hours), ConsumedQuantity, ConsumedUnit: derivable from <code>active_at</code>/<code>deleted_at</code> duration at 1-minute resolution.</li>
+<li>ChargePeriodStart/End: from <code>active_at</code> and <code>deleted_at</code>.</li>
+<li>BillingPeriodStart/End: the monthly Stripe cycle.</li>
+<li>ChargeCategory (Usage), ServiceCategory (Compute), ServiceName, ChargeDescription: constant or derivable from the instance type.</li>
+<li>BillingAccountId/Name, BillingCurrency (USD), InvoiceIssuerName (Shadeform), InvoiceId (the Stripe invoice number): account- and invoice-level constants.</li>
+<li>ChargeClass: null except for corrections.</li>
+</ul>
+<h3 id="15-deviations-to-fix-present-columns">1.5 Deviations to fix (present columns)</h3>
+<ul>
+<li><strong>Tags</strong>: emitted as an array of bare strings (<code>["tag1"]</code>); FOCUS requires key-value pairs.</li>
+<li><strong>ListUnitPrice</strong>: <code>hourly_price</code> is an integer in cents; FOCUS expects a decimal in the billing currency.</li>
+<li><strong>ProviderName and PublisherName</strong>: the <code>cloud</code> field carries the underlying provider, which is correct for the aggregator model, but it uses Shadeform&rsquo;s internal slugs (e.g. <code>hyperstack</code>); map to canonical provider names. Note these columns are deprecated in v1.3 and removed in v1.4.</li>
+<li><strong>RegionId/RegionName</strong>: a single <code>region</code> slug (e.g. <code>canada-1</code>) serves both; split into ID and human name.</li>
+<li><strong>ResourceType / SkuId</strong>: <code>shade_instance_type</code> and <code>cloud_instance_type</code> are native strings; confirm against the intended FOCUS representation.</li>
+</ul>
+<p>What is already right: a stable ResourceId, a populated ResourceName, minute-level timestamps in ISO 8601 UTC, a clean underlying-provider dimension, and a per-instance price. These are the hard parts to retrofit, and Shadeform has them.</p>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Baseline conformance against v1.2 (the current certification baseline) and build toward v1.4 (latest, ratified 2026-06-04). Because v1.3 deprecates and v1.4 removes ProviderName and PublisherName, design the aggregator&rsquo;s provider attribution so it does not depend on those columns long term; carry the underlying cloud as a first-class dimension that survives their removal. The Validator supports v1.3 today, with v1.4 support expected later in Q3 2026.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The current badge is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo; (contact member-cert@finops.org for the RFI). Membership is required for certification, though contributing to the spec is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Open tooling: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST/SHOULD/MAY rules).</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate and scope.</strong> Define the FOCUS dataset as a charge-level feed (one row per instance per charge period), not the live instance object. Confirm the v1.2 baseline and v1.4 build target. Run any existing export through the FOCUS Validator to set a baseline.</p>
+<p><strong>Phase 1 (unlock): Close the substantive Mandatory cost gaps and the trivial adds.</strong> Build the reconciliation that ties the monthly Stripe invoice (provider cost, Shadeform charges, discounts, credits) back to instance-hours to produce BilledCost, EffectiveCost, and ContractedCost. In the same pass, emit the derivable Mandatory columns: ListCost, PricingQuantity, PricingUnit, ChargePeriodStart/End, BillingPeriodStart/End, ChargeCategory, ServiceCategory, ServiceName, ChargeDescription, BillingAccount fields, BillingCurrency, InvoiceIssuerName, and ChargeClass.</p>
+<p><strong>Phase 2: Fix format and value deviations.</strong> Convert Tags to key-value pairs, ListUnitPrice from cents to currency decimal, split region into RegionId and RegionName, and map provider slugs to canonical names.</p>
+<p><strong>Phase 3: Round out applicable Conditional and Recommended columns.</strong> Populate SubAccountId/Name from the Shade-Cloud-versus-linked-account distinction, ConsumedQuantity/Unit, ContractedUnitPrice, PricingCategory, PricingCurrency, InvoiceId, ChargeFrequency, ServiceSubcategory, and the SKU detail columns. Null the commitment and capacity-reservation families with a note that they do not apply.</p>
+<p><strong>Phase 4: Mature to v1.4 and certify.</strong> Migrate provider attribution off ProviderName/PublisherName ahead of their removal, adopt the v1.4 Invoice Detail and billing-period datasets for cleaner reconciliation, re-validate, and pursue certification.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<ul>
+<li>Unlocked once the charge-level feed with resource, tags, sub-account, and day-level data exists (Phase 1 to 3): cost allocation by team and project, multi-cloud spend reporting across underlying providers, GPU-hour utilization analysis, anomaly detection, and tag-based showback.</li>
+<li>Unlocked once the cost family reconciles (Phase 1): invoice reconciliation, effective-cost reporting, and actuals-based budgeting.</li>
+<li>Out of scope for the model: commitment-discount and capacity-reservation use cases, since Shadeform&rsquo;s public model is on-demand pass-through (reservations are handled offline via support and would need structured exposure first).</li>
+</ul>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Define the target FOCUS dataset as a charge-level feed keyed on instance and charge period, distinct from the live instance API.</li>
+<li>Map the aggregator roles: underlying <code>cloud</code> to Provider and Publisher, Shadeform to Invoice Issuer, and the Shade-Cloud-versus-linked-account distinction to SubAccount.</li>
+<li>Design the Stripe-to-instance-hours reconciliation that yields BilledCost, EffectiveCost, and ContractedCost.</li>
+<li>Emit the derivable Mandatory columns and convert Tags to key-value pairs.</li>
+<li>Run a sample through the FOCUS Validator and confirm the target representation against the Requirements Model.</li>
+</ol>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>Instance and pricing API field structure: high confidence, taken directly from the published OpenAPI reference.</li>
+<li>Billing mechanics (single monthly Stripe invoice, 1-minute granularity, provider-cost-plus-charges itemization, USD, discounts arranged via support): medium-high confidence, drawn from the FAQ and public sources rather than a billing-export schema.</li>
+<li>The absence of a per-charge billing export: medium-high confidence; no such export is documented publicly. If Shadeform offers a private usage or billing export, the cost-family verdict would improve and several Missing items would move to Present.</li>
+<li>Feature levels: high confidence, verified against the v1.2 spec with a live spot-check on 2026-06-30.</li>
+<li>The substantive cost-family gap classification rests on the FAQ statement that discounts and invoice payments are arranged outside the API; confirm whether any per-line discount or credit data is available before finalizing the cost mapping.</li>
+<li>Data quality for this analysis: solid on data shape (API is well documented), provisional on the billing-line schema.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Shadeform API reference and OpenAPI: https://docs.shadeform.ai/api-reference/instances/instances-info, https://docs.shadeform.ai/openapi.yaml</li>
+<li>Shadeform Core Concepts, FAQ, Introduction: https://docs.shadeform.ai/getting-started/concepts, https://docs.shadeform.ai/getting-started/faq, https://docs.shadeform.ai/getting-started/introduction</li>
+<li>Shadeform marketplace and billing: https://shadeform.com/, https://stripe.com/customers/shadeform</li>
+<li>FOCUS Specification v1.2: https://focus.finops.org/focus-specification/v1-2/</li>
+<li>FOCUS project, tooling, and certification: https://focus.finops.org/</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

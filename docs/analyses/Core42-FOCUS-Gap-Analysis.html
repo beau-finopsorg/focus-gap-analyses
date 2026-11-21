@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Core42 (G42) and FOCUS: Conformance Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Core42-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="core42-g42-and-focus-conformance-gap-analysis">Core42 (G42) and FOCUS: Conformance Gap Analysis</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Provider and product in scope:</strong> Core42, the AI cloud arm of G42 (UAE sovereign AI). Two billing surfaces are in scope: Core42 Sovereign AI Cloud (GPUaaS: on-demand and large-scale clusters across NVIDIA H100/H200/B200/GB300, AMD MI300X/MI355X, Cerebras WSE-3, Qualcomm Cloud AI100, orchestrated via Kubernetes or Slurm) and Core42 Compass (sovereign model inference and GenAI services billed by tokens, minutes, pages, and API calls).</p>
+<p><strong>Source analyzed:</strong> the public Core42 Sovereign AI Cloud pages, the Core42 Compass documentation (Model Pricing, View Usage Reports, Set Budget for PYG Models, Usage Report API Reference, Create and Manage Departments), and the GITEX 2025 self-service launch materials. No FOCUS export, data dictionary, or sample billing row is published for either product.</p>
+<p><strong>FOCUS baseline:</strong> v1.2 (current certification baseline, ratified 2025-05-29). <strong>Build target:</strong> v1.4 (latest, ratified 2026-06-04).</p>
+<p><strong>Prepared:</strong> 2026-07-01.</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Core42 exposes usage and cost data through a native, provider-specific interface, not a FOCUS dataset. The Compass platform ships a Usage Reports console with an Overview across Cost, Tokens, Images, Videos, Audio, and API Requests, per-card CSV export, and a Usage Report API that aggregates per minute, per hour, or per day and filters by model, API key, project, and department. The Sovereign AI Cloud side bills GPU instances at hourly rates through a self-service console. This is a real, queryable cost feed, but it carries none of the FOCUS column IDs, key-value tags, or enum values that conformance requires. The analysis is therefore a from-native mapping, not a review of an already-FOCUS-shaped export.</p>
+<p>The strongest positive finding is that the raw material for allocation exists. Cost is tracked in USD, quantities are captured as tokens, GPU-hours, minutes, pages, and API calls, granularity reaches per-minute, and attribution runs down to department, project, resource name, and API key. Those are the inputs FOCUS needs for <code>ChargePeriodStart</code>, <code>ConsumedQuantity</code>, <code>SubAccountId</code>, and resource-level identity.</p>
+<p>The most consequential gap is the cost columns. The published feed surfaces a single cost figure against list token and hourly rates, but Core42 also applies a documented 50 percent Batch discount and prices large-scale GPU clusters and custom models &ldquo;On Request&rdquo; through enterprise contracts. Because discounted and contracted pricing exists but is not reconciled back to usage lines in the public feed, <code>BilledCost</code>, <code>EffectiveCost</code>, and <code>ContractedCost</code> are a substantive gap, not a trivial copy of <code>ListCost</code>. Coverage of the FOCUS-shaped columns is otherwise low: the feed is measured against 57 v1.2 columns of which few are emitted in a FOCUS-conformant shape today.</p>
+<p><strong>Recommendation:</strong> Treat Core42 as an emerging FOCUS data source. The usage and attribution data needed for a first conformant dataset largely exists inside Compass and the Sovereign AI Cloud billing system; the work is a native-to-FOCUS transform plus a cost-reconciliation layer that lands billed, effective, and contracted cost on the usage lines.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Core42 bills across two products with distinct but related cost surfaces:</p>
+<ul>
+<li><strong>Sovereign AI Cloud (GPUaaS):</strong> on-demand GPU instances at published hourly rates (NVIDIA H100 from $2.50/hr, H200 from $4.00/hr, B200 from $5.00/hr; AMD MI300X from $3.50/hr; GB300, MI355X, Cerebras WSE-3, and Qualcomm Cloud AI100 priced On Request), plus pre-tested large-scale clusters sold through enterprise engagement. Orchestration is Kubernetes or Slurm. Access is a self-service console with hourly, pay-as-you-go pricing.</li>
+<li><strong>Compass (inference and GenAI):</strong> consumption billed per 1M tokens (input and output priced separately per model), per minute (text-to-speech), per hour (Whisper transcription), per 1000 pages (Document AI), per 1M tokens for embeddings and fine-tuning training, and per 1000 transactions (Web Search, File Search). A 50 percent Batch discount applies to supported models. All prices are quoted in USD, exclusive of VAT.</li>
+</ul>
+<p>Cost and usage visibility is concentrated in Compass:</p>
+<ul>
+<li><strong>Usage Reports console:</strong> an Overview tab consolidating Cost, Tokens, Images, Videos, Audio, and API Requests, with interactive charts, period comparison, and tabs for TPM Quota, Resources, API Keys, and Fine-Tuning (including per-job cost). Filters cover Model, Department, Projects, Resource Name, API key, time duration, and call status. Each card exports to CSV.</li>
+<li><strong>Usage Report API:</strong> <code>POST https://api.core42.ai/logs/v1/admin/usage_reports</code>, admin-key only, returning usage aggregated at <code>per_minute</code>, <code>per_hour</code>, or <code>per_day</code>, filtered by <code>model_ids</code>, <code>api_key_name</code>, <code>project</code>, and <code>department</code>, over a <code>start_date</code>/<code>end_date</code> window (YYYY-MM-DD).</li>
+<li><strong>Budgets:</strong> daily and monthly spend limits in USD per pay-as-you-go model, for online and batch processing.</li>
+<li><strong>Attribution structures:</strong> workspaces, departments, projects, resources, and API keys, with role-based access control and audit logs.</li>
+</ul>
+<p>Key characteristics relevant to FOCUS:</p>
+<ul>
+<li><strong>Granularity:</strong> sub-daily. The Usage Report API supports per-minute and per-hour aggregation, which satisfies the sub-monthly granularity FOCUS expects.</li>
+<li><strong>Cost model:</strong> usage-based, in USD, against list rates. Discounts (Batch 50 percent) and contracted pricing (clusters and custom models, On Request) exist but are not shown as reconciled effective or contracted cost on the public feed.</li>
+<li><strong>Attribution:</strong> department, project, resource name, and API key are all filterable, giving the raw material for <code>SubAccountId</code>, resource identity, and cost-center allocation.</li>
+<li><strong>Currency:</strong> USD throughout.</li>
+</ul>
+<p>Key limitations for this analysis: Core42 publishes no FOCUS export, no billing data dictionary, and no sample usage row or CSV schema. The Usage Report API documents request parameters but not the response field set. Column-level classification below is therefore inferred from the console description, the API request contract, and the pricing model, and is marked provisional where the underlying field is not directly evidenced.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory, Conditional, Recommended, or Optional. A conformant dataset must include and populate all Mandatory columns, must populate Conditional columns when the provider&rsquo;s business model triggers the condition, should populate Recommended columns, and may include Optional ones. Conformance is judged column by column against the spec&rsquo;s Requirements Model, not by an overall impression.</p>
+<p>Feature levels in this report were taken from the verified reference table and cross-checked against the live FOCUS Specification v1.2 via the FOCUS column service on 2026-07-01. The v1.2 column set (57 columns) and the commonly-misremembered levels (<code>ServiceSubcategory</code> Recommended, <code>ChargeClass</code> Mandatory-nullable, <code>PricingQuantity</code>/<code>PricingUnit</code> Mandatory, <code>ChargeFrequency</code> and <code>InvoiceId</code> Recommended) were confirmed against the live spec; the bundled cache was current, and the v1.3 deprecation of <code>ProviderName</code>/<code>PublisherName</code> was reconfirmed.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Feature levels verified against the FOCUS Specification v1.2. Status reflects what the public documentation supports. Because Core42 emits no FOCUS-shaped dataset, columns whose underlying data exists in the native feed are marked &ldquo;Present, deviation to fix&rdquo; (data exists, native shape, needs a transform) rather than &ldquo;Present,&rdquo; and columns whose data does not appear in the feed are marked as Mandatory, Conditional, or Recommended gaps.</p>
+<p>Status legend: Present; Present, deviation to fix; Missing: Mandatory; Missing: Recommended; Missing: Conditional; N/A: null valid.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>§</th>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.1</td>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>Regions listed; zones not documented</td>
+<td>N/A: null valid (regions, no documented zones)</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>BilledCost</td>
+<td>M</td>
+<td>Cost shown against list rates; discounts/contracts not reconciled on feed</td>
+<td>Missing: Mandatory (substantive)</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Workspace/account identity in console</td>
+<td>Present, deviation to fix (map workspace to BillingAccountId)</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>Workspace/account name</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>Not documented</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.6</td>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>USD throughout</td>
+<td>Present, deviation to fix (emit as ISO 4217 column)</td>
+</tr>
+<tr>
+<td>3.7</td>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>Reporting window supported, not a billing-period field</td>
+<td>Missing: Mandatory (trivial, derive from period)</td>
+</tr>
+<tr>
+<td>3.8</td>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>Reporting window supported</td>
+<td>Missing: Mandatory (trivial, derive from period)</td>
+</tr>
+<tr>
+<td>3.9</td>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>Clusters are contracted, reservation model not documented</td>
+<td>N/A: null valid (no documented capacity-reservation mechanic)</td>
+</tr>
+<tr>
+<td>3.10</td>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>Not documented</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>3.11</td>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>Usage present; taxes (VAT) and credits not on feed</td>
+<td>Present, deviation to fix (emit valid enum; add Tax/Adjustment where applicable)</td>
+</tr>
+<tr>
+<td>3.12</td>
+<td>ChargeClass</td>
+<td>M</td>
+<td>Corrections not documented</td>
+<td>Missing: Mandatory (trivial, nullable; populate on corrections)</td>
+</tr>
+<tr>
+<td>3.13</td>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>Model/instance descriptors available</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.14</td>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>Usage-based and hourly billing implied</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>3.15</td>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>Per-minute/per-hour aggregation</td>
+<td>Present, deviation to fix (emit as ISO 8601 timestamp)</td>
+</tr>
+<tr>
+<td>3.16</td>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>Per-minute/per-hour aggregation</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.17</td>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>Cluster/custom contracts exist; no discount reporting mechanic on feed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.18</td>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>Not surfaced</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.19</td>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>Not surfaced</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.20</td>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>Not surfaced</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.21</td>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>Not surfaced</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.22</td>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>Not surfaced</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.23</td>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>Not surfaced</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.24</td>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Yes (tokens, GPU-hours, minutes, pages, calls)</td>
+<td>Present, deviation to fix (emit as FOCUS column)</td>
+</tr>
+<tr>
+<td>3.25</td>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>Yes (unit implied per meter)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.26</td>
+<td>ContractedCost</td>
+<td>M</td>
+<td>Contracted rates exist (clusters, custom) but off public feed</td>
+<td>Missing: Mandatory (substantive)</td>
+</tr>
+<tr>
+<td>3.27</td>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>On-Request rates not published</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.28</td>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>Batch 50% discount and contracts not reconciled on feed</td>
+<td>Missing: Mandatory (substantive)</td>
+</tr>
+<tr>
+<td>3.29</td>
+<td>InvoiceId</td>
+<td>R</td>
+<td>Invoice not exposed in usage feed</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>3.30</td>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>Issuer (Core42/G42 entity) known but not a feed field</td>
+<td>Missing: Mandatory (trivial, constant)</td>
+</tr>
+<tr>
+<td>3.31</td>
+<td>ListCost</td>
+<td>M</td>
+<td>Cost against published list rates</td>
+<td>Present, deviation to fix (emit as ListCost column)</td>
+</tr>
+<tr>
+<td>3.32</td>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>Published per-token and per-hour rates</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.33</td>
+<td>PricingCategory</td>
+<td>C</td>
+<td>On-demand vs contract distinction exists</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.34</td>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>USD</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.35</td>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>Not surfaced</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.36</td>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>Not surfaced</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.37</td>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>List rates in USD</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.38</td>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>Derivable from consumed quantity for flat-rate meters</td>
+<td>Missing: Mandatory (trivial for flat-rate; compute for tiered)</td>
+</tr>
+<tr>
+<td>3.39</td>
+<td>PricingUnit</td>
+<td>M</td>
+<td>Unit per meter (1M tokens, hour, page)</td>
+<td>Missing: Mandatory (trivial, derive from meter)</td>
+</tr>
+<tr>
+<td>3.40</td>
+<td>ProviderName</td>
+<td>M (deprecated v1.3, removed v1.4)</td>
+<td>Constant (Core42)</td>
+<td>Missing: Mandatory (trivial; omit at v1.4 target)</td>
+</tr>
+<tr>
+<td>3.41</td>
+<td>PublisherName</td>
+<td>M (deprecated v1.3, removed v1.4)</td>
+<td>Constant</td>
+<td>Missing: Mandatory (trivial; omit at v1.4 target)</td>
+</tr>
+<tr>
+<td>3.42</td>
+<td>RegionId</td>
+<td>C</td>
+<td>Regions listed (Abu Dhabi, France, US sites)</td>
+<td>Present, deviation to fix (emit RegionId)</td>
+</tr>
+<tr>
+<td>3.43</td>
+<td>RegionName</td>
+<td>C</td>
+<td>Region names available</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.44</td>
+<td>ResourceId</td>
+<td>C</td>
+<td>Resource-level filtering (Resource Name)</td>
+<td>Present, deviation to fix (confirm stable resource ID)</td>
+</tr>
+<tr>
+<td>3.45</td>
+<td>ResourceName</td>
+<td>C</td>
+<td>Yes (Resource Name filter)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.46</td>
+<td>ResourceType</td>
+<td>C</td>
+<td>Model/instance type implied</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.47</td>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>AI/ML and Compute implied by product</td>
+<td>Missing: Mandatory (trivial, derive; use valid enum)</td>
+</tr>
+<tr>
+<td>3.48</td>
+<td>ServiceName</td>
+<td>M</td>
+<td>Model ID and instance type available</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.49</td>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>Derivable (inference, training, storage)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>3.50</td>
+<td>SkuId</td>
+<td>C</td>
+<td>Model ID / instance type serve as SKU</td>
+<td>Present, deviation to fix (map model/instance to SkuId)</td>
+</tr>
+<tr>
+<td>3.51</td>
+<td>SkuMeter</td>
+<td>C</td>
+<td>Meter implied (input tokens, output tokens, GPU-hour)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.52</td>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>Rate detail available in pricing table</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.53</td>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>Not surfaced</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.54</td>
+<td>SubAccountId</td>
+<td>C</td>
+<td>Department/project filtering</td>
+<td>Present, deviation to fix (map department or project to SubAccountId)</td>
+</tr>
+<tr>
+<td>3.55</td>
+<td>SubAccountName</td>
+<td>C</td>
+<td>Department/project names</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>3.56</td>
+<td>SubAccountType</td>
+<td>C</td>
+<td>Not documented</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>3.57</td>
+<td>Tags</td>
+<td>C</td>
+<td>No documented resource-tagging mechanic</td>
+<td>Missing: Conditional (confirm whether resources carry key-value labels)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p><strong>Solved (the raw material exists):</strong></p>
+<ul>
+<li><strong>Quantities and granularity.</strong> Tokens, GPU-hours, minutes, pages, and API calls are all metered, and the Usage Report API aggregates to per-minute and per-hour. This gives FOCUS the <code>ConsumedQuantity</code>, <code>ConsumedUnit</code>, <code>ChargePeriodStart</code>, and <code>ChargePeriodEnd</code> inputs without new instrumentation.</li>
+<li><strong>Attribution.</strong> Department, project, resource name, and API key are first-class filters. Mapping department or project to <code>SubAccountId</code>/<code>SubAccountName</code>, and resource name to <code>ResourceId</code>/<code>ResourceName</code>, is a naming exercise on data that already exists.</li>
+<li><strong>List cost and list rates.</strong> Published per-token and per-hour rates plus the console Cost figure give <code>ListCost</code> and <code>ListUnitPrice</code> directly.</li>
+</ul>
+<p><strong>Remaining (substantive):</strong></p>
+<ul>
+<li><strong>The reconciled cost columns.</strong> <code>BilledCost</code>, <code>EffectiveCost</code>, and <code>ContractedCost</code> are the core gap. The public feed reflects list-rate cost; the documented Batch 50 percent discount, enterprise cluster pricing, and On-Request custom-model rates are not reconciled onto usage lines. Producing these requires joining contract and discount terms to the metered usage. This is the classic list-cost trap and the single most likely place to understate the verdict, so it is treated as substantive.</li>
+<li><strong>FOCUS shaping across the board.</strong> No column is emitted with FOCUS IDs, enums, or key-value tags today. Most &ldquo;data exists&rdquo; columns are therefore &ldquo;Present, deviation to fix&rdquo;: the transform is the work.</li>
+</ul>
+<p><strong>Remaining (trivial):</strong></p>
+<ul>
+<li>Constants and derivations: <code>InvoiceIssuerName</code>, <code>ProviderName</code>/<code>PublisherName</code> (constants; the latter two dropped at v1.4), <code>BillingPeriodStart</code>/<code>BillingPeriodEnd</code> (derive from the period), <code>ServiceCategory</code> (AI and Machine Learning, Compute), <code>PricingUnit</code> (from the meter), <code>ChargeClass</code> (nullable, populated only on corrections). <code>PricingQuantity</code> is trivial for flat-rate meters (hourly GPU, per-token) and must be computed for any tiered rate.</li>
+</ul>
+<p>Of the 21 Mandatory columns, 3 are substantive gaps (<code>BilledCost</code>, <code>EffectiveCost</code>, <code>ContractedCost</code>). The rest are either data that exists in native shape (a transform) or trivial derivations and constants.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<ul>
+<li><strong>No FOCUS shaping:</strong> the dataset uses native field names, not FOCUS column IDs. This is the primary deviation and touches every present column.</li>
+<li><strong>Currency format:</strong> confirm <code>BillingCurrency</code> and <code>PricingCurrency</code> emit the ISO 4217 code (USD), not a symbol.</li>
+<li><strong>Timestamps:</strong> the Usage Report API takes dates as YYYY-MM-DD and aggregates by interval; FOCUS requires ISO 8601 timestamps on <code>ChargePeriodStart</code>/<code>ChargePeriodEnd</code> with inclusive-start, exclusive-end semantics.</li>
+<li><strong>Enums:</strong> <code>ChargeCategory</code> must use the FOCUS allowed set (Usage, Purchase, Tax, Credit, Adjustment), and VAT should surface as a Tax charge; <code>ServiceCategory</code> must use a valid member (AI and Machine Learning for Compass inference, Compute for GPUaaS).</li>
+<li><strong>Tags:</strong> if Core42 resources carry labels, they must be emitted as FOCUS key-value pairs; if resources carry no labels, <code>Tags</code> is legitimately null.</li>
+</ul>
+<p>What is already done right: usage-based metering with real quantities and units, sub-daily granularity, USD costing, and department/project/resource/API-key attribution. These are the hard-to-retrofit properties, and Core42 has them.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Baseline v1.2 (the version the FinOps Certified FOCUS conformance badge has historically been anchored to) and design toward v1.4 (latest). Because Core42 is building a FOCUS representation from scratch rather than uplifting an existing export, it can target the v1.4 column set directly and skip the deprecated <code>ProviderName</code>/<code>PublisherName</code> columns, while confirming the target representation against the Requirements Model. Re-verify the v1.3/v1.4 additions (split cost allocation, Invoice Detail, billing-period datasets) against the live spec at build time.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation. The program has been the &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo; designation; confirm the current badge version against the program page before finalizing. Membership is required for certification, though contributing to the spec is open and free; contact <code>member-cert@finops.org</code> for the RFI. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed).</p>
+<p>Open-source tooling: the <strong>FOCUS Converter</strong> (provider-native to FOCUS) is the most relevant starting point given Core42 emits a native feed; the <strong>FOCUS Validator</strong> (checks data against the Requirements Model) confirms the output; and the <strong>FOCUS Requirements Model</strong> provides the machine-readable MUST/SHOULD/MAY rules.</p>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

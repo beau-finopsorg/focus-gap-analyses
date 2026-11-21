@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gcore Edge Cloud and FOCUS: Compliance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Gcore-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="gcore-edge-cloud-and-focus-compliance-gap-and-adoption-roadmap">Gcore Edge Cloud and FOCUS: Compliance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: June 30, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p>Prepared: 2026-06-30
+Source analyzed: Gcore Cloud Cost Report and Reservation Cost Report (Detailed CSV, Summary/Totals CSV), Cost Reports API, and Cloud Billing documentation.
+FOCUS baseline: v1.2 (certification baseline). Build target: v1.4 (latest ratified, 2026-06-04).</p>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Gcore&rsquo;s Cost Report is a resource-level, sub-monthly usage feed with a strong allocation backbone: it carries a resource name, UUID, resource type, region, project, key-value tags, usage quantity with a consumption unit, per-resource cost, and currency. That gives Gcore a head start on the columns that FOCUS uses for identity and attribution. The dataset is not yet FOCUS-shaped (native column names, no FOCUS enums, no FOCUS column IDs), and the central work is a cost reconciliation problem, not a missing-data problem.</p>
+<p>The single most important finding is the split between two reports. The Cost Report values every resource at Pay-As-You-Go (PAYG) list rates and explicitly does not apply commit discounts. The Reservation Cost Report carries the commit and overcommit costs that produce the customer&rsquo;s actual (effective) spend, but only as monthly aggregates with no per-resource breakdown. So <code>ListCost</code> is readily available at resource grain, while <code>EffectiveCost</code> and <code>ContractedCost</code> are a substantive reconciliation gap: producing them at line grain means allocating commit discounts from the reservation report back onto the PAYG usage lines.</p>
+<ul>
+<li>Total FOCUS columns (v1.2): 57</li>
+<li>Already present (mappable from the source, including format fixes): 22</li>
+<li>Substantive Mandatory gaps: 3 of 13 missing Mandatory columns</li>
+<li>Deviations to fix on present columns: 7</li>
+</ul>
+<p>Recommendation: target v1.2 for the certification baseline and build toward v1.4. Phase 1 should resolve the cost columns by reconciling the Reservation Cost Report against the resource-level Cost Report, then add the trivial Mandatory plumbing (<code>ChargeCategory</code>, <code>ChargeClass</code>, billing/charge period bounds, <code>ServiceCategory</code>, <code>InvoiceIssuerName</code>). The allocation and granularity foundations are already in good shape.</p>
+<p>RAG readiness: Cost Partial, Granularity Strong, Allocation Strong, Coverage Partial, FOCUS shape Partial. Overall band: Not yet aligned (per public docs).</p>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Gcore Edge Cloud exposes cost and usage through two reports, both viewable in the control panel, downloadable as CSV, and reachable through the Cost Reports API.</p>
+<p>The Cost Report is the primary resource-level feed. Each row describes a billable resource over a selected period and carries: Service (resource type name), UUID (resource identifier; some resources such as IP addresses have none), Feature (a billing identifier combining resource type, configuration, region, and pricing model), Tags (user tags plus system-generated tags), Service_name (the resource&rsquo;s display name), Region_id and Region_name, Project_id and Project_name, First_seen and Last_seen (when the resource began and stopped generating cost), Period_from and Period_to (the selected reporting window), Units (the consumption unit, for example gbminutes, minutes, MLS, bytes, GBS), Value (the usage quantity), Error, Cost, Currency, Attached_to, and Port_id. The report can be filtered by project, region, resource type, and consumption period (up to one month), and can include deleted projects and regions.</p>
+<p>Granularity is the dataset&rsquo;s strength. Resources are metered per minute, costs are stated per resource, and First_seen/Last_seen plus the selectable period give sub-monthly time bounds. The documentation notes that the last hour may be incomplete, which is consistent with a near-real-time meter rather than a monthly invoice snapshot.</p>
+<p>The key limitation is cost basis. The Cost Report values everything at PAYG rates and states plainly that, if the account has active commitments, &ldquo;the prices shown in this report won&rsquo;t reflect your actual costs because commit discounts are not applied.&rdquo; Actual cost lives in the separate Reservation Cost Report, which accounts for commitments but shows only aggregated monthly data per resource type and region (Commit value, Commit cost, Overcommit cost, Total cost), with no per-resource rows.</p>
+<p>Billing context: all clients are on a PAYG plan billed per minute; currency is EUR or USD depending on the account&rsquo;s provider entity; charges are deducted in threshold portions against a prepaid balance or payment method; invoices are available in the control panel. Projects act as the sub-account-level grouping within a billing account.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory (must be present and populated), Conditional (required when the provider&rsquo;s model triggers the condition), Recommended (encouraged), or Optional. Conformance is judged column by column against the spec&rsquo;s Content Constraints and the machine-readable Requirements Model. A dataset conforms when every Mandatory column is present and correctly populated, every applicable Conditional column is handled, and present columns use the correct types, FOCUS enum values, and key-value tag format. Feature levels in this report were verified against the FOCUS v1.2 specification rather than recalled from memory.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Feature levels verified against the FOCUS Specification v1.2. Status legend: Present (emitted and aligned); Present, deviation to fix (emitted, wrong format or invalid value); Missing: Mandatory (required, absent, blocks conformance); Missing: Recommended (encouraged, absent); Missing: Conditional (required when the model triggers it, absent); N/A: null valid (does not apply to Gcore&rsquo;s model, should exist and be null).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>No (regions only, no zones)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td>Partial (PAYG cost in Cost Report; actual cost split into Reservation report)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Implicit (account context, not a Cost Report column)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>Implicit (account context)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>Currency</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>No (Period_to is a query window, not a billing period)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>No (Period_from is a query window)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>No (derivable: Usage vs reservation commit/overcommit)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>No (nullable; populate on corrections via Error field)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>Service_name / Feature</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>Last_seen / Period_to</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>First_seen / Period_from</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>Partial (Reservation Cost Report)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>Partial (Reservation Cost Report)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>Partial (Reservation Cost Report)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>Commit value (Reservation report)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>Partial (commit vs overcommit usage)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>Partial (Reservation Cost Report)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>Units (Reservation report)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Value</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>Units</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td>Partial (commit cost in Reservation report)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>Partial (requires reconciling commit discounts to usage lines)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>No (invoices exist; not in the usage feed)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>No (constant: Gcore entity)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td>Cost (PAYG rate)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>Derivable (Cost / Value for flat-rate SKUs)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td>No (PAYG; commit on Reservation report)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>Currency</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>Value (derivable for flat-rate SKUs)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td>Units</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M</td>
+<td>No (constant: Gcore)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M</td>
+<td>No (constant: Gcore)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td>Region_id</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td>Region_name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td>UUID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td>Service_name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td>Service / Feature</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>No (derivable from resource type)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td>Service / Feature</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>Feature</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>Units / Feature</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>Feature</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>Project_id</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>Project_name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td>Tags</td>
+<td>Present, deviation to fix</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reading the tally: of 57 v1.2 columns, 22 map from the source (15 clean and 7 present with deviations to fix), 13 Mandatory columns are missing (3 of them substantive, 10 trivial or constant), 3 Recommended are missing, 16 Conditional are missing because the condition applies, and 3 Conditional columns are N/A because Gcore&rsquo;s model does not trigger them. Counting: 15 clean present + 7 deviation + 13 Missing: Mandatory + 3 Missing: Recommended + 16 Missing: Conditional + 3 N/A = 57.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p>Already in good shape: the allocation and granularity foundations. Resource identity (<code>ResourceId</code> from UUID, <code>ResourceName</code> from Service_name, <code>ResourceType</code> from Service/Feature), region (<code>RegionId</code>, <code>RegionName</code>), project as sub-account (<code>SubAccountId</code>, <code>SubAccountName</code>), usage (<code>ConsumedQuantity</code>, <code>ConsumedUnit</code>, <code>PricingQuantity</code>, <code>PricingUnit</code>), SKU identifiers from Feature (<code>SkuId</code>, <code>SkuMeter</code>, <code>SkuPriceId</code>), and <code>ListCost</code> from the PAYG Cost figure all map cleanly. This is a meaningful starting position.</p>
+<p>Substantive gaps (real data that requires work to produce):</p>
+<ul>
+<li><code>EffectiveCost</code> and <code>ContractedCost</code>: the actual, commitment-aware cost does not exist at resource grain. The Cost Report is PAYG list only; commit and overcommit costs live in the monthly-aggregate Reservation Cost Report. Producing per-line effective and contracted cost requires allocating reservation discounts back onto the usage lines. This is the list-cost trap in its classic form: discounts genuinely exist but are applied in a separate report, so the cost columns are substantive, not a copy of <code>ListCost</code>.</li>
+<li><code>BilledCost</code>: what the customer is actually charged after commit discounts and threshold-based balance deductions. As with <code>EffectiveCost</code>, it cannot be read off the PAYG Cost Report and must be reconciled from the commitment and invoice layer.</li>
+</ul>
+<p>Trivial gaps (Mandatory but mechanical to add):</p>
+<ul>
+<li><code>ProviderName</code> and <code>PublisherName</code>: constants (&ldquo;Gcore&rdquo;). Note these are deprecated in v1.3 and removed in v1.4, so they are baseline-only plumbing.</li>
+<li><code>InvoiceIssuerName</code>: a constant (the Gcore billing entity).</li>
+<li><code>ServiceCategory</code>: derivable by mapping each resource type to a FOCUS <code>ServiceCategory</code> enum value (Compute, Storage, Networking, AI and Machine Learning for GPU/IPU, and so on).</li>
+<li><code>ChargeCategory</code>: derivable (Usage for metered consumption; commit and overcommit lines from the Reservation report map to Usage or Purchase per FOCUS rules).</li>
+<li><code>ChargeClass</code>: nullable; populate &ldquo;Correction&rdquo; only when a line corrects a prior charge (the Error field is a candidate signal).</li>
+<li><code>BillingAccountId</code> and <code>BillingAccountName</code>: present implicitly in account context but not as Cost Report columns; they must be stamped onto every row.</li>
+<li><code>BillingPeriodStart</code> and <code>BillingPeriodEnd</code>: the calendar billing period bounds, distinct from the query window (Period_from/Period_to) and the resource lifespan (First_seen/Last_seen).</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<p>These columns carry the right data in a shape FOCUS would reject:</p>
+<ul>
+<li><code>Tags</code>: the source mixes user tags and system-generated tags in a Tags column. FOCUS requires key-value pairs. Confirm the export emits structured key-value pairs rather than a flat string or array, and split system tags into <code>x_</code>-prefixed custom columns if they are not true resource tags.</li>
+<li><code>BillingCurrency</code> and <code>PricingCurrency</code>: Currency must be a single ISO 4217 three-letter code (EUR or USD). Confirm the export uses the code, not a symbol or word.</li>
+<li><code>ChargePeriodStart</code> and <code>ChargePeriodEnd</code>: First_seen/Last_seen (or Period_from/Period_to) must be emitted as ISO 8601 timestamps with inclusive-start, exclusive-end semantics, mapped to the charge period rather than the query window.</li>
+<li><code>ChargeDescription</code> and <code>ServiceName</code>: Service_name and Feature carry the content, but FOCUS expects <code>ServiceName</code> to be the service offering and <code>ChargeDescription</code> to be a human-readable line summary. Separate the two cleanly rather than reusing one native field for both.</li>
+</ul>
+<p>Done right already: the resource, region, project, usage, and SKU columns map without transformation beyond renaming, which is the bulk of the allocation surface.</p>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Baseline to v1.2, the current certification baseline, and build toward v1.4 (ratified 2026-06-04). Two version notes matter for Gcore. First, <code>ProviderName</code> and <code>PublisherName</code> are Mandatory in v1.2, deprecated in v1.3, and removed in v1.4, so treat them as baseline-only and do not invest in them for the long term. Second, v1.4 adds Invoice Detail and billing-period datasets aimed at reconciliation, which align well with Gcore&rsquo;s two-report structure and would give the commit and invoice layer a native home. Validator support for v1.4 is expected later in 2026; v1.3 is supported today.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FOCUS conformance for data generators runs through the FinOps Foundation under the &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo; program (contact member-cert@finops.org for the RFI). Membership is required for certification, though contributing to the spec is open and free. The deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report, which this analysis seeds. Open-source tooling supports the work: the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST/SHOULD/MAY rules).</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p>Phase 0, validate what exists: run a sample of the Detailed Cost Report CSV through the FOCUS Validator after a first-pass rename, and confirm scope (Cost Report plus Reservation Cost Report) and target version.</p>
+<p>Phase 1, close the Mandatory gaps. The headline work is cost reconciliation: join the monthly Reservation Cost Report (commit cost, overcommit cost, commit value) to the resource-level PAYG Cost Report to produce <code>EffectiveCost</code>, <code>ContractedCost</code>, and <code>BilledCost</code> at line grain. In parallel, add the trivial Mandatory plumbing: stamp <code>BillingAccountId</code>/<code>BillingAccountName</code>, <code>ProviderName</code>/<code>PublisherName</code>, and <code>InvoiceIssuerName</code> constants; derive <code>ServiceCategory</code> from resource type; derive <code>ChargeCategory</code>; carry <code>ChargeClass</code> (nullable); and emit true <code>BillingPeriodStart</code>/<code>BillingPeriodEnd</code>.</p>
+<p>Phase 2, fix deviations: structure <code>Tags</code> as key-value pairs, normalize currency to ISO 4217, emit ISO 8601 charge periods with correct interval semantics, and separate <code>ChargeDescription</code> from <code>ServiceName</code>.</p>
+<p>Phase 3, round out Conditional and Recommended columns: surface the commitment-discount family (<code>CommitmentDiscountId</code>, <code>Name</code>, <code>Type</code>, <code>Category</code>, <code>Status</code>, <code>Quantity</code>, <code>Unit</code>) by promoting Reservation Cost Report data to line level; add <code>ListUnitPrice</code> and <code>PricingCategory</code>; add <code>BillingAccountType</code>/<code>SubAccountType</code>; and add the Recommended <code>ChargeFrequency</code>, <code>InvoiceId</code>, and <code>ServiceSubcategory</code>.</p>
+<p>Phase 4, mature toward v1.4: drop the deprecated <code>ProviderName</code>/<code>PublisherName</code>, adopt the Invoice Detail and billing-period datasets to formalize the commit/invoice layer, and certify or re-certify.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<p>Unlocked as soon as the dataset is renamed and validated (Phase 0 to 1), because resource, tag, project, and sub-monthly data already exist: cost reporting and visualization by service and region; allocation and showback by project (as sub-account) and by tag; resource-level usage and rightsizing analysis; and anomaly detection on daily cost movement.</p>
+<p>Unlocked once the cost columns are reconciled (Phase 1 to 2): effective-cost and actuals-based reporting; budgeting and variance against real spend; commitment utilization and coverage analysis (drawing on the Reservation Cost Report); and invoice reconciliation once billing-period datasets land.</p>
+<p>Out of scope for Gcore&rsquo;s current model: capacity-reservation use cases beyond the commit/reservation mechanic Gcore already offers, and any use case requiring a marketplace publisher distinct from the provider, since Gcore is both provider and publisher.</p>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Pull a representative Detailed Cost Report CSV and a matching Reservation Cost Report for an account that holds active commitments, so the reconciliation logic is exercised against real overcommit lines.</li>
+<li>Draft the native-to-FOCUS column mapping from the table in section 1.3, recording the rename and the derivation rule for each Mandatory column.</li>
+<li>Design the cost reconciliation that allocates commit and overcommit costs from the monthly Reservation report onto the resource-level PAYG lines to yield <code>EffectiveCost</code>, <code>ContractedCost</code>, and <code>BilledCost</code>.</li>
+<li>Run the first-pass output through the FOCUS Validator and triage failures by feature level.</li>
+<li>Contact member-cert@finops.org for the RFI if pursuing the &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo; designation.</li>
+</ol>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>Source field set (Cost Report and Reservation Cost Report columns): high confidence, taken directly from current Gcore Cloud documentation.</li>
+<li>The cost split (PAYG list in the Cost Report, commit/effective cost only in the monthly Reservation report) and its classification as a substantive gap: high confidence, stated explicitly in Gcore&rsquo;s documentation.</li>
+<li>Granularity (per-minute metering, resource-level rows, sub-monthly periods): high confidence.</li>
+<li>Feature levels for all 57 v1.2 columns: high confidence; verified against the FOCUS v1.2 specification via the FOCUS column reference, cross-checked against the live FOCUS column set on 2026-06-30 (57 columns confirmed; <code>ProviderName</code>/<code>PublisherName</code> deprecated v1.3, removed v1.4; bundled table current as of 2026-06-23, no refresh required).</li>
+<li>Exact CSV value formats (tag structure, currency representation, timestamp format): medium confidence; the column meanings are documented but the literal serialization should be confirmed against a real export before the deviation fixes are finalized.</li>
+<li>Mapping of <code>Feature</code> to the SKU column family and <code>Project</code> to sub-account: medium-high confidence; <code>Feature</code> bundles type, configuration, region, and pricing model, so it may need decomposition rather than a single mapping.</li>
+<li>Overall readiness band (Emerging): medium-high confidence; reflects the data source reviewed, not a formal certification result.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Gcore Docs, Cost reports: https://gcore.com/docs/cloud/getting-started/view-statistics-on-expenses</li>
+<li>Gcore Docs, Billing: https://gcore.com/docs/cloud/billing</li>
+<li>Gcore Cost Reports API: https://gcore.com/docs/api-reference/cloud (Cost-Reports tag)</li>
+<li>FOCUS Specification v1.2: https://focus.finops.org/focus-specification/v1-2/</li>
+<li>FOCUS column reference and Requirements Model: https://focus.finops.org/</li>
+<li>FinOps Foundation FOCUS conformance program: member-cert@finops.org</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

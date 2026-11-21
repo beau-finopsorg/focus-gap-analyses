@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Extend (ExtendAI) and FOCUS: Conformance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/ExtendAI-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="extend-extendai-and-focus-conformance-gap-and-adoption-roadmap">Extend (ExtendAI) and FOCUS: Conformance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: August 4, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Prepared:</strong> 2026-08-04
+<strong>Provider and product in scope:</strong> Extend, the LLM document-processing platform at extend.ai / extend.app (Parse, Extract, Classify, Split, Edit, Workflows, and the per-run usage/credit data it emits).
+<strong>Source analyzed:</strong> Public product and developer documentation: the pricing page, the &ldquo;How Credits Work&rdquo; billing guide, and the API reference (the extract-run <code>usage</code> object).
+<strong>FOCUS baseline:</strong> v1.2 (current certification baseline). <strong>Build target:</strong> v1.4 (ratified 2026-06-04).
+<strong>Data quality:</strong> Provisional. This assessment is built from public documentation for a small startup, not from a customer billing export or a billing API contract. There is no formal FOCUS conformance claim.</p>
+<hr>
+<h2 id="disambiguation-assumption-read-first">Disambiguation assumption (read first)</h2>
+<p>The name &ldquo;Extend&rdquo; maps to several distinct companies. This report analyzes <strong>Extend, the AI document-processing company at extend.ai (also extend.app), handle @ExtendHQ, GitHub <code>extend-hq</code>, a Y Combinator company</strong>. Its product is &ldquo;document processing infrastructure for AI agents&rdquo;: LLM-based parsing, extraction, classification, splitting, and editing of documents, sold on a credit-based, per-page usage model.</p>
+<p>This is not &ldquo;Extend&rdquo; the virtual-card / spend fintech (paywithextend.com), and not &ldquo;Extend&rdquo; the extended-warranty / product-protection company (extend.com). If the intended subject is either of those, this analysis does not apply and should be re-scoped. Everything below assumes the document-AI platform.</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Extend meters usage well and prices it in credits, but it does not yet publish a cost dataset in currency. Every processed run returns a structured, itemized <code>usage</code> object with per-page quantities, units, and an itemized <code>charges</code> array, timestamped in UTC, and usage can be tagged and grouped by workspace, API key, processor, and usage tag. That is a strong, granular usage foundation. The gap for FOCUS is the cost layer: the record carries <strong>credits</strong>, an internal billing unit, not a currency amount, and the FOCUS cost quartet (ListCost, BilledCost, EffectiveCost, ContractedCost) is absent. Converting credits to currency is a reconciliation against the plan rate card and any volume or annual-commitment terms, so the cost columns are a substantive gap, not a copy.</p>
+<p>Of the 57 FOCUS v1.2 columns: 1 Present, 7 Present with a deviation to fix, 18 Missing Mandatory (4 of them substantive, all in the cost quartet; the other 14 trivial), 3 Missing Recommended, 16 Missing Conditional, and 12 N/A. The eight usable columns are the per-run usage fields (quantities, units, resource identity, tags, charge time) under Extend-native names and shapes.</p>
+<p><strong>Readiness (data source reviewed, not a certification result):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Rating</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cost</td>
+<td>Gap</td>
+</tr>
+<tr>
+<td>Granularity</td>
+<td>Strong</td>
+</tr>
+<tr>
+<td>Allocation</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td>Coverage</td>
+<td>Gap</td>
+</tr>
+<tr>
+<td>FOCUS shape</td>
+<td>Gap</td>
+</tr>
+<tr>
+<td><strong>Overall band</strong></td>
+<td><strong>Emerging</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Recommendation:</strong> Publish a cost dataset that expresses each run in currency, not just credits. Multiply metered credits by the account&rsquo;s per-credit rate to produce ListCost, and reconcile volume discounts and annual-commitment burn-down into BilledCost and EffectiveCost. Emit the trivial Mandatory constants and derivations (provider and issuer names, service category, billing account identity, charge period boundaries), convert <code>extend:usage_tags</code> from a bare-string array to key-value Tags, and expose the workspace hierarchy as SubAccount columns. The granularity and usage detail already exceed most emerging feeds; the missing piece is a currency-denominated, FOCUS-shaped billing view.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<p>Extend sells document processing on a credit model: each run of a processor (Parse, Extract, Classify, Split, Edit, Form Detection) consumes a base number of credits per page, at a plan-specific per-credit rate, with optional surcharges and multipliers. The platform exposes this as a rich per-run usage object and a filterable usage dashboard. The gap is that this is usage metering, not a billing dataset: it is granular and itemized, but not expressed in currency and not FOCUS-shaped.</p>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>The analyzable surface is the per-run <code>usage</code> object on the processor-run API responses (documented on the extract-run endpoint) plus the credit model and dashboard described in &ldquo;How Credits Work.&rdquo;</p>
+<ul>
+<li><strong>Grain:</strong> one processor run (for example, an extract run <code>exr_...</code>) over one file, with <code>createdAt</code> and <code>updatedAt</code> as RFC 3339 UTC timestamps. Runs are event-level and effectively real time.</li>
+<li><strong>Usage object:</strong> <code>usage.credits</code> (billed credits for the run), <code>usage.totalCredits</code> (rolls up work the run triggered, such as an automatic parse), and <code>usage.breakdown[]</code>, where each entry carries its own <code>credits</code> and a <code>charges[]</code> array. Each charge itemizes <code>product</code> (for example <code>extraction_performance</code>, <code>review_agent</code>, <code>agentic_text_correction</code>), <code>unit</code> (<code>page</code>), <code>quantity</code>, <code>credits</code>, and for page-scoped add-ons the exact <code>pages[]</code> that incurred the charge.</li>
+<li><strong>Pricing model:</strong> credits are the universal billing unit. Base rates are per page by action and mode (Performance vs Light), with surcharges (Review Agent, agentic corrections) and multipliers (priority parsing 2x, large-array extraction 2x); advanced Excel parsing is billed per 1,000 cells. Dollar cost equals credits times the plan&rsquo;s per-credit rate.</li>
+<li><strong>Plans:</strong> Pay As You Go ($0.0125 per credit, 10,000 credits free), Scale ($500 per month, 50,000 credits included, $0.01 per credit, volume discounts available), and Enterprise (custom per-credit pricing, multiple workspaces, advanced RBAC, SSO/SAML). Annual plans track usage against a prepaid balance or a dollar commitment.</li>
+<li><strong>Identity and hierarchy:</strong> API keys are organization-scoped or workspace-scoped; the <code>x-extend-workspace-id</code> header targets a workspace, and Enterprise supports multiple workspaces. Runs reference a <code>file</code> (id, name, type, page count) and a dashboard URL.</li>
+<li><strong>Allocation dimensions:</strong> runs accept <code>extend:usage_tags</code> (an array of bare strings) in run metadata; the dashboard filters and groups credit usage by Usage Tags, Processors, Workflows, API Keys, and Charge Types.</li>
+</ul>
+<p>Key limitations for FOCUS:</p>
+<ul>
+<li><strong>No currency on the record:</strong> cost is expressed only in credits. There is no per-line amount in a currency, and no <code>BillingCurrency</code> on the record (USD is implied by the published rates, not stated per row).</li>
+<li><strong>No billing-period or invoice dataset via API:</strong> the dashboard Billing page shows annual usage to date against a plan, but there is no documented line-item cost export tied to an invoice or a billing period.</li>
+<li><strong>Tags are bare strings:</strong> <code>extend:usage_tags</code> is an array of single strings, not key-value pairs.</li>
+<li><strong>Hierarchy is thin outside Enterprise:</strong> multiple workspaces are an Enterprise feature; single-workspace accounts have no sub-account structure.</li>
+<li><strong>No commitment-discount mechanic in the FOCUS sense:</strong> volume discounts and annual prepaid balances exist, but there is no per-line commitment-discount attribution.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory (must be present and populated), Conditional (required when the provider&rsquo;s model triggers the condition), Recommended (encouraged), or Optional. Conformance is judged column by column against the Requirements Model. A dataset conforms when every Mandatory column is present and correctly populated, every applicable Conditional column is handled, Tags are key-value pairs, enumerated columns carry valid members, and types, currency, and date formats follow the spec. Feature levels for this report were verified against the FOCUS v1.2 specification content-constraint tables.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Legend: Present; Present, deviation to fix; Missing: Mandatory; Missing: Recommended; Missing: Conditional; N/A: null valid.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>No (SaaS, no zones)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td>No (credits only, needs rate reconciliation)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>No (organization identity exists off-record)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>No (account lookup)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>No (credits, not currency; USD implied)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>No (billing month derivable)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>No (billing month derivable)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>No (constant &ldquo;Usage&rdquo; for run feed)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>No (null; corrections not in feed)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>No (derivable from product/processor)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>No (constant &ldquo;Usage-Based&rdquo;)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>No (derivable from run timestamps)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>Partial (createdAt on the run)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>No (no per-line commitment mechanic)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Yes (charges.quantity, e.g. pages)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>Yes (charges.unit = &ldquo;page&rdquo;)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td>No (credits only, needs rate reconciliation)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>No (per-credit rate lives in the plan)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>No (credits only, needs rate reconciliation)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>No (constant &ldquo;Extend&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td>No (credits times list per-credit rate)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>No (rate card, not on the run)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td>No (constant &ldquo;On-Demand&rdquo;/&rdquo;Standard&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>No (constant USD once currency exists)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>Yes (charges.quantity)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td>No (equals charges.unit = &ldquo;page&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M (removed v1.4)</td>
+<td>No (constant &ldquo;Extend&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M (removed v1.4)</td>
+<td>No (constant &ldquo;Extend&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td>No (SaaS, not region-scoped on record)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td>Partial (run id or file id)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td>Partial (file name)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td>No (derivable, e.g. &ldquo;Document&rdquo;/&rdquo;ExtractRun&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>No (constant &ldquo;AI and Machine Learning&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td>Yes (the product/processor, e.g. &ldquo;Extract&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>No (product + mode + plan is the effective SKU)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>No (the billable metric, pages)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>No (workspace id exists off-record; Enterprise)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>No (workspace name; Enterprise)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td>Yes (extend:usage_tags, bare-string array)</td>
+<td>Present, deviation to fix</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Reading the tally.</strong> Of 57 v1.2 columns: 1 Present, 7 Present with a deviation, 18 Missing Mandatory, 3 Missing Recommended, 16 Missing Conditional, and 12 N/A. Of the 21 Mandatory columns, 3 carry usable data (ServiceName clean; ChargePeriodStart and PricingQuantity under native shapes) and 18 are missing. Of those 18, only 4 are substantive (the cost quartet: ListCost, BilledCost, EffectiveCost, ContractedCost). The other 14 are trivial constants or derivations.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p><strong>Solved or near-solved.</strong> Extend already meters the hard part: a per-run, itemized usage object with quantities, units, per-product charges, and page-level attribution, timestamped in UTC. Consumed and pricing quantities and units are present as <code>charges.quantity</code> and <code>charges.unit</code>. Resource identity (run and file), a charge timestamp (<code>createdAt</code>), a service name (the processor product), and allocation tags all exist. Dates are ISO 8601. This is a genuinely granular, machine-readable usage feed.</p>
+<p><strong>Substantive gaps.</strong> The cost quartet is the real work. Each record carries credits, not currency. Producing FOCUS cost columns means:</p>
+<ul>
+<li><strong>ListCost:</strong> metered credits times the account&rsquo;s list (Pay As You Go) per-credit rate. Derivable in principle, but the rate table lives outside the run record and varies by action, mode, and surcharge, so it is a join, not a field copy.</li>
+<li><strong>BilledCost and EffectiveCost:</strong> these must reconcile the plan&rsquo;s actual economics: the Scale monthly platform fee and included-credit allotment, volume discounts, and annual prepaid or dollar-commitment burn-down. When an account draws down a prepaid balance or crosses a volume tier, BilledCost and EffectiveCost diverge from a naive credits-times-list-rate figure. This is a reconciliation against contract terms, the phrase that signals a substantive gap.</li>
+<li><strong>ContractedCost:</strong> the negotiated-rate view, which for Enterprise custom per-credit pricing diverges from list.</li>
+</ul>
+<p>Because the currency layer, the billing period, and the invoice association are all absent from the documented API, the cost columns cannot be treated as a trivial copy.</p>
+<p><strong>Trivial gaps (plumbing, derivable from data already present or from constants).</strong></p>
+<ul>
+<li>Constants: <code>InvoiceIssuerName</code>, <code>ProviderName</code>, <code>PublisherName</code> are &ldquo;Extend&rdquo;; <code>ServiceCategory</code> is &ldquo;AI and Machine Learning&rdquo;; <code>ChargeCategory</code> is &ldquo;Usage&rdquo; for the run feed; <code>ChargeClass</code> is null; <code>PricingCategory</code> is &ldquo;On-Demand&rdquo;.</li>
+<li>Derivations: <code>ChargeDescription</code> from the product/processor; <code>BillingAccountId</code> and <code>BillingAccountName</code> from the organization; <code>BillingPeriodStart</code> and <code>BillingPeriodEnd</code> from the billing cycle; <code>ChargePeriodEnd</code> from the run timestamps; <code>PricingUnit</code> equals <code>ConsumedUnit</code> (&ldquo;page&rdquo;).</li>
+<li><code>BillingCurrency</code> becomes a trivial constant (&ldquo;USD&rdquo;) once the records are expressed in currency at all.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<ul>
+<li><strong>Tags:</strong> <code>extend:usage_tags</code> is an array of bare strings, and FOCUS Tags must be key-value pairs. Emit them as keyed pairs (for example <code>environment=production</code>) rather than a flat list.</li>
+<li><strong>ConsumedQuantity, ConsumedUnit, PricingQuantity:</strong> present inside the <code>charges[]</code> array as <code>quantity</code> and <code>unit</code>. Surface them as top-level FOCUS columns per charge line. For per-page products, PricingQuantity equals the page count; for advanced Excel parsing, which is billed per 1,000 cells, PricingQuantity is computed against the per-cell rate basis, not copied from a page count.</li>
+<li><strong>ChargePeriodStart:</strong> <code>createdAt</code> is an instantaneous run timestamp. Emit it as <code>ChargePeriodStart</code> and derive <code>ChargePeriodEnd</code> (equal for an instantaneous charge, or the run&rsquo;s <code>updatedAt</code>).</li>
+<li><strong>ResourceId and ResourceName:</strong> the run id and file identity carry the right meaning; emit them under the FOCUS column IDs, and decide whether the resource is the document or the run.</li>
+<li><strong>Credit convenience fields:</strong> <code>usage.credits</code> and <code>usage.totalCredits</code> are internal units. Keep them as provider-specific columns prefixed <code>x_</code> (for example <code>x_UsageCredits</code>) alongside the currency cost columns, rather than mapping credits into a FOCUS cost column.</li>
+</ul>
+<p><strong>Already done right:</strong> ISO 8601 UTC timestamps, per-page quantities and units, an itemized per-product charge breakdown with page-level attribution, and a service name on every run.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<p>Baseline v1.2 for conformance and build toward v1.4. The sequence is: publish a currency cost view (the substantive work), add the trivial Mandatory constants and derivations, fix the tag and shaping deviations, then round out Conditional and Recommended columns and mature to the latest version.</p>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Baseline v1.2, the current certification version, for any conformance conversation, and build toward v1.4 (ratified 2026-06-04). Extend is already aligned with one v1.4 change: it emits no <code>ProviderName</code> or <code>PublisherName</code>, which v1.4 removes. Two v1.4 additions fit Extend&rsquo;s model well: the Invoice Detail and Billing Period datasets are the natural home for the monthly Scale platform fee, included-credit allotments, and top-up purchases, and they give a clean place to reconcile the credit usage to an invoice. A practical path shapes the transformation against v1.2 semantics, then layers the v1.3 and v1.4 additions.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FinOps Certified FOCUS conformance for data generators runs through the FinOps Foundation. The historical badge is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;; confirm the current badge version on the program page. Contact <code>member-cert@finops.org</code> for the RFI. Membership is required for certification, though contributing to the spec is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report, which this analysis seeds. Open-source tooling includes the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST, SHOULD, and MAY rules). Extend does not appear on the FOCUS &ldquo;get started&rdquo; data-generator page and holds no FinOps Certified FOCUS designation; this report assesses readiness only.</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate and scope.</strong> Assemble a sample of run <code>usage</code> objects across processors and modes, decide the charge grain (per run, or per charge line within a run), and confirm the v1.2 baseline and v1.4 build target. Establish the per-credit rate source (plan rate card plus any account-specific Enterprise rate) that the cost columns will join against.</p>
+<p><strong>Phase 1: Publish cost in currency (the substantive work).</strong> Add ListCost as metered credits times the list per-credit rate, and reconcile BilledCost and EffectiveCost against the plan&rsquo;s platform fee, included credits, volume discounts, and annual prepaid or commitment burn-down. Add ContractedCost for Enterprise negotiated rates. Add <code>BillingCurrency</code> (&ldquo;USD&rdquo;). Keep <code>x_UsageCredits</code> alongside.</p>
+<p><strong>Phase 2: Trivial Mandatory columns.</strong> Add the constants (<code>InvoiceIssuerName</code>, <code>ProviderName</code>, <code>PublisherName</code>, <code>ServiceCategory</code> = &ldquo;AI and Machine Learning&rdquo;, <code>ChargeCategory</code> = &ldquo;Usage&rdquo;, <code>ChargeClass</code> = null) and the derivations (<code>ChargeDescription</code>, <code>BillingAccountId</code>, <code>BillingAccountName</code>, <code>BillingPeriodStart</code>, <code>BillingPeriodEnd</code>, <code>ChargePeriodEnd</code>, <code>PricingUnit</code>).</p>
+<p><strong>Phase 3: Fix deviations.</strong> Convert <code>extend:usage_tags</code> to key-value Tags, surface <code>charges.quantity</code>/<code>charges.unit</code> as ConsumedQuantity/Unit and PricingQuantity/Unit, emit <code>createdAt</code> as ChargePeriodStart, map run/file identity to ResourceId/ResourceName, and prefix credit fields as <code>x_</code>.</p>
+<p><strong>Phase 4: Conditional and Recommended.</strong> Add unit prices (<code>ContractedUnitPrice</code>, <code>ListUnitPrice</code>), <code>PricingCategory</code>, the pricing-currency columns, the SKU family (<code>SkuId</code>, <code>SkuMeter</code>, <code>SkuPriceDetails</code>, <code>SkuPriceId</code>) built from product + mode + surcharges, <code>ResourceType</code>, the workspace-based SubAccount columns (Enterprise), and Recommended <code>ChargeFrequency</code>, <code>InvoiceId</code>, and <code>ServiceSubcategory</code>.</p>
+<p><strong>Phase 5: Cover the full bill, mature, and certify.</strong> Add the non-usage charges (the Scale platform fee and top-up purchases as <code>ChargeCategory</code> Purchase; any tax) and the invoice association, adopt v1.3 and v1.4 with the Invoice Detail and Billing Period datasets, and pursue certification.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<ul>
+<li><strong>Unlocked now (granular itemized usage):</strong> per-processor and per-workflow usage volume reporting, page-throughput trend and anomaly detection, and per-tag or per-API-key usage attribution, all in credits.</li>
+<li><strong>Unlocked with the cost columns filled (Phases 1 to 2):</strong> unit-cost and cost-per-page metrics in currency, effective-cost views, showback and chargeback by workspace, tag, or customer, and usage-to-cost reconciliation.</li>
+<li><strong>Unlocked with tags and hierarchy fixed (Phases 3 to 4):</strong> tag-based chargeback with key-value Tags, and workspace-level (SubAccount) allocation for Enterprise organizations.</li>
+<li><strong>Unlocked with the full bill and invoice datasets (Phase 5):</strong> invoice reconciliation, virtual-currency (credit) lifecycle and burn-down analysis against prepaid balances, and budget tracking against annual commitments.</li>
+<li><strong>Out of scope for now:</strong> commitment and capacity-reservation use cases (no per-line commitment-discount or reservation mechanic); region and availability-zone analysis (SaaS, not region-scoped on the record).</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Confirm the disambiguation (extend.ai document-AI platform) and the charge grain (per run vs per charge line) for the FOCUS dataset.</li>
+<li>Stand up the credit-to-currency mapping: join metered credits to the plan rate card to produce ListCost, then reconcile BilledCost and EffectiveCost against platform fees, volume discounts, and prepaid or annual commitments.</li>
+<li>Add the trivial Mandatory constants and derivations, and set <code>BillingCurrency</code> to &ldquo;USD&rdquo;.</li>
+<li>Convert <code>extend:usage_tags</code> to key-value Tags and surface the in-<code>charges</code> quantities and units as FOCUS columns.</li>
+<li>Run a sample through the FOCUS Validator against v1.2 to establish a baseline, and engage the FinOps Foundation conformance program for the RFI.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li><strong>Disambiguation:</strong> high confidence that the subject is the extend.ai / extend.app document-AI platform (product description, @ExtendHQ, GitHub <code>extend-hq</code>, YC). If the intended subject is the virtual-card fintech or the extended-warranty company, this analysis does not apply.</li>
+<li><strong>Data source structure</strong> (per-run <code>usage</code> object, credit model, plans, tags, workspace scope): high confidence, from the current Extend developer documentation and pricing page, including a documented example <code>usage</code> payload on the extract-run endpoint.</li>
+<li><strong>Cost columns substantive rather than trivial:</strong> high confidence. Records are denominated in credits, not currency, and BilledCost/EffectiveCost require reconciling plan fees, volume discounts, and prepaid or annual commitments, so producing the cost quartet is a reconciliation, not a copy.</li>
+<li><strong>Feature-level classifications:</strong> high confidence. Levels were checked against the FOCUS v1.2 content-constraint reference; the bundled table (stamped 2026-06-23) was cache-validated on 2026-08-04 against the live FOCUS specification index, confirming v1.2 as the certification baseline and v1.4 (2026-06-04) as the latest ratified version, with no refresh needed.</li>
+<li><strong>Field-presence provisional:</strong> moderate confidence. Field shapes were taken from the public docs and the extract-run example; whether organization and workspace identity, billing-period boundaries, and currency appear as run fields versus account context should be confirmed against a real customer export and the full API reference. This is why the data quality is marked provisional.</li>
+<li><strong>Overall readiness band (Emerging):</strong> moderate-to-high confidence. Extend has strong, real-time, itemized usage and reasonable allocation dimensions, but no currency cost on any record, no FOCUS shaping, and low column coverage, which places it in Emerging rather than Structured.</li>
+<li><strong>Certification status:</strong> Extend is not on the FOCUS data-generator &ldquo;get started&rdquo; page and holds no FinOps Certified FOCUS designation; this report assesses readiness only and is not a certification result.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Extend, Pricing (plans, credit rates, workspaces): https://www.extend.ai/pricing</li>
+<li>Extend Documentation, How Credits Work (credit model, usage tags, dashboard filters): https://docs.extend.ai/general/how-credits-work</li>
+<li>Extend Documentation, Get Extract Run (the <code>usage</code> object, workspace scoping, timestamps): https://docs.extend.ai/api-reference/endpoints/extract/get-extract-run</li>
+<li>Extend, product overview: https://www.extend.ai/</li>
+<li>FOCUS Specification (version index, v1.4 ratified 2026-06-04): https://focus.finops.org/focus-specification/</li>
+<li>FOCUS Specification v1.2 (certification baseline): https://focus.finops.org/focus-specification/v1-2/</li>
+<li>FOCUS Validator, FOCUS Converter, and FOCUS Requirements Model tooling.</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

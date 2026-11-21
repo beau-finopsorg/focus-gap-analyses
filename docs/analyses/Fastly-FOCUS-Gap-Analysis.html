@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fastly &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Fastly-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="fastly-focus-data-generator-gap-analysis">Fastly &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Fastly, Inc.<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Fastly Invoices API v3 (<code>/billing/v3/invoices</code>, <code>/invoices/{invoice_id}</code>, <code>/invoices/month-to-date</code>); Usage Metrics API v3 (<code>/billing/v3/usage-metrics</code>, <code>/service-usage-metrics</code>); Historical Stats usage endpoints (<code>/stats/usage</code>, <code>/stats/usage_by_service</code>, <code>/stats/usage_by_month</code>); Fastly billing guides; Fastly pricing and package entitlements pages<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 15 Present, 13 Deviation, 2 Missing Mandatory, 14 Missing Conditional, 1 Missing Recommended, 12 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Fastly is an edge cloud platform. Customers buy Full-Site Delivery (CDN), Compute (edge WebAssembly), security (Next-Gen WAF, DDoS Protection, Bot Management), Image Optimizer, KV and Object Storage, DNS, and Observability. Self-serve Growth accounts pay as they go on tiered, per-region rates for bandwidth (per GB) and requests (per 10,000), after a monthly free allowance. Package customers pay a fixed monthly fee (for example, Network Services Basic at $1,500) for bundled allowances. Enterprise terms are set in a Service Order. Fastly bills monthly in arrears.</p>
+<p><strong>Public billing documentation is thin.</strong> The Invoices and Usage Metrics API references list field names and one-line descriptions in a single flat table, with no example payloads, no nesting, no enumeration of products or usage types, and no statement of the unit basis behind <code>rate</code> and <code>units</code>. Nothing public describes how credits, taxes, free-tier allowances, package fees, or committed spend appear on a line item, or how fresh the data is. Several classifications below are inferences from field names and should be confirmed with a real response.</p>
+<p>On what is documented, the Invoices API is a reasonable starting point. Each invoice line carries <code>amount</code> (&ldquo;Billed amount for line item&rdquo;), <code>rate</code>, <code>units</code>, <code>product_name</code>, <code>product_line</code>, <code>product_group</code>, <code>region</code>, <code>usage_type</code>, and <code>description</code>, under an invoice with <code>customer_id</code>, <code>invoice_id</code>, <code>currency_code</code>, and ISO 8601 billing dates. Fifteen of 57 FOCUS v1.2 columns map directly and 19 of 21 Mandatory columns have a source. The two missing Mandatory columns are EffectiveCost (substantive) and ListCost (trivial, but tiered).</p>
+<p>The larger problem sits outside the Mandatory columns. Line items are <strong>monthly and account-wide</strong>: one row per product × region × usage type per invoice, with no service ID. Fastly&rsquo;s own guide states that &ldquo;an itemized list of billing charges per service is not available.&rdquo; Per-service data exists only as unrated usage (Usage Metrics and Historical Stats). A FOCUS consumer can allocate cost to services only by pro-rating invoice dollars across usage counts, which Fastly is better placed to do. Fastly has no tags and no documented sub-account hierarchy, so the service is the only allocation dimension available.</p>
+<p><strong>Recommendation:</strong> Publish a FOCUS export per customer with one row per service × product × billing region × usage type × day, carrying the service ID and name as ResourceId and ResourceName, and priced ListCost (public tiered rate), ContractedCost, BilledCost, and EffectiveCost. Emit package fees as Recurring Purchase rows and amortize them across the usage they fund. Emit Credit and Tax rows so BilledCost reconciles to the invoice. Deliver it through the existing <code>/billing/v3/</code> API alongside invoices, and publish an example response for every billing endpoint.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<ul>
+<li><strong>Invoices API</strong> (<code>GET /billing/v3/invoices</code>, <code>GET /billing/v3/invoices/{invoice_id}</code>, <code>GET /billing/v3/invoices/month-to-date</code>): Invoice fields <code>customer_id</code>, <code>invoice_id</code>, <code>statement_number</code>, <code>invoice_posted_on</code>, <code>billing_start_date</code>, <code>billing_end_date</code> (ISO 8601), <code>currency_code</code>, <code>monthly_transaction_amount</code>, and <code>transaction_line_items</code>. Line-item fields <code>description</code>, <code>amount</code>, <code>rate</code> (&ldquo;Price per unit&rdquo;), <code>units</code>, <code>product_name</code>, <code>product_line</code> (e.g., <code>Network Services</code>, <code>Security</code>), <code>product_group</code> (e.g., <code>Compute</code>, <code>Full-Site Delivery</code>), <code>region</code>, <code>usage_type</code> (e.g., <code>requests</code>, <code>bandwidth</code>), and <code>credit_coupon_code</code>. Cursor pagination, up to 200 invoices per page.</li>
+<li><strong>Usage Metrics API</strong> (<code>GET /billing/v3/usage-metrics</code>, <code>GET /billing/v3/service-usage-metrics</code>): Monthly usage by product, and by service on the second endpoint. Fields include <code>product_id</code> (e.g., <code>cdn_usage</code>), <code>usage_type</code>, <code>name</code> (e.g., &ldquo;North America Requests&rdquo;), <code>unit</code>, <code>region</code>, <code>month</code>, <code>quantity</code>, <code>raw_quantity</code>, and <code>last_updated_at</code>. No cost fields. Fastly says this API is for customers who do not receive invoices.</li>
+<li><strong>Historical Stats usage endpoints</strong> (<code>GET /stats/usage</code>, <code>/stats/usage_by_service</code>, <code>/stats/usage_by_month</code>): &ldquo;Unrated request and bandwidth used by a service, aggregated by billing region.&rdquo; <code>usage_by_month</code> with <code>billable_units=true</code> converts bandwidth to GB and requests to units of 10,000.</li>
+<li><strong>Invoice details page:</strong> Per-invoice CSV export (&ldquo;Print &amp; export &gt; Export to CSV&rdquo;) and PDF. Not available in bulk from the Invoices page. Credit memos list the invoices they were applied to and the amount credited.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Pricing model:</strong> Free, Growth (pay as you go with volume tiers), and Enterprise (custom). Bandwidth is &ldquo;Billed per GB per Region per month&rdquo; (for example, $0.12 per GB in North America and Europe and $0.28 in Africa, India, and South Korea for the 100 GB to 10 TB tier). Requests are &ldquo;Billed per 10,000 Requests per Region per month.&rdquo;</li>
+<li><strong>Free allowances:</strong> 100 GB of Full-Site Delivery bandwidth, 1 million requests, 10 million Compute requests, 100 million Compute vCPU milliseconds, 100,000 Image Optimizer requests, and 5 GB of Object Storage per month.</li>
+<li><strong>Packages:</strong> Network Services (Basic $1,500, Starter $6,000 per month; Advantage and Ultimate through sales), Compute (Starter $500), Observability (Starter $1,500), and Security (Core, Core Plus, Total, through sales). Each bundles monthly allowances, with add-ons sold per item. Overage terms are not published.</li>
+<li><strong>Billing regions:</strong> Ten, with Historical Stats codes <code>usa</code>, <code>europe</code>, <code>asia</code>, <code>anzac</code>, <code>asia_india</code>, <code>asia_southkorea</code>, <code>africa_std</code>, <code>mexico</code>, <code>southamerica_std</code>, and <code>saudi_arabia</code>.</li>
+<li><strong>Grain:</strong> Invoices are monthly and account-wide. Service-level data is usage only.</li>
+<li><strong>Credits:</strong> Credit memos and a <code>credit_coupon_code</code> on line items. How a credit lands on a line (netted, separate line, or memo only) is not documented.</li>
+<li><strong>No tags:</strong> The Service model has <code>name</code> and <code>comment</code> but no tags or labels, and the API has no tags collection.</li>
+<li><strong>Legacy pricing:</strong> Accounts created before November 4, 2025 may be on a separate legacy price list.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Fastly packages and Enterprise Service Orders exchange a fixed monthly fee or contracted term for bundled allowances at a lower effective rate, so this analysis treats the CommitmentDiscount family as applicable. Fastly prices by billing region, so RegionId and RegionName apply. Fastly delivers a service per customer, so ResourceId, ResourceName, and ResourceType apply. Fastly documents no capacity reservations, availability zones, tags, sub-account hierarchy, multiple billing account types, or alternate pricing currencies; those columns are N/A and should exist as null. Feature levels below follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Fastly source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Line-item <code>amount</code> (&ldquo;Billed amount for line item&rdquo;), at monthly product × region × usage-type grain</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: package fees and Service Order terms must be amortized onto the usage they fund</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not emitted; compute from public tiered per-region rates × <code>units</code></td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Derive <code>rate</code> × <code>units</code>; confirm <code>rate</code> is the contracted rate and not a blend across tiers</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Invoice <code>customer_id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Not on invoice; join customer name from the Customer API</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Invoice <code>currency_code</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Invoice <code>billing_start_date</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Invoice <code>billing_end_date</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td><code>billing_start_date</code> (line items are monthly)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td><code>billing_end_date</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Line-item <code>description</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Not emitted; derive &ldquo;Usage&rdquo; for metered lines, &ldquo;Purchase&rdquo; for package fees, &ldquo;Credit&rdquo; for credit memos and coupons, &ldquo;Tax&rdquo; if taxes are invoiced</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Fastly, Inc.&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Fastly&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Fastly&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Line-item <code>product_name</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive from <code>product_line</code> and <code>product_group</code>: &ldquo;Networking&rdquo; for delivery and DNS; &ldquo;Security&rdquo; for WAF, DDoS, and Bot Management; &ldquo;Compute&rdquo; for Compute; &ldquo;Storage&rdquo; for KV and Object Storage; &ldquo;Management and Governance&rdquo; for Observability</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Line-item <code>units</code>; unit basis undocumented (requests are priced per 10,000), and tiered rates require computation against the rate basis</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td><code>usage_type</code> names the measure (<code>bandwidth</code>, <code>requests</code>), not the unit; normalize to &ldquo;GB&rdquo;, &ldquo;10K Requests&rdquo;, and so on</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Line-item <code>units</code>, or <code>raw_quantity</code> from Usage Metrics</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Implied by <code>usage_type</code>; Usage Metrics <code>unit</code> is &ldquo;unit&rdquo; when no explicit unit exists</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not in data; public pricing page, tiered per region</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Line-item <code>rate</code>; confirm it is a single contracted rate rather than a tier blend</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; for pay-as-you-go and overage; &ldquo;Committed&rdquo; for usage drawn from package or Service Order allowances</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>N/A: one billing account type documented</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>N/A: no sub-account hierarchy documented</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Service ID exists in usage APIs but not on any priced line; Fastly states per-service charges are not available</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Service <code>name</code> exists in the Services API; not on priced lines</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not emitted (e.g., &ldquo;Delivery Service&rdquo;, &ldquo;Compute Service&rdquo;, &ldquo;KV Store&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not on invoice lines; Usage Metrics <code>product_id</code> (e.g., <code>cdn_usage</code>) is the closest identifier</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: services have no tags or labels</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: no pricing currency distinct from <code>currency_code</code> documented</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Line-item <code>usage_type</code> (e.g., <code>bandwidth</code>, <code>requests</code>); Usage Metrics <code>name</code> (e.g., &ldquo;North America Requests&rdquo;) is closer</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for volume tier and billing region</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td><code>region</code> is a display name; map to Historical Stats codes (<code>usa</code>, <code>europe</code>, <code>asia_india</code>, and so on)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Line-item <code>region</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Package or Service Order ID; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Package name (e.g., &ldquo;Network Services Basic&rdquo;); not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Not exposed (e.g., &ldquo;Package&rdquo;, &ldquo;Service Order&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>&ldquo;Usage&rdquo; for request and bandwidth allowances; &ldquo;Spend&rdquo; for committed dollar amounts; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>&ldquo;Used&rdquo;/&rdquo;Unused&rdquo; against monthly allowances; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Allowance drawn (e.g., requests against &ldquo;100 Million Requests per month&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>&ldquo;Requests&rdquo;, &ldquo;GB&rdquo;, and so on</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice <code>invoice_id</code> (<code>statement_number</code> also available)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; for metered lines; &ldquo;Recurring&rdquo; for package fees and per-item add-ons</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not emitted; map each product to an allowed v1.2 value (e.g., &ldquo;Content Delivery&rdquo; for Full-Site Delivery)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: billing regions are the only location dimension</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 15 Present, 13 Deviation, 2 Missing Mandatory, 14 Missing Conditional, 1 Missing Recommended, 12 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Billing account, currency, billing periods, invoice ID, billed amount per line, product names, billing region, and a paginated, programmatic Invoices API with a month-to-date endpoint. Fastly already has the delivery path most edge and SaaS vendors lack.</p>
+<p><strong>Substantive (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>EffectiveCost.</strong> Package customers pay a fixed monthly fee for bundled allowances, and Enterprise customers are billed &ldquo;as specified in your applicable ordering document.&rdquo; EffectiveCost requires spreading the package fee or contracted amount across the usage it covers, and netting credit memos back to the lines they offset. Pay-as-you-go Growth accounts with no credits are the only case where EffectiveCost equals BilledCost.</li>
+</ul>
+<p><strong>Trivial (1 of 2 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost.</strong> Fastly owns the public price list. Apply the tiered, per-region rate to <code>units</code>. Because rates fall with volume, ListCost must be computed tier by tier, not as <code>units</code> × one rate. Accounts on legacy pricing need the legacy table.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>No per-service cost.</strong> Line items carry no service ID. Fastly&rsquo;s guide confirms per-service charges are not available. Allocation to teams or applications needs ResourceId on priced rows, and Fastly holds the metering needed to produce them.</li>
+<li><strong>Monthly grain.</strong> Every priced row spans the full billing month. Daily rows are a prerequisite for anomaly detection and timely showback.</li>
+<li><strong>Thin documentation.</strong> No example payloads, no list of <code>product_name</code>, <code>product_group</code>, <code>usage_type</code>, or <code>region</code> values, no unit basis for <code>rate</code> and <code>units</code>, and no description of credit, tax, free-tier, or package-fee lines. A consumer cannot build a reliable mapping from the public docs alone.</li>
+<li><strong>Free tier and allowances.</strong> Free and package allowances are invisible in the line items. A FOCUS export should show usage within an allowance at zero BilledCost with PricingCategory and CommitmentDiscount columns explaining why.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>PricingQuantity, PricingUnit, ConsumedQuantity, ConsumedUnit:</strong> Emit explicit units in FOCUS format (&ldquo;GB&rdquo; for bandwidth, &ldquo;10K Requests&rdquo; or &ldquo;Requests&rdquo; for requests, &ldquo;vCPU-Milliseconds&rdquo; for Compute, &ldquo;GB-Months&rdquo; for storage). Compute PricingQuantity against the rate basis, and keep ConsumedQuantity as the raw measured quantity (<code>raw_quantity</code>).</p>
+<p><strong>ContractedCost and ContractedUnitPrice:</strong> Confirm whether <code>rate</code> is the contracted rate for a single tier or a blended rate across tiers. If blended, split lines by tier or carry tier detail in SkuPriceDetails.</p>
+<p><strong>ServiceCategory and ChargeCategory:</strong> Derive from <code>product_line</code> and the line type, as shown in the table. Emit credit memos and coupons as Credit rows.</p>
+<p><strong>RegionId:</strong> Map the <code>region</code> display name to a stable code; the Historical Stats codes already exist.</p>
+<p><strong>BillingAccountName, PricingCategory, ChargeFrequency, SkuMeter:</strong> Derive as shown in the table.</p>
+<p><strong>Already right:</strong> Customer ID, ISO 8601 billing dates, ISO 4217 currency code, invoice ID, billed amount, product name, region name, and line description map cleanly.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is in release candidate with ratification scheduled for December 3, 2026. The Contract Commitment dataset (v1.3) fits Fastly packages and Service Orders, and the Invoice Detail dataset (v1.4) fits the existing Invoices API almost directly.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no tags, zones, reservations, sub-accounts, or alternate currencies) and the decision on modeling packages and Service Orders as commitment discounts. Public sample data would also fix the documentation gap.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one month of invoices for a Growth account and a package account, plus <code>service-usage-metrics</code> for the same month. Hand-build a FOCUS file from the invoice lines, run it through the Validator, and record how credits, taxes, free tier, and package fees actually appear.</p>
+<p><strong>Phase 1: Service and day grain.</strong> Re-cut priced usage by service ID × product × billing region × usage type × day. This is the prerequisite for allocation and for every downstream use case.</p>
+<p><strong>Phase 2: Close Mandatory gaps.</strong> Compute ListCost and ListUnitPrice from the tiered public table, confirm <code>rate</code> for ContractedCost, emit package fees as Purchase rows and credits as Credit rows, and amortize package and Service Order amounts for EffectiveCost. Reconcile BilledCost to <code>monthly_transaction_amount</code>.</p>
+<p><strong>Phase 3: Fix deviations and fill Conditional columns.</strong> Derive ChargeCategory, ServiceCategory, ChargeFrequency, and PricingCategory; normalize units; emit RegionId, ResourceId, ResourceName, ResourceType, SkuId, SkuPriceId, SkuPriceDetails, the CommitmentDiscount family, and ServiceSubcategory. Expose the export through <code>/billing/v3/</code> and publish example responses.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Contract Commitment and Invoice Detail datasets; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>Today, from the Invoices API:</strong> Monthly spend by product and billing region, invoice-level reporting, and month-to-date tracking.</li>
+<li><strong>After Phase 1:</strong> Cost allocation and showback by service, daily anomaly detection, and regional traffic cost analysis.</li>
+<li><strong>After Phase 2:</strong> Invoice reconciliation, actuals-based budgeting and forecasting, package utilization, and list-versus-contracted savings reporting.</li>
+<li><strong>After Phase 3:</strong> Cross-provider spend by service category (Fastly alongside other CDN and cloud networking spend), unit economics per request and per GB, and commitment utilization.</li>
+<li><strong>Out of scope:</strong> Tag-based allocation (unless Fastly adds service labels), availability zone analysis, and capacity reservation management.</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Fastly contact from KubeCon NA 2026 to identify the owner of the Invoices API and billing data platform.</li>
+<li>Request a real Invoices API response (redacted) covering a credit, a package fee, free-tier usage, and taxes, and confirm the unit basis of <code>rate</code> and <code>units</code>.</li>
+<li>Confirm whether internal metering already records priced usage by service and day (the Historical Stats data suggests it does for bandwidth and requests).</li>
+<li>Confirm whether Enterprise Service Orders include committed spend, and which legal entity issues invoices outside the US.</li>
+<li>Build a v1.2 sample from one month of invoices and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Invoices API, Usage Metrics API, and Historical Stats usage endpoint paths and field names, taken from Fastly&rsquo;s published API reference.</li>
+<li><strong>High:</strong> Fastly&rsquo;s statement that per-service itemized charges are not available, monthly billing in arrears, credit memos, and per-invoice CSV export, from Fastly&rsquo;s billing guides.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> Field nesting within the invoice and usage responses. The reference lists all fields in one flat table; the line-item grouping is inferred from field order and descriptions.</li>
+<li><strong>Moderate:</strong> Treating packages and Service Orders as commitment discounts. If Fastly models packages as plain recurring fees with no rate benefit, the seven CommitmentDiscount columns become N/A and the package moves to the Contract Commitment dataset only.</li>
+<li><strong>Moderate:</strong> No tags and no sub-account hierarchy. Neither appears in the Services API or billing guides reviewed; the Organizations and Account APIs were not checked in depth.</li>
+<li><strong>Moderate:</strong> Single billing account type and no alternate pricing currency. The presence of <code>currency_code</code> implies non-USD invoicing may exist.</li>
+<li><strong>Low:</strong> Whether <code>rate</code> is a contracted single-tier rate or a blend, whether <code>units</code> for requests counts single requests or blocks of 10,000, and how credits, taxes, free tier, and package fees appear on line items. None is documented.</li>
+<li><strong>Low:</strong> InvoiceIssuerName for customers outside the US. &ldquo;Fastly, Inc.&rdquo; is the parent entity; regional subsidiaries may invoice some customers.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Fastly Invoices API: <a href="https://www.fastly.com/documentation/reference/api/account/invoices/">fastly.com/documentation/reference/api/account/invoices/</a></li>
+<li>Fastly Usage Metrics API: <a href="https://www.fastly.com/documentation/reference/api/account/billing-usage-metrics/">fastly.com/documentation/reference/api/account/billing-usage-metrics/</a></li>
+<li>Fastly Historical Stats API: <a href="https://www.fastly.com/documentation/reference/api/metrics-stats/historical-stats/">fastly.com/documentation/reference/api/metrics-stats/historical-stats/</a></li>
+<li>About the charges on your bill: <a href="https://www.fastly.com/documentation/guides/organizations-and-accounts/billing/about-the-charges-on-your-bill/">fastly.com/documentation/guides/&hellip;/about-the-charges-on-your-bill/</a></li>
+<li>Monitoring billing and usage details: <a href="https://www.fastly.com/documentation/guides/organizations-and-accounts/billing/monitoring-billing-and-usage-details">fastly.com/documentation/guides/&hellip;/monitoring-billing-and-usage-details</a></li>
+<li>Fastly Service model: <a href="https://www.fastly.com/documentation/reference/api/services/service/">fastly.com/documentation/reference/api/services/service/</a></li>
+<li>Fastly Pricing: <a href="https://www.fastly.com/pricing">fastly.com/pricing</a></li>
+<li>Fastly Package Entitlements: <a href="https://www.fastly.com/package-entitlements/">fastly.com/package-entitlements/</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

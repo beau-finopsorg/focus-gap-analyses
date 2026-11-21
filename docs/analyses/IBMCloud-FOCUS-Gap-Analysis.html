@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IBM Cloud as a FOCUS Data Generator: Compliance Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/IBMCloud-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="ibm-cloud-as-a-focus-data-generator-compliance-gap-analysis">IBM Cloud as a FOCUS Data Generator: Compliance Gap Analysis</h1>
+<p><em>Analysis run: June 26, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p>Prepared: June 26, 2026
+Subject: IBM Cloud IaaS/PaaS service usage billing (native FOCUS v1.2 export API)
+Baseline: FOCUS v1.2 (certification baseline). Build target: v1.4 (latest ratified).
+Feature levels verified against the FOCUS v1.2 specification on 2026-06-26.
+IBM Cloud contacts: Kevin Jacoby, Brad Johnson, Sidhya Iyer</p>
+<h2 id="executive-summary">Executive summary</h2>
+<p>IBM Cloud now provides a native FOCUS v1.2 export API (<code>GET https://billing.cloud.ibm.com/v4/accounts/{account_id}/focus/{month}</code>) that produces a compliant CSV or JSON billing dataset with all 21 mandatory columns and 23 conditional columns natively emitted — no external enrichment required. The API was documented on April 24, 2026 and resolves all of the previously identified derivation challenges: ListCost (from Global Catalog pricing), EffectiveCost (subscription credit amortization), ContractedCost (enterprise contracted rates), ChargeCategory (mapped from IBM charge type codes), ServiceCategory (mapped from IBM resource identifiers), Tags (parsed from <code>key:value</code> strings), and CommitmentDiscount identity fields for Flex Point subscription accounts.</p>
+<p>What remains: 10 missing conditional columns (SubAccountId/Name/Type — enterprise member-account hierarchy not yet surfaced; PricingCurrencyContractedUnitPrice, PricingCurrencyEffectiveCost, PricingCurrencyListUnitPrice — cross-currency price fields not emitted; SkuPriceId, SkuPriceDetails — SKU price metadata absent; CommitmentDiscountStatus, CommitmentDiscountQuantity — per-charge commitment tracking not computed), 1 missing recommended column (InvoiceId), and 2 legitimate N/A columns (CapacityReservationId/Status — IBM Cloud has no per-resource capacity reservation construct).</p>
+<p>Of 57 v1.2 columns: 44 Present, 0 Deviation, 10 Missing Conditional, 1 Missing Recommended, 2 N/A.</p>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p><strong>IBM Cloud FOCUS Export API</strong> (<code>GET https://billing.cloud.ibm.com/v4/accounts/{account_id}/focus/{month}</code>): The primary billing feed for FOCUS-conformant data. Introduced April 24, 2026. Authentication uses IAM Bearer tokens via <code>Authorization: Bearer {iam_token}</code>. Path parameters: <code>account_id</code> (IBM Cloud account ID) and <code>month</code> (YYYY-MM format). Optional request header: <code>x-focus-version: 1.2</code> (default; specifies the FOCUS output version). Query parameters: <code>format</code> (json | csv; default: json) and <code>_limit</code> (pagination limit, max 250, default 200). The API returns a paginated JSON dataset or a full CSV suitable for direct import into FinOps platforms (Apptio Cloudability, CloudHealth, Kubecost) without transformation.</p>
+<p>IBM publishes the following coverage:</p>
+<p><strong>16 &ldquo;Fully Supported&rdquo; mandatory fields (per IBM documentation):</strong> BilledCost, BillingCurrency, ChargeCategory, ChargeDescription, ChargePeriodEnd, ChargePeriodStart, EffectiveCost, ListUnitPrice, PricingCategory, PricingQuantity, PricingUnit, ProviderName, PublisherName, ResourceId, ResourceName, ServiceCategory, ServiceName, SkuId.</p>
+<p><strong>Additional supported fields:</strong> Account &amp; Billing (BillingAccountId, BillingAccountName, BillingAccountType, BillingPeriodEnd, BillingPeriodStart, InvoiceIssuerName); Geographic (AvailabilityZone, RegionId, RegionName); Commitment &amp; Discount (CommitmentDiscountCategory, CommitmentDiscountId, CommitmentDiscountName, CommitmentDiscountType, CommitmentDiscountUnit); Cost Breakdown (ContractedCost, ContractedUnitPrice, ListCost); Charge Details (ChargeClass, ChargeFrequency); Consumption (ConsumedQuantity, ConsumedUnit); Pricing (PricingCurrency, SkuMeter); Resource Metadata (ResourceType, ServiceSubcategory, Tags); IBM-Specific Extensions (x_DiscountId, x_DiscountName, x_DiscountQuantity, x_OfferId, x_OfferCredit).</p>
+<p>Characteristics that matter for FOCUS:</p>
+<ul>
+<li>Monthly grain: the FOCUS API returns monthly granularity. ChargePeriodStart and ChargePeriodEnd span the billing month; no sub-monthly hourly granularity is available via this endpoint.</li>
+<li>Enterprise hierarchy: IBM Cloud Enterprise accounts contain Account Groups and Member Accounts. The FOCUS API emits BillingAccountId at the account level and BillingAccountType for the plan type (PAYG, Subscription, Enterprise), but does not yet surface Member Accounts as SubAccountId. This is the most significant structural gap for enterprise FinOps use cases.</li>
+<li>Subscription credits: IBM Cloud Flex Point subscriptions (spend-based commitment credits) surface via the CommitmentDiscount column family (Id, Name, Type = &ldquo;Other&rdquo;, Category = &ldquo;Spend&rdquo;, Unit). CommitmentDiscountStatus (&ldquo;Used&rdquo;/&rdquo;Unused&rdquo; per charge row) and CommitmentDiscountQuantity are not yet emitted.</li>
+<li>Tags: IBM Cloud user tags in <code>key:value</code> string format are natively parsed and emitted as FOCUS key-value pairs by the API. Bare-label tags (no colon) are handled by IBM&rsquo;s convention.</li>
+<li>ChargeCategory values: &ldquo;Usage&rdquo;, &ldquo;Purchase&rdquo;, &ldquo;Tax&rdquo;, &ldquo;Adjustment&rdquo;. The &ldquo;Credit&rdquo; value is absent from IBM&rsquo;s published list; promotional credits and billing credits appear to be represented as negative-cost &ldquo;Adjustment&rdquo; rows. This may differ from the FOCUS v1.2-specified &ldquo;Credit&rdquo; allowed value and requires confirmation with IBM contacts.</li>
+<li>CapacityReservations: IBM Cloud has no per-resource reserved capacity construct equivalent to AWS CapacityReservations. IBM reserved virtual server instances are modeled as CommitmentDiscount, not CapacityReservation.</li>
+<li>Resource identifiers: Cloud Resource Names (CRNs) — globally unique, machine-parseable, in the format <code>crn:v1:bluemix:public:{service}:{region}:{account}:{resource-type}:{resource-id}</code> — are emitted as ResourceId.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS conformance is column-driven. Each column carries a feature level: Mandatory (must exist and be populated where applicable), Conditional (must exist; populated when the provider&rsquo;s model triggers the condition, otherwise null), or Recommended. A conformant dataset presents the full column set under FOCUS column IDs, populates every Mandatory column, satisfies Conditional columns where applicable, and uses the correct types and allowed values. Provider-specific columns are allowed when prefixed <code>x_</code>.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-column status (all 57 FOCUS v1.2 columns)</h3>
+<p>Status legend: Present (natively emitted by the IBM Cloud FOCUS API); Missing: Conditional; Missing: Recommended; N/A: null valid (does not apply to IBM Cloud&rsquo;s model).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (1.2)</th>
+<th>IBM Cloud FOCUS API source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Natively emitted — billed cost in BillingCurrency</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Natively emitted — amortized cost including Flex Point subscription credit allocation</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Natively emitted — derived internally from IBM Global Catalog pricing</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Natively emitted — equals ListCost for PAYG; contracted rates for enterprise accounts</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Natively emitted — IBM Cloud account ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Natively emitted — IBM Cloud account name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Natively emitted — ISO 4217 currency code</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Natively emitted — first second of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Natively emitted — last second of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Natively emitted — monthly granularity</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Natively emitted — monthly granularity</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Natively emitted — resource name + plan name + metric description</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Natively emitted — values: &ldquo;Usage&rdquo;, &ldquo;Purchase&rdquo;, &ldquo;Tax&rdquo;, &ldquo;Adjustment&rdquo;; &ldquo;Credit&rdquo; not documented (credits appear as negative-cost &ldquo;Adjustment&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>Natively emitted — null for standard; &ldquo;Correction&rdquo; for billing corrections</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Natively emitted — &ldquo;IBM&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>Natively emitted — &ldquo;IBM&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>Natively emitted — &ldquo;IBM&rdquo; for first-party; marketplace publisher name for third-party</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Natively emitted — e.g., &ldquo;Cloud Object Storage&rdquo;, &ldquo;Virtual Servers for VPC&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Natively emitted — mapped internally from IBM service identifiers</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Natively emitted — metered quantity used in pricing</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Natively emitted — e.g., &ldquo;GIGABYTE-HOURS&rdquo;, &ldquo;INSTANCE-HOURS&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Natively emitted — gross consumption before rateability adjustments</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Natively emitted — unit of consumption</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Natively emitted — list unit price from IBM Global Catalog</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Natively emitted — contracted unit rate</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Natively emitted — &ldquo;Standard&rdquo; for PAYG; &ldquo;Committed&rdquo; for Subscription accounts</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Conditional</td>
+<td>Natively emitted — &ldquo;Usage-Based&rdquo;, &ldquo;Recurring&rdquo;, or &ldquo;One-Time&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Natively emitted — IBM account plan type (PAYG, Subscription, Enterprise)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Not emitted — enterprise member accounts are not surfaced as SubAccountId</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Not emitted</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not emitted</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Natively emitted — Cloud Resource Name (CRN): crn:v1:bluemix:public:{service}:{region}:&hellip;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Natively emitted — resource instance name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Natively emitted — derived from CRN service segment (e.g., &ldquo;Virtual Server&rdquo;, &ldquo;Object Storage Bucket&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Natively emitted — billing plan UUID identifying the plan within a service</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Natively emitted — IBM <code>key:value</code> strings parsed to FOCUS key-value pairs by the API</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>Natively emitted — pricing currency (typically matches BillingCurrency)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>Not emitted — cross-currency unit price fields absent from FOCUS API output</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not emitted</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>Not emitted</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Natively emitted — billing metric ID from IBM usage data</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not emitted — pricing plan rate identifier not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not emitted</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Natively emitted — e.g., &ldquo;us-south&rdquo;, &ldquo;eu-de&rdquo;, &ldquo;jp-tok&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Natively emitted — e.g., &ldquo;US South&rdquo;, &ldquo;Germany&rdquo;, &ldquo;Japan - Tokyo&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>Natively emitted — Flex Point subscription ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>Natively emitted — subscription term and name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>Natively emitted — &ldquo;Other&rdquo; (spend-based subscription model)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>Natively emitted — &ldquo;Spend&rdquo; (IBM subscriptions are spend-based credit pools)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>Not emitted — per-charge &ldquo;Used&rdquo;/&rdquo;Unused&rdquo; status not computed; IBM publishes x_DiscountQuantity extension instead</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>Not emitted — standard field absent; IBM provides x_DiscountQuantity extension</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>Natively emitted — unit of the commitment discount</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A — IBM Cloud has no per-resource capacity reservation construct; reserved VMs use CommitmentDiscount</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Not emitted — invoice number available via Invoices API but not included in FOCUS API output</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Natively emitted — derived from IBM service classification</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Natively emitted — zone ID for VPC resources (e.g., &ldquo;us-south-1&rdquo;); null for PaaS and Classic Infrastructure</td>
+<td>Present</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tally: 44 Present, 0 Deviation, 10 Missing Conditional, 1 Missing Recommended, 2 N/A. All 21 Mandatory columns are natively emitted. The 14 columns previously requiring derivation or enrichment (ListCost, ContractedCost, EffectiveCost, ChargeCategory, ServiceCategory, PublisherName, ChargeFrequency, ListUnitPrice, ContractedUnitPrice, Tags, CommitmentDiscountStatus, PricingCurrencyListUnitPrice, PricingCurrencyContractedUnitPrice, PricingCurrencyEffectiveCost) are now handled internally by IBM&rsquo;s FOCUS API.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p>The IBM Cloud FOCUS Export API resolves all previously identified derivation and enrichment challenges:</p>
+<p>Solved by the FOCUS API: ListCost and ListUnitPrice are computed from Global Catalog pricing and emitted directly. EffectiveCost reflects IBM&rsquo;s Flex Point subscription credit amortization — emitted correctly for both PAYG and subscription accounts. ContractedCost is available for enterprise accounts within the FOCUS API. ChargeCategory, ServiceCategory, ChargeFrequency, and PublisherName are mapped from IBM internal data and emitted as FOCUS-conformant enum values. Tags are parsed from IBM <code>key:value</code> strings into FOCUS key-value pairs. CommitmentDiscount identity fields (Id, Name, Type = &ldquo;Other&rdquo;, Category = &ldquo;Spend&rdquo;, Unit) are emitted for subscription accounts.</p>
+<p>Remaining gaps fall into three areas:</p>
+<p>First, enterprise sub-account hierarchy. IBM Cloud&rsquo;s enterprise structure (Enterprise → Account Groups → Member Accounts → Resource Groups) naturally maps Member Accounts to SubAccountId and SubAccountName. The FOCUS API emits BillingAccountId at the account level and BillingAccountType for the plan type, but does not surface Member Accounts as SubAccountId. Enterprise customers lose standard FOCUS sub-account attribution and must rely on IBM&rsquo;s x_ extensions or BillingAccountId alone. Confirm the roadmap for SubAccountId/Name/Type with Kevin Jacoby, Brad Johnson, and Sidhya Iyer.</p>
+<p>Second, per-charge commitment tracking. The FOCUS API emits CommitmentDiscount identity fields but not CommitmentDiscountStatus (&ldquo;Used&rdquo;/&rdquo;Unused&rdquo; per charge row) or CommitmentDiscountQuantity. These are required for subscription waste analysis — identifying which charge rows were covered by Flex Point credits versus billed at PAYG rates within the commitment period. IBM currently provides x_DiscountQuantity as a non-standard extension; promote this to CommitmentDiscountQuantity and add CommitmentDiscountStatus at the charge-row level.</p>
+<p>Third, PricingCurrency cross-currency and SKU price fields. IBM emits PricingCurrency but not PricingCurrencyListUnitPrice, PricingCurrencyContractedUnitPrice, or PricingCurrencyEffectiveCost. For accounts where PricingCurrency differs from BillingCurrency (non-USD accounts), these fields are required for multi-currency cost analysis. SkuPriceId and SkuPriceDetails are absent; SkuId and SkuMeter are present but the price-level granularity needed for rate validation is missing. InvoiceId is available via the Invoices API but not included in the FOCUS API output.</p>
+<h3 id="15-known-gaps-to-address">1.5 Known gaps to address</h3>
+<p><strong>SubAccountId for enterprise accounts:</strong> IBM should map each enterprise member account&rsquo;s account ID to SubAccountId, the account name to SubAccountName, and &ldquo;Account&rdquo; to SubAccountType in the FOCUS API. For resource-group-level attribution, IBM could optionally nest resource groups as a second sub-account level. Confirm priority and timeline with IBM contacts.</p>
+<p><strong>CommitmentDiscountStatus per charge row:</strong> FOCUS v1.2 requires each charge row to carry CommitmentDiscountStatus = &ldquo;Used&rdquo; when covered by a commitment discount, or &ldquo;Unused&rdquo; when the commitment was available but not applied. IBM currently emits CommitmentDiscount identity at the row level but does not allocate credit drawdown per charge. Implement proportional or FIFO Flex Point credit allocation to individual usage rows and promote x_DiscountQuantity to the standard CommitmentDiscountQuantity field.</p>
+<p><strong>ChargeCategory &ldquo;Credit&rdquo; value:</strong> IBM&rsquo;s published ChargeCategory values are &ldquo;Usage&rdquo;, &ldquo;Purchase&rdquo;, &ldquo;Tax&rdquo;, &ldquo;Adjustment&rdquo;. The FOCUS v1.2 specification includes &ldquo;Credit&rdquo; as a distinct allowed value for rows representing credit issuance. Confirm with IBM contacts whether promotional credits, support credits, and billing adjustments are emitted as ChargeCategory = &ldquo;Credit&rdquo; rows or as negative-cost &ldquo;Adjustment&rdquo; rows. If the latter, this is a deviation from the FOCUS v1.2 specification.</p>
+<p><strong>PricingCurrency cross-currency fields:</strong> For IBM accounts billing in a non-USD currency where PricingCurrency differs from BillingCurrency, add PricingCurrencyListUnitPrice, PricingCurrencyContractedUnitPrice, and PricingCurrencyEffectiveCost to the FOCUS API output.</p>
+<p><strong>InvoiceId:</strong> The IBM Invoices API (<code>/v2/accounts/{accountId}/invoices</code>) provides invoice numbers. Add InvoiceId to the FOCUS export row to enable joining FOCUS rows to invoice-level detail and reconciling with IBM billing statements.</p>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Live versions: 1.1 (Nov 7, 2024), 1.2 (May 29, 2025, the current certification baseline), 1.3 (Dec 5, 2025), and 1.4 (June 4, 2026, adding Invoice Detail and billing-period datasets). IBM&rsquo;s FOCUS API currently targets v1.2. IBM&rsquo;s mandatory column coverage makes v1.2 certification achievable today. Build toward v1.4 as the next output target. Note that ProviderName and PublisherName are deprecated in v1.3 and removed in v1.4; plan to deprecate them in the v1.4 transition.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>Certification for data generators runs through the FinOps Foundation. Contact <code>member-cert@finops.org</code> for the RFI. IBM Cloud&rsquo;s FOCUS API mandatory field coverage supports initiating the certification process immediately. Deliverables: a structurally conformant dataset under FOCUS column IDs, public sample data that passes the FOCUS Validator, a documented native-to-FOCUS mapping, and a Conformance Gap Report (this document is its seed). Membership is required for certification.</p>
+<p>Tooling: the FOCUS Validator (validate the FOCUS API output against v1.2 requirements), the FOCUS Converter (IBM Cloud provider patterns could be contributed to the open-source project), and the FOCUS Requirements Model (authoritative machine-readable requirements).</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p>Phase 1, certify at v1.2 now. Run a sample FOCUS API export through the FOCUS Validator. Confirm the ChargeCategory &ldquo;Credit&rdquo; handling with IBM contacts. Open the RFI with <code>member-cert@finops.org</code>. IBM&rsquo;s current output supports initiating certification with no additional API changes required for mandatory fields.</p>
+<p>Phase 2, close the conditional gaps. Add SubAccountId, SubAccountName, SubAccountType for enterprise member accounts. Emit CommitmentDiscountStatus and CommitmentDiscountQuantity at the charge-row level. Add InvoiceId from the Invoices API. Emit PricingCurrencyListUnitPrice, PricingCurrencyContractedUnitPrice, and PricingCurrencyEffectiveCost for international accounts.</p>
+<p>Phase 3, round out SKU price metadata and build to v1.4. Add SkuPriceId and SkuPriceDetails. Adopt the v1.4 column set (drop ProviderName, PublisherName). Validate against v1.4 spec. Contribute IBM Cloud provider mappings to the FOCUS Converter open-source project.</p>
+<h3 id="24-focus-use-cases-ibm-cloud-customers-unlock">2.4 FOCUS Use Cases IBM Cloud customers unlock</h3>
+<p>Available now with the IBM Cloud FOCUS API: resource-level cost attribution by account and resource instance (ResourceId/Name/Type), multi-account cost consolidation, cost by region (RegionId/Name), cost by service (ServiceName, ServiceCategory, ServiceSubcategory), list-versus-effective cost comparison (negotiated savings identification), subscription credit identification (CommitmentDiscount identity fields), tag-based chargeback and showback, ChargeCategory-based filtering (usage vs. subscription purchases), and PricingCategory-based filtering (Standard vs. Committed).</p>
+<p>Unlocked after Phase 2: enterprise member-account-level attribution (SubAccountId/Name), subscription waste analysis (CommitmentDiscountStatus = &ldquo;Unused&rdquo;), FOCUS-to-invoice reconciliation (InvoiceId), and cross-currency cost analysis (PricingCurrency* fields).</p>
+<p>Out of scope: AvailabilityZone analysis for Classic Infrastructure and PaaS services (zone is null for non-VPC resources); capacity reservation use cases (IBM Cloud has no per-resource capacity reservation construct).</p>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Confirm ChargeCategory &ldquo;Credit&rdquo; handling: does the FOCUS API emit ChargeCategory = &ldquo;Credit&rdquo; for promotional or billing credits, or are all credits represented as negative-cost &ldquo;Adjustment&rdquo; rows? Contact Kevin Jacoby, Brad Johnson, or Sidhya Iyer.</li>
+<li>Confirm SubAccount roadmap: will IBM add SubAccountId/Name/Type for enterprise member accounts in the FOCUS API? This is the highest-priority structural gap for enterprise FinOps use cases.</li>
+<li>Run the FOCUS API output through the FOCUS Validator to confirm v1.2 compliance and surface any issues not identified in this analysis.</li>
+<li>Open the certification RFI with <code>member-cert@finops.org</code>. IBM&rsquo;s mandatory field coverage supports initiating v1.2 certification today.</li>
+<li>Plan Phase 2 API additions: CommitmentDiscountStatus, CommitmentDiscountQuantity, InvoiceId, and PricingCurrency cross-currency fields. Prioritize CommitmentDiscountStatus for enterprise subscription customers who need subscription waste visibility.</li>
+</ol>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>High: All 21 mandatory FOCUS v1.2 columns are natively emitted per IBM&rsquo;s published documentation (April 24, 2026). The 14 previously required derivations are handled internally by IBM&rsquo;s FOCUS API.</li>
+<li>High: CommitmentDiscount identity fields (Id, Name, Type = &ldquo;Other&rdquo;, Category = &ldquo;Spend&rdquo;, Unit) are emitted for Flex Point subscription accounts. EffectiveCost is amortized; subscription credit allocation is handled by IBM.</li>
+<li>High: Tags, ServiceCategory, PublisherName, ChargeFrequency, ListCost, EffectiveCost, ContractedCost confirmed as natively emitted per IBM documentation — no external enrichment required.</li>
+<li>Moderate: ChargeCategory &ldquo;Credit&rdquo; handling is ambiguous from published documentation. IBM&rsquo;s doc lists &ldquo;Usage/Purchase/Tax/Adjustment&rdquo; without &ldquo;Credit&rdquo;; whether credits are emitted as &ldquo;Credit&rdquo; or &ldquo;Adjustment&rdquo; rows requires confirmation with IBM contacts.</li>
+<li>Moderate: SubAccountId/SubAccountName are not in the FOCUS API. IBM&rsquo;s enterprise hierarchy has a natural mapping to these columns but whether IBM plans to add them requires confirmation.</li>
+<li>Moderate: PricingCurrency cross-currency fields may be present for non-USD accounts but are not documented. Scope requires confirmation for international IBM Cloud customers.</li>
+<li>Low: CommitmentDiscountStatus and CommitmentDiscountQuantity per-charge row require per-row credit allocation logic on IBM&rsquo;s side. Timeline for implementation is unknown.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>IBM Cloud Docs, FOCUS Export Documentation (April 24, 2026): https://github.com/ibm-cloud-docs/account/blob/master/export-usage-focus-format.md</li>
+<li>IBM Cloud FOCUS Export API: https://billing.cloud.ibm.com/v4/accounts/{account_id}/focus/{month}</li>
+<li>IBM Cloud Docs, Usage Reports API v4: https://cloud.ibm.com/apidocs/metering-reporting</li>
+<li>IBM Cloud Docs, Enterprise Usage Reports API: https://cloud.ibm.com/apidocs/enterprise-apis/resource-usage-reports</li>
+<li>IBM Cloud Docs, Enterprise Billing Units API: https://cloud.ibm.com/apidocs/enterprise-apis/billing-unit</li>
+<li>IBM Cloud Docs, Invoices API: https://cloud.ibm.com/apidocs/billing</li>
+<li>IBM Cloud Docs, Account Management (enterprise hierarchy): https://cloud.ibm.com/docs/enterprise-management</li>
+<li>FOCUS Specification v1.2: https://focus.finops.org/focus-specification/v1-2/</li>
+<li>FinOps Certified FOCUS v1.2 Conformant: https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

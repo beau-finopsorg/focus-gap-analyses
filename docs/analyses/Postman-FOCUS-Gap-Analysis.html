@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Postman &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Postman-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="postman-focus-data-generator-gap-analysis">Postman &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Postman, Inc.<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Postman API Billing endpoints (<code>GET /accounts</code>, <code>GET /accounts/{accountId}/invoices</code>); Postman API Analytics endpoint (<code>GET /analytics</code>); Postman billing and resource usage docs; Postman pricing page; AWS Marketplace listing<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 8 Present, 9 Deviation, 11 Missing Mandatory, 11 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Postman sells per-user subscriptions (Free, Solo, Team, Enterprise) billed monthly or annually in advance, plus metered pay-as-you-go overages for AI credits, monitoring requests, Flows credits, cloud performance testing (VU hours), and Context Graph API queries. Seats added mid-term through Auto-Flex are billed in arrears, monthly or quarterly. All prices and invoices are in USD, and fees are tax-exclusive.</p>
+<p><strong>Public billing documentation is thin.</strong> Postman documents more programmatic billing access than most SaaS vendors in this library, but what it exposes is shallow. The Billing API returns the account (state, sales channel, seat counts) and a list of <em>paid</em> invoices with a single total each: no line items, no billing period, no tax, no discounts, no usage. The Analytics API carries AI credit usage and seat consumption but no cost or currency fields, and appears to be Enterprise-only. The in-app resource usage dashboard tracks a dozen meters but documents no export. Postman publishes no invoice line-item format, no usage-to-cost mapping, and no FOCUS or FinOps statement. Much of this analysis therefore infers what Postman&rsquo;s billing system (Stripe) holds internally rather than reading it from documented fields.</p>
+<p>Only 6 of 21 Mandatory columns map to a documented source today, 4 more need derivation, and 11 are missing. Two of those 11 are substantive. <strong>BilledCost</strong> has no line-level public source: the invoices endpoint gives paid totals only, so open invoices, overages, Auto-Flex true-ups, and tax cannot be separated. <strong>EffectiveCost</strong> needs amortization of annual prepaid seats and allocation of any Enterprise discounts. The other nine are plumbing once Postman exposes the invoice lines it already generates.</p>
+<p><strong>Recommendation:</strong> Extend the existing Billing API with a FOCUS-shaped invoice-line endpoint (or a monthly FOCUS export per billing account): one Purchase row per seat subscription and add-on per term, one Usage row per metered product per billing period, Auto-Flex seat true-ups as their own Purchase rows, and separate Tax and Credit rows so BilledCost reconciles to each invoice. Return all invoice statuses, not only <code>PAID</code>.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>Postman&rsquo;s public billing surface has three parts:</p>
+<ul>
+<li><strong><code>GET /accounts</code></strong> (Billing API): <code>id</code>, <code>teamId</code>, <code>billingEmail</code>, <code>state</code> (FREE, PAID, EXPIRED_TRIAL, OVERDUE, SUSPENDED, BLOCKED, PAYMENT_DISPUTED), <code>salesChannel</code> (SELF_SERVE or SALES_SERVE), and <code>slots{total, consumed, available, unbilled}</code>, where <code>unbilled</code> counts Auto-Flex seats not yet invoiced.</li>
+<li><strong><code>GET /accounts/{accountId}/invoices?status=PAID</code></strong> (Billing API, added January 2024): <code>data[]</code> of <code>{id, status, issuedAt, totalAmount{value, currency}, links{web{href}}}</code>. <code>PAID</code> is the only allowed status. The docs do not state whether <code>value</code> is in major or minor currency units.</li>
+<li><strong><code>GET /analytics</code></strong> (Analytics API): tabular metrics by <code>resource</code>, <code>view</code>, and <code>period</code>. Usage-relevant metrics include <code>ai:credit_usage</code> (<code>usage</code>, <code>limit</code>, in millicredits), <code>ai:credit_usage_by_model</code> (<code>created_at</code>, <code>model</code>, <code>ai_credits_used</code>, <code>message_count</code>), <code>ai:usage_leaderboard</code> (per-user credits), <code>team:license_consumption</code>, <code>team:last_autoflex_cycle</code>, monitor runs, and Flow executions. No cost or currency fields.</li>
+</ul>
+<p>In the product:</p>
+<ul>
+<li><strong>Plan and payments:</strong> Plan, subscription cycle, &ldquo;expected cost upon renewal,&rdquo; payment methods (card, ACH in the US, Apple Pay, Google Pay; processed by Stripe), and past invoices downloadable one at a time. Postman&rsquo;s billing docs state that invoicing is available for Enterprise teams only.</li>
+<li><strong>Resource usage:</strong> Postman API calls, monitor requests, scheduled collection runs, Cloud Agent requests, performance-test VU hours, Flows credits, Agent Mode credits, storage, specifications, packages, and integrations, against plan limits. Only Monitoring has a drill-down (&ldquo;View detailed usage&rdquo;). No export is documented.</li>
+</ul>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Seat subscriptions:</strong> Solo $9 per month; Team $19 per user per month billed annually; Enterprise through sales. Each plan includes monthly allowances (AI credits, monitoring requests, Postman API calls, Flows credits).</li>
+<li><strong>Metered overages (pay-as-you-go, toggled per product):</strong> AI credits ($0.05 Solo, $0.04 Team, $0.035 Enterprise per credit); monitoring ($20 per 50,000 requests); Flows ($1 per 1,000 credits); cloud performance testing ($0.04 per VU hour); Context Graph API queries ($0.01 per query after 5,000). With pay-as-you-go off, limits act as caps.</li>
+<li><strong>Add-ons:</strong> Simple Security (SSO/SAML) at $6 per user per month; Advanced Security Administration and Premium Support through sales.</li>
+<li><strong>Auto-Flex:</strong> Admins add seats without paying up front; seats still held on the Auto-Flex date are billed monthly (monthly plans) or quarterly (annual plans).</li>
+<li><strong>Channels:</strong> Self-serve, sales-served, and AWS Marketplace (Team from 10 seats, Enterprise from 20, on 1, 2, or 3-year terms; added seats and monitoring billed separately).</li>
+<li><strong>Hierarchy:</strong> Billing account maps to a team (<code>teamId</code>). Enterprise Organizations group multiple teams; how their billing rolls up is undocumented.</li>
+<li><strong>No tags, no region pricing:</strong> An EU data region exists (<code>api.eu.postman.com</code>) but nothing is priced by region.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven: every Mandatory column must be present and valid, and Conditional columns are required when the provider&rsquo;s model triggers their condition. Postman documents no commitment-based discounts: annual billing is a subscription term, and plan allowances are included quantities, not drawn-down commitments. The CommitmentDiscount family is therefore N/A, as are capacity reservations, region columns, alternate pricing currencies, and tags. Those columns should exist as null. Enterprise Organizations that bill several teams under one contract trigger the SubAccount columns. Feature levels follow the FOCUS v1.2 Content Constraints, spot-checked against the live spec on November 17, 2026.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Postman source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Not available at line level; invoices API returns only paid invoice totals</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not available: needs amortization of annual prepaid seats and add-ons, plus discount allocation</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Not exposed; join Postman price book × PricingQuantity</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Not exposed; invoice line unit price × quantity (Enterprise and Marketplace rates are negotiated)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td><code>/accounts</code> <code>id</code></td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Not on <code>/accounts</code>; join team name via <code>teamId</code></td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td><code>totalAmount.currency</code> (&ldquo;USD&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Not exposed; subscription cycle shown in Plan and payments UI only</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Not exposed</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Not exposed; invoice line service period</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Not exposed</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Not exposed; invoice line description</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for seats, add-ons, and Auto-Flex true-ups; &ldquo;Usage&rdquo; for metered overages; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; rows from invoice</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null; &ldquo;Correction&rdquo; for re-issued charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Postman, Inc.&rdquo; (Postman); AWS for Marketplace purchases</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Postman&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Postman&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Derive from plan, add-on, and resource usage meter names (e.g., &ldquo;Postman Enterprise&rdquo;, &ldquo;Postman AI&rdquo;, &ldquo;Postman Monitors&rdquo;, &ldquo;Postman Flows&rdquo;, &ldquo;Postman Performance Testing&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Developer Tools&rdquo; for plans, monitors, Flows, and performance testing; &ldquo;AI and Machine Learning&rdquo; for AI credits; &ldquo;Security&rdquo; for SSO add-ons</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Not exposed; compute against the rate basis (seats; credits; 50,000-request monitoring blocks; 1,000-credit Flows blocks; VU hours)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Not exposed; &ldquo;Users&rdquo;, &ldquo;Credits&rdquo;, &ldquo;Requests&rdquo;, &ldquo;VU-Hours&rdquo;, &ldquo;Queries&rdquo;</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>Analytics <code>ai:credit_usage</code> (millicredits) and resource usage dashboard; no export for other meters</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Millicredits in Analytics; normalize to FOCUS unit format</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed; public pricing page</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; (no commitment pricing)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td><code>salesChannel</code> (SELF_SERVE, SALES_SERVE)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Not exposed; Enterprise Organization teams</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Not exposed (&ldquo;Team&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Not exposed; candidates are seat (user), monitor, Flow, and performance test IDs</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Not exposed; internal plan and add-on codes</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: no billing tags or labels</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: priced and billed in USD only</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Resource usage dashboard meter names (UI only)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>Not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not exposed; needed for monthly vs. annual, per-plan overage rates, and block sizes</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: EU data region exists but nothing is priced by region</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: no commitment discounts documented</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservations</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoices API <code>id</code> (e.g., &ldquo;inv_7UDSYBJPGQU93N7M&rdquo;)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Recurring&rdquo; for seats and add-ons; &ldquo;Usage-Based&rdquo; for metered overages</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Not exposed; map each product to an allowed v1.2 ServiceSubcategory value</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: no zones</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 8 Present, 9 Deviation, 11 Missing Mandatory, 11 Missing Conditional, 1 Missing Recommended, 17 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Billing account ID, account type (sales channel), currency, invoice IDs, and seat counts are already exposed through a documented, authenticated API. Few SaaS vendors have that much. Plan names, meter names, and public list prices exist for deriving the rest.</p>
+<p><strong>Substantive (2 of 11 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>BilledCost.</strong> No public source carries line-level charges. The invoices endpoint returns one total per paid invoice, so seat charges, overages, Auto-Flex true-ups, add-ons, and tax cannot be separated, and open or overdue invoices are invisible. The lines exist in Postman&rsquo;s billing system; the work is exposing them and splitting tax and credits into their own rows.</li>
+<li><strong>EffectiveCost.</strong> Annual plans and add-ons are billed in advance, and Auto-Flex seats are trued up monthly or quarterly. EffectiveCost requires amortizing purchases across their service term and allocating any negotiated Enterprise or Marketplace discounts back to the charges they offset.</li>
+</ul>
+<p><strong>Trivial (9 of 11 Mandatory gaps):</strong></p>
+<ul>
+<li><strong>ListCost and ContractedCost.</strong> Postman owns the price book and the contracted rates; join unit price × PricingQuantity.</li>
+<li><strong>BillingPeriodStart/End and ChargePeriodStart/End.</strong> Postman already tracks the subscription cycle and each invoice line&rsquo;s service period.</li>
+<li><strong>ChargeDescription.</strong> Invoice line description.</li>
+<li><strong>PricingQuantity and PricingUnit.</strong> Derivable for seats, AI credits, VU hours, and Context Graph queries (flat rates). Monitoring and Flows are sold in blocks (50,000 requests, 1,000 credits), so PricingQuantity must be computed against the block rate basis, not copied from consumed requests or credits.</li>
+</ul>
+<p><strong>Substantive, beyond the column table:</strong></p>
+<ul>
+<li><strong>Thin public billing docs.</strong> No invoice line-item format, no usage export, no usage-to-cost mapping, and an undocumented unit for <code>totalAmount.value</code>. Every Present or Deviation status that depends on invoice contents is inferred, not documented.</li>
+<li><strong>Paid-only invoices.</strong> A FinOps tool polling the API sees spend only after payment, which breaks accruals and month-end close.</li>
+<li><strong>Usage without cost.</strong> The Analytics API reports AI credit usage per model and per user, which is good allocation material, but carries no price or currency and appears gated to Enterprise.</li>
+<li><strong>Allocation.</strong> No tags, no ResourceId on any cost record, and undocumented billing roll-up for Enterprise Organizations. Customers cannot charge back Postman spend to teams today.</li>
+<li><strong>AWS Marketplace.</strong> Marketplace contracts invoice through AWS, so that spend appears in the customer&rsquo;s AWS billing data rather than any Postman export. Postman should document how the two reconcile.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>BillingAccountName:</strong> Add the team or organization name to <code>/accounts</code>, or document the join to <code>teamId</code>.</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Purchase&rdquo; for seat subscriptions, add-ons, and Auto-Flex true-ups; &ldquo;Usage&rdquo; for metered overages; &ldquo;Tax&rdquo; and &ldquo;Credit&rdquo; rows from the invoice.</p>
+<p><strong>ServiceName and ServiceCategory:</strong> Publish a fixed product list. &ldquo;Developer Tools&rdquo; for plans, Monitors, Flows, and performance testing; &ldquo;AI and Machine Learning&rdquo; for AI credits; &ldquo;Security&rdquo; for SSO and security administration add-ons.</p>
+<p><strong>ConsumedQuantity and ConsumedUnit:</strong> Convert millicredits to credits, and extend the Analytics metrics to every billed meter (monitor requests, Flows credits, VU hours, Context Graph queries).</p>
+<p><strong>SkuMeter:</strong> Promote the resource usage dashboard&rsquo;s meter names into the exported data.</p>
+<p><strong>PricingCategory and ChargeFrequency:</strong> Derive from product type as shown in the table.</p>
+<p><strong>Already right:</strong> USD-only billing, stable invoice IDs, an explicit account state and sales channel, and seat counts that distinguish billed from unbilled seats.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (ratified June 4, 2026); certify at FOCUS v1.2, the version the conformance program currently names. FOCUS v1.5 is a release candidate with ratification scheduled for December 3, 2026. The Invoice Detail and billing-period datasets introduced in v1.4 map closely to Postman&rsquo;s existing invoices endpoint and are a natural next step for it.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>FinOps Certified FOCUS v1.2 Conformant runs through the FinOps Foundation (contact <code>member-cert@finops.org</code> for the RFI; membership is required for certification). Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report seeded by this analysis. Tooling: FOCUS Validator, FOCUS Converter, and the FOCUS Requirements Model. Document the N/A rationale (no commitments, reservations, regions, tags, or alternate currencies) and how AWS Marketplace contracts are represented.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate.</strong> Pull one billing period of invoice lines from Postman&rsquo;s billing system for a self-serve Team account and a sales-served Enterprise organization. Hand-build a FOCUS file and run it through the Validator. Confirm the unit of <code>totalAmount.value</code> and the Enterprise Organization billing roll-up.</p>
+<p><strong>Phase 1: Close Mandatory gaps.</strong> Expose invoice lines with service periods, descriptions, quantities, and unit prices. Join the price book for ListCost. Amortize annual seats and add-ons for EffectiveCost. Emit Tax and Credit rows so BilledCost reconciles to each invoice.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Derive ChargeCategory, ServiceName, ServiceCategory, ChargeFrequency, and PricingCategory; normalize PricingUnit and ConsumedUnit; compute PricingQuantity against block rates for Monitoring and Flows.</p>
+<p><strong>Phase 3: Allocation and Conditional columns.</strong> Add SubAccountId and SubAccountName for Enterprise Organization teams; ResourceId, ResourceName, and ResourceType (user, monitor, Flow, performance test); SkuId, SkuPriceId, and SkuPriceDetails; and ServiceSubcategory. Return all invoice statuses from the API.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Drop ProviderName and PublisherName for v1.4; add the Invoice Detail dataset; certify at v1.2 and re-certify as the program advances.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>After Phase 1:</strong> Invoice reconciliation, accruals before payment, actuals-based budgeting and forecasting, and amortized spend reporting.</li>
+<li><strong>After Phase 2:</strong> Spend by service category across providers, and seat-versus-overage mix analysis.</li>
+<li><strong>After Phase 3:</strong> Chargeback and showback by team, AI credit unit economics per user or model, and anomaly detection on pay-as-you-go overages.</li>
+<li><strong>Out of scope:</strong> Commitment discount utilization, capacity reservation management, region-based analysis, and tag-based allocation (unless Postman adds labels).</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Postman contact from KubeCon NA 2026 to identify the owner of billing and the Billing API.</li>
+<li>Request a sample invoice (self-serve Team and Enterprise) to confirm line-item fields, tax treatment, and the <code>totalAmount.value</code> unit.</li>
+<li>Confirm how Enterprise Organizations with multiple teams are billed and how AWS Marketplace contracts reconcile.</li>
+<li>Build a v1.2 sample from one billing period and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> The Billing API exposes only account data and paid invoice totals; the field lists come from Postman&rsquo;s API reference. Billing is USD-only and tax-exclusive. Published plan prices and overage rates come from Postman&rsquo;s pricing page.</li>
+<li><strong>High:</strong> Feature levels match the FOCUS v1.2 Content Constraints; spot-checked against the live spec on November 17, 2026, and v1.4 remains the latest ratified version.</li>
+<li><strong>Moderate:</strong> Status of columns that depend on invoice line contents. Postman does not document line items, so their presence in its billing system is inferred.</li>
+<li><strong>Moderate:</strong> Commitment discount family as N/A. If Enterprise contracts include prepaid credit pools or drawn-down commitments, these seven columns become applicable.</li>
+<li><strong>Moderate:</strong> No public FOCUS, FinOps, or cost-export statement by Postman. This rests on absence of evidence.</li>
+<li><strong>Low:</strong> Analytics API plan gating; Postman&rsquo;s reports are Enterprise-only, but the API reference does not state it.</li>
+<li><strong>Low:</strong> SubAccount applicability. Enterprise Organization billing roll-up is undocumented.</li>
+<li><strong>Low:</strong> Monthly-billing prices and the 2026 plan restructure (Solo, single-user Free). Postman&rsquo;s page shows annual prices only; other figures come from third parties and are not used in this report.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Postman API: Get accounts: <a href="https://learning.postman.com/api-docs/api-reference/billing/get-accounts.md">learning.postman.com/api-docs/api-reference/billing/get-accounts</a></li>
+<li>Postman API: Get account invoices: <a href="https://learning.postman.com/api-docs/api-reference/billing/get-account-invoices.md">learning.postman.com/api-docs/api-reference/billing/get-account-invoices</a></li>
+<li>Postman API: Get analytics data: <a href="https://learning.postman.com/api-docs/api-reference/analytics/get-analytics-data.md">learning.postman.com/api-docs/api-reference/analytics/get-analytics-data</a></li>
+<li>Postman Blog, Access billing data with the Postman API: <a href="https://blog.postman.com/easily-access-your-billing-data-with-the-postman-api/">blog.postman.com</a></li>
+<li>Postman Billing: <a href="https://learning.postman.com/docs/billing/billing.md">learning.postman.com/docs/billing/billing</a></li>
+<li>Postman Resource Usage: <a href="https://learning.postman.com/docs/billing/resource-usage">learning.postman.com/docs/billing/resource-usage</a></li>
+<li>Postman Flows Usage: <a href="https://learning.postman.com/docs/billing/flows-usage">learning.postman.com/docs/billing/flows-usage</a></li>
+<li>Postman Monitor Pricing: <a href="https://learning.postman.com/docs/postman/monitors/pricing_monitors">learning.postman.com/docs/postman/monitors/pricing_monitors</a></li>
+<li>Postman Auto-Flex: <a href="https://learning.postman.com/auto-flex-policy">learning.postman.com/auto-flex-policy</a></li>
+<li>Postman Buying through AWS Marketplace: <a href="https://learning.postman.com/docs/billing/buying-aws.md">learning.postman.com/docs/billing/buying-aws</a></li>
+<li>Postman Enterprise Organizations: <a href="https://learning.postman.com/docs/administration/enterprise/organizations.md">learning.postman.com/docs/administration/enterprise/organizations</a></li>
+<li>Postman Pricing: <a href="https://www.postman.com/pricing/">postman.com/pricing/</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FOCUS 1.5 Release Scope: <a href="https://focus.finops.org/focus-1-5-release-scope/">focus.finops.org/focus-1-5-release-scope/</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

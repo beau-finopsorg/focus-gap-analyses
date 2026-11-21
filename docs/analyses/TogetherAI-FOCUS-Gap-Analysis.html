@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Together AI &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/TogetherAI-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="together-ai-focus-data-generator-gap-analysis">Together AI &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: June 25, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Together AI<br>
+<strong>Prepared:</strong> June 25, 2026<br>
+<strong>Source:</strong> Together AI API (<code>/v1/billing/usage</code>); Together AI dashboard<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 26 Present, 12 Deviation, 0 Missing Mandatory, 2 Missing Conditional, 1 Missing Recommended, 16 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Together AI operates two billing models: serverless inference (pay-per-token for open-source and proprietary models) and dedicated endpoints (pay-per-GPU-hour for custom deployments). Each model requires a distinct FOCUS row structure. Serverless rows have no resource IDs (stateless API) and token-based PricingUnit. Dedicated endpoint rows have endpoint IDs as ResourceId and hourly PricingUnit. All 21 Mandatory columns have source data for both models. The 12 Deviations cover unit and enum derivation, dedicated endpoint resource mapping, and enterprise pricing. The data source is the Together AI billing API with team-level usage breakdown.</p>
+<p><strong>Recommendation:</strong> Implement serverless inference rows first (token-based, similar to Anthropic). Add dedicated endpoint rows in a second pass using hourly billing and endpoint ID as ResourceId. The two row types require separate transform logic but share the same FOCUS column set.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p><strong>Together AI API</strong> (<code>GET /v1/billing/usage</code>): Returns usage data per model and per team. Serverless usage provides input token, output token counts, and costs. Dedicated endpoint usage provides hours of compute consumed per endpoint instance.</p>
+<p><strong>Together AI Dashboard</strong>: Monthly billing summaries with invoice numbers.</p>
+<p>Key characteristics for FOCUS:</p>
+<ul>
+<li><strong>Dual billing model:</strong> Serverless inference (per-token, many open-source models: Llama, Mistral, Qwen, etc.) and dedicated endpoints (per-GPU-hour, custom model deployments on reserved GPU capacity). Each requires distinct FOCUS row logic.</li>
+<li><strong>Team hierarchy:</strong> Together AI organizations contain Teams. Team-level usage breakdown maps to SubAccountId and SubAccountName.</li>
+<li><strong>Public rate card:</strong> Together AI publishes per-model per-token pricing for serverless and per-GPU-type hourly pricing for dedicated endpoints.</li>
+<li><strong>Endpoint resource IDs:</strong> Dedicated endpoints have unique endpoint IDs that serve as ResourceId. Serverless calls have no per-request IDs in billing aggregates.</li>
+<li><strong>Fine-tuning:</strong> Together AI supports fine-tuning with training token billing plus inference.</li>
+<li><strong>No regional routing exposure:</strong> Together AI does not expose region assignment to customers via the billing API.</li>
+<li><strong>No commitment discounts:</strong> Usage-only pricing; no reserved capacity model at the commitment layer.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven. Each column carries a feature level: Mandatory, Conditional, or Recommended. N/A is a valid FOCUS state for columns the provider&rsquo;s billing model genuinely does not produce. For Together AI, some columns apply only to dedicated endpoint rows (ResourceId) and are null for serverless rows within the same dataset.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Together AI source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Invoice line item amount by model and usage type</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>= BilledCost (no prepaid commitment amortization)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Public rate × PricingQuantity from Together AI rate card</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>= ListCost for standard API; enterprise negotiated rates not exposed via API</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Together AI organization account ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Organization name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>USD</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>First day of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Last day of billing month</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Start of aggregation period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>End of aggregation period</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Derive: model name + usage type (e.g., &ldquo;meta-llama/Llama-3-70b-chat-hf · Input Tokens&rdquo;) or endpoint name + &ldquo;GPU-Hours&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for all charges</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for correction charges</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>&ldquo;Together Computer, Inc.&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Together AI&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Together AI&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Together AI Inference&rdquo; for serverless; &ldquo;Together AI Endpoints&rdquo; for dedicated</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;AI and Machine Learning&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Token count (÷ 1M) for serverless; GPU-hours for dedicated endpoints</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize: &ldquo;1M Input Tokens&rdquo; or &ldquo;1M Output Tokens&rdquo; for serverless; &ldquo;GPU-Hours&rdquo; for dedicated endpoints</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>= PricingQuantity</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>= PricingUnit</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>Published rate per 1M tokens (serverless) or per GPU-hour (dedicated)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice for standard; enterprise rates require supplementary data</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; for serverless on-demand; &ldquo;Committed&rdquo; for dedicated endpoint reservations</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; for serverless; &ldquo;Recurring&rdquo; for dedicated endpoint hourly billing</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive from account tier</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Together AI team ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Team name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>&ldquo;Team&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Dedicated endpoint ID (null for serverless rows)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Endpoint name from Together AI API (null for serverless rows)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>GPU instance type for dedicated endpoint (null for serverless rows)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Model ID (serverless) or endpoint configuration ID (dedicated)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: Together AI billing does not include request-level tags</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>USD</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>= ListUnitPrice</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>= ContractedUnitPrice; Deviation because enterprise rates require supplementary data</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>= EffectiveCost</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Input Tokens&rdquo;, &ldquo;Output Tokens&rdquo; for serverless; &ldquo;GPU-Hours&rdquo; for dedicated</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>No pricing catalog rate ID exposed in billing API</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Not applicable (flat per-unit pricing)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>N/A: Together AI API does not expose regional routing to customers</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: no savings plan or reserved capacity model</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice number from Together AI dashboard</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>No native field; &ldquo;Large Language Models&rdquo; for serverless; &ldquo;GPU Compute&rdquo; for dedicated endpoints</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: global API with no customer-visible zone assignment</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 26 Present, 12 Deviation, 0 Missing Mandatory, 2 Missing Conditional, 1 Missing Recommended, 16 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Token quantities, team hierarchy, billing period, invoice numbers, and public pricing for both serverless and dedicated endpoints. All 21 Mandatory columns have source data.</p>
+<p><strong>Remaining:</strong> Dedicated endpoint ResourceId/Name/Type derivation requires separate logic from serverless rows. Enterprise ContractedCost requires supplementary data. SkuPriceId absent from billing API.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>Dual row structure:</strong> Implement two transform branches — one for serverless inference (token-based, no ResourceId) and one for dedicated endpoints (GPU-hour, endpoint ID as ResourceId). Both emit to the same FOCUS schema.</p>
+<p><strong>PricingUnit:</strong> Serverless: &ldquo;1M Input Tokens&rdquo; / &ldquo;1M Output Tokens&rdquo;. Dedicated: &ldquo;GPU-Hours&rdquo;.</p>
+<p><strong>PricingCategory:</strong> Serverless on-demand: &ldquo;Standard&rdquo;. Dedicated endpoints with committed GPU allocation: &ldquo;Committed&rdquo;.</p>
+<p><strong>ChargeFrequency:</strong> Serverless: &ldquo;Usage-Based&rdquo;. Dedicated endpoint hourly billing: &ldquo;Recurring&rdquo;.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. The dual billing model (serverless + dedicated) must be documented in the conformance gap report.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0:</strong> Pull one month of usage data for both serverless and dedicated endpoint charges. Identify all active models and endpoint configurations.</p>
+<p><strong>Phase 1: Serverless inference.</strong> Map token-based rows for all active LLM models. Derive ChargeCategory, ServiceName, ServiceCategory, PricingCategory, ChargeFrequency, PricingUnit, SkuMeter.</p>
+<p><strong>Phase 2: Dedicated endpoints.</strong> Add endpoint rows with ResourceId (endpoint ID), ResourceName, ResourceType (GPU type), PricingUnit = &ldquo;GPU-Hours&rdquo;, ChargeFrequency = &ldquo;Recurring&rdquo;. Finalize ServiceSubcategory mapping.</p>
+<p><strong>Phase 3: Certify.</strong> Drop ProviderName, PublisherName (v1.4). Validate with FOCUS Validator. Submit for certification.</p>
+<h3 id="24-focus-use-cases-together-ai-customers-unlock">2.4 FOCUS Use Cases Together AI Customers Unlock</h3>
+<p><strong>After Phase 1:</strong> Per-model serverless inference cost by team. Open-source vs. proprietary model cost comparison. Cross-provider AI cost comparison.</p>
+<p><strong>After Phase 2:</strong> Serverless vs. dedicated endpoint cost per workload. GPU utilization cost analysis for dedicated endpoints.</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Enable Together AI billing API access and pull one month of team-level usage data.</li>
+<li>Build rate cards: serverless (model × token type → ListUnitPrice) and dedicated endpoint (GPU type → hourly rate).</li>
+<li>Implement Phase 1 serverless transform and run through FOCUS Validator.</li>
+<li>Design the dual-branch transform for serverless vs. dedicated endpoint rows.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code> once Phase 1 data is validator-clean.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> Serverless inference billing is structurally clear. Token count × rate = cost, with a public rate card.</li>
+<li><strong>High:</strong> Team hierarchy maps cleanly to SubAccountId and SubAccountName.</li>
+<li><strong>Moderate:</strong> Dedicated endpoint row mapping. Endpoint IDs and GPU types may require enrichment from the endpoint management API rather than the billing API alone.</li>
+<li><strong>Low:</strong> Enterprise ContractedCost. Together AI does not expose negotiated rates via the billing API.</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Together AI Documentation: <a href="https://docs.together.ai">docs.together.ai</a></li>
+<li>Together AI Pricing: <a href="https://www.together.ai/pricing">together.ai/pricing</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

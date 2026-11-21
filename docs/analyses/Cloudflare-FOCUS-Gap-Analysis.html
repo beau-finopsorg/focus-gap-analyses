@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cloudflare and FOCUS: Compliance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Cloudflare-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="cloudflare-and-focus-compliance-gap-and-adoption-roadmap">Cloudflare and FOCUS: Compliance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: August 3, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p>Prepared 2026-08-03. Source analyzed: Cloudflare Billable Usage API (REST, <code>GET /accounts/{account_id}/billable-usage</code>), announced 2026-08-03, plus the Cloudflare billing documentation. FOCUS baseline v1.2, build target v1.4.</p>
+<p>Cloudflare is not listed on the FOCUS provider &ldquo;get started&rdquo; page, so it holds no FinOps Certified FOCUS designation. This analysis assesses readiness only; it reflects the data source reviewed, not a formal certification result.</p>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Cloudflare&rsquo;s Billable Usage API is unusual among newly shipped billing feeds: it was built around FOCUS. The payload emits FOCUS column names directly (<code>ServiceName</code>, <code>ChargePeriodStart</code>, <code>ChargePeriodEnd</code>, <code>ConsumedQuantity</code>, <code>ConsumedUnit</code>, <code>PricingQuantity</code>, <code>ContractedCost</code>, <code>BillingCurrency</code>, <code>BillingPeriodStart</code>), and it carries an actual per-line cost in currency, not only a usage quantity. That puts the usage-based slice of a self-serve account close to FOCUS shape without a transformation layer.</p>
+<p>The gaps are about scope, not shaping. The API covers only usage-based charges (not flat-rate plans, add-ons, or tax), only self-serve Pay-as-you-go accounts (not Enterprise contracts), one account at a time (no organization or sub-account rollup), and it carries no tags and only zone-level resource identity.</p>
+<ul>
+<li>FOCUS columns (v1.2): 57</li>
+<li>Already present: 13 (10 exact matches, 3 carrying the right data under a native name)</li>
+<li>Substantive Mandatory gaps: 0 of 12 (all 12 missing Mandatory columns are trivial for self-serve)</li>
+<li>Deviations to fix: 3</li>
+</ul>
+<p>Readiness (RAG): Cost Partial, Granularity Strong, Allocation Gap, Coverage Partial, FOCUS shape Strong. Overall band: Partially aligned.</p>
+<p>Recommendation: Emit the remaining Mandatory columns, which for self-serve are constants, derivations, or copies of <code>ContractedCost</code> (with no discounts or commitments, <code>ListCost</code> = <code>BilledCost</code> = <code>EffectiveCost</code> = <code>ContractedCost</code>). Map <code>ServiceFamilyName</code> to the FOCUS <code>ServiceCategory</code> vocabulary and surface <code>ZoneId</code> and <code>ZoneName</code> as <code>ResourceId</code> and <code>ResourceName</code>. Then extend scope to flat-rate charges, tax, tags, sub-accounts, and Enterprise contracts, where the cost columns become a real reconciliation rather than a copy.</p>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>The Billable Usage API is a REST endpoint on the standard Cloudflare v4 API:</p>
+<ul>
+<li><code>GET https://api.cloudflare.com/client/v4/accounts/{account_id}/billable-usage</code>, with optional <code>from</code> and <code>to</code> date parameters, authenticated by an API token holding the Billing Read permission.</li>
+<li>The response uses the standard Cloudflare envelope: <code>result</code> is an array of rows (<code>success</code>, <code>errors</code>, <code>messages</code> alongside), one row per product per charge period.</li>
+</ul>
+<p>Fields on each row (from the announcement&rsquo;s example payload and FOCUS mapping table):</p>
+<ul>
+<li><code>ServiceName</code> and <code>ServiceFamilyName</code>: the product (&ldquo;Workers Standard&rdquo; under family &ldquo;Workers&rdquo;, &ldquo;R2 Storage&rdquo; under &ldquo;R2&rdquo;).</li>
+<li><code>ChargePeriodStart</code> and <code>ChargePeriodEnd</code>: the window the row covers.</li>
+<li><code>ConsumedQuantity</code> (also referenced as <code>PricingQuantity</code>) and <code>ConsumedUnit</code>: how much was used, in the unit billed on (GB-months, GB-seconds, requests).</li>
+<li><code>ContractedCost</code>: what the period cost, in <code>BillingCurrency</code>.</li>
+<li><code>CumulatedContractedCost</code> and <code>CumulatedPricingQuantity</code>: running totals for the billing period.</li>
+<li><code>BillingCurrency</code> and <code>BillingPeriodStart</code>.</li>
+<li><code>ZoneId</code> and <code>ZoneName</code>: present when usage is attributed to a specific zone.</li>
+</ul>
+<p>Example row: <code>{"BillingCurrency":"USD","BillingPeriodStart":"2025-02-01T00:00:00Z","ChargePeriodStart":"2025-02-01T00:00:00Z","ChargePeriodEnd":"2025-02-28T23:59:59Z","ServiceName":"Workers Standard","ServiceFamilyName":"Workers","ConsumedQuantity":150000,"ConsumedUnit":"GB-months","ContractedCost":0.75,"CumulatedContractedCost":2.25}</code>.</p>
+<p>Key characteristics and limits:</p>
+<ul>
+<li>Daily granularity: usage and cost are updated daily; the API returns charge-period rows, which for most products is a daily grain, satisfying the sub-monthly charge-record expectation.</li>
+<li>Cost present, in currency: <code>ContractedCost</code> is a real per-line dollar amount, and <code>BillingCurrency</code> states the ISO currency. This is stronger than most emerging usage feeds, which expose quantity only.</li>
+<li>Self-serve only: the endpoint is live for self-serve (Pay-as-you-go) accounts. An equivalent experience for Enterprise contracts is described as in progress.</li>
+<li>Usage-based only: the feed covers every usage-based product (Workers, R2, D1, Workers AI, Vectorize, Images, Stream). Flat-rate plan charges, subscription and add-on base fees, and sales tax are billed separately and are not in this payload.</li>
+<li>Single account: the endpoint is scoped to one <code>account_id</code>. There is no organization, tenant, reseller, or sub-account rollup in the API.</li>
+<li>No tags: the payload carries no cost-allocation tags. Tag-style allocation is available only through the partner integration (Vantage Virtual Tags), outside the API.</li>
+<li>Resource identity is zone-level and partial: <code>ZoneId</code> and <code>ZoneName</code> appear when usage is zone-attributed; product-level usage is not zone-scoped.</li>
+<li>No commitments or negotiated discounts: self-serve costs reflect the published rate card. Free tiers are included allowances (usage below the tier is not billed), not discounts applied to billed lines.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory (must be present and populated), Conditional (required when the model triggers the condition), Recommended (encouraged), or Optional. Conformance is judged column by column against the Requirements Model. A dataset conforms when every Mandatory column is present and correctly populated, every applicable Conditional column is handled, tags are key-value pairs, enumerated columns carry valid members, and types, currency, and date formats follow the spec. Feature levels for this report were verified against the FOCUS v1.2 content-constraint tables.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Legend: Present; Present, deviation to fix; Missing: Mandatory; Missing: Recommended; Missing: Conditional; N/A: null valid.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>No (edge network, no availability zones)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td>No (equals ContractedCost for self-serve)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Yes (account in scope)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>No (account lookup)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>Yes (BillingCurrency)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>No (only BillingPeriodStart emitted)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>Yes (BillingPeriodStart)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>No (constant &ldquo;Usage&rdquo; for this feed)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>No (null; corrections not in feed)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>No (derivable from ServiceName)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>No (constant &ldquo;Usage-Based&rdquo;)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>Yes (ChargePeriodEnd)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>Yes (ChargePeriodStart)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>No (self-serve, no commitments)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Yes (ConsumedQuantity)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>Yes (ConsumedUnit)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td>Yes (ContractedCost)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>No (derivable: cost / quantity)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>No (equals ContractedCost for self-serve)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>No (constant &ldquo;Cloudflare&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td>No (equals ContractedCost for self-serve)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>No (rate card, not on line)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td>No (constant &ldquo;On-Demand&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>No (equals BillingCurrency)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>Yes (PricingQuantity)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td>No (equals ConsumedUnit)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M (removed v1.4)</td>
+<td>No (constant &ldquo;Cloudflare&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M (removed v1.4)</td>
+<td>No (constant &ldquo;Cloudflare&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td>No (global edge, not region-scoped)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td>Partial (ZoneId where zone-attributed)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td>Partial (ZoneName where zone-attributed)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td>No (derivable, e.g. &ldquo;Zone&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>Partial (ServiceFamilyName, not FOCUS enum)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td>Yes (ServiceName)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>No (ServiceName / rate-card SKU)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>No (the billable metric)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>No (single account, no rollup)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td>No (no native tags in the API)</td>
+<td>Missing: Conditional</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reading the tally: Of 57 v1.2 columns: 10 Present, 3 Present-with-deviation, 12 Missing Mandatory (all trivial: constants, derivations, or self-serve cost copies), 3 Missing Recommended, 14 Missing Conditional, and 15 N/A (commitments, capacity reservations, regions, sub-accounts, availability zone). The &ldquo;already present&rdquo; headline of 13 counts the 10 exact-match columns plus the 3 that carry the right data under a native name. Of the 21 Mandatory columns, 8 are present, 1 is a deviation (<code>ServiceCategory</code>), and 12 are missing but trivial.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p>Solved or near-solved: The payload uses FOCUS column IDs directly, so <code>ServiceName</code>, <code>ChargePeriodStart</code>, <code>ChargePeriodEnd</code>, <code>ConsumedQuantity</code>, <code>ConsumedUnit</code>, <code>PricingQuantity</code>, <code>ContractedCost</code>, <code>BillingCurrency</code>, and <code>BillingPeriodStart</code> need no renaming. Dates are ISO 8601, currency is an ISO code, and a real per-line cost is present. Daily charge periods come straight from <code>ChargePeriodStart</code> and <code>ChargePeriodEnd</code>. Zone identity is available where usage is zone-attributed.</p>
+<p>Substantive gaps: At the column level there are none within the self-serve, usage-based scope. The <code>ListCost</code>, <code>BilledCost</code>, and <code>EffectiveCost</code> columns are absent, but for self-serve accounts they equal <code>ContractedCost</code>, because costs reflect the published rate card with no commitments, negotiated discounts, or amortization. Supplying them is a copy, not a reconciliation. The substantive limitations sit at the dataset scope level, not in any single column:</p>
+<ul>
+<li>Coverage of charge types: the API omits flat-rate plan charges, subscription and add-on base fees, and tax. A full FOCUS dataset for a Cloudflare account needs those non-usage charges (<code>ChargeCategory</code> values Purchase and Tax), which this feed does not carry.</li>
+<li>Enterprise contracts: out of scope today. When they arrive, <code>ContractedCost</code> will diverge from <code>ListCost</code>, and <code>EffectiveCost</code> will require commitment amortization, turning the cost quartet into a genuine reconciliation.</li>
+<li>Multi-account and sub-account rollup: absent, so organization-level allocation is not possible from the API alone.</li>
+</ul>
+<p>Trivial gaps (plumbing, derivable from data already present):</p>
+<ul>
+<li>Constants: <code>InvoiceIssuerName</code>, <code>ProviderName</code>, <code>PublisherName</code> are &ldquo;Cloudflare&rdquo;; <code>ChargeCategory</code> is &ldquo;Usage&rdquo; for this feed; <code>ChargeClass</code> is null (no corrections in the payload); <code>PricingCategory</code> is &ldquo;On-Demand&rdquo;.</li>
+<li>Derivations: <code>ChargeDescription</code> from <code>ServiceName</code>; <code>BillingAccountName</code> from an account lookup; <code>BillingPeriodEnd</code> from the billing cycle (<code>BillingPeriodStart</code> is present); <code>PricingUnit</code> equals <code>ConsumedUnit</code>.</li>
+<li>Cost copies: <code>ListCost</code> = <code>BilledCost</code> = <code>EffectiveCost</code> = <code>ContractedCost</code> for self-serve, flat-rate SKUs. Tiered products already expose both <code>ConsumedQuantity</code> and <code>PricingQuantity</code>, so the pricing basis is available.</li>
+</ul>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<ul>
+<li>ServiceCategory: <code>ServiceFamilyName</code> is a Cloudflare-native grouping (&ldquo;Workers&rdquo;, &ldquo;R2&rdquo;), not a member of the FOCUS <code>ServiceCategory</code> controlled vocabulary. Map it to a valid enum value (for example, &ldquo;Compute&rdquo;, &ldquo;Storage&rdquo;, &ldquo;AI and Machine Learning&rdquo;).</li>
+<li>ResourceId and ResourceName: <code>ZoneId</code> and <code>ZoneName</code> carry the right identity where usage is zone-attributed. Emit them under the FOCUS column IDs, and null them where usage is not zone-scoped.</li>
+<li>Cumulative convenience fields: <code>CumulatedContractedCost</code> and <code>CumulatedPricingQuantity</code> are running totals. FOCUS treats cumulation as a query concern, so keep these as provider-specific columns prefixed <code>x_</code> rather than mapping them to FOCUS columns.</li>
+</ul>
+<p>Already done right: FOCUS column names on the emitted fields, ISO 8601 date-times, an explicit ISO currency code, a real per-line cost, and daily charge periods.</p>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Baseline the current certification version, v1.2, for any conformance conversation, and build toward v1.4 (ratified 2026-06-04). Cloudflare is already aligned with one v1.4 change: it does not emit <code>ProviderName</code> or <code>PublisherName</code>, which v1.4 removes. Building to v1.4 also means adopting the Invoice Detail and billing-period datasets, which suit Cloudflare&rsquo;s monthly invoice and the eventual flat-rate and tax coverage. A practical path shapes the transformation against v1.2 semantics, then layers the v1.3 and v1.4 additions.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FinOps Certified FOCUS conformance for data generators runs through the FinOps Foundation. The historical badge is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;; confirm the current badge version on the program page. Contact <code>member-cert@finops.org</code> for the RFI. Membership is required for certification, though contributing to the spec is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report, which this analysis seeds. Open-source tooling includes the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST, SHOULD, and MAY rules).</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<ul>
+<li>Phase 0 (validate and scope): Run a sample billable-usage payload through the FOCUS Validator against v1.2 to establish a baseline. Confirm the v1.2 baseline and v1.4 build target, and confirm the scope reviewed (self-serve, usage-based, per-account).</li>
+<li>Phase 1 (Mandatory gaps, value-unlock): Add the trivial Mandatory columns: constants (<code>InvoiceIssuerName</code>, <code>ProviderName</code>, <code>PublisherName</code>, <code>ChargeCategory</code> = &ldquo;Usage&rdquo;, <code>ChargeClass</code> = null), derivations (<code>ChargeDescription</code>, <code>BillingAccountName</code>, <code>BillingPeriodEnd</code>, <code>PricingUnit</code> = <code>ConsumedUnit</code>), and the self-serve cost copies (<code>ListCost</code> = <code>BilledCost</code> = <code>EffectiveCost</code> = <code>ContractedCost</code>).</li>
+<li>Phase 2 (deviations): Map <code>ServiceFamilyName</code> to the FOCUS <code>ServiceCategory</code> enum, emit <code>ZoneId</code> and <code>ZoneName</code> as <code>ResourceId</code> and <code>ResourceName</code>, and prefix the cumulative convenience fields as <code>x_</code>.</li>
+<li>Phase 3 (Conditional and Recommended): Add unit prices (<code>ContractedUnitPrice</code>, <code>ListUnitPrice</code>), <code>PricingCategory</code>, the SKU family (<code>SkuId</code>, <code>SkuMeter</code>, <code>SkuPriceDetails</code>, <code>SkuPriceId</code>), <code>ResourceType</code>, the pricing-currency columns, and Recommended <code>ChargeFrequency</code>, <code>InvoiceId</code>, and <code>ServiceSubcategory</code>. <code>Tags</code> needs a native tagging mechanism to populate.</li>
+<li>Phase 4 (extend scope, mature, and certify): Cover flat-rate plan and add-on charges and tax (<code>ChargeCategory</code> Purchase and Tax), add organization and sub-account rollups, and support Enterprise contracts, where <code>ContractedCost</code> diverges from <code>ListCost</code> and <code>EffectiveCost</code> needs commitment amortization, the real reconciliation. Adopt v1.3 and v1.4, drop <code>ProviderName</code> and <code>PublisherName</code>, wire in the Invoice Detail dataset, and pursue certification.</li>
+</ul>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<ul>
+<li>Unlocked now (FOCUS-named daily rows with per-line cost): per-account usage-based cost reporting and showback, product-level spend analysis, day-level trend and anomaly detection, and budget tracking (already surfaced through budget alerts and the Vantage integration).</li>
+<li>Unlocked with the cost columns filled (Phase 1): effective-cost views, since for self-serve the cost quartet coincides, and usage-versus-cost reconciliation for the usage-based portion of the bill.</li>
+<li>Unlocked with resource identity and tags (Phases 2 to 3): zone-level cost allocation, and tag-based chargeback and showback once a native tagging mechanism exists.</li>
+<li>Out of scope for now: commitment and capacity-reservation use cases (self-serve has none); organization and multi-account rollups; flat-rate and tax reconciliation; and Enterprise contract amortization.</li>
+</ul>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Run a sample billable-usage payload through the FOCUS Validator against v1.2 and record the baseline.</li>
+<li>Add the trivial Mandatory constants and derivations, and emit the self-serve cost copies (<code>ListCost</code>, <code>BilledCost</code>, <code>EffectiveCost</code> = <code>ContractedCost</code>).</li>
+<li>Map <code>ServiceFamilyName</code> to the FOCUS <code>ServiceCategory</code> vocabulary and emit <code>ZoneId</code> and <code>ZoneName</code> as <code>ResourceId</code> and <code>ResourceName</code>.</li>
+<li>Plan the scope extensions (flat-rate charges, tax, sub-accounts, Enterprise) where the cost columns become a genuine reconciliation.</li>
+<li>Engage the FinOps Foundation conformance program and request the RFI.</li>
+</ol>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>Data source structure (endpoint, envelope, fields, daily grain): high confidence, from the 2026-08-03 Cloudflare announcement of the Billable Usage API, which includes an example payload and an explicit Cloudflare-to-FOCUS mapping table, plus the current Cloudflare billing documentation.</li>
+<li>Feature-level classifications: high confidence. Levels were checked against the FOCUS v1.2 content-constraint reference; the bundled table was cache-validated on 2026-08-03 against the live spec index, confirming v1.2 exists as the certification baseline and v1.4 (2026-06-04) is the latest ratified version, consistent with the sibling reports, with no refresh needed.</li>
+<li>Cost columns trivial rather than substantive: high confidence for self-serve. Cloudflare states self-serve costs reflect the published rate card with no commitments or negotiated discounts, so <code>ListCost</code> = <code>BilledCost</code> = <code>EffectiveCost</code> = <code>ContractedCost</code>. Moderate caveat: any account-level credits or promotions would make <code>EffectiveCost</code> diverge, and Enterprise contracts (out of scope of this API) make the quartet a genuine reconciliation.</li>
+<li>Scope limitations: high confidence. The API is self-serve only, usage-based only, per-account, carries no tags, and offers zone-level resource identity, per the announcement and docs.</li>
+<li>Field-presence provisional: moderate confidence. The exact full field list of the API reference was inferred from the announcement&rsquo;s example payload and mapping table. Whether <code>BillingPeriodEnd</code>, <code>PricingUnit</code>, and <code>BillingAccountId</code>/<code>BillingAccountName</code> appear as row fields versus query context should be confirmed against the full published API reference.</li>
+<li>Overall readiness band (Structured): moderate-to-high confidence. Cloudflare has a FOCUS-native shape, daily granularity, and a real per-line cost, but coverage is roughly one-third of applicable columns, allocation is weak (no tags, no sub-accounts, partial zone identity), and the feed is scoped to the usage-based, self-serve slice.</li>
+<li>Certification status: Cloudflare is not on the FOCUS provider &ldquo;get started&rdquo; page and holds no FinOps Certified FOCUS designation; this report assesses readiness only and is not a certification result.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Cloudflare, &ldquo;Introducing the Billable Usage API,&rdquo; blog.cloudflare.com/billable-usage-api/ (2026-08-03).</li>
+<li>Cloudflare Docs, Monitor billable usage, developers.cloudflare.com/billing/manage/billable-usage/.</li>
+<li>Cloudflare Docs, How Cloudflare billing works, developers.cloudflare.com/billing/understand/how-billing-works/.</li>
+<li>Cloudflare Docs, Usage-based billing, developers.cloudflare.com/billing/understand/usage-based-billing/.</li>
+<li>FOCUS Specification, focus.finops.org/focus-specification/, and the FOCUS Validator, FOCUS Converter, and FOCUS Requirements Model tooling.</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

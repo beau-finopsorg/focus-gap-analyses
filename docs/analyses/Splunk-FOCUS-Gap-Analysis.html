@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Splunk &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Splunk-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="splunk-focus-data-generator-gap-analysis">Splunk &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: November 17, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> Splunk (a Cisco company)<br>
+<strong>Prepared:</strong> November 17, 2026<br>
+<strong>Origin:</strong> KubeCon NA 2026 booth outreach<br>
+<strong>Source:</strong> Splunk Cloud Platform Cloud Monitoring Console (License Usage: Entitlement, Ingest, Workload, Activity Based Pricing, DDAS); Cloud Flex Portfolio Manager; <code>license_usage.log</code>; Splunk Observability Cloud subscription usage reports and <code>sf.org.*</code> organization metrics; splunk.com pricing pages<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 10 Present, 21 Deviation, 5 Missing Mandatory, 5 Missing Conditional, 2 Missing Recommended, 14 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Splunk has rich, well-documented usage telemetry and almost no cost data alongside it. Splunk Cloud Platform meters ingest (GB/day), workload (Splunk Virtual Compute, SVC), and storage (DDAS/DDAA) in the Cloud Monitoring Console (CMC), with attribution by index, sourcetype, host, app, user, and search type. Splunk Observability Cloud publishes hourly and per-minute usage reports for hosts, containers, metric time series (MTS), APM, RUM, and Synthetics, with parent/child org breakdowns. Every one of these sources reports quantities only: no price, cost, or currency field appears in any of them. Money lives in order forms and invoices, plus two newer exceptions: the Activity Based Pricing dashboard (dollars drawn from a pool) and the Cloud Flex Portfolio Manager (costs by product license and stack, in controlled availability).</p>
+<p>The verdict: 5 of 21 Mandatory columns are missing, and 4 of those are substantive (<code>BilledCost</code>, <code>EffectiveCost</code>, <code>ListCost</code>, <code>ContractedCost</code>). The fifth, <code>BillingCurrency</code>, is a contract lookup. The other 16 Mandatory columns have source data, 10 of them needing derivation or remapping. The cost gap is not plumbing: Splunk sells term capacity subscriptions (prepaid entitlements, not metered on-demand rates), so producing FOCUS cost columns means joining contract and invoice data to usage telemetry and amortizing the prepaid term across charge periods.</p>
+<p><strong>Recommendation:</strong> Build the FOCUS dataset on top of the Cloud Flex Portfolio Manager cost model, which already attributes cost by product license and stack. Emit one Purchase row per subscription invoice line and daily Usage rows per stack (Platform) or org (Observability) per meter, with <code>EffectiveCost</code> amortized from the entitlement. Expose it as a downloadable export and an API rather than a dashboard.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>Splunk has no single billing export. The relevant sources are:</p>
+<ul>
+<li><strong>CMC License Usage: Entitlement:</strong> ingest limit in GB or total SVCs, DDAS and DDAA in GB, DDAA restore limit, Federated Search for S3 and Federated Analytics scan limits.</li>
+<li><strong>CMC License Usage: Ingest:</strong> daily GB ingested from <code>license_usage_summary.log</code> (UTC days), splittable by index, sourcetype, host, source, and ingestion scenario via <code>license_usage.log</code> (<code>b</code> bytes, <code>idx</code>, <code>st</code>, <code>h</code>, <code>s</code>, <code>pool</code>). Host and source values can be &ldquo;SQUASHED&rdquo; at high cardinality.</li>
+<li><strong>CMC License Usage: Workload:</strong> peak SVC at 1-hour, 15-minute, and 5-minute granularity, split by ingestion, search, and shared services, and by index, sourcetype, app, user, and search type.</li>
+<li><strong>CMC License Usage: Activity Based Pricing:</strong> &ldquo;Contract usage,&rdquo; the total dollar amount consumed from the customer&rsquo;s pool, plus remaining allocation. The only Platform dashboard with dollar values; no currency code is shown.</li>
+<li><strong>Cloud Flex Portfolio Manager (controlled availability):</strong> Dollar Pool balance, Spending by Category (Platform, Security, Observability), Cost Over Time, and a table of costs by product license and stack with allocation and entitlement units. This is the closest existing source to a FOCUS cost dataset.</li>
+<li><strong>Observability Cloud usage reports (tab-delimited):</strong> Monthly usage report (hourly rows: <code>Date</code>, <code>Hour Ending</code>, <code># Hosts</code>, <code># Containers</code>, <code># Custom Metrics</code>, <code># Archived custom metrics</code>); Hourly usage detail report (<code>Category Type</code>, <code>Category name</code>, <code>Token Id</code>, <code>Token Name</code>, <code>Category Key</code>, <code>Category Value</code>, <code>Cloud Provider</code>, <code>Cloud Region</code>, <code>Availability Zone</code>, <code>Project Name</code>, <code>Project Number</code>, <code>Subscription</code>); Dimension report (daily MTS and data points by dimension); APM detailed usage reports (per-minute, with monthly averages as the billed value); DPM plan reports.</li>
+<li><strong>Observability organization metrics:</strong> <code>sf.org.apm.numTracesReceived</code>, <code>sf.org.apm.numSpanBytesReceived</code>, <code>sf.org.rum.session.org_quota.consumed</code>, <code>synthetics.run.count</code>, and related <code>sf.org.*</code> metrics, queryable like any other metric.</li>
+</ul>
+<p>Key characteristics for FOCUS:</p>
+<ul>
+<li><strong>Quantity-only telemetry:</strong> No usage source carries price, cost, or currency. Splunk&rsquo;s docs route billing questions to the account team.</li>
+<li><strong>Term subscriptions, not on-demand rates:</strong> Platform is sold as ingest, workload, or activity-based subscriptions; Observability as host, MTS, DPM, or TAPM plans. Overage applies only when usage &ldquo;consistently exceeds&rdquo; capacity.</li>
+<li><strong>No public list prices for Platform:</strong> Splunk Cloud Platform and Enterprise Security are &ldquo;Get a quote.&rdquo; Observability Cloud, AppDynamics, and On-Call publish &ldquo;starts at&rdquo; prices only.</li>
+<li><strong>Multiple sales channels:</strong> direct, partners, AWS Marketplace, Google Cloud Marketplace, and Carahsoft (public sector). The invoice issuer varies by channel.</li>
+<li><strong>Deployment regions:</strong> Platform stacks run in customer-selected AWS, Google Cloud, and Azure regions (including AWS GovCloud). Observability orgs live in a realm (e.g., us0, us1, eu0, jp0, au0), each mapped to a cloud region.</li>
+<li><strong>Billing conversions:</strong> one histogram counts as 8 MTS; ten archived MTS count as one real-time MTS; host plans include 100 (Standard) or 200 (Enterprise) custom MTS per host.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is column-driven, and each column&rsquo;s feature level determines whether it must be present. Splunk&rsquo;s entitlements are capacity subscriptions purchased up front with no on-demand rate to discount against, so they are not FOCUS commitment discounts: the seven <code>CommitmentDiscount*</code> columns are N/A, and negotiated contract rates carry <code>PricingCategory</code> = &ldquo;Standard.&rdquo; The Cloud Flex dollar pool is a better fit for the v1.3+ Contract Commitment dataset than for the v1.2 commitment-discount columns. Feature levels below were taken from the FOCUS v1.2 Content Constraints tables.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Splunk source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Not in usage data; invoice lines and Cloud Flex/ABP dollar draw-down only</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Not in usage data; requires amortizing prepaid term subscriptions across charge periods</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>No public list price for Platform; Observability &ldquo;starts at&rdquo; prices only</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Order-form rates; not exposed in any dataset</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>Splunk customer account exists, but usage is keyed by stack (Platform) or org ID (Observability); map stack/org to account</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Customer account name; same mapping</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>Not in any dataset, including the ABP dollar view; contract currency</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Usage periods exist (UTC license days; Observability usage period, not calendar month); align to invoice period</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Same as BillingPeriodStart</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>Hourly (Observability, SVC) and daily (ingest) timestamps</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>Same</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Derive: product + meter (e.g., &ldquo;Splunk Cloud Platform · Ingest GB/day&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Purchase&rdquo; for subscription invoices; &ldquo;Usage&rdquo; for consumption and overage; &ldquo;Credit&rdquo; for credits</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for corrections</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Varies by channel: Splunk (direct), AWS, Google, or reseller; not in usage data</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Splunk&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>&ldquo;Splunk&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Product names are the dashboard and report boundaries: &ldquo;Splunk Cloud Platform&rdquo;, &ldquo;Splunk Enterprise Security&rdquo;, &ldquo;Splunk Infrastructure Monitoring&rdquo;, &ldquo;Splunk APM&rdquo;, &ldquo;Splunk RUM&rdquo;, &ldquo;Splunk Synthetic Monitoring&rdquo;, &ldquo;Splunk Log Observer&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Analytics&rdquo; for Platform; &ldquo;Security&rdquo; for Enterprise Security; &ldquo;Management and Governance&rdquo; for Observability</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>Billed measure differs from consumed: entitlement capacity (GB/day, SVC), monthly average (APM, hosts), session quota; compute per plan</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize: &ldquo;GB/Day&rdquo;, &ldquo;SVC&rdquo;, &ldquo;Hosts&rdquo;, &ldquo;Containers&rdquo;, &ldquo;MTS&rdquo;, &ldquo;Traces&rdquo;, &ldquo;Sessions&rdquo;, &ldquo;Runs&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>GB ingested, peak SVC, host/container counts, MTS, traces, sessions, synthetic runs</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>Units documented per meter</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>No public price list for Platform</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Order-form rates; not exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; (contracted rates; no commitment-discount construct)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Recurring&rdquo; for subscriptions; &ldquo;Usage-Based&rdquo; for overage and ABP draw-down</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive: direct vs. marketplace/partner account</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>Platform stack name; Observability child org ID</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Stack name; child org name</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Stack&rdquo; or &ldquo;Organization&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>Attribution dimensions, not billed resources: index (Platform), host/container ID (Observability hourly detail report); define the convention</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>Index name; host name</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Index&rdquo;, &ldquo;Host&rdquo;, &ldquo;Container&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>Product license SKUs live on order forms and in Portfolio Manager, not in usage data</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>Observability dimensions, token names, and cloud project/subscription; Platform app/user/sourcetype; reshape to key-value JSON</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: pricing and billing currency are the same contract currency</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Ingest&rdquo;, &ldquo;SVC&rdquo;, &ldquo;DDAS Storage&rdquo;, &ldquo;Host&rdquo;, &ldquo;Custom MTS&rdquo;, &ldquo;APM Trace&rdquo;, &ldquo;RUM Session&rdquo;, &ldquo;Synthetic Run&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>No price-catalog ID exposed</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>Entitlement conversions (8 MTS per histogram, 10 archived = 1 real-time, included MTS per host) documented but not emitted</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>Stack cloud region; Observability realm mapped to cloud region</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Same</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: capacity subscriptions, not discounted-rate commitments</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>Invoice numbers not exposed in any dataset</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Map: &ldquo;Log Management&rdquo;, &ldquo;Security Information and Event Management&rdquo;, &ldquo;Infrastructure Monitoring&rdquo;, &ldquo;Application Performance Monitoring&rdquo;</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>N/A: Splunk manages zones; customers do not select them for their stack or org</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 10 Present, 21 Deviation, 5 Missing Mandatory, 5 Missing Conditional, 2 Missing Recommended, 14 N/A</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Granular, attributable usage. Hourly and daily charge periods, consumed quantities and units for every meter, stack and child-org hierarchy, index/sourcetype/app/user attribution on Platform, host/container/dimension attribution on Observability. This is a stronger allocation foundation than most SaaS vendors expose.</p>
+<p><strong>Substantive (4 of 5 Mandatory gaps):</strong></p>
+<ul>
+<li><strong><code>BilledCost</code>:</strong> invoice amounts exist only in the billing system (and as dollar draw-down for ABP and Cloud Flex customers). They must be joined to usage rows.</li>
+<li><strong><code>EffectiveCost</code>:</strong> a prepaid annual subscription must be amortized across the term and allocated to stacks, orgs, and meters. Nothing in Splunk&rsquo;s data does this today except, partially, Portfolio Manager.</li>
+<li><strong><code>ListCost</code> and <code>ContractedCost</code>:</strong> Platform has no published rate card and contract rates live on order forms. Splunk must publish an internal list-price catalog per SKU and expose per-customer contracted rates.</li>
+</ul>
+<p><strong>Trivial (1 of 5):</strong> <code>BillingCurrency</code> is a lookup from the contract.</p>
+<p><strong>Remaining non-Mandatory:</strong> <code>ListUnitPrice</code>, <code>ContractedUnitPrice</code>, <code>SkuId</code>, <code>SkuPriceId</code>, <code>SkuPriceDetails</code> all depend on the same price catalog. <code>InvoiceId</code> requires exposing invoice numbers.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>PricingQuantity vs. ConsumedQuantity:</strong> these diverge by design. Ingest is billed against a daily GB entitlement; SVC against provisioned capacity; APM and host plans on monthly averages; Observability MTS with histogram and archived-metric conversions. <code>PricingQuantity</code> must reflect the billed measure per plan, not a copy of consumption.</p>
+<p><strong>PricingUnit:</strong> normalize per meter: &ldquo;GB/Day&rdquo;, &ldquo;SVC&rdquo;, &ldquo;Hosts&rdquo;, &ldquo;Containers&rdquo;, &ldquo;MTS&rdquo;, &ldquo;Traces&rdquo;, &ldquo;Sessions&rdquo;, &ldquo;Runs&rdquo;.</p>
+<p><strong>ChargeCategory and ChargeFrequency:</strong> subscription invoice lines are &ldquo;Purchase&rdquo;/&rdquo;Recurring&rdquo;; overage and ABP draw-down are &ldquo;Usage&rdquo;/&rdquo;Usage-Based&rdquo;.</p>
+<p><strong>InvoiceIssuerName:</strong> reflect the actual issuer per channel (Splunk direct, AWS Marketplace, Google Cloud Marketplace, or reseller).</p>
+<p><strong>Tags:</strong> reshape Observability dimensions, token names, and cloud project fields, plus Platform app/user/sourcetype splits, into a key-value JSON object. Custom attribution fields that do not fit FOCUS columns should use the <code>x_</code> prefix.</p>
+<p><strong>ResourceId:</strong> decide whether index (Platform) and host/container (Observability) are resource identifiers or tags, document the choice, and apply it consistently.</p>
+<p><strong>Already right:</strong> hourly/daily timestamps in UTC, stable stack and org identifiers, and explicit unit names per meter.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2. The v1.3 Contract Commitment dataset is the natural home for Cloud Flex dollar pools and term entitlements, and v1.4&rsquo;s Invoice Detail dataset addresses the invoice-reconciliation gap directly.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>Contact <code>member-cert@finops.org</code> for the RFI. Deliverables: a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Document the capacity-subscription model and why <code>CommitmentDiscount*</code> is null. Use the FOCUS Validator, Converter, and Requirements Model.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0: Validate scope.</strong> Choose the first product line (Splunk Cloud Platform on Cloud Flex is the strongest candidate because Portfolio Manager already computes cost by stack). Confirm v1.2 certification and v1.4 build targets.</p>
+<p><strong>Phase 1: Cost columns.</strong> Publish an internal list-price catalog per SKU. Join order-form rates and invoice lines to stack/org usage. Emit Purchase rows (<code>BilledCost</code>) and daily amortized Usage rows (<code>EffectiveCost</code>, <code>ListCost</code>, <code>ContractedCost</code>). Add <code>BillingCurrency</code>, <code>BillingAccountId</code>, <code>InvoiceIssuerName</code>.</p>
+<p><strong>Phase 2: Shape and enums.</strong> Normalize <code>PricingUnit</code>, compute <code>PricingQuantity</code> per plan, derive <code>ChargeCategory</code>, <code>ChargeFrequency</code>, <code>ServiceCategory</code>, <code>PricingCategory</code>. Reshape <code>Tags</code> to key-value. Map stacks and realms to <code>RegionId</code>. Ship as a downloadable export and API, not just a dashboard.</p>
+<p><strong>Phase 3: Round out.</strong> Add <code>SkuId</code>, <code>SkuPriceId</code>, <code>SkuPriceDetails</code>, <code>ListUnitPrice</code>, <code>ContractedUnitPrice</code>, <code>InvoiceId</code>, <code>ServiceSubcategory</code>. Extend to Observability Cloud using the hourly usage reports and child-org hierarchy.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Model Cloud Flex pools in the Contract Commitment dataset; add Invoice Detail (v1.4). Drop <code>ProviderName</code> and <code>PublisherName</code>. Validate and certify.</p>
+<h3 id="24-focus-use-cases-splunk-customers-unlock">2.4 FOCUS Use Cases Splunk Customers Unlock</h3>
+<p><strong>Available now (quantities only):</strong> usage trending by index, sourcetype, app, and child org; anomaly detection on ingest, SVC, and MTS consumption.</p>
+<p><strong>After Phase 1:</strong> cost allocation and chargeback by stack and child org; invoice reconciliation; actuals-based budgeting and forecasting; unit economics (cost per GB ingested, cost per host).</p>
+<p><strong>After Phase 2:</strong> multi-vendor observability cost comparison alongside other FOCUS providers; tag-based allocation by team and service.</p>
+<p><strong>Out of scope:</strong> commitment-discount utilization and capacity-reservation use cases (no such constructs).</p>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Follow up with the Splunk contact from KubeCon NA 2026 to identify the owner of Portfolio Manager and the billing data platform.</li>
+<li>Request a sample Portfolio Manager table export and one month of CMC license usage for a Cloud Flex stack.</li>
+<li>Confirm the invoicing entity per channel and whether a list-price catalog exists internally.</li>
+<li>Map one stack end to end (Purchase plus daily amortized Usage rows) and run it through the FOCUS Validator.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> All documented Splunk usage sources are quantity-only; no price, cost, or currency field appears in CMC ingest/workload/storage dashboards or Observability usage reports.</li>
+<li><strong>High:</strong> Cost columns are a substantive gap. Splunk sells prepaid term subscriptions with no public Platform list prices.</li>
+<li><strong>High:</strong> Observability report field names and Platform license log fields as listed (from Splunk docs and <code>license_usage.log</code> documentation).</li>
+<li><strong>Moderate:</strong> Portfolio Manager as the cost foundation. It is in controlled availability, limited to Cloud Flex contracts, and no export option is documented.</li>
+<li><strong>Moderate:</strong> <code>PricingCurrency*</code> as N/A. Assumes Splunk prices and bills in the same contract currency.</li>
+<li><strong>Moderate:</strong> <code>CommitmentDiscount*</code> as N/A. Correct for ingest/workload entitlements; Cloud Flex dollar pools should be re-examined against the v1.3 Contract Commitment dataset.</li>
+<li><strong>Low:</strong> No public usage REST endpoint was confirmed for Observability usage reports, and no ACS endpoint for license usage was found. Usage is reachable through <code>sf.org.*</code> metrics and Splunk searches.</li>
+<li><strong>Low:</strong> Invoicing entity. Splunk was acquired by Cisco (2024); public footers show &ldquo;Splunk LLC,&rdquo; &ldquo;Splunk Inc.,&rdquo; and &ldquo;Cisco Systems, Inc.&rdquo; Confirm with Splunk.</li>
+<li><strong>Not verified live:</strong> FOCUS feature levels were taken from the bundled v1.2 reference (stamped June 23, 2026); the FOCUS MCP spot-check was unavailable in this session. v1.4 remains the latest ratified release (v1.5 is a candidate).</li>
+</ul>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Splunk Cloud Platform, Monitor your entitlements: <a href="https://help.splunk.com/en/splunk-cloud-platform/administer/admin-manual/10.5.2605/monitor-your-splunk-cloud-platform-deployment/use-the-license-usage-dashboards/monitor-your-entitlements">help.splunk.com</a></li>
+<li>Splunk Cloud Platform, Use the License Usage dashboards: <a href="https://docs.splunk.com/Documentation/SplunkCloud/latest/Admin/MonitoringLicenseUsage">docs.splunk.com</a></li>
+<li>Workload Pricing and SVCs: What You Can See and Control: <a href="https://www.splunk.com/en_us/blog/platform/workload-pricing-and-svcs-what-you-can-see-and-control">splunk.com blog</a></li>
+<li>Understanding workload pricing in Splunk Cloud Platform: <a href="https://lantern.splunk.com/Manage_Performance_and_Health/Understanding_workload_pricing_in_Splunk_Cloud_Platform">Splunk Lantern</a></li>
+<li>Admin Config Service (ACS) API endpoint reference: <a href="https://help.splunk.com/en/splunk-cloud-platform/administer/admin-config-service-manual/10.7/admin-config-service-acs-api-endpoint-reference">help.splunk.com</a></li>
+<li>Splunk Observability Cloud, Monitor and manage subscription usage and billing: <a href="https://help.splunk.com/en/splunk-observability-cloud/administer/monitor-subscription-usage-and-billing">help.splunk.com</a></li>
+<li>Splunk Observability Cloud, View subscription usage for parent and child organizations: <a href="https://help.splunk.com/en/splunk-observability-cloud/administer/monitor-subscription-usage-and-billing/view-parent-child-subscription-usage">help.splunk.com</a></li>
+<li>Splunk Observability Cloud, View your realm, API endpoints, and organization: <a href="https://help.splunk.com/en/splunk-observability-cloud/administer/org-reference-info/view-your-realm-api-endpoints-and-organization">help.splunk.com</a></li>
+<li>Splunk Cloud Platform Service Details: <a href="https://help.splunk.com/en/splunk-cloud-platform/get-started/service-terms-and-policies">help.splunk.com</a></li>
+<li>Splunk Pricing: <a href="https://www.splunk.com/en_us/products/pricing.html">splunk.com/en_us/products/pricing.html</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

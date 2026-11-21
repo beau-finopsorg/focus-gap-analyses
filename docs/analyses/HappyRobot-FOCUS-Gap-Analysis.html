@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HappyRobot and FOCUS: Readiness Assessment and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/HappyRobot-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="happyrobot-and-focus-readiness-assessment-and-adoption-roadmap">HappyRobot and FOCUS: Readiness Assessment and Adoption Roadmap</h1>
+<p><em>Analysis run: August 4, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p>Prepared: 2026-08-04
+Provider and product in scope: HappyRobot (happyrobot.ai), the AI worker / voice-agent platform for logistics.
+Source analyzed: public product, pricing, and API-reference documentation (docs.happyrobot.ai), plus secondary funding and business-model coverage. Pricing and enterprise-billing docs are gated behind an access code; those details come from HappyRobot&rsquo;s public marketing pages and third-party profiles.
+FOCUS baseline: v1.2 (certification baseline). Build target: v1.4 (latest ratified, 2026-06-04).
+Data quality: provisional. HappyRobot is a small startup (founded 2022) and billing documentation is thin and partly access-gated.
+Status: HappyRobot is not listed on focus.finops.org/get-started and holds no FinOps Certified FOCUS designation. This report assesses readiness only; it is not a certification result.</p>
+<h2 id="executive-summary">Executive summary</h2>
+<p>HappyRobot exposes rich operational telemetry but no cost or billing dataset. The platform logs every call and every workflow &ldquo;run&rdquo; as a structured, timestamped, auditable record, and an analytics endpoint aggregates usage. None of this carries a per-line cost in a currency, and there is no public billing or invoice API. Pricing is either developer pay-as-you-go (per minute of call, with 10 free minutes on signup) or an opaque enterprise contract (a hybrid platform fee plus per-event usage, negotiated directly). The raw material for a FOCUS dataset (event-level records, an org and workspace hierarchy, a clear billable unit of call minutes) exists, but the cost half of FOCUS does not exist in machine-readable form today.</p>
+<p>Against FOCUS v1.2 (57 columns), zero are emitted as conformant FOCUS columns. All 21 Mandatory columns are absent. Of those 21, four are substantive gaps because there is no cost data anywhere: BilledCost, EffectiveCost, ListCost, and ContractedCost. The remaining Mandatory columns are trivial in the sense that they are constants, or derivable from the timestamps, durations, and identifiers already captured, but they are trivial only once a per-charge-record billing feed exists to host them. That billing feed is the real missing piece.</p>
+<p>Four-stat strip:
+- FOCUS columns (v1.2): 57
+- Already present: 0
+- Substantive Mandatory gaps: 4 of 21 (the cost quartet)
+- Deviations to fix: 0</p>
+<p>RAG readiness strip:
+- Cost: Gap
+- Granularity: Partial
+- Allocation: Partial
+- Coverage: Gap
+- FOCUS shape: Gap
+- Overall band: Not yet aligned (per public docs)</p>
+<p>Recommendation: The first move is not a FOCUS mapping, it is a billing dataset. Stand up a per-charge-record feed keyed to the call or run, carrying a cost in USD and the billable quantity (minutes). Once that feed exists, most Mandatory columns follow cheaply from data HappyRobot already logs (timestamps become charge periods, org and workspace become the account hierarchy, use case and worker become service and resource, minutes become the pricing quantity). Enterprise contracts, where platform fees and negotiated per-event rates diverge from any list rate, are where the cost columns become a genuine reconciliation rather than a rate-card multiplication.</p>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<p>HappyRobot sells AI workers that place and take phone calls, send email and SMS, parse documents, and drive web portals for freight brokers, 3PLs, carriers, and shippers. The platform is built for operations and observability, not cost reporting. What it exposes today is a usage and activity surface, so the FOCUS gap is wide but the underlying grain is good.</p>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>The reviewed surface is the public product documentation and the V1 API Reference at docs.happyrobot.ai. The API-reference pages and the pricing and enterprise pages require an access code, so field-level detail is inferred from the public endpoint index, the product overview, and secondary sources.</p>
+<p>What the platform captures:
+- Calls: the Calls API exposes individual call records (get-call, create-outbound-call, and a CSV export that is emailed asynchronously). Calls carry timestamps and duration, and call minutes are the developer billing unit.
+- Runs: every execution of a published workflow is logged as a &ldquo;run&rdquo; with a step-by-step timeline and output variables, and those variables can be surfaced as columns in run tables.
+- Analytics: an &ldquo;usage aggregated&rdquo; analytics endpoint rolls usage up over a period.
+- Organization hierarchy: an Orgs API lists users for an organization, and the product is arranged as organizations with workspaces and use cases.
+- Control Tower: a dashboard for launching workflows and monitoring tasks in real time, with version control, A/B testing, and an AI Auditor that scores each task.</p>
+<p>Key characteristics and limits:
+- No cost or billing dataset: no endpoint returns a per-line cost in a currency. The analytics surface is usage counts (minutes, runs, calls), not charges.
+- No invoice API: invoices are not exposed programmatically in the public documentation. Enterprise billing is handled as a contract (platform fee plus per-event usage) and, per third-party coverage, on token- and credit-based billing infrastructure.
+- Pricing is per-minute or opaque: developer pricing is pay-as-you-go per call minute (10 free minutes on signup). Enterprise pricing is custom and not published, sold on ROI (headcount reduction, revenue captured) rather than a public rate card.
+- Currency: USD is the implied billing currency for a US company, but it is not documented as a field on any record.
+- Event-level grain: calls and runs are individual timestamped events, so the raw granularity is fine (sub-monthly, effectively per-event), even though these are activity records rather than charge records.
+- Allocation primitives exist: organization, workspace, use case, worker, and run identifiers are present, and run output variables provide a custom-metadata channel, but there are no FOCUS-style key-value cost-allocation tags and nothing carries a cost to allocate.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory (must be present and populated), Conditional (required when the provider&rsquo;s model triggers the condition), Recommended (encouraged), or Optional. Conformance is judged column by column against the Requirements Model. A dataset conforms when every Mandatory column is present and correctly populated, every applicable Conditional column is handled, tags are key-value pairs, enumerated columns carry valid members, and types, currency, and date formats follow the spec. Feature levels for this report were verified against the FOCUS v1.2 specification content-constraint tables.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Status legend: Present; Present, deviation to fix; Missing: Mandatory; Missing: Recommended; Missing: Conditional; N/A: null valid. Feature levels verified against the FOCUS v1.2 specification.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>No (SaaS, no zones)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td>No (no cost dataset)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>No (org identifier exists)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>No (org name available)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>No (constant USD, undocumented)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>No (derivable from cycle)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>No (derivable from cycle)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>No (constant &ldquo;Usage&rdquo; for calls)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>No (null; corrections not modeled)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>No (derivable from use case / call)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>No (would be &ldquo;Usage-Based&rdquo;)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>No (call/run end timestamp exists)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>No (call/run start timestamp exists)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>No (no commitments)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>No (call duration exists as minutes)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>No (would be &ldquo;Minutes&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td>No (no cost dataset)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>No (per-minute rate not surfaced)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>No (no cost dataset)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>No (no invoice API)</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>No (constant &ldquo;HappyRobot&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td>No (no cost dataset)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>No (rate card not on record)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td>No (would be &ldquo;Standard&rdquo;/&rdquo;On-Demand&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>No (equals BillingCurrency)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>No (derivable from minutes, flat-rate)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td>No (would be &ldquo;Minutes&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M (removed v1.4)</td>
+<td>No (constant &ldquo;HappyRobot&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M (removed v1.4)</td>
+<td>No (constant &ldquo;HappyRobot&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td>No (SaaS, not region-scoped)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td>No (worker / use case / run ID exists)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td>No (worker / use case name exists)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td>No (would be &ldquo;AI Worker&rdquo; / &ldquo;Call&rdquo;)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>No (constant &ldquo;AI and Machine Learning&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td>No (constant &ldquo;HappyRobot&rdquo; / product)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>No (billable unit not a SKU today)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>No (the billable metric, call minutes)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>No (workspace identifier exists)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>No (workspace name exists)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td>No (run variables, not FOCUS tags)</td>
+<td>Missing: Conditional</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reading the tally: of 57 v1.2 columns, 0 are Present, 0 are Present-with-deviation, 21 are Missing Mandatory, 3 are Missing Recommended (ChargeFrequency, InvoiceId, ServiceSubcategory), 21 are Missing Conditional, and 12 are N/A (commitments, capacity reservations, regions, availability zone). Of the 21 Mandatory columns, 4 are substantive gaps (the cost quartet); the other 17 are trivial constants or derivations, but they need a billing record to live on.</p>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p>Solved or near-solved: nothing is FOCUS-shaped today, but the inputs for a large share of the schema already exist as operational data. Call and run records carry ISO timestamps and durations, the org and workspace hierarchy is modeled, use cases and workers give a natural service and resource identity, and call minutes are a clean, flat-rate billable unit. This is a strong starting substrate.</p>
+<p>Substantive gaps: the cost dataset itself. BilledCost, EffectiveCost, ListCost, and ContractedCost have no source, because HappyRobot exposes usage counts, not charges. This is not a copy-a-column exercise. For developer pay-as-you-go the rate card is a per-minute multiplication, so once minutes and a rate are joined the four cost columns could largely coincide. For enterprise contracts they diverge: a platform fee plus negotiated per-event rates means ListCost (rate card), ContractedCost (negotiated), and EffectiveCost (after any credits or included allowances) are genuinely different numbers, and producing them is a reconciliation against the contract, not a lookup.</p>
+<p>Trivial gaps (plumbing, once a billing record exists):
+- Constants: InvoiceIssuerName, ProviderName, PublisherName are &ldquo;HappyRobot&rdquo;; ServiceCategory is &ldquo;AI and Machine Learning&rdquo;; ChargeCategory is &ldquo;Usage&rdquo; for call charges; ChargeClass is null; PricingCategory is &ldquo;Standard&rdquo; or &ldquo;On-Demand&rdquo;; BillingCurrency is &ldquo;USD&rdquo;.
+- Derivations from event data: ChargePeriodStart and ChargePeriodEnd from call or run timestamps; BillingPeriodStart and BillingPeriodEnd from the billing cycle; ChargeDescription from the use case or call; PricingUnit and ConsumedUnit are &ldquo;Minutes&rdquo;; PricingQuantity and ConsumedQuantity from call duration (flat-rate, so PricingQuantity equals consumed minutes).
+- Identity from the hierarchy: BillingAccountId and BillingAccountName from the organization; SubAccountId and SubAccountName from the workspace; ResourceId, ResourceName, and ResourceType from the worker, use case, or run.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<p>There are no format or enum deviations to fix, because no FOCUS columns are emitted yet. The relevant near-term shaping notes, for when the billing feed is built:
+- Tags: run output variables are a custom-metadata channel, not FOCUS tags. If exposed as cost-allocation metadata they must be key-value pairs, and any HappyRobot-specific run fields kept alongside FOCUS columns should be prefixed x_.
+- Currency and dates: emit an explicit ISO 4217 currency code (USD) and ISO 8601 timestamps with inclusive-start, exclusive-end periods.
+- ServiceCategory: use the FOCUS controlled vocabulary value &ldquo;AI and Machine Learning&rdquo;, not a HappyRobot-native product label.</p>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<p>The sequence here is unusual: most providers already have a bill and need to reshape it, while HappyRobot needs to produce a cost dataset first and can then shape it to FOCUS cheaply.</p>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Baseline v1.2 for any conformance conversation, since that is the certification baseline, and build toward v1.4 (ratified 2026-06-04). Because HappyRobot has no legacy billing feed to retrofit, it can design directly against current semantics and skip the deprecated ProviderName and PublisherName columns that v1.4 removes. The v1.4 Invoice Detail and billing-period datasets suit a future monthly enterprise invoice.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FinOps Certified FOCUS conformance for data generators runs through the FinOps Foundation. The historical badge is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;; confirm the current badge version on the program page. Contact member-cert@finops.org for the RFI. Membership is required for certification, though contributing to the spec is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report, which this analysis seeds. Open-source tooling includes the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST, SHOULD, and MAY rules).</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p>Phase 0: Confirm scope and target. Confirm the v1.2 baseline and v1.4 build target, and decide whether the first FOCUS dataset covers developer pay-as-you-go, enterprise contracts, or both. There is no sample to validate yet, so this phase is definition, not validation.</p>
+<p>Phase 1: Stand up a billing dataset (the substantive gap). Produce a per-charge-record feed keyed to the call or run, carrying a cost in USD, the billable quantity (minutes), and the org, workspace, use case, and worker identifiers. This single step unlocks the cost quartet (BilledCost, EffectiveCost, ListCost, ContractedCost) and creates the record that every other Mandatory column attaches to. For pay-as-you-go this is minutes multiplied by the rate; for enterprise it is a contract reconciliation.</p>
+<p>Phase 2: Add the trivial Mandatory columns. On the new record, populate the constants (InvoiceIssuerName, ProviderName, PublisherName, ServiceCategory, ServiceName, ChargeCategory, ChargeClass, BillingCurrency) and the derivations (ChargePeriodStart and ChargePeriodEnd from timestamps, BillingPeriodStart and BillingPeriodEnd from the cycle, ChargeDescription, PricingQuantity and PricingUnit from minutes).</p>
+<p>Phase 3: Round out Conditional and Recommended. Map the hierarchy to BillingAccountId and BillingAccountName and SubAccountId and SubAccountName, worker and use case to ResourceId, ResourceName, and ResourceType, add unit prices (ListUnitPrice, ContractedUnitPrice), the SKU family (SkuId, SkuMeter, SkuPriceDetails, SkuPriceId) around the call-minute meter, ConsumedQuantity and ConsumedUnit, the pricing-currency columns, and the Recommended ChargeFrequency, InvoiceId, and ServiceSubcategory. Expose cost-allocation Tags as key-value pairs if customer metadata is available.</p>
+<p>Phase 4: Mature and certify. Extend coverage to non-call charges (email, SMS, document, and browser events; platform fees as ChargeCategory &ldquo;Purchase&rdquo;; tax where applicable), reconcile enterprise contracts so EffectiveCost reflects credits and included allowances, adopt v1.3 and v1.4, wire in the Invoice Detail dataset, run a sample through the FOCUS Validator, and pursue certification.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<p>Unlocked once the billing dataset and trivial Mandatory columns exist (Phases 1 to 2): &ldquo;Analyze costs by service name&rdquo; and &ldquo;Analyze service costs month over month&rdquo; for HappyRobot spend over time; &ldquo;Calculate unit economics&rdquo; (cost per call, per run, or per completed task), which is the natural FinOps question for an AI-worker platform.</p>
+<p>Unlocked with the hierarchy and resource identity (Phase 3): &ldquo;Analyze service costs by subaccount&rdquo; and &ldquo;Analyze cost per compute service for a subaccount&rdquo; relabeled to workspace-level cost, &ldquo;Compare billed cost per subaccount to budget&rdquo; for workspace budgets, &ldquo;Analyze resource costs by SKU&rdquo; once the call-minute meter is modeled as a SKU, and &ldquo;Analyze tag coverage&rdquo; once cost-allocation tags exist.</p>
+<p>Out of scope for now: commitment and capacity-reservation use cases (HappyRobot has no commitments or reservations), region and availability-zone use cases (SaaS with no region dimension), and marketplace-vendor use cases.</p>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Decide the first FOCUS scope: developer pay-as-you-go, enterprise contracts, or both.</li>
+<li>Stand up a per-charge-record billing dataset keyed to the call or run, with a USD cost and the call-minute quantity, joining usage to a rate or to the enterprise contract.</li>
+<li>Populate the trivial Mandatory constants and timestamp and hierarchy derivations on that record.</li>
+<li>Map the org and workspace hierarchy and the worker, use case, and run identifiers to the FOCUS account, sub-account, and resource columns.</li>
+<li>Run a sample through the FOCUS Validator against v1.2, then engage the FinOps Foundation conformance program for the RFI.</li>
+</ol>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>Business and pricing model: moderate confidence. HappyRobot&rsquo;s developer pay-as-you-go per-minute model, the 10-minute free allowance, and the custom enterprise contracts (platform fee plus per-event usage) are consistent across the company&rsquo;s public pricing pages and third-party profiles, but the detailed pricing and enterprise docs are access-gated, so exact rates and billing fields are not verified.</li>
+<li>Data surface: moderate confidence. The Calls, Runs, Analytics, and Orgs endpoints and the CSV export are named in the public API-reference index and product docs, but field-level schemas are gated, so specific field names and types are inferred, not confirmed.</li>
+<li>Absence of a cost or billing dataset: moderate-to-high confidence. No public endpoint or document exposes a per-line cost or an invoice API; the analytics surface is usage aggregation. A gated billing endpoint could exist, which is why this is not stated as certain.</li>
+<li>Feature-level classifications: high confidence. Levels were checked against the FOCUS v1.2 content-constraint reference; the bundled table was cache-validated on 2026-08-04 against the live spec, confirming v1.2 as the certification baseline and v1.4 (2026-06-04) as the latest ratified version, with no refresh needed.</li>
+<li>Substantive versus trivial split: high confidence on the cost quartet as substantive; the &ldquo;trivial&rdquo; label on the other Mandatory columns is conditional on first building a per-charge-record billing feed, which is the real work.</li>
+<li>Overall readiness band (Nascent): high confidence. There is no cost dataset and no FOCUS shaping today; the score reflects the public data surface reviewed, not a formal certification result.</li>
+<li>Currency: low confidence that USD is emitted anywhere; it is inferred from a US-based company and is not documented as a field.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>HappyRobot documentation: https://docs.happyrobot.ai/general/introduction (product overview, API reference, pricing, and enterprise pages; pricing and enterprise pages access-gated)</li>
+<li>HappyRobot pricing and comparison hub: https://www.happyrobot.ai/hub/vapi-ai-pricing</li>
+<li>HappyRobot company site: https://www.happyrobot.ai</li>
+<li>Sacra company profile (valuation, funding, business model): https://sacra.com/c/happyrobot/</li>
+<li>LedgerUp case study (billing infrastructure): https://www.ledgerup.ai/case-studies/happyrobot</li>
+<li>Y Combinator company profile: https://www.ycombinator.com/companies/happyrobot</li>
+<li>FOCUS Specification and tooling (Validator, Converter, Requirements Model): https://focus.finops.org/focus-specification/</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

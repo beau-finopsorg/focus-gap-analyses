@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naver Cloud Platform &amp; FOCUS: Data Generator Gap Analysis | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/NaverCloud-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="naver-cloud-platform-focus-data-generator-gap-analysis">Naver Cloud Platform &amp; FOCUS: Data Generator Gap Analysis</h1>
+<p><em>Analysis run: July 1, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Company:</strong> NAVER Cloud Corp. (Naver Cloud Platform, South Korea sovereign cloud)<br>
+<strong>Prepared:</strong> July 1, 2026<br>
+<strong>Source:</strong> Naver Cloud Platform Cost and Usage API (<code>/billing/v1/cost/getDemandCostList</code>, <code>getProductDemandCostList</code>, <code>getContractDemandCostList</code>, <code>getContractUsageList</code>, <code>getContractUsageListByDaily</code>, <code>getContractSummaryList</code>, <code>getCostRelationCodeList</code>); Cost Explorer; Sub Account and Organization services<br>
+<strong>Baseline:</strong> FOCUS v1.2 | <strong>Build target:</strong> FOCUS v1.4<br>
+<strong>Tally:</strong> 13 Present, 25 Deviation, 2 Missing Mandatory, 2 Missing Recommended, 0 Missing Conditional, 15 N/A</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Naver Cloud Platform (NCP) is the sovereign public cloud operated by NAVER Cloud Corp., serving the South Korean market with Classic and VPC platforms and a public-institution region. Billing and usage data are exposed through a RESTful Cost and Usage API on <code>billingapi.apigw.ntruss.com</code>. The data needed for FOCUS conformance is split across two surfaces that do not share a grain. The cost surface (<code>getDemandCostList</code>, <code>getProductDemandCostList</code>, <code>getContractDemandCostList</code>) is monthly and carries a full discount decomposition and net billed amount, but aggregates to member, product, or contract rather than to a resource per day. The usage surface (<code>getContractUsageListByDaily</code>) is daily and resource-level, carrying <code>instanceNo</code>, <code>instanceName</code>, <code>productCode</code>, <code>regionCode</code>, and metered quantities, but carries no cost. A conformant FOCUS row requires joining the two.</p>
+<p>NCP&rsquo;s discount model is unusually well itemized for a native billing feed. The cost records break the reduction into <code>promiseDiscountAmount</code> (its committed-use, or &ldquo;promise,&rdquo; discount), <code>promotionDiscountAmount</code>, <code>productDiscountAmount</code>, <code>creditDiscountAmount</code>, <code>customerDiscountAmount</code>, and <code>etcDiscountAmount</code>, with <code>useAmount</code> as the pre-discount list figure and <code>demandAmount</code> as the net. This means ListCost and EffectiveCost are reconstructable from data already present, once the discounts are joined down to the resource-day grain. The two genuinely substantive Mandatory gaps are producing BilledCost and EffectiveCost at daily resource granularity, because the itemized costs live only at the monthly product or contract aggregate today.</p>
+<p>Fifteen columns are N/A under NCP&rsquo;s model as reflected in this API. The cost and usage feeds expose no resource tags (sub-account tagging exists but does not flow to billing lines), no capacity-reservation construct, and no SKU price-detail objects; the pricing-currency family collapses because billing and pricing are both KRW at an applied exchange rate of 1.</p>
+<p><strong>Recommendation:</strong> Build one FOCUS row per resource per day by joining <code>getContractUsageListByDaily</code> (instanceNo, productCode, regionCode, daily quantity, service dates) to the monthly <code>getProductDemandCostList</code>/<code>getContractDemandCostList</code> discount and amount fields, allocating the itemized discounts and net amount from the monthly aggregate down to the resource-day. SubAccountId from <code>memberNo</code> under an Organization, BillingAccountId from the master <code>memberNo</code>, ResourceId from <code>instanceNo</code>, RegionId from <code>regionCode</code>, currency KRW.</p>
+<hr>
+<h2 id="part-1-the-conformance-gap">Part 1: The Conformance Gap</h2>
+<h3 id="11-the-data-source">1.1 The Data Source</h3>
+<p>NCP&rsquo;s billing and usage data lives in the Cost and Usage API at <code>https://billingapi.apigw.ntruss.com/billing/v1/</code>, called with GET or POST and authenticated with a timestamp, IAM access key, and HMAC-SHA256 signature. Responses are XML by default or JSON on request. The API separates cost from usage.</p>
+<p><strong>Cost surface (monthly):</strong>
+- <code>getDemandCostList</code> returns one billing summary per <code>memberNo</code> per <code>demandMonth</code>: <code>useAmount</code> (pre-discount), a set of discount fields (<code>promiseDiscountAmount</code>, <code>promotionDiscountAmount</code>, <code>etcDiscountAmount</code>, <code>customerDiscountAmount</code>, <code>productDiscountAmount</code>, <code>creditDiscountAmount</code>, <code>rounddownDiscountAmount</code>, <code>currencyDiscountAmount</code>), <code>thisMonthDemandAmount</code> (net), VAT fields, <code>totalDemandAmount</code>, <code>payCurrency</code> (code KRW), and <code>thisMonthAppliedExchangeRate</code>.
+- <code>getProductDemandCostList</code> breaks the month down by <code>productDemandType</code> (a code such as <code>NET_SVR</code> &ldquo;Network - Server&amp;LoadBalancer&rdquo; plus a <code>regionCode</code>), with the same discount fields, <code>defaultAmount</code>, <code>useAmount</code>, and <code>demandAmount</code> per product line.
+- <code>getContractDemandCostList</code> breaks the month down by contract, carrying <code>demandType</code>, <code>demandTypeDetail</code>, a nested <code>contract</code> (with <code>contractNo</code>, <code>contractType</code>, <code>contractStatus</code>, dates, <code>instanceName</code>, <code>regionCode</code>, and a <code>contractProductList</code> with <code>productCode</code>, <code>priceNo</code>, <code>promiseNo</code>, <code>instanceNo</code>, <code>productItemKind</code>), plus <code>unitUsageQuantity</code>, <code>usageUnit</code>, <code>productPrice</code>, <code>useAmount</code>, discount fields, and <code>demandAmount</code>.</p>
+<p><strong>Usage surface (daily and monthly):</strong>
+- <code>getContractUsageListByDaily</code> returns daily service usage per resource: an <code>account</code> (<code>memberNo</code>), a <code>useDate</code> (<code>useStartDate</code>/<code>useEndDate</code> as ISO 8601 with +0900 offset), a <code>contract</code> block (<code>contractNo</code>, <code>contractType</code>, <code>contractStatus</code>, dates, <code>instanceName</code>, <code>regionCode</code>), a <code>contractProduct</code> block (<code>productCode</code>, <code>priceNo</code>, <code>promiseNo</code>, <code>instanceNo</code>, <code>productItemKind</code>, <code>productRatingType</code>, service dates, size/count), and a <code>usage</code> block (<code>meteringType</code>, <code>usageQuantity</code> with <code>unit</code>, and <code>userUsageQuantity</code> with <code>userUnit</code>, for example 44124 <code>USAGE_SEC</code> normalized to 12.256667 <code>HOUR</code>).
+- <code>getContractUsageList</code> is the non-daily equivalent; <code>getContractSummaryList</code> returns the user contract summary; <code>getCostRelationCodeList</code> returns the code dictionary for the various code/codeName pairs.</p>
+<p>Key characteristics:
+- <strong>Daily usage granularity:</strong> <code>getContractUsageListByDaily</code> yields 24-hour usage blocks per resource, with quantities in both raw metering units and user-facing units.
+- <strong>Monthly cost granularity:</strong> all three cost endpoints aggregate to the month at member, product, or contract grain. There is no daily cost line and no per-resource cost line in the cost feed.
+- <strong>Accounts and sub-accounts:</strong> <code>memberNo</code> is the billing entity. The Organization service consolidates expenses across member accounts (queried with <code>isOrganization=true</code>, master only), and Sub Account provides IAM identities under a member. Partner accounts are queried with <code>isPartner=true</code>.
+- <strong>Committed-use discounts:</strong> the &ldquo;promise&rdquo; mechanic (<code>promiseNo</code> on a contract product, <code>promiseDiscountAmount</code> on the cost line) is NCP&rsquo;s commitment discount. It is itemized in the cost feed but has no dedicated commitment object with an ID, term, or status in this API.
+- <strong>Currency:</strong> <code>payCurrency</code> is KRW with <code>thisMonthAppliedExchangeRate</code> of 1 for domestic accounts, so billing currency and pricing currency are the same.
+- <strong>Regions:</strong> <code>regionCode</code> (for example <code>KR</code>) is present on contract and usage lines. There is no availability-zone field in the cost or usage data.
+- <strong>Tags:</strong> sub-accounts can be tagged in the Sub Account console, but resource tags do not appear in the cost or usage API records.</p>
+<h3 id="12-how-conformance-is-judged">1.2 How Conformance Is Judged</h3>
+<p>FOCUS conformance is judged column by column against the feature level each column carries. Feature levels for this analysis were verified against the FOCUS v1.2 specification Content Constraints tables, not recalled from memory. NCP exposes no capacity-reservation construct, so both CapacityReservation columns are N/A. The cost and usage feeds carry no resource tags, so Tags is N/A. Billing and pricing currency are identical (KRW at exchange rate 1), so the four PricingCurrency columns are N/A. NCP has no dedicated commitment object (only an itemized promise discount and a <code>promiseNo</code> reference), so the seven-column CommitmentDiscount family cannot be populated from this API and is treated as N/A pending a commitment-detail source. SKU price-detail objects are absent, so SkuPriceId and SkuPriceDetails are N/A.</p>
+<h3 id="13-column-by-column-status-all-57-focus-v12-columns">1.3 Column-by-Column Status: All 57 FOCUS v1.2 Columns</h3>
+<p>Feature levels verified against the FOCUS Specification v1.2.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level (v1.2)</th>
+<th>Naver Cloud source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BilledCost</td>
+<td>Mandatory</td>
+<td>Monthly demandAmount only, not per resource per day; substantive to produce at charge grain</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>Mandatory</td>
+<td>Derive: useAmount minus itemized discounts, allocated to resource-day; monthly only today</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>Mandatory</td>
+<td>Derive: useAmount (pre-discount), allocated from monthly product/contract to resource-day</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>Mandatory</td>
+<td>Derive: useAmount minus promiseDiscountAmount (committed rate), allocated to resource-day</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>Mandatory</td>
+<td>memberNo (master under an Organization)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>Mandatory</td>
+<td>Account name (not in cost feed; from account profile)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>Mandatory</td>
+<td>payCurrency.code (KRW)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>Mandatory</td>
+<td>Derive: first day of demandMonth</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>Mandatory</td>
+<td>Derive: first day of the following month (exclusive)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>Mandatory</td>
+<td>useDate.useStartDate (daily usage)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>Mandatory</td>
+<td>useDate.useEndDate; normalize to exclusive-end</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>Mandatory</td>
+<td>Derive from productItemKind.codeName + instanceName</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>Mandatory</td>
+<td>Derive: &ldquo;Usage&rdquo; for metered lines; &ldquo;Credit&rdquo; for creditDiscountAmount; &ldquo;Tax&rdquo; for VAT</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>Mandatory (nullable)</td>
+<td>null except for corrections</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>Mandatory</td>
+<td>Constant &ldquo;NAVER Cloud Corp.&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>Constant &ldquo;Naver Cloud Platform&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>Mandatory (dep. v1.3)</td>
+<td>Constant &ldquo;Naver Cloud Platform&rdquo;</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>Mandatory</td>
+<td>Derive from productItemKind / productDemandType codeName</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>Mandatory</td>
+<td>Map productItemKind to a FOCUS ServiceCategory (Compute, Storage, Networking)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>Mandatory</td>
+<td>usage.usageQuantity (or userUsageQuantity); flat-rate metered SKUs</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>Mandatory</td>
+<td>Normalize usage.unit (USAGE_SEC, USAGE_DAY) or userUnit (HOUR) to FOCUS unit</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>Conditional</td>
+<td>usage.userUsageQuantity</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>Conditional</td>
+<td>usage.userUnit.codeName (e.g., &ldquo;Hour(s)&rdquo;); normalize</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>Conditional</td>
+<td>productPrice (contract cost feed) or List Price API getPriceList</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>Conditional</td>
+<td>Derive: list unit price net of promise discount</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Standard&rdquo; on demand; &ldquo;Committed&rdquo; where promiseNo is set</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>Recommended</td>
+<td>Derive: &ldquo;Usage-Based&rdquo; for metered; &ldquo;Recurring&rdquo; for monthly/promise contracts</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Billing Account&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>Conditional</td>
+<td>memberNo of the member account under an Organization</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>Conditional</td>
+<td>Member account name (from account profile, not cost feed)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>Conditional</td>
+<td>Derive: &ldquo;Organization Member Account&rdquo;</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>Conditional</td>
+<td>contractProduct.instanceNo</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>Conditional</td>
+<td>contract.instanceName</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>Conditional</td>
+<td>Derive from productCode / productRatingType.codeName</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>Conditional</td>
+<td>contractProduct.productCode</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Conditional</td>
+<td>N/A: cost and usage feeds expose no resource tags</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>Conditional</td>
+<td>N/A: pricing currency equals billing currency (KRW, exchange rate 1)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>Conditional</td>
+<td>N/A: single-currency billing</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>Conditional</td>
+<td>N/A: single-currency billing</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>Conditional</td>
+<td>N/A: single-currency billing</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>Conditional</td>
+<td>Derive: meteringType.codeName + unit (e.g., &ldquo;Server Usage per second&rdquo;)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>Conditional</td>
+<td>priceNo (contractProduct.priceNo)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>Conditional</td>
+<td>N/A: no SKU price-detail object in the API</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>Conditional</td>
+<td>contract.regionCode (e.g., KR)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>Conditional</td>
+<td>Map regionCode to display name via getRegionList</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>Conditional</td>
+<td>N/A: no commitment object; only promiseNo reference and itemized discount</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>Conditional</td>
+<td>N/A: no commitment object</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>Conditional</td>
+<td>N/A: no commitment object</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>Conditional</td>
+<td>N/A: no commitment object</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>Conditional</td>
+<td>N/A: no used/unused status exposed</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>Conditional</td>
+<td>N/A: no committed quantity exposed</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>Conditional</td>
+<td>N/A: no committed unit exposed</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>Conditional</td>
+<td>N/A: no capacity reservation construct</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>Conditional</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>Recommended</td>
+<td>demandNo (getDemandCostList)</td>
+<td>Deviation</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>Recommended</td>
+<td>Map from productItemKind / productRatingType</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>AvailabilityZone</td>
+<td>Recommended</td>
+<td>Not exposed in cost or usage data</td>
+<td>Missing: Recommended</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tally:</strong> 13 Present, 25 Deviation, 2 Missing Mandatory, 2 Missing Recommended, 0 Missing Conditional, 15 N/A. The 15 N/A are Tags, the four PricingCurrency columns, the seven CommitmentDiscount columns, the two CapacityReservation columns, and SkuPriceDetails. There are no Missing Conditional columns: the CommitmentDiscount and CapacityReservation families are classified N/A rather than missing because NCP&rsquo;s model does not expose those constructs, which is the honest reading of the API. The two Missing Mandatory (BilledCost, EffectiveCost) are the substantive gaps; both stem from the same cause, cost living only at the monthly aggregate.</p>
+<h3 id="14-what-is-solved-and-what-remains">1.4 What Is Solved, and What Remains</h3>
+<p><strong>Solved:</strong> Resource identity is native and clean: <code>instanceNo</code> (ResourceId), <code>instanceName</code> (ResourceName), <code>productCode</code> (SkuId), <code>priceNo</code> (SkuPriceId), <code>regionCode</code> (RegionId), and daily charge periods. The Organization model gives a real BillingAccountId and SubAccountId. Nineteen of the 21 Mandatory columns have a source; the two exceptions are the cost columns at daily resource grain.</p>
+<p><strong>Substantive gaps (real data work, not plumbing):</strong>
+- <strong>BilledCost and EffectiveCost at charge grain.</strong> The net amount (<code>demandAmount</code>, <code>thisMonthDemandAmount</code>) and the full discount decomposition exist only in the monthly cost feed at member, product, or contract aggregate. Producing per-resource, per-day BilledCost and EffectiveCost requires allocating the monthly itemized amounts down to the resource-day usage lines. This is the join, and it is the real engineering.</p>
+<p><strong>Trivial gaps (derivable from data present):</strong> ListCost from <code>useAmount</code>; ContractedCost from <code>useAmount</code> minus <code>promiseDiscountAmount</code>; PricingQuantity and PricingUnit from the daily usage quantity and unit for flat-rate metered SKUs; ChargeCategory, ServiceCategory, ServiceName, ResourceType, BillingPeriodStart/End, and the constant issuer/provider columns. These are shape and derivation work, not missing data.</p>
+<p><strong>Remaining Conditional/Recommended:</strong> The CommitmentDiscount and CapacityReservation families cannot be populated from this API. ServiceSubcategory and AvailabilityZone are not emitted.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to Fix</h3>
+<p><strong>Cost columns:</strong> allocate the monthly <code>useAmount</code>, itemized discounts, and <code>demandAmount</code> from <code>getProductDemandCostList</code>/<code>getContractDemandCostList</code> down to the daily resource lines. Set ListCost = allocated <code>useAmount</code>, ContractedCost = <code>useAmount</code> minus <code>promiseDiscountAmount</code>, EffectiveCost = net of all applicable discounts, BilledCost = allocated <code>demandAmount</code>. Do not collapse all four to one figure: the discount itemization is present and should be preserved.</p>
+<p><strong>PricingUnit / ConsumedUnit:</strong> normalize NCP metering units (<code>USAGE_SEC</code>, <code>USAGE_DAY</code>, <code>HOUR</code>) to FOCUS unit strings (&ldquo;Hours&rdquo;, &ldquo;Days&rdquo;), reconciling raw <code>usageQuantity</code> against <code>userUsageQuantity</code>.</p>
+<p><strong>ChargeCategory:</strong> &ldquo;Usage&rdquo; for metered lines, &ldquo;Credit&rdquo; where <code>creditDiscountAmount</code> applies, &ldquo;Tax&rdquo; for the VAT lines in the demand summary.</p>
+<p><strong>ServiceCategory / ServiceName:</strong> map <code>productItemKind</code> and <code>productDemandType</code> codes (SVR, SW, NET_SVR) to FOCUS ServiceCategory members and readable service names using <code>getCostRelationCodeList</code>.</p>
+<p><strong>RegionName:</strong> resolve <code>regionCode</code> to a display name through <code>getRegionList</code>.</p>
+<p><strong>InvoiceId:</strong> map <code>demandNo</code> from the monthly demand record.</p>
+<p><strong>Constants:</strong> InvoiceIssuerName, ProviderName, and PublisherName are constants (&ldquo;NAVER Cloud Corp.&rdquo; / &ldquo;Naver Cloud Platform&rdquo;); populate them explicitly.</p>
+<hr>
+<h2 id="part-2-the-path-forward">Part 2: The Path Forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS Version to Target</h3>
+<p>Build to FOCUS v1.4 (June 4, 2026); certify at FOCUS v1.2, the current certification baseline. For the v1.4 build, drop ProviderName and PublisherName (removed in v1.4) and adopt the Invoice Detail and billing-period datasets, which suit NCP&rsquo;s monthly demand records well.</p>
+<h3 id="22-what-certification-requires">2.2 What Certification Requires</h3>
+<p>The program is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;; contact <code>member-cert@finops.org</code> for the RFI. Membership is required for certification, though contributing to the specification is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report (this analysis is its seed). Document Tags, CapacityReservation, and the PricingCurrency family as not applicable to this API, and document the promise-discount handling. Validate with the FOCUS Validator and convert with the FOCUS Converter against the FOCUS Requirements Model.</p>
+<h3 id="23-phased-roadmap">2.3 Phased Roadmap</h3>
+<p><strong>Phase 0:</strong> Confirm scope (Cost and Usage API, KRW, Classic and VPC) and version. Pull one month of <code>getContractUsageListByDaily</code> plus the matching <code>getProductDemandCostList</code> and <code>getContractDemandCostList</code>, and the <code>getCostRelationCodeList</code> code dictionary.</p>
+<p><strong>Phase 1: Join and Mandatory close.</strong> Build the resource-day to monthly-cost join and allocate itemized amounts down to charge lines. Populate the four cost columns (BilledCost, EffectiveCost, ListCost, ContractedCost) and the trivial Mandatory derivations (PricingQuantity, PricingUnit, ChargeCategory, ServiceCategory, ServiceName, BillingPeriod dates) plus core identity (ResourceId, SubAccountId, BillingAccountId, RegionId).</p>
+<p><strong>Phase 2: Deviations.</strong> Normalize units and enums, resolve RegionName and ServiceName from code lists, map InvoiceId from demandNo, set the constant issuer/provider columns.</p>
+<p><strong>Phase 3: Conditional and Recommended.</strong> Add ServiceSubcategory. Document the CommitmentDiscount and CapacityReservation families and the PricingCurrency family as not exposed. If a commitment-detail source becomes available, populate the CommitmentDiscount columns from the promise construct.</p>
+<p><strong>Phase 4: Mature and certify.</strong> Adopt v1.4 (drop ProviderName/PublisherName, add Invoice Detail dataset). Extend from KRW-domestic to any multi-currency partner accounts if applicable. Validate and certify.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases Unlocked</h3>
+<ul>
+<li><strong>As soon as Phase 1 lands (resource, region, day, cost):</strong> cost reporting by service, region, and member account; resource-level cost visibility; chargeback by Organization member account; effective-cost and committed-cost trending.</li>
+<li><strong>After Phase 2/3 (clean enums, promise data):</strong> promise-discount coverage analysis if a commitment source is added; anomaly detection on daily resource cost.</li>
+<li><strong>Out of scope for this API today:</strong> tag-based allocation (no resource tags in the feed), capacity-reservation analysis (no reservation construct), and multi-currency pricing analysis (single-currency KRW).</li>
+</ul>
+<hr>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate Next Steps</h2>
+<ol>
+<li>Pull one month of <code>getContractUsageListByDaily</code> and the matching <code>getProductDemandCostList</code>/<code>getContractDemandCostList</code> for a member account that uses a promise (committed) contract.</li>
+<li>Confirm how the monthly itemized discounts can be allocated down to daily resource lines, and implement the Phase 1 join and cost derivation.</li>
+<li>Run the resulting sample through the FOCUS Validator to baseline conformance.</li>
+<li>Open the RFI with <code>member-cert@finops.org</code>.</li>
+</ol>
+<hr>
+<h2 id="confidence-summary">Confidence Summary</h2>
+<ul>
+<li><strong>High:</strong> NCP exposes daily resource-level usage (instanceNo, instanceName, productCode, regionCode, quantity, service dates) through <code>getContractUsageListByDaily</code>, and monthly itemized cost (useAmount, six-way discount breakdown, demandAmount, KRW currency) through <code>getDemandCostList</code>/<code>getProductDemandCostList</code>/<code>getContractDemandCostList</code>. Field names are grounded in the published API schema and sample responses.</li>
+<li><strong>High:</strong> The two surfaces do not share a grain (daily resource usage versus monthly product/contract cost), so BilledCost and EffectiveCost at charge grain are a substantive join, not a rename. ListCost and ContractedCost are derivable from useAmount and promiseDiscountAmount.</li>
+<li><strong>Moderate:</strong> The precise allocation method for pushing monthly product/contract discounts down to individual daily resource lines is not specified by NCP and would be defined during implementation; the choice affects EffectiveCost accuracy at the resource level.</li>
+<li><strong>Moderate:</strong> The promise (committed-use) discount is itemized in cost but has no dedicated commitment object with ID, term, or status in this API, so the CommitmentDiscount family is classified N/A pending a commitment-detail source rather than as a build target. This is the item most likely to change if a commitment API exists that was not surfaced in the reviewed docs.</li>
+<li><strong>Moderate:</strong> Tags are treated as N/A because resource tags do not appear in the cost or usage records reviewed; sub-account tagging exists but does not flow to billing lines. If NCP exposes resource tags elsewhere, Tags moves from N/A to a build target.</li>
+<li><strong>Low:</strong> BillingAccountName and SubAccountName come from account profile rather than the cost feed and are treated as a light join. AvailabilityZone is assumed absent based on the reviewed schema.</li>
+</ul>
+<p>The bundled FOCUS feature-level table (v1.2 baseline, stamped 2026-06-23) was spot-checked against the live specification; BilledCost and ContractedCost remain Mandatory and v1.4 remains the latest ratified version, so no cache refresh was required. This analysis reflects the data sources reviewed, not a formal certification result. Naver Cloud Platform does not hold the FinOps Certified FOCUS designation; the readiness band below is an assessment of the reviewed data, not a certification. Data quality for this analysis is solid.</p>
+<hr>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Naver Cloud Platform Cost and Usage overview: <a href="https://api.ncloud-docs.com/docs/en/platform-costandusage">api.ncloud-docs.com/docs/en/platform-costandusage</a></li>
+<li>getDemandCostList: <a href="https://api.ncloud-docs.com/docs/en/platform-costandusage-getdemandcostlist">api.ncloud-docs.com/docs/en/platform-costandusage-getdemandcostlist</a></li>
+<li>getProductDemandCostList: <a href="https://api.ncloud-docs.com/docs/en/platform-costandusage-getproductdemandcostlist">api.ncloud-docs.com/docs/en/platform-costandusage-getproductdemandcostlist</a></li>
+<li>getContractDemandCostList: <a href="https://api.ncloud-docs.com/docs/en/platform-costandusage-getcontractdemandcostlist">api.ncloud-docs.com/docs/en/platform-costandusage-getcontractdemandcostlist</a></li>
+<li>getContractUsageListByDaily: <a href="https://api.ncloud-docs.com/docs/en/platform-costandusage-getcontractusagelistbydaily">api.ncloud-docs.com/docs/en/platform-costandusage-getcontractusagelistbydaily</a></li>
+<li>NCP Cost Explorer overview: <a href="https://guide.ncloud-docs.com/docs/en/costexplorer-overview">guide.ncloud-docs.com/docs/en/costexplorer-overview</a></li>
+<li>NCP Organization overview: <a href="https://guide.ncloud-docs.com/docs/en/organization-overview">guide.ncloud-docs.com/docs/en/organization-overview</a></li>
+<li>NCP Sub Account: <a href="https://guide.ncloud-docs.com/docs/en/subaccount-use">guide.ncloud-docs.com/docs/en/subaccount-use</a></li>
+<li>FOCUS Specification v1.2: <a href="https://focus.finops.org/focus-specification/v1-2/">focus.finops.org/focus-specification/v1-2</a></li>
+<li>FOCUS Specification v1.4: <a href="https://www.finops.org/insights/introducing-focus-1-4/">finops.org/insights/introducing-focus-1-4</a></li>
+<li>FinOps Certified FOCUS v1.2 Conformant: <a href="https://www.finops.org/certification-for-organizations/finops-certified-focus-conformant/">finops.org/certification</a></li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>

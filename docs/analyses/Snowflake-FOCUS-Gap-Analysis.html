@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snowflake and FOCUS: Compliance Gap and Adoption Roadmap | FOCUS gap analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--focus-dark:#2B3F50;--focus-purple:#bd3bfd;--ink:#1f2a33;--muted:#5b6b78;--rule:#d9dee3;--soft:#f5f7f9;--banner-bg:#fff8e8;--banner-border:#e6d19a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;color:var(--ink);background:#fff}
+a{color:var(--focus-purple);text-underline-offset:2px}
+a:hover,a:focus{color:var(--focus-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+.unofficial-banner{background:var(--banner-bg);border:1px solid var(--banner-border);border-radius:6px;padding:.75rem 1rem;margin:1.25rem 0 1.5rem;font-size:.92rem}
+.unofficial-banner p,.unofficial-footer p{margin:.25rem 0}
+article h1{color:var(--focus-dark);font-size:2rem;line-height:1.2;margin:.5rem 0 1rem}
+article h2{color:var(--focus-dark);font-size:1.45rem;line-height:1.3;margin:2.25rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+article h3{color:var(--focus-dark);font-size:1.15rem;margin:1.75rem 0 .5rem}
+article h4{color:var(--focus-dark);font-size:1rem;margin:1.5rem 0 .5rem}
+article li{margin:.2rem 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0 1.5rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--focus-dark);color:#fff;font-weight:600}
+th a{color:#fff}
+tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);padding:.1em .3em;border-radius:3px}
+pre{background:var(--soft);border:1px solid var(--rule);border-radius:6px;padding:.85rem 1rem;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:.85rem}
+blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid var(--focus-purple);background:var(--soft)}
+blockquote p{margin:.35rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.unofficial-footer{border-top:1px solid var(--rule);margin:2.5rem 0 2rem;padding-top:1rem;font-size:.88rem;color:var(--muted)}
+
+.pages-nav-bar{background:#fff;border-bottom:1px solid #d9dee3}
+.pages-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.25rem;max-width:1200px;margin:0 auto;padding:.55rem 1.25rem;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.9rem;font-weight:500;line-height:1.4}
+.pages-nav a{color:#2B3F50;text-decoration:none;border-bottom:2px solid transparent;padding:.15rem 0}
+.pages-nav a:hover,.pages-nav a:focus{border-bottom-color:#bd3bfd}
+.pages-nav a[aria-current="page"]{color:#bd3bfd;border-bottom-color:#bd3bfd}
+.pages-nav .pages-nav-src{margin-left:auto}
+</style>
+</head>
+<body>
+<div class="pages-nav-bar"><nav class="pages-nav" aria-label="Site"><a href="../index.html">Scorecard</a><a href="../by-company.html">By company</a><a href="../DISCLAIMER.html">Disclaimer</a><a class="pages-nav-src" href="https://github.com/beau-finopsorg/focus-gap-analyses/blob/main/analyses/Snowflake-FOCUS-Gap-Analysis.md">Source on GitHub</a></nav></div>
+<div class="wrap">
+<aside class="unofficial-banner">
+  <p><strong>Unofficial community project.</strong> Prepared by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is not an official FOCUS, FinOps Foundation, or Linux Foundation publication. Ratings below are a reading of public documentation. They are not a certification result. Official certification, where it exists, is labeled separately as FinOps Certified FOCUS Conformant.</p>
+</aside>
+<main>
+<article>
+<h1 id="snowflake-and-focus-compliance-gap-and-adoption-roadmap">Snowflake and FOCUS: Compliance Gap and Adoption Roadmap</h1>
+<p><em>Analysis run: July 6, 2026</em></p>
+<blockquote>
+<p><strong>About this report.</strong> This is an unofficial community reading of public documentation on the &ldquo;Analysis run&rdquo; date above. It is not a certification result or an official project verdict, and it may be incomplete or out of date.
+Ratings use this scale: Aligned, Partially aligned, Not yet aligned (per public docs).
+It is not an official FOCUS, FinOps Foundation, or Linux Foundation publication.
+To correct it, open an issue or pull request in this repository with public evidence. See <a href="../DISCLAIMER.html">DISCLAIMER.md</a>.</p>
+</blockquote>
+<p><strong>Provider and product in scope:</strong> Snowflake, Inc. (the Snowflake Data Cloud), consumption-based credit billing.
+<strong>Prepared:</strong> 2026-07-06.
+<strong>Source analyzed:</strong> Snowflake <code>ORGANIZATION_USAGE</code> and <code>ACCOUNT_USAGE</code> schemas in the shared <code>SNOWFLAKE</code> database, primarily the <code>USAGE_IN_CURRENCY_DAILY</code> and <code>METERING_DAILY_HISTORY</code> views, with <code>WAREHOUSE_METERING_HISTORY</code>, <code>QUERY_ATTRIBUTION_HISTORY</code>, <code>TAG_REFERENCES</code>, and <code>RATE_SHEET_DAILY</code> as supporting sources.
+<strong>FOCUS baseline:</strong> v1.2 (current certification baseline). <strong>Build target:</strong> v1.4 (latest ratified, 2026-06-04).</p>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Snowflake exposes a rich, queryable billing and usage layer, but it does so as a set of relational views a customer joins together, not as a single FOCUS-shaped record. The strongest asset is genuine daily currency data: <code>USAGE_IN_CURRENCY_DAILY</code> reports the amount charged per account, per service type, in a stated currency, alongside the credit quantity. Snowflake also carries the mechanics FOCUS cares about: an organization-and-account hierarchy, object tags and query tags as key-value pairs, capacity commitments with a documented drawdown order, and cloud-services adjustments. What it lacks natively is a normalized single dataset that resolves list, contracted, and effective cost onto each usage line, plus FOCUS column names, enums, and a consistent charge grain.</p>
+<p>Snowflake is not listed on the FOCUS &ldquo;get started&rdquo; provider page, so it holds no FinOps Certified FOCUS designation. This analysis assesses readiness only; it reflects the data source reviewed, not a formal certification result.</p>
+<ul>
+<li>FOCUS columns (v1.2 baseline): 57.</li>
+<li>Already present (mappable from existing views, some with a transform): 24.</li>
+<li>Substantive Mandatory gaps: 3 of 6 missing Mandatory columns are substantive (<code>ContractedCost</code>, <code>EffectiveCost</code>, and reconciling <code>ListCost</code> to the usage line); the other 3 are trivial plumbing.</li>
+<li>Deviations to fix: 5.</li>
+</ul>
+<p><strong>RAG readiness:</strong> Cost Partial, Granularity Strong, Allocation Partial, Coverage Partial, FOCUS shape Gap. <strong>Overall band: Not yet aligned (per public docs).</strong></p>
+<p><strong>Recommendation:</strong> Treat Snowflake as a strong usage-and-currency source that needs a FOCUS transformation layer. Build a consolidation view that pins the account/organization hierarchy, joins the daily currency data to the rate sheet for list and contracted rates, and emits FOCUS column IDs, key-value <code>Tags</code>, and valid enums. The cost reconciliation (capacity drawdown, cloud-services adjustments, and per-line list-to-effective) is the substantive work; the rest is naming and shaping.</p>
+<h2 id="part-1-the-conformance-gap">Part 1: The conformance gap</h2>
+<h3 id="11-the-data-source">1.1 The data source</h3>
+<p>Snowflake bills on consumption of credits. A credit is the unit of compute; storage and data transfer are rated in their own units and converted to currency. Customers read their consumption from views in the shared, read-only <code>SNOWFLAKE</code> database, in two relevant schemas:</p>
+<ul>
+<li><code>ORGANIZATION_USAGE</code>: organization-wide rollups, queryable from the organization account. <code>USAGE_IN_CURRENCY_DAILY</code> is the anchor: one row per organization, account, usage date, usage type, service type, rating type, and adjustment flag, carrying <code>USAGE</code> (the rated quantity, in credits for compute or terabytes for storage/transfer), <code>CURRENCY</code>, <code>USAGE_IN_CURRENCY</code> (the charged amount), plus <code>BALANCE_SOURCE</code> (capacity, rollover, free usage, overage, rebate) and <code>BILLING_TYPE</code> (consumption, rebate, priority support, and so on). <code>METERING_DAILY_HISTORY</code> gives daily credits per account and service type, including <code>CREDITS_USED_COMPUTE</code>, <code>CREDITS_USED_CLOUD_SERVICES</code>, <code>CREDITS_ADJUSTMENT_CLOUD_SERVICES</code> (a negative cloud-services rebate), and <code>CREDITS_BILLED</code>.</li>
+<li><code>ACCOUNT_USAGE</code>: per-account detail. <code>WAREHOUSE_METERING_HISTORY</code> gives credits per warehouse (with <code>warehouse_id</code>), <code>QUERY_ATTRIBUTION_HISTORY</code> attributes compute credits per query and user, and <code>TAG_REFERENCES</code> resolves object and user tags. <code>RATE_SHEET_DAILY</code> exposes the effective per-credit and per-unit rates for the account.</li>
+</ul>
+<p>Key characteristics and limits:</p>
+<ul>
+<li>Daily granularity: <code>USAGE_DATE</code> is a UTC calendar day. This is finer than monthly and satisfies the sub-monthly charge-record expectation. Finer-than-daily attribution (per warehouse, per query) exists but only in <code>ACCOUNT_USAGE</code>, one account at a time.</li>
+<li>Currency present, list and contracted rates separate: the currency view gives the amount actually charged and the fund source, but list price and the negotiated contract rate live in <code>RATE_SHEET_DAILY</code>, not on the usage line.</li>
+<li>Discounts and commitments exist: capacity commitments draw down credits at a negotiated rate, cloud-services usage under 10% of daily warehouse credits is rebated, and data-sharing rebates apply. These are real discounts and adjustments, applied through balance sources and adjustment columns rather than as a single effective-cost figure per line.</li>
+<li>No native resource identity or tags on the currency view: <code>USAGE_IN_CURRENCY_DAILY</code> has no warehouse, database, or tag column. Resource-level and tag-level attribution requires joining <code>ACCOUNT_USAGE</code> views, and query-level attribution is single-account only.</li>
+<li>Late-arriving data: currency data can change until month close for adjustments, amendments, and account transfers; latency up to 72 hours.</li>
+</ul>
+<h3 id="12-how-conformance-is-judged">1.2 How conformance is judged</h3>
+<p>FOCUS assigns every column a feature level: Mandatory (must be present and populated), Conditional (required when the provider&rsquo;s model triggers the condition), Recommended (encouraged), or Optional. Conformance is judged column by column against the Requirements Model. A dataset conforms when every Mandatory column is present and correctly populated, every applicable Conditional column is handled, tags are key-value pairs, enumerated columns carry valid members, and types and currency and date formats follow the spec. Feature levels for this report were verified against the FOCUS v1.2 specification content-constraint tables.</p>
+<h3 id="13-column-by-column-status">1.3 Column-by-column status</h3>
+<p>Status legend: Present (emitted and aligned, allowing a documented transform from native views); Present, deviation to fix (emitted, wrong format or invalid enum); Missing: Mandatory (required and absent, blocks conformance); Missing: Recommended (encouraged, absent); Missing: Conditional (required when the model triggers it, absent); N/A: null valid (Conditional or Recommended column that does not apply, should exist and be null).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>FOCUS Column</th>
+<th>Level</th>
+<th>In the source?</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AvailabilityZone</td>
+<td>R</td>
+<td>No (region only, no zone)</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>BilledCost</td>
+<td>M</td>
+<td>Partial (USAGE_IN_CURRENCY, needs reconciliation)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>BillingAccountId</td>
+<td>M</td>
+<td>Yes (ACCOUNT_LOCATOR / account name)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountName</td>
+<td>M</td>
+<td>Yes (ACCOUNT_NAME)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>BillingCurrency</td>
+<td>M</td>
+<td>Yes (CURRENCY)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>BillingPeriodEnd</td>
+<td>M</td>
+<td>No (daily usage, no billing period bounds)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>BillingPeriodStart</td>
+<td>M</td>
+<td>No (daily usage, no billing period bounds)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>CapacityReservationId</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>CapacityReservationStatus</td>
+<td>C</td>
+<td>No</td>
+<td>N/A: null valid</td>
+</tr>
+<tr>
+<td>ChargeCategory</td>
+<td>M</td>
+<td>No (derivable from BILLING_TYPE / IS_ADJUSTMENT)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeClass</td>
+<td>M</td>
+<td>Partial (IS_ADJUSTMENT flags adjustments)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ChargeDescription</td>
+<td>M</td>
+<td>No (derivable from SERVICE_TYPE)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ChargeFrequency</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>ChargePeriodEnd</td>
+<td>M</td>
+<td>Yes (USAGE_DATE + 1 day)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ChargePeriodStart</td>
+<td>M</td>
+<td>Yes (USAGE_DATE)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>CommitmentDiscountCategory</td>
+<td>C</td>
+<td>Partial (capacity commitments exist)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountId</td>
+<td>C</td>
+<td>Partial (CONTRACT_NUMBER)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountName</td>
+<td>C</td>
+<td>Partial</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountQuantity</td>
+<td>C</td>
+<td>Partial (credits from capacity balance)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountStatus</td>
+<td>C</td>
+<td>Partial (BALANCE_SOURCE)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountType</td>
+<td>C</td>
+<td>Partial (capacity commitment)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>CommitmentDiscountUnit</td>
+<td>C</td>
+<td>Partial (credits)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ConsumedQuantity</td>
+<td>C</td>
+<td>Yes (USAGE)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ConsumedUnit</td>
+<td>C</td>
+<td>Partial (implied by RATING_TYPE)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ContractedCost</td>
+<td>M</td>
+<td>No (rate sheet separate, not on line)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ContractedUnitPrice</td>
+<td>C</td>
+<td>Partial (RATE_SHEET_DAILY)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>EffectiveCost</td>
+<td>M</td>
+<td>No (no amortized effective per line)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>InvoiceId</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>InvoiceIssuerName</td>
+<td>M</td>
+<td>No (constant &ldquo;Snowflake&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListCost</td>
+<td>M</td>
+<td>No (list rate in rate sheet, not on line)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ListUnitPrice</td>
+<td>C</td>
+<td>Partial (RATE_SHEET_DAILY)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCategory</td>
+<td>C</td>
+<td>No (On-Demand vs Committed derivable)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrency</td>
+<td>C</td>
+<td>Yes (CURRENCY)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>PricingCurrencyContractedUnitPrice</td>
+<td>C</td>
+<td>Partial (RATE_SHEET_DAILY)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyEffectiveCost</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingCurrencyListUnitPrice</td>
+<td>C</td>
+<td>Partial (RATE_SHEET_DAILY)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>PricingQuantity</td>
+<td>M</td>
+<td>Partial (USAGE, flat-rate only)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>PricingUnit</td>
+<td>M</td>
+<td>Partial (credits/TB by RATING_TYPE)</td>
+<td>Present, deviation to fix</td>
+</tr>
+<tr>
+<td>ProviderName</td>
+<td>M (removed v1.4)</td>
+<td>No (constant &ldquo;Snowflake&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>PublisherName</td>
+<td>M (removed v1.4)</td>
+<td>No (constant &ldquo;Snowflake&rdquo;)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>RegionId</td>
+<td>C</td>
+<td>Yes (REGION)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>RegionName</td>
+<td>C</td>
+<td>Yes (REGION)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>ResourceId</td>
+<td>C</td>
+<td>Partial (warehouse_id in ACCOUNT_USAGE only)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceName</td>
+<td>C</td>
+<td>Partial (warehouse name in ACCOUNT_USAGE only)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ResourceType</td>
+<td>C</td>
+<td>Partial (derivable from SERVICE_TYPE)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>ServiceCategory</td>
+<td>M</td>
+<td>No (derivable from SERVICE_TYPE)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>M</td>
+<td>No (constant &ldquo;Snowflake&rdquo; or by SERVICE_TYPE)</td>
+<td>Missing: Mandatory</td>
+</tr>
+<tr>
+<td>ServiceSubcategory</td>
+<td>R</td>
+<td>No</td>
+<td>Missing: Recommended</td>
+</tr>
+<tr>
+<td>SkuId</td>
+<td>C</td>
+<td>Partial (SERVICE_TYPE as a proxy)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuMeter</td>
+<td>C</td>
+<td>Partial (RATING_TYPE)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceDetails</td>
+<td>C</td>
+<td>Partial (RATE_SHEET_DAILY)</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SkuPriceId</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>SubAccountId</td>
+<td>C</td>
+<td>Yes (account within organization)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountName</td>
+<td>C</td>
+<td>Yes (ACCOUNT_NAME)</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>SubAccountType</td>
+<td>C</td>
+<td>No</td>
+<td>Missing: Conditional</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>C</td>
+<td>Partial (object/query tags, not on usage line)</td>
+<td>Present, deviation to fix</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="14-whats-solved-and-what-remains">1.4 What&rsquo;s solved, and what remains</h3>
+<p><strong>Solved or near-solved.</strong> The organization-and-account hierarchy is clean: organization maps to the billing account, each account maps to a sub-account, and both carry a stable ID and a name. Daily charge periods are directly available from <code>USAGE_DATE</code>. Currency and consumed quantity are present. Region is present. Object tags and query tags are native key-value constructs. The credit-based consumption model is well documented, and the fund-source and adjustment columns describe the discount mechanics precisely.</p>
+<p><strong>Substantive gaps (real data or real reconciliation work).</strong></p>
+<ul>
+<li>Cost columns: <code>ListCost</code>, <code>ContractedCost</code>, and <code>EffectiveCost</code> are the core substantive gap. <code>USAGE_IN_CURRENCY_DAILY</code> gives the charged amount, but that amount already reflects the balance source (capacity, rollover, free, overage). Producing a clean FOCUS cost quartet means joining the rate sheet for list and contracted rates, applying the capacity drawdown and cloud-services adjustment to derive effective cost per line, and reconciling all four so they tie back to the invoice. This is the classic list-cost trap: discounts, commitments, and adjustments exist and are applied through balance sources rather than a single per-line effective figure, so the cost columns are substantive, not a trivial copy.</li>
+<li>Billing period bounds: <code>BillingPeriodStart</code> and <code>BillingPeriodEnd</code> are not in the daily usage feed. Snowflake bills monthly, so these are derivable from the calendar month, but the value must be supplied because the source omits it.</li>
+</ul>
+<p><strong>Trivial gaps (plumbing, derivable from data already present).</strong></p>
+<ul>
+<li><code>ChargeCategory</code>: derivable from <code>BILLING_TYPE</code> and <code>IS_ADJUSTMENT</code> (consumption maps to Usage, adjustments to Adjustment or Credit).</li>
+<li><code>ChargeDescription</code>, <code>ServiceCategory</code>, <code>ServiceName</code>: derivable from <code>SERVICE_TYPE</code> with a lookup table.</li>
+<li><code>InvoiceIssuerName</code>, <code>ProviderName</code>, <code>PublisherName</code>: constants (&ldquo;Snowflake&rdquo;).</li>
+<li><code>PricingQuantity</code> and <code>PricingUnit</code>: equal <code>USAGE</code> and its unit for flat-rate credit consumption; tiered or blended rates (for example capacity-tier pricing) must be computed against the rate basis, not copied.</li>
+</ul>
+<p>Of the 6 missing Mandatory columns, 3 are substantive (<code>ListCost</code>, <code>ContractedCost</code>, <code>EffectiveCost</code>, treated as one reconciliation) and 3 are trivial (<code>ServiceCategory</code>, <code>ServiceName</code>, <code>ChargeCategory</code>), with <code>ChargeDescription</code>, the invoice/provider constants, and the billing-period bounds as additional trivial adds.</p>
+<h3 id="15-deviations-to-fix">1.5 Deviations to fix</h3>
+<ul>
+<li><code>Tags</code>: Snowflake tags are true key-value pairs, which matches FOCUS shape, but they live in <code>TAG_REFERENCES</code> and are not attached to the currency view. The deviation is join-and-attach, not reformat.</li>
+<li><code>ChargeClass</code>: FOCUS uses <code>ChargeClass</code> = &ldquo;Correction&rdquo; (or null) for corrections. Snowflake&rsquo;s <code>IS_ADJUSTMENT</code> boolean must be mapped to that enum, not passed through as a boolean.</li>
+<li><code>ConsumedUnit</code> and <code>PricingUnit</code>: the unit is implied by <code>RATING_TYPE</code> (credits for compute, terabytes for storage and transfer) rather than stated explicitly, so a lookup is needed to emit an explicit unit string.</li>
+<li><code>PricingQuantity</code>: correct for flat-rate credit usage; flag tiered and capacity-tier SKUs for computation against the rate basis.</li>
+<li><code>BilledCost</code>: <code>USAGE_IN_CURRENCY</code> is close to billed cost but must be reconciled against the balance source so overage-versus-committed and rebate lines are represented correctly.</li>
+</ul>
+<p>Already done right: key-value tags, ISO-style daily dates, an explicit currency code, a stable account and organization hierarchy, and a documented service and rating taxonomy.</p>
+<h2 id="part-2-the-path-forward">Part 2: The path forward</h2>
+<h3 id="21-which-focus-version-to-target">2.1 Which FOCUS version to target</h3>
+<p>Baseline the current certification version, v1.2, for any conformance conversation, and build toward v1.4 (ratified 2026-06-04). Building to v1.4 means dropping <code>ProviderName</code> and <code>PublisherName</code> (removed in v1.4) and adopting the Invoice Detail and billing-period datasets, which suit Snowflake&rsquo;s monthly invoice and its month-close adjustment behavior well. A practical path is to construct the transformation against v1.2 semantics, then layer the v1.3 and v1.4 additions.</p>
+<h3 id="22-what-certification-requires">2.2 What certification requires</h3>
+<p>FinOps Certified FOCUS conformance for data generators runs through the FinOps Foundation. The historical badge is &ldquo;FinOps Certified FOCUS v1.2 Conformant&rdquo;; confirm the current badge version on the program page. Contact <code>member-cert@finops.org</code> for the RFI. Membership is required for certification, though contributing to the spec is open and free. Deliverables are a conformant dataset, public sample data, a native-to-FOCUS mapping, and a Conformance Gap Report, which this analysis seeds. Open-source tooling includes the FOCUS Validator (checks data against the Requirements Model), the FOCUS Converter (provider-native to FOCUS), and the FOCUS Requirements Model (machine-readable MUST/SHOULD/MAY rules).</p>
+<h3 id="23-phased-roadmap">2.3 Phased roadmap</h3>
+<p><strong>Phase 0: Validate and scope.</strong> Build a single consolidation view over <code>USAGE_IN_CURRENCY_DAILY</code> (or <code>METERING_DAILY_HISTORY</code> where credits are the grain), run a sample through the FOCUS Validator to establish a baseline, and confirm the v1.2 baseline and v1.4 build target.</p>
+<p><strong>Phase 1: Close the substantive and trivial Mandatory gaps.</strong> Join the rate sheet to derive <code>ListCost</code> and <code>ContractedCost</code>; compute <code>EffectiveCost</code> by applying capacity drawdown and cloud-services adjustments per line; reconcile <code>BilledCost</code> against balance source. Add the trivial constants and lookups (<code>ServiceCategory</code>, <code>ServiceName</code>, <code>ChargeCategory</code>, <code>ChargeDescription</code>, <code>InvoiceIssuerName</code>) and derive <code>BillingPeriodStart</code>/<code>End</code> from the calendar month.</p>
+<p><strong>Phase 2: Fix deviations.</strong> Attach key-value <code>Tags</code> from <code>TAG_REFERENCES</code>, map <code>IS_ADJUSTMENT</code> to <code>ChargeClass</code>, emit explicit <code>ConsumedUnit</code> and <code>PricingUnit</code>, and flag tiered SKUs for <code>PricingQuantity</code> computation.</p>
+<p><strong>Phase 3: Round out Conditional and Recommended columns.</strong> Populate the CommitmentDiscount family from capacity-commitment data, the SKU family from service and rate-sheet detail, <code>ResourceId</code>/<code>ResourceName</code>/<code>ResourceType</code> by joining warehouse-level <code>ACCOUNT_USAGE</code> views, <code>PricingCategory</code> (On-Demand versus Committed from balance source), and the pricing-currency columns. Add Recommended <code>ChargeFrequency</code>, <code>InvoiceId</code>, <code>ServiceSubcategory</code>.</p>
+<p><strong>Phase 4: Mature to the target version.</strong> Adopt v1.3 and v1.4 additions, drop <code>ProviderName</code>/<code>PublisherName</code>, wire in the Invoice Detail dataset for month-close reconciliation, and pursue certification.</p>
+<h3 id="24-focus-use-cases-unlocked">2.4 FOCUS Use Cases unlocked</h3>
+<ul>
+<li>Unlocked once the consolidation view and daily grain exist (Phases 0 to 1): account-level and organization-level cost reporting and showback, service-level spend analysis, day-level trend and anomaly detection.</li>
+<li>Unlocked with the cost quartet (Phase 1): effective-cost reconciliation, committed-versus-on-demand analysis, invoice reconciliation, actuals-based budgeting.</li>
+<li>Unlocked with tags and resource identity (Phases 2 to 3): tag-based chargeback and showback (by cost center), resource-level cost allocation (by warehouse), shared-warehouse and query-level cost attribution (single-account scope).</li>
+<li>Out of scope for now: capacity-reservation use cases in the cloud sense do not apply; Snowflake&rsquo;s commitments are prepaid capacity credits, better modeled through the CommitmentDiscount family than the CapacityReservation columns.</li>
+</ul>
+<h2 id="part-3-immediate-next-steps">Part 3: Immediate next steps</h2>
+<ol>
+<li>Stand up the consolidation view over <code>USAGE_IN_CURRENCY_DAILY</code> from the organization account and confirm the account/organization hierarchy maps to billing account and sub-account.</li>
+<li>Model the cost quartet: join <code>RATE_SHEET_DAILY</code>, apply capacity drawdown and cloud-services adjustment, and reconcile <code>Billed</code>, <code>List</code>, <code>Contracted</code>, and <code>Effective</code> cost against a known invoice.</li>
+<li>Add the trivial Mandatory constants and <code>SERVICE_TYPE</code> lookups, and derive billing-period bounds.</li>
+<li>Attach key-value <code>Tags</code> and resource identity by joining <code>TAG_REFERENCES</code> and warehouse-level views.</li>
+<li>Run the transformed sample through the FOCUS Validator and iterate.</li>
+</ol>
+<h2 id="confidence-summary">Confidence summary</h2>
+<ul>
+<li>Data source structure (views, columns, daily grain, hierarchy): high confidence, taken from current Snowflake documentation for <code>USAGE_IN_CURRENCY_DAILY</code>, <code>METERING_DAILY_HISTORY</code>, and the cost-attribution and object-tagging guides.</li>
+<li>Feature-level classifications: high confidence. Levels were checked against the FOCUS v1.2 content-constraint reference; the bundled table was cache-validated on 2026-07-06 against the live spec index, which confirmed v1.2 exists and v1.4 (2026-06-04) is the latest ratified version, with no refresh needed.</li>
+<li>Cost reconciliation as substantive: high confidence. Capacity commitments, cloud-services adjustments, and data-sharing rebates are documented discounts and adjustments applied through balance sources, so list, contracted, and effective cost require reconciliation, not a copy.</li>
+<li>Overall readiness band (Emerging): moderate to high confidence. Snowflake has strong daily currency data and the right allocation primitives, but no FOCUS-shaped dataset, no consolidated cost quartet per line, and native names and enums throughout.</li>
+<li>Certification status: Snowflake is not on the FOCUS provider &ldquo;get started&rdquo; page and holds no FinOps Certified FOCUS designation; this report assesses readiness only and is not a certification result.</li>
+<li>Items to confirm on a live run: exact reconciliation of <code>USAGE_IN_CURRENCY</code> to a billing statement including overage lines, and the current certification badge version on the program page.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Snowflake, USAGE_IN_CURRENCY_DAILY view: https://docs.snowflake.com/en/sql-reference/organization-usage/usage_in_currency_daily</li>
+<li>Snowflake, METERING_DAILY_HISTORY view: https://docs.snowflake.com/en/sql-reference/organization-usage/metering_daily_history</li>
+<li>Snowflake, Attributing cost (object tags, query tags, WAREHOUSE_METERING_HISTORY, QUERY_ATTRIBUTION_HISTORY, TAG_REFERENCES): https://docs.snowflake.com/en/user-guide/cost-attributing</li>
+<li>Snowflake, Introduction to object tagging: https://docs.snowflake.com/en/user-guide/object-tagging/introduction</li>
+<li>FOCUS Specification: https://focus.finops.org/focus-specification/</li>
+<li>FOCUS tooling: FOCUS Validator, FOCUS Converter, FOCUS Requirements Model.</li>
+</ul>
+<hr>
+<p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+<p>The FinOps Open Cost and Usage Specification is published at https://focus.finops.org.</p>
+<p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</article>
+</main>
+<aside class="unofficial-footer">
+  <p>Written by Beau Nelford, FOCUS Technical Community Architect, acting in a personal and community capacity. This is an unofficial community report based on public documentation. It is not a FOCUS or FinOps Foundation deliverable.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Product names and marks belong to their owners.</p>
+  <p>The FinOps Open Cost and Usage Specification is published at <a href="https://focus.finops.org">https://focus.finops.org</a>.</p>
+  <p>Found something wrong? Open an issue or pull request in this repository. Vendors and others are welcome to correct a report.</p>
+</aside>
+</div>
+</body>
+</html>
